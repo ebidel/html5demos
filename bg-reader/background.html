@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html manifest="appcache.php">
+<script>
+var appCache = window.applicationCache;
+
+appCache.addEventListener('updateready', function(e) {
+  if (appCache.status == appCache.UPDATEREADY) {
+    appCache.swapCache(); // Swap in new assets.
+
+    // Inform the user new content is available with a notification only if
+    // they don't have the app open.
+    if (!window.opener) {
+      var notification =
+          webkitNotifications.createHTMLNotification('notification.html');
+
+      notification.onclick = function(e) {
+        var href = document.location.href;
+        window.open(href.substring(0, href.search('background.html')));
+        notification.cancel();
+      };
+
+      notification.show();
+    }
+  }
+}, false);
+
+var source = new EventSource('updater.php');
+source.addEventListener('message', function(e) {
+console.log(e.data, e.data == '')
+  appCache.update();
+}, false);
+</script>
+</html>

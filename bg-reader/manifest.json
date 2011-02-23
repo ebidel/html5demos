@@ -1,0 +1,23 @@
+{
+  "name": "Book of the Day (Sample)",
+  "description": "Sample application that uses Google Chrome 10's new background feature.",
+  "version": "0.0.1",
+  "icons": {
+    "16": "icons/book_cover.png",
+    "48": "icons/book_cover.png",
+    "128": "icons/book_cover.png"
+  },
+  "app": {
+    "urls": [
+      "http://googlecodesamples.com/"
+    ],
+    "launch": {
+      "web_url": "http://googlecodesamples.com/html5/bg-reader/"
+    }
+  },
+  "permissions": [
+    "background",
+    "unlimitedStorage",
+    "notifications"
+  ]
+}
