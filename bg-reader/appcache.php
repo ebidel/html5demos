@@ -23,7 +23,9 @@ echo "CACHE MANIFEST\n";
 $black_list = array(
   './appcache.php',
   './manifest.json',
-  './updater.php'
+  './updater.php',
+  './loremipsum.txt',
+  './icons/book_cover.png'
 );
 
 $hashes = '';
