@@ -34,7 +34,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
   <article>
   <div id="cover" class="drop-shadow lifted">
     <div class="nav left"></div>
-    <div id="pages"><div class="loading">loading book...</div>
+    <div id="pages"><!--<div class="loading">loading book...</div>-->
+    <?php include_once 'loremipsum.txt' ?>
     </div>
     <span id="leftPageNum" class="pagenum"></span><span id="rightPageNum" class="pagenum">2</span>
     <div class="nav right"></div>

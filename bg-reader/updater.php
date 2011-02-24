@@ -40,6 +40,7 @@ do {
   // Send message every $REFRESH.
   if ((time() - $startedAt) > $REFRESH) {
     sendMsg($startedAt , time());
+    die();
   }
 } while(true);
 ?>

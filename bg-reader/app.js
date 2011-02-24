@@ -122,6 +122,7 @@ window.addEventListener('keyup', function(e) {
   }
 }, false);
 
+/*
 // Use to load content dynamically.
 function loadBook(url) {
   var xhr = new XMLHttpRequest();
@@ -135,4 +136,5 @@ function loadBook(url) {
 }
 
 loadBook('loremipsum.txt');
+*/
 })();
