@@ -41,7 +41,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
   </div>
   </article>
   <p id="unsupported" class="hidden">
-    You are not using Google Chrome 10+ or have not installed this web app as a Chrome Web Store application.
+    You are not using Google Chrome 10+ or have not <a href="https://chrome.google.com/webstore/detail/biecdmomngcfnkjelkbfjijebfednkno" target="_new">installed this web app</a> as a Chrome Web Store application.
   </p>
   <p id="supported" class="hidden">
     <input type="checkbox" id="update-checkbox" onclick="toggleBgContentUpdating(this)" checked /> <label for="update-checkbox" style="cursor:pointer">Periodically refresh the content of this site when my browser is not running.</label>
