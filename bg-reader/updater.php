@@ -18,7 +18,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 
-$REFRESH = 2 * 60; // send SSE message (refresh appcache) every 2min.
+$REFRESH = 2; // send SSE message (refresh appcache) every 2min.
 
 /**
  * Constructs the SSE data format and flushes that data to the client.
@@ -33,14 +33,8 @@ function sendMsg($id , $msg) {
   flush();
 }
 
-$startedAt = time();
-sendMsg($startedAt , '');
+sleep($REFRESH);
 
-do {
-  // Send message every $REFRESH.
-  if ((time() - $startedAt) > $REFRESH) {
-    sendMsg($startedAt , time());
-    die();
-  }
-} while(true);
+$startedAt = time();
+sendMsg($startedAt , $startedAt);
 ?>
