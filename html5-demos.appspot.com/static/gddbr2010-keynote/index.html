@@ -1,0 +1,304 @@
+<!DOCTYPE html> 
+<!--
+Copyright 2010 Google Inc.
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ 
+Original slides:
+    Marcin Wichary (mwichary)
+ 
+Modifications:
+    Ernest Delgado (ernestd)
+    Alex Russell (slightlyoff)
+    Mihai Ionescu (mihai)
+    Arne Roomann-Kurrik (kurrik)
+    Eric Bidelman (ericbidelman)
+--> 
+<html> 
+  <head> 
+    <title>GDD Brazil 2010 - HTML5 Demos</title> 
+    <meta charset="UTF-8" /> 
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <link rel="stylesheet" href="css/slide-presentation.css" /> 
+    <link rel="stylesheet" href="css/slide-content.css" /> 
+    <script src="js/box2d.min.js"></script> 
+    <script src="js/jquery.min.js"></script> 
+    <script src="js/slide-presentation.js"></script> 
+    <script src="js/slide-content.js"></script>
+    <script src="js/dnd-lib.js"></script>
+  </head> 
+  <body> 
+    <div class="presentation"> 
+      <div class="slides"> 
+
+ <!--
+ *
+ * Graphics
+ *
+--> 
+<div class="slide transitionSlide"> 
+  <section class="flex hbox boxcenter"> 
+    <div class="noflex vbox boxcenter"> 
+      <h2 class="hcenter">Graphics</h2> 
+      <p>2D &amp; 3D</p>
+    </div> 
+  </section> 
+</div>
+
+<!--
+ *
+ * Canvas 2D
+ *
+--> 
+<div class="slide" id="slide-canvas">
+  <header>Canvas 2D</header> 
+  <section> 
+    <pre>&lt;canvas id="canvas" width="800" height="600"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  var canvas = document.querySelector('#canvas');
+  var ctx = canvas.<b>getContext</b>('2d');
+  ctx.fillStyle = "rgb(200,0,0)";
+  ctx.fillRect (10, 10, 55, 50);
+  ...
+&lt;/script&gt;</pre> 
+
+    <ul class="summary">
+      <li><strong><a target="_blank" href="http://js1k.com/demo/379">Matrix</a></strong></li>
+      <!--<li><strong><a target="_blank" href="http://js1k.com/demo/15">Wobbling Tunnel</a></strong></li>-->
+    </ul> 
+  </section> 
+</div> 
+
+<div class="slide" id="slide-canvas2">
+  <header>Canvas 2D</header> 
+  <section>
+    <iframe src="http://monocubed.com/doodles/processingjs/gmail/26/" height="500" width="960" scrolling="no" frameborder="0"></iframe>
+  </section> 
+</div> 
+<!--
+ *
+ * WebGL
+ *
+--> 
+<div class="slide" id="slide-webgl">
+  <header>Canvas 3D ( WebGL )</header> 
+  <section> 
+    <pre>&lt;canvas id="canvas" width="800" height="600"&gt;&lt;/canvas&gt;
+&lt;script&gt;
+  var canvas = document.querySelector('#canvas');
+  var gl = canvas.<b>getContext</b>('experimental-webgl');
+  gl.<b>viewport</b>(0, 0, canvas.width, canvas.height);
+  ...
+&lt;/script&gt;</pre> 
+
+    <ul class="summary">
+      <li><strong><a target="_blank" href="http://cooliris-wall.appspot.com/">Photo wall</a></strong></li>
+      <li><strong><a target="_blank" href="http://webglsamples.googlecode.com/hg/imagesphere/imagesphere.html">Image Sphere</a></strong></li> 
+      <li><strong><a target="_blank" href="http://webglsamples.googlecode.com/hg/aquarium/aquarium.html">Fishtank Aquarium</a></strong></li>
+      <li><strong><a target="_blank" href="http://webglsamples.googlecode.com/hg/spacerocks/spacerocks.html">Space Rocks</a></strong></li>
+    </ul> 
+  </section> 
+</div> 
+
+ <!--
+ *
+ * File / Hardware Access
+ *
+-->
+<div class="slide transitionSlide"> 
+  <section class="flex hbox boxcenter"> 
+    <div class="noflex vbox boxcenter"> 
+      <h2 class="hcenter">File / Hardware Access</h2> 
+      <p>Deeper integration with hardware and the OS</p>
+    </div> 
+  </section> 
+</div>
+
+
+<!--
+ *
+ * Drag and Drop File Access
+ *
+--> 
+<div class="slide" id="slide-dndfiles"> 
+  <header>Drag &amp; Drop Files</header> 
+  <section class="noflex"> 
+    <pre>var reader = new <b>FileReader</b>();
+reader.onload = function(evt) {
+  document.querySelector('img').src = <b>evt.target.result</b>;
+};
+ 
+function onDrop(evt) {
+  <b>reader.readAsDataURL</b>(<b>evt.dataTransfer.files[0]</b>);
+};</pre> 
+  </section> 
+  <section class="vbox boxcenter flex"> 
+    <div class="hbox boxcenter flex"> 
+      <div id="dropzone" class="vbox boxcenter flex"> 
+        Drop image files from your desktop
+      </div>
+    </div>
+    <div id="thumbnails" class="hcenter"></div>
+  </section> 
+</div> 
+<script>
+  var dndc = new DNDFileController('dropzone');
+</script> 
+
+<!--
+ *
+ * File System
+ *
+--> 
+<div class="slide" id="slide-dndfiles"> 
+  <header>FileSystem APIs</header> 
+  <section class="noflex"> 
+    <pre class="hcenter">&lt;input type="file" <b>directory</b> <b>multiple</b> /&gt;</pre>
+  </section> 
+  <section class="vbox boxcenter flex"> 
+    <div class="hbox boxcenter flex"> 
+      <a href="upload_directory/index.html" target="_new"><img src="images/folder.jpg" style="-webkit-transform: scale(0.6) translateY(-180px)" /></a>
+    </div>
+  </section> 
+</div> 
+
+<div class="slide" id="slide-speechinput"> 
+  <header>Speech Input</header> 
+  <section class="noflex"> 
+    <pre class="hcenter">&lt;input type="text" <b>speech</b> /&gt;</pre> 
+  </section> 
+  <section class="vbox boxcenter flex"> 
+    <div class="hbox boxcenter flex"> 
+      <a href="Google.com.html" target="_new"><img src="images/speech.png" style="-webkit-transform: scale(1.5) translateY(50px)"/></a>
+    </div>
+  </section> 
+</div> 
+ 
+<!--
+ *
+ * Device Orientation
+ *
+--> 
+<div class="slide" id="slide-orientation"> 
+  <header>Device Orientation</header> 
+  <section class="vbox boxcenter flex"> 
+    <pre id="orientation-pre">window.addEventListener(<b>"deviceorientation"</b>, function(event) {
+  var a = event.alpha; <b><span id="orientation-a"></span></b> 
+  var b = event.beta;  <b><span id="orientation-b"></span></b> 
+  var g = event.gamma; <b><span id="orientation-g"></span></b> 
+}</pre> 
+  </section> 
+</div> 
+<script>
+  var orientationA = $('#orientation-a').get(0);
+  var orientationB = $('#orientation-b').get(0);
+  var orientationG = $('#orientation-g').get(0);
+  function setOrientation(evt) {
+    if (evt.alpha) { orientationA.textContent = '// ' + evt.alpha; }
+    if (evt.beta) { orientationB.textContent = '// ' + evt.beta; }
+    if (evt.gamma) { orientationG.textContent = '// ' + evt.gamma; }
+    if (Math.abs(evt.gamma) > 5) {
+      $('#orientation-pre').css('-webkit-transform', 'rotate(' + -evt.gamma + 'deg)');
+    } else {
+      $('#orientation-pre').css('-webkit-transform', 'rotate(0deg)');
+    }    
+  };
+  function startOrientationDemo() {
+    window.addEventListener("deviceorientation", setOrientation, true);    
+  };
+  function stopOrientationDemo() {
+    window.removeEventListener("deviceorientation", setOrientation, true);        
+  };
+  $('#slide-orientation')
+    .bind('focusslide', $.proxy(startOrientationDemo))
+    .bind('blurslide', $.proxy(stopOrientationDemo));
+</script> 
+ 
+<!--
+ *
+ * ORIENTATION: Demo
+ *
+--> 
+<div class="slide" id="slide-orientation-2"> 
+  <section class="flex hbox boxcenter"> 
+    <div class="noflex vbox boxcenter"> 
+      <div id="orientationWrap"> 
+        <div class="layer"><img src="images/chrome-layer-01.png"/></div> 
+        <div class="layer"><img src="images/chrome-layer-02.png"/></div> 
+        <div class="layer"><img src="images/chrome-layer-03.png"/></div> 
+        <div class="layer"><img src="images/chrome-layer-04.png"/></div> 
+        <div class="layer"><img src="images/chrome-layer-05.png"/></div> 
+      </div> 
+    </div> 
+  </section> 
+</div> 
+<script> 
+  var os = new OrientationSlide('#slide-orientation-2');
+</script> 
+ 
+ 
+<!--
+ *
+ * VIDEO+CANVAS: Demo
+ *
+--> 
+<div class="slide" id="slide-video-2"> 
+  <header>Having Fun in HTML<sub>5</sub>...</header> 
+  <section class="flex vbox boxcenter"> 
+    <video style="display: none" src="chrome.webm"></video> 
+    <div class="noflex hbox boxcenter"> 
+      <div class="vbox noflex"> 
+        <div class="content"> 
+        </div> 
+      </div> 
+    </div> 
+  </section> 
+</div> 
+<script> 
+var vpc = null;
+function startVideoDemo() {
+  var parent = $('#slide-video-2 .content').get(0);
+  var video = $('#slide-video-2 video').get(0);
+  vpc = new VideoPhysicsController(parent, video, 750, 600);
+};
+function stopVideoDemo() {
+  vpc.stop();
+  delete vpc;
+  vpc = null;
+  var video = $('#slide-video-2 video').get(0);
+  //var src = video.src;
+  //video.src = src;
+  $('#slide-video-2 .content').empty();
+};
+$('#slide-video-2')
+  .bind('focusslide', startVideoDemo)
+  .bind('blurslide', stopVideoDemo);
+</script> 
+
+<!--
+ *
+ * THANKs
+ *
+--> 
+<div class="slide transitionSlide"> 
+  <section class="flex hbox boxcenter"> 
+    <div class="noflex vbox boxcenter"> 
+      <h2 class="hcenter">Thanks!</h2>
+    </div> 
+  </section> 
+</div>
+
+      </div> <!-- slides --> 
+    </div> <!-- presentation --> 
+  </body> 
+</html>

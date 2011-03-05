@@ -1,0 +1,2257 @@
+<!DOCTYPE html> 
+<!--
+Copyright 2010 Google Inc.
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Original HTML5 slides:
+    Marcin Wichary (mwichary)
+
+Modifications:
+    Ernest Delgado (ernestd)
+    Alex Russell (slightlyoff)
+    Mihai Ionescu (mihai)
+    Arne Roomann-Kurrik (kurrik)
+    Eric Bidelman (ericbidelman)
+
+TODO(ericbidelman): Add jump to slide
+-->
+<html>
+  <head>
+    <title>HTML5 Storage</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    <link rel="stylesheet" href="css/prettify.css"/>
+    <link rel="stylesheet" href="css/slide-presentation.css"/>
+    <link rel="stylesheet" href="css/slide-content.css"/>
+    <script>
+      window.URL = window.URL ? window.URL :
+                   window.webkitURL ? window.webkitURL : window;
+    </script>
+  </head>
+  <body>
+    <div class="presentation">
+      <div class="presentationCounter">Loading...</div>
+      <div class="slides">
+
+<!--
+ *
+ * Preflight
+ *
+--> 
+<div class="slide transitionSlide" id="slide-preflight">
+  <section class="flex vbox boxcenter"> 
+      <h2>Preflight</h2>
+      <div id="browser-webkit" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> Webkit</div> 
+        <div class="explanation"> 
+          If using Google Chrome, you will likely need the Dev channel to see
+          all of the functionality in this presentation.  If you are using
+          Safari, you will likely need a nightly build of Webkit in order to
+          see all of the functionality in this presentation.
+        </div> 
+      </div> 
+      <div id="browser-mozilla" class="hidden warning feature"> 
+        <div><img src='images/icon-warning.png'/> Mozilla</div> 
+        <div class="explanation"> 
+          You are running a Mozilla browser.  While such browsers generally have
+          excellent support for HTML5 features, this presentation has only
+          been tested using Webkit browsers such as 
+          <a href="http://www.google.com/chrome">Google Chrome</a> or 
+          <a href="http://www.apple.com/safari/">Safari</a>.
+          Eventually we hope to add Mozilla as a supported browser for this 
+          presentation.
+        </div> 
+      </div> 
+      <div id="browser-other" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> Other browser</div> 
+        <div class="explanation"> 
+          You are running a browser that has not been tested with this 
+          presentation.  You may not be able to run some or all of the samples
+          listed here.  While we want to add support for as many browsers as
+          possible, currently we only support Webkit-based browsers such as
+          <a href="http://www.google.com/chrome">Google Chrome</a> or 
+          <a href="http://www.apple.com/safari/">Safari</a>.
+        </div> 
+      </div>
+      <div id="feature-webgl" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> WebGL is enabled</div> 
+      </div> 
+      <div id="feature-no-webgl" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> WebGL is disabled</div> 
+        <div class="explanation"> 
+          You will not be able to see the WebGL demo
+          later in the slide deck.  If using Google Chrome, you will likely 
+          need to run the Chrome executable using the 
+          <code>--enable-webgl</code> flag.
+        </div> 
+      </div>
+      <div id="feature-notification" class="hidden"> 
+        <div id="notification-on" class='hidden warning feature'> 
+          <div><img src='images/icon-warning.png'/> Notification permission incorrect</div> 
+          <div class="explanation"> 
+            You have granted permission for this page to show notifications.
+            If you intended to demo the request permission functionality, you
+            may want to clear this permission by clicking 
+            <a href="javascript:resetNotifications();">here</a> and removing
+            the permission.
+          </div> 
+        </div> 
+        <div id="notification-off" class='hidden good feature'> 
+          <div><img src='images/icon-ok.png'/> Notification permission correct</div> 
+        </div> 
+      </div> 
+      <div id="feature-no-notification" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> No notification</div> 
+        <div class="explanation"> 
+          Your browser does not support displaying notifications.  Currently,
+          only <a href="http://www.google.com/chrome">Google Chrome</a> 
+          will support this functionality.
+        </div> 
+      </div>
+      <div id="feature-sqldb" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> WebSQL DB: available</div>
+      </div> 
+      <div id="feature-no-sqldb" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> WebSQL DB is not supported</div>
+      </div>
+      <div id="feature-indexeddb" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> Indexed DB: available</div>
+      </div>
+      <div id="feature-no-indexeddb" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> Indexed DB is not supported</div>
+      </div>
+      <div id="feature-appcache" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> AppCache: available</div>
+      </div> 
+      <div id="feature-no-appcache" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> AppCache is not supported</div>
+      </div>
+      <div id="feature-file" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> File APIs: available</div>
+      </div> 
+      <div id="feature-no-file" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> File APIs are not supported</div>
+        <div class="explanation">
+          Your browser does not support one or more of the following APIs:
+          <code>File</code>, <code>FileList</code>, <code>FileReader</code>.
+        </div>
+      </div>
+
+      <div id="feature-filesystem" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> FileSystem APIs: available</div>
+      </div> 
+      <div id="feature-no-filesystem" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> FileSystem APIs are not supported</div>
+        <div class="explanation">
+          Your browser does not support the <code>FileSystem</code> APIs for
+          reading/writing files and directories. If using Google Chrome, you will likely 
+          need to run the Chrome executable using the <code>--unlimited-quota-for-files</code> flag.
+        </div> 
+      </div>
+
+    </section>
+</div>
+<script>
+  function hide(id) {
+    util.addClass(util.query('#' + id)[0], 'hidden');
+  }
+  function unhide(id) {
+    util.removeClass(util.query('#' + id)[0], 'hidden');
+  };
+  function checkWebGL() {
+    try {
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('experimental-webgl');
+      if (context) {
+        unhide('feature-webgl');
+        return;
+      }
+    } catch(e) {}
+    unhide('feature-no-webgl');
+  };
+  function checkBrowser() {
+    if (util.isWK) {
+      unhide('browser-webkit');
+    } else if (util.isFF) {
+      unhide('browser-mozilla');
+    } else {
+      unhide('browser-other');
+    }
+  };
+  function resetNotifications() {
+    webkitNotifications.requestPermission(function() {
+      window.location.reload();
+    });
+  };
+  function checkNotifications() {
+    if (!window.hasOwnProperty('webkitNotifications')) {
+      unhide('feature-no-notification');
+    } else {
+      unhide('feature-notification');
+      if (webkitNotifications.checkPermission() == 0) {
+        unhide('notification-on');
+      } else {
+        unhide('notification-off');
+      }
+    }
+  };
+  function checkAppCache() {
+    if (!!window.applicationCache) {
+      unhide('feature-appcache');
+    } else {
+      unhide('feature-no-appcache');
+    }
+  };
+  function checkFileAPIs() {
+    if (!!window.File && !!window.FileList && !!window.FileReader) {
+      unhide('feature-file');
+    } else {
+      unhide('feature-no-file');
+    }
+  };
+  function checkFileSystem() {
+    if (!!window.requestFileSystem) {
+      unhide('feature-filesystem');
+    } else {
+      unhide('feature-no-filesystem');
+    }
+  };
+  function checkWebSQLDB() {
+    if (!!window.openDatabase) {
+      unhide('feature-sqldb');
+    } else {
+      unhide('feature-no-sqldb');
+    }
+  };
+  function checkIndexedDB() {
+    if (!!window.indexedDB || !!window.webkitIndexedDB || !!window.moz_indexedDB) {
+      unhide('feature-indexeddb');
+    } else {
+      unhide('feature-no-indexeddb');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function(e) {
+    checkBrowser();
+    checkFileAPIs();
+    checkFileSystem();
+    checkWebSQLDB();
+    checkIndexedDB();
+    checkAppCache();
+  }, false);
+</script>
+
+
+<div class="slide transitionSlide">
+  <aside class="note">
+    <section>
+      Welcome! (This field is for presenter notes and commentary.)
+    </section>
+  </aside>
+  <section>
+    Press:
+    <ul>
+      <li>Space or <span class="key">&larr;</span> / <span class='key'>&rarr;</span> to move around</li>
+      <li><span class="key">Ctrl/Command</span> / <span class='key'>–</span> or <span class='key'>+</span> to zoom in and out if slides don’t fit</li>
+      <li><span class="key">N</span> to show/hide speaker notes</li>
+      <li><span class="key">H</span> to highlight important elements in code snippets</li>
+      <li><span class="key">3</span> to toggle 3D</li>
+    </ul>
+  </section>
+</div> 
+
+
+<div class="slide titleSlide">
+  <section class="flex vbox boxcenter">
+    <hgroup>
+      <h1 class="html5">HTML<sub>5</sub> Storage</h1>
+      <h3 class="titleText">
+        Eric Bidelman <small>&lt;</small> e.bidelman@google.com <small>&gt;</small><br>
+        @ebidel
+        <!--Sencha Conference 2010, Fairmont Hotel<br>
+        <time pubdate datetime="2010-11-17">November 17, 2010</time>-->
+      </h3>
+    </hgroup>
+  </section>
+</div>
+
+
+<div class="slide segue red">
+  <section class="flex vbox boxcenter">
+    <h1>Why?</h1>
+  </section>
+</div>
+
+<div class="slide image" data-image="images/fullslides/clutter.jpg">
+  <div data-build>
+    <section class="topRight dark">
+      <h1>Keep yourself organized</h1>
+    </section> 
+    <section class="bottomLeft dark">
+      <h1>...instant retrieval of structured data</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/squirmelia/2451382877/
+  </span>
+</div>
+
+<div class="slide image" data-image="images/fullslides/traffic.jpg">
+  <div data-build>
+    <section class="topRight dark">
+      <h1>Reduce network requests</h1>
+    </section>
+    <section class="bottomWide dark">
+      <h1>...bandwidth is expensive!</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://http://www.flickr.com/photos/squirmelia/2451382877/
+  </span>
+</div>
+
+
+<div class="slide image" data-image="images/fullslides/speed.jpg">
+  <div data-build>
+    <section class="topRight">
+      <h1>Performance</h1>
+    </section>
+  </div>
+  <span class="credit dark">
+    http://www.flickr.com/photos/warloofer/4203622857/
+  </span>
+</div>
+
+<!--
+ *
+ * BEFORE HTML5
+ *
+--> 
+<div class="slide">
+  <header>Before <span class="html5">HTML5</span></header>
+  <section>
+    <ul>
+      <li>Cookies</li>
+      <li>Flash Storage</li>
+      <li>Internet Explorer UserData</li>
+      <li>Google Gears</li>
+      <li>Dojo Storage</li>
+      <li><code>window.name</code> ( hack )</li>
+    </ul>
+  </section>
+</div>
+
+<!--
+ *
+ * HTML5 STORAGE OPTIONS
+ *
+--> 
+<div class="slide">
+  <header>Storage Options in <span class="html5">HTML5</span></header>
+  <section>
+    <ul>
+      <li>Web Storage APIs: <code>localStorage</code> / <code>sessionStorage</code></li>
+      <li>Web SQL Database</li>
+      <li>IndexedDB</li>
+      <li>Application Cache</li>
+      <li>File* APIs</li>
+      <li>...Cookies</li>
+    </ul>
+  </section>
+</div>
+
+
+<div class="slide transitionSlide"> 
+  <section class="flex hbox boxcenter">
+    <div class="noflex vbox boxcenter"> 
+      <h2 class="hcenter">Web Storage APIs</h2>
+      <p><code>localStorage</code> / <code>sessionStorage</code></p>
+    </div>
+  </section>
+</div>
+
+<!--
+ *
+ * LOCALSTORAGE
+ *
+--> 
+<div class="slide">
+  <header><code>localStorage</code></header>
+  <section class="hcenter"><h4><code>window.localStorage</code></h4></section>
+  <section>
+    <ul>
+      <li>Key / value pairs - hash table</li>
+      <li>Persistent on page reloads</li>
+      <li>Avoids HTTP overhead of cookies</li>
+      <li>Great for storing user preferences</li>
+    </ul>
+  </section>
+</div>
+
+<!--
+ *
+ * LOCALSTORAGE API
+ *
+--> 
+<div class="slide">
+  <header>Local Storage API</header>
+    <section>
+    <pre>
+localStorage.setItem('someKey', someValue);
+localStorage.getItem('someKey'); // value
+
+// Can also access as a property, but not recommended.
+localStorage.someKey = someValue;
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE EXAMPLE
+ *
+--> 
+<div class="slide">
+  <header>Local Storage API</header>
+    <section>
+    <pre>
+localStorage.setItem('dateOfBirth', '1984-07-22');
+localStorage.getItem('dateOfBirth'); // '1984-07-22'
+localStorage.length // num of items stored
+localStorage.key(0); // 'dateOfBirth'
+localStorage.removeItem('dateOfBirth');
+localStorage.clear();
+</pre>
+  </section>
+</div>
+
+<!--
+ *
+ * LOCALSTORAGE
+ *
+--> 
+<div class="slide">
+  <header>Local Storage API</header>
+    <section>
+      <ul>
+        <li>Scoped to an origin</li>
+      </ul>
+      <pre>
+http://example.com:80/
+  \       \         \_ port
+   \       \_ domain
+    \_ scheme
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * SESSIONSTORAGE
+ *
+--> 
+<div class="slide">
+  <header><code>sessionStorage</code></header>
+  <section class="hcenter"><h4><code>window.sessionStorage</code></h4></section>
+  <section>
+    Same as <code>localStorage</code> but...
+    <ul>
+      <li>Lasts as long as browser is open</li>
+      <li>Opening page in new window or tab starts new session</li>
+      <li>Great for sensitive data (e.g. banking sessions)</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE API - JSON
+ *
+--> 
+<div class="slide">
+  <header>Using Native JSON</header>
+  <section>
+    <ul>
+      <li>Web Storage APIs only store strings!</li>
+    </ul>
+  </section>
+    <section>
+    <p>Solution:</p>
+    <pre style="font-size:22px">
+localStorage.setItem('user', <b>JSON.stringify</b>({user: 'john', id: 10}));
+
+var user = <b>JSON.parse</b>(localStorage.getItem('user'));
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE EXAMPLE
+ *
+--> 
+<div class="slide" id="localstorage-example">
+  <header>Example: Auto-save Text</header>
+  <section>
+    <pre>
+&lt;textarea id="ta" placeholder="Start typing..."&gt;&lt;/textarea&gt;
+</pre>
+<pre style="margin-top:10px;font-size: 22px">
+document.querySelector('#ta').addEventListener('keyup', function(e) {
+  <b>localStorage.setItem('value', this.value);</b>
+  <b>localStorage.setItem('timestamp', (new Date()).getTime());</b>
+}, false);
+</pre>
+  </section>
+  <section>
+    <textarea id="localstorage-ta" placeholder="Start typing..."></textarea>
+    <br>
+    <button id="localstorage-save">Save</button><button id="localstorage-clear">Clear</button>
+    <p id="localstorage-log"></p>
+  </section>
+  <script>
+    (function() {
+      var area = document.querySelector('#localstorage-ta');
+      var log = document.querySelector("#localstorage-log");
+      var timeoutId = null;
+      if (!area.value) {
+        area.value = window.localStorage.getItem('value');
+      }
+      updateLog(false);
+
+      // your content will be saved locally
+      document.querySelector('#localstorage-save').addEventListener('click', function (e) {
+        window.localStorage.setItem('value', area.value);
+        window.localStorage.setItem('timestamp', (new Date()).getTime());
+        updateLog(true);
+      }, false);
+
+      document.querySelector('#localstorage-clear').addEventListener('click', function () {
+        localStorage.removeItem('value');
+        localStorage.removeItem('timestamp');
+        log.style.opacity = 1;
+        log.textContent = 'Cleared';
+        area.value = '';
+        hideLog();
+      }, false);
+
+      area.addEventListener('keyup', function(e) {
+        window.localStorage.setItem('value', this.value);
+        updateLog(false);
+      }, false);
+
+      function hideLog() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {
+          log.style.opacity = 0;
+        }, 3000);
+      }
+
+      function updateLog(newSave) {
+        var delta = 0;
+        if (window.localStorage.getItem('value')) {
+          log.style.opacity = 1;
+          delta = ((new Date()).getTime() - (new Date()).setTime(window.localStorage.getItem('timestamp'))) / 1000;
+
+          if (newSave) {
+            log.style.opacity = 1;
+            log.textContent = 'Saved';
+            hideLog();
+          } else {
+            log.textContent = 'Last saved: ' + delta + 's ago';
+            hideLog();
+          }
+        }
+      }
+    })();
+  </script>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE - SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png" class="supported"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png" class="supported"/>
+      <img src="images/browser_logos/opera_logo.png" class="supported"/>
+      <img src="images/browser_logos/ie_logo.png" class="supported"/>
+    </div>
+  </section>
+</div>
+
+
+<div class="slide transitionSlide"> 
+  <section class="flex hbox boxcenter"> 
+    <div class="noflex vbox boxcenter"> 
+      <h2 class="hcenter">Web SQL Database</h2>
+    </div>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB
+ *
+--> 
+<div class="slide">
+  <header>Web SQL Database</header>
+  <section>
+    <ul>
+      <li>Client-side SQL database</li>
+      <li>Asynchronous &amp; Synchronous* API</li>
+      <li>Basically wrapper around SQLite</li>
+      <li>Put processing (sorting, filtering, etc.) on client</li>
+    </ul>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB - OPENDATABASE
+ *
+--> 
+<div class="slide">
+  <header>openDatabase();</header>
+  <section>
+    <pre>
+var db = window.<b>openDatabase</b>(
+  'MyDB',           // dbName
+  '1.0',            // version
+  'test database',  // description
+  2 * 1024 * 1024,  // estimatedSize in bytes
+  function(db) {}   // optional creationCallback
+);
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - OPENDATABASE 2
+ *
+--> 
+<div class="slide">
+  <header>openDatabase();</header>
+  <section style="font-size: 80%">
+    <ul>
+      <li>Size <small>( required )</small>
+        <ul>
+          <li>Default: 5MB</li>
+          <li>Prompted after that: 5, 10, 50, 100, etc.</li>
+        </ul>
+      </li>
+      <li>Versioning <small>( required )</small>
+        <ul>
+          <li>Expected version - empty string means any version is fine.</li>
+          <li>Exception if version mismatch</li>
+        </ul>
+      </li>
+      <li>Creation Callback <small>( optional )</small>
+        <ul>
+          <li>Called if database is brand new</li>
+          <li>For updating version and/or schema:
+          <pre>
+db.<b>changeVersion</b>('', '1.0', function (tx) { // opt
+  // TODO: create schema
+}, opt_errorCallback, opt_successCallback);</pre>
+          </li>
+        </ul>
+      </li>
+      <li>Returns <code>null</code> if creation is unsuccessful</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - TRANSACTIONS
+ *
+--> 
+<div class="slide">
+  <header>Transactions</header>
+  <section>
+    <ul>
+      <li><code>readTransaction</code>
+        <ul>
+          <li>read-only operations</li>
+          <li><pre>
+db.<b>readTransaction</b>(function(tx) {
+  // executeSql
+}, opt_errorCallback, opt_successCallback);
+</pre>
+          </li>
+        </ul>
+      </li>
+      <li><code>transaction</code>
+        <ul>
+          <li>read/write operations</li>
+          <li>Locks the entire database</li>
+          <li><pre>
+db.<b>transaction</b>(function(tx) {
+  // executeSql
+}, opt_errorCallback, opt_successCallback);
+</pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - executeSql
+ *
+--> 
+<div class="slide">
+  <header><code>executeSql();</code></header>
+  <section>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>(sqlStatement, opt_arguments, opt_callback, opt_errorCb);
+</pre>
+<p>Create:</p>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>('CREATE TABLE IF NOT EXISTS ' +
+    'todo(id INTEGER PRIMARY KEY ASC, task TEXT, added_on DATETIME)');
+</pre>
+<p>Insert:</p>
+<pre style="font-size: 22px">
+var taskText = 'buy groceries';
+tx.<b>executeSql</b>(
+  'INSERT INTO todo(task, added_on) VALUES (?,?)', [taskText, new Date()],
+  renderFunc, onError);</pre>
+<p>Delete:</p>
+<pre style="font-size: 22px">
+tx.<b>executeSql</b>('DELETE FROM todo WHERE id=?', [id], renderFunc, onError);
+</pre>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB - executeSql 2
+ *
+--> 
+<div class="slide">
+  <header><code>executeSql();</code></header>
+  <section>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>(sqlStatement, opt_arguments, opt_callback, opt_errorCb);
+</pre>
+<p>Query:</p>
+<pre style="font-size: 22px">
+function renderFunc(tx, results) {
+  // <b>results.insertId</b>: last row inserted in db.
+  // <b>results.rowsAffected</b>: num of rows changed by the SQL statement.
+  var len = <b>results.rows</b>.length;
+  for (var i = 0; i &lt; len; ++i) {
+    var row = <b>results.rows.item(i)</b>;
+    console.log(row.task, row.added_on.toJSON());
+  }
+}
+
+tx.<b>executeSql</b>('SELECT * FROM todo', [], renderFunc, onError);</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - EXAMPLE
+ *
+--> 
+<div class="slide" id="websql-example">
+  <header>Example: Todo List</header>
+  <section>
+    <ol id="db-results"></ol>
+    <div id="db-log"></div>
+    <p><button onclick="db.createTable();">create table</button>
+    <button onclick="db.dropTable();">drop table</button></p>
+    <input type="text" id="todoitem" />
+    <button onclick="db.newRecord();">Add</button>
+    <p>See the generated database:<br>Developer > Developer Tools > Resources</p>
+
+    <script>
+      function DB() {
+        var self = this;
+        var db_ = null;
+        var log_ = document.querySelector('#db-log');
+        var results_ = document.querySelector('#db-results');
+
+        this.init = function() {
+          if (window.openDatabase) {
+            db_ = openDatabase("DBTest", "1.0", "HTML5 Database API example", 200000);
+            this.showRecords();
+            return this;
+          }
+
+          results_.addEventListener('click', function(e) {
+            e.preventDefault();
+          }, false);
+        }
+
+        this.onError = function(tx, error) {
+          log_.innerHTML = '';
+          log_.innerHTML = '<p class="error">Error: ' + error.message + '</p>';
+        };
+
+        // select all records and display them
+        this.showRecords = function() {
+          results_.innerHTML = '';
+          db_.transaction(function(tx) {
+            tx.executeSql("SELECT * FROM Table1Test", [], function(tx, result) {
+              var html = [];
+              for (var i = 0, item = null; i < result.rows.length; ++i) {
+                item = result.rows.item(i);
+                html.push('<li><span contenteditable onkeyup="db.updateRecord(',
+                    item['id'], ', this)">', item['text'],
+                    '</span> <a href="javascript:void(0)" onclick="db.deleteRecord(', item['id'],
+                    ')">[ delete ]</a></li>');
+              }
+              results_.innerHTML = html.join('');
+            });
+          });
+        };
+
+        this.createTable = function() {
+          db_.transaction(function(tx) {
+            tx.executeSql("CREATE TABLE Table1Test (id REAL UNIQUE, text TEXT)", [],
+                function(tx) {  log_.innerHTML = '<p>Table1Test created!</p>' },
+                self.onError);
+          });
+        };
+
+        // add record with random values
+        this.newRecord = function() {
+          var num = Math.round(Math.random() * 10000); // random data
+          db_.transaction(function(tx) {
+            tx.executeSql("INSERT INTO Table1Test (id, text) VALUES (?, ?)", [num, document.querySelector('#todoitem').value],
+                function(tx, result) {
+                  log_.innerHTML = '';
+                  self.showRecords();
+                },
+                self.onError);
+          });
+        };
+
+        this.updateRecord = function(id, textEl) {
+          db_.transaction(function(tx) {
+            tx.executeSql("UPDATE Table1Test SET text = ? WHERE id = ?", [textEl.innerHTML, id], null, self.onError);
+          });
+        };
+
+        this.deleteRecord = function(id) {
+          db_.transaction(function(tx) {
+            tx.executeSql("DELETE FROM Table1Test WHERE id=?", [id],
+                function(tx, result) { self.showRecords() }, self.onError);
+          });
+        };
+
+        // delete table from db
+        this.dropTable = function() {
+          db_.transaction(function(tx) {
+            tx.executeSql("DROP TABLE Table1Test", [],
+                function(tx) { self.showRecords() }, self.onError);
+          });
+        };
+      };
+      var db = (new DB()).init();
+    </script>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png" class="supported"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png"/>
+      <img src="images/browser_logos/opera_logo.png" class="supported"/>
+      <img src="images/browser_logos/ie_logo.png"/>
+    </div>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB - WARNING
+ *
+--> 
+<div class="slide transitionSlide">
+  <section class="flex hbox boxcenter">
+    <div class="noflex vbox boxcenter" data-build>
+      <a href="http://dev.w3.org/html5/webdatabase/" target="_new" data-auto>
+        <img class="shadowed" src="images/websql-warning.png" style="width:97%;"/>
+      </a>
+      <img data-auto class="shadowed" src="images/websql-warning2.png" style="width:90%;position:relative;top:-50px;left:30px"/>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB
+ *
+-->
+<div class="slide image" data-image="images/fullslides/index.jpg">
+  <div data-build>
+    <section class="bottomWide dark" data-auto>
+      <h1>Indexed Database</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/31408547@N06/4671916278
+  </span>
+</div>
+
+<!--
+ *
+ * Indexed DB
+ *
+--> 
+<div class="slide">
+  <header>IndexedDB</header>
+  <section class="hcenter"><h4><code>window.indexedDB</code></h4></section>
+  <section>
+    <ul>
+      <li>Best of <code>localStorage</code>/<code>sessionStorage</code> and Web SQL DB:
+        <ul>
+          <li>Object based data store</li>
+          <li>In-order retrieval by index or locate by key</li>
+        </ul>
+      </li>
+      <li>Asynchronous &amp; Synchronous API
+        <ul>
+          <li>For the browser and for Web Workers</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Creating
+ *
+--> 
+<div class="slide">
+  <header>Creating an Object Store</header>
+  <section>
+    <pre>
+var db = <b>window.indexedDB.open</b>('FriendDB', 'My Friends!');
+
+if (db.version != '1') {
+  // User's first visit, initialize database.
+  db.<b>createObjectStore</b>('Friends', // name of new object store
+                        'id',      // key path
+                        true);     // auto increment?
+  db.setVersion('1');
+} else {
+  // DB already initialized.
+}
+</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Key path must be the name of an enumerated property of all objects being stored in the object store</li>
+      <li>DB versioning up to caller</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Stocking
+ *
+--> 
+<div class="slide">
+  <header>Stocking the Store</header>
+  <section>
+    <pre>
+var store = db.<b>openObjectStore</b>('Friends');
+
+var user = <b>store.put</b>({name: 'Eric',
+                       gender: 'male',
+                       likes: 'html5'});
+
+console.log(user.id); // Expect 1
+</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Auto-increment keys get assigned automatically</li>
+      <li>Schema flexible, store anything</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Finding
+ *
+--> 
+<div class="slide">
+  <header>Finding things</header>
+  <section>
+    <p>Retrieving by key ( indexes ):</p>
+    <pre class="hcenter">db.createIndex(indexName, keyPath, unique?);</pre>
+    <pre style="margin-top:10px">
+// db.createObjectStore("Friend", "id", true);
+db.<b>createIndex</b>("FriendNames", "name", false);
+var index = db.<b>openIndex</b>('FriendNames');
+var id = <b>index.get</b>('Eric');
+</pre>
+    <p>Querying ( cursors ):</p>
+    <pre>
+// Restrict to names beginning A-E
+var range = new <b>KeyRange.bound</b>('A', 'E');
+var cursor = <b>index.openObjectCursor</b>(range);
+
+while (<b>cursor.continue</b>()) {
+  console.log(<b>cursor.value.name</b>);
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Demo
+ *
+--> 
+<div class="slide">
+  <header>Demo</header>
+  <aside class="note">
+    <section>
+      This demo requires FF4 or Google Chrome 67461 or greater.
+    </section>
+  </aside>
+   <section>
+<pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
+idbRequest.onsuccess = function(event) {
+  <b>var db = event.result</b>;
+  var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
+  var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
+  curRequest.<b>onsuccess</b> = ...;
+};
+</pre>
+    <div class="hcenter" id="indexeddb-example">
+      <p>
+        <button onclick="indexedDbSample.idbCreate()">create objectStore</button>
+        <button onclick="indexedDbSample.idbRemove()">remove objectStore</button>
+      </p>
+      <input type="text" placeholder="key" id="idb-key" size="10" /> <input type="text" placeholder="value" id="idb-value" size="10" />
+      <button onclick="indexedDbSample.idbSet()">set</button>
+      <div id="idb-log"></div>
+      <div class="record-list" id="idb-results-wrapper"></div>
+    </div>
+    <script>
+      var indexedDbSample = (function() {
+        var idb_;
+        var idbRequest_;
+        var idbLog_ = document.getElementById('idb-log');
+        var idResultsWrapper_ = document.getElementById('idb-results-wrapper');
+
+        // IndexedDB spec is still evolving, various browsers keep it
+        // behind various flags and implementation varies.
+        if ('webkitIndexedDB' in window) {
+          window.indexedDB = window.webkitIndexedDB;
+          window.IDBTransaction = window.webkitIDBTransaction;
+        } else if ('moz_indexedDB' in window) {
+          window.indexedDB = window.moz_indexedDB;
+        }
+
+        // Open our IndexedDB if the browser supports it.
+        if (window.indexedDB) {
+          idbRequest_ = window.indexedDB.open("Test", "A test object store.");
+          idbRequest_.onerror = idbError_;
+          idbRequest_.addEventListener('success', function(event) {
+            idb_ = event.result;
+            idbShow_(event);
+          }, false);
+        }
+
+        function idbError_(event) {
+          idbLog_.innerHTML += '<p class="error">Error: ' +
+                               event.message + ' (' + event.code + ')</p>';
+        }
+
+        function idbShow_(event) {
+          if (!idb_.objectStoreNames.contains('myObjectStore')) {
+            idbLog_.innerHTML = "<p>Object store not yet created.</p>";
+            return;
+          }
+
+          var html = [];
+          var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Ready is default.
+          var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
+          // This callback will continue to be called until we have no more results.
+          request.onsuccess = function(e) {
+            var cursor = e.result;
+            if (!cursor) {
+              idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
+              return;
+            }
+            html.push('<li><span class="keyval" contenteditable onblur="indexedDbSample.updateKey(\'',
+                      cursor.key, '\', this)">', cursor.key, '</span> ',
+                      '=> <span class="keyval" contenteditable onblur="indexedDbSample.updateValue(\'',
+                      cursor.key, '\', this)">', cursor.value, '</span>&nbsp; ',
+                      '<a href="javascript:void(0)" onclick="indexedDbSample.deleteKey(\'',
+                      cursor.key, '\')">[Delete]</a></li>');
+            cursor.continue();
+          }
+          request.onerror = idbError_;
+        }
+
+        function idbCreate_() {
+          if (!idb_) {
+            if (idbRequest_) {
+              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+            }
+            return;
+          }
+
+          var request = idb_.setVersion('the new version string');
+          request.onerror = idbError_;
+          request.onsuccess = function(e) {
+            if (!idb_.objectStoreNames.contains('myObjectStore')) {
+              try {
+                var objectStore = idb_.createObjectStore('myObjectStore', null); // FF is requiring the 2nd keyPath arg. It can be optional :(
+                idbLog_.innerHTML = "<p>Object store created.</p>";
+              } catch (err) {
+                idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+              }
+            } else {
+              idbLog_.innerHTML = '<p class="error">Object store already exists.</p>';
+            }
+          }
+        }
+
+        function idbSet_() {
+          if (!idb_) {
+            if (idbRequest_) {
+              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+            }
+            return;
+          }
+
+          if (!idb_.objectStoreNames.contains('myObjectStore')) {
+            idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+            return;
+          }
+
+           // Create a transaction that locks the world.
+          var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
+                                .objectStore("myObjectStore");
+          var request = objectStore.put(
+              document.getElementById('idb-value').value,
+              document.getElementById('idb-key').value);
+          request.onerror = idbError_;
+          request.onsuccess = idbShow_;
+        }
+
+        function updateKey_(key, element) {
+          var newKey = element.textContent;
+          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var objectStore = transaction.objectStore("myObjectStore");
+          var request = objectStore.get(key);
+          request.onerror = idbError_;
+          request.onsuccess = function(event) {
+            var value = event.result;
+            if (objectStore.delete) {
+              var request = objectStore.delete(key);
+            } else {
+              var request = objectStore.remove(key);
+            }
+            request.onerror = idbError_;
+            request.onsuccess = function(event) {
+              var request = objectStore.add(value, newKey);
+              request.onerror = idbError_;
+              request.onsuccess = idbShow_;
+            };
+          };
+        }
+
+        function updateValue_(key, element) {
+          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var objectStore = transaction.objectStore("myObjectStore");
+          var request = objectStore.put(element.textContent, key);
+          request.onerror = idbError_;
+          request.onsuccess = idbShow_;
+        }
+
+        function deleteKey_(key) {
+          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var objectStore = transaction.objectStore("myObjectStore");
+          if (objectStore.delete) {
+            var request = objectStore.delete(key);
+          } else {
+            var request = objectStore.remove(key);
+          }
+          request.onerror = idbError_;
+          request.onsuccess = idbShow_;
+        }
+
+        function idbRemove_() {
+          if (!idb_) {
+            if (idbRequest_) {
+              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+            }
+            return;
+          }
+
+          var request = idb_.setVersion("the new version string");
+          request.onerror = idbError_;
+          request.onsuccess = function(event) {
+
+            if (idb_.objectStoreNames.contains('myObjectStore')) {
+              try {
+                // Spec has been updated to deleteObjectStore.
+                if (idb_.deleteObjectStore) {
+                  idb_.deleteObjectStore('myObjectStore');
+                } else {
+                  idb_.removeObjectStore('myObjectStore');
+                }
+                idResultsWrapper_.innerHTML = '';
+                idbLog_.innerHTML = "<p>Object store removed.</p>";
+              } catch (err) {
+                idbLog_.innerHTML = '<p class="error">' + err.toString() + '</p>';
+              }
+            } else {
+              idbLog_.innerHTML = "<p class=\"error\">Object store doesn't exist.</p>";
+            }
+          };
+        }
+
+        return {
+          idbSet: idbSet_,
+          idbCreate: idbCreate_,
+          idbRemove: idbRemove_,
+          updateKey: updateKey_,
+          updateValue: updateValue_,
+          deleteKey: deleteKey_
+        }
+      })();
+    </script>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB - SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <aside class="note">
+    <section>
+      <p>Browser support is still sparse:</p>
+      <ul>
+        <li>Implemented in FF4 and Chromium Dev Channel</li>
+        <li>Prefixed: <code>webkitIndexedDB</code></li>
+      </ul>
+    </section>
+  </aside>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png" class="supported"/>
+      <img src="images/browser_logos/opera_logo.png"/>
+      <img src="images/browser_logos/ie_logo.png"/>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * IMPORTANT ISSUES
+ *
+--> 
+<div class="slide">
+  <header>Important Issues</header>
+  <section>
+    <ul>
+      <li>Web Database vs. IndexedDB</li>
+      <li>Schema migration</li>
+      <li>Private browsing</li>
+      <li>User clearing private data</li>
+      <li>Same domain policy</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * AppCache: TITLE
+ *
+-->
+<div class="slide image" data-image="images/fullslides/cash.jpg">
+  <div data-build>
+    <section class="bottomWide dark" data-auto>
+      <h1>Application Cache</h1>
+    </section>
+  </div>
+  <span class="credit dark">
+    http://www.flickr.com/photos/jtyerse/3954240271/
+  </span>
+</div>
+
+
+<!--
+ *
+ * AppCache: INTRO
+ *
+-->
+<div class="slide">
+  <header>Application Cache</header>
+  <aside class="note">
+    <section>
+      Also not just for offline: a way to programmatically cache the assets of your web app.
+      Best part about it, you have complete control over when and what is cached locally.
+    </section>
+  </aside>
+  <section>
+    <ul>
+      <li>Caches entire web app locally!</li>
+      <li>Why?
+        <ol>
+          <li>HTML, CSS, and JS stay fairly consistent</li>
+          <li>Native browser caching is unreliable</li>
+          <li>Caching resources creates speedier apps!
+            <ul>
+              <li>Used by iPhone &amp; Android GMail app</li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+      <li>Decent mobile support</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * AppCache: MAINIFEST
+ *
+--> 
+<div class="slide">
+  <header>Cache Manifest File</header>
+   <aside class="note">
+    <section>
+      <ul>
+        <li>First line must be '<code>CACHE MANIFEST</code>'</li>
+        <li>Each file much be on line by itself</li>
+        <li><code>CACHE</code> line is optional</li>
+        <li>Browser won't update cached resources unless manifest changes byte for byte.
+        Version string (line 2) is a good way to do this.</li>
+        <li>Comments start with '#' and must be on their own line</li>
+        <li>Tip: Don't cache your manifest file!</li>
+      </ul>
+    </section>
+  </aside>
+  <section>
+    <pre class="hcenter">
+&lt;html <b>manifest="example.manifest"</b>&gt;... &lt;/html&gt;
+</pre>
+    <pre style="margin-top:10px;font-size:18px">
+<b>CACHE MANIFEST</b>
+# 2010-11-17-v0.0.1
+
+# Explicitly cached entries
+<b>CACHE</b>:
+index.html
+stylesheet.css
+images/logo.png
+http://img.example.com/logo2.png
+scripts/main.js
+
+# static.html will be served if the user is offline
+<b>FALLBACK</b>:
+/ /static.html
+
+# Resources that require the user to be online.
+<b>NETWORK</b>:
+*
+# login.php, http://api.twitter.com, etc.
+</pre>
+    <p class="hcenter">Server with mime-type: <code>text/cache-manifest</code></p>
+  </section>
+</div>
+
+
+<!--
+ *
+ * AppCache: JS API
+ *
+--> 
+<div class="slide">
+  <header>JavaScript API</header>
+  <aside class="note">
+    <section>
+      Debugging appcache is painful. If any part of the manifest fails to download,
+      the entire cache update fails. Luckily, the JS API has event information for just
+      about everything that the browser is doing behind the scenes.
+    </section>
+  </aside>
+  <section>
+    <pre class="hcenter">
+var cache = <b>window.applicationCache</b>;
+</pre>
+    <pre style="margin-top:10px;font-size:20px">
+cache.addEventListener('<b>cached</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>checking</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>downloading</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>error</b>', handleCacheError, false);
+
+cache.addEventListener('<b>noupdate</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>obsolete</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>progress</b>', handleCacheEvent, false);
+
+cache.addEventListener('<b>updateready</b>', handleCacheEvent, false);
+
+if (cache.<b>status</b> == cache.<b>UPDATEREADY</b>) {
+  cache.<b>swapCache</b>(); // Fetch was successful, swap the new cache.
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * AppCache: DEBUGGING
+ *
+--> 
+<div class="slide">
+  <header>Debugging AppCache</header>
+  <section class="hcenter"><h4><code>about:appcache-internals</code></h4></section>
+  <section class="hcenter">
+    <figure>
+      <img src="images/appcache-console.png" class="shadowed"/>
+    </figure>
+  </section>
+</div>
+
+
+<div class="slide transitionSlide">
+  <section class="flex hbox boxcenter">
+    <div class="noflex vbox boxcenter">
+      <h2 class="hcenter">Demo</h2>
+      <a href="http://3.ly/timer" target="_new">http://3.ly/timer</a>
+    </div> 
+  </section> 
+</div>
+
+<!--
+ *
+ * AppCache: SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png" class="supported"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png" class="supported"/>
+      <img src="images/browser_logos/opera_logo.png" class="supported"/>
+      <img src="images/browser_logos/ie_logo.png"/>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * AppCache: PROGRAMMABLE (THIS SPEC IS GOING AWAY)
+ *
+<div class="slide">
+  <header>Programmable Caching</header>
+  <section>
+    <pre style="font-size:24px">
+const uri = 'http://example.com/data';
+
+// Offline Server
+var localInterceptor = function(request, response) {
+  response.setStatus(200, 'OK');
+  response.setResponseText('Hello World');
+};
+
+<b>window.navigator.registerOfflineHandler</b>(uri, localInterceptor);
+
+// Normal XHR code just works.
+var req = new XMLHttpRequest();
+req.open('GET', uri);
+req.send();
+</pre>
+<p>Programmatically add the resource locally to the cache:</p>
+  <pre>
+var appCacheReq = <b>window.applicationCache.offline</b>(
+                  uri, ''/*body*/, null/*mimetype*/, ['GET']);
+</pre>
+  </section>
+</div>
+-->
+
+
+<div class="slide image" data-image="images/fullslides/storage.jpg">
+  <div data-build>
+    <section class="bottomWide" data-auto>
+      <h1>File APIs</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/daddo83/3406962115/
+  </span>
+</div>
+
+
+<!--
+ *
+ * File APIs: INTRO
+ *
+-->
+<div class="slide">
+  <header>File APIs</header>
+  <section>
+    <ul>
+      <li>Reading and manipulating:
+        <ul>
+          <li><code>File</code> / <code>Blob</code>, <code>FileList</code>, <code>FileReader</code><br>
+          <a href="http://dev.w3.org/2006/webapi/FileAPI/" target="_new">http://dev.w3.org/2006/webapi/FileAPI/</a>
+          </li>
+        </ul>
+      </li>
+      <li>Creating and writing:
+        <ul>
+          <li><code>BlobBuilder</code>, <code>FileWriter</code>,  <code>FileSaver</code><br>
+          <a href="http://dev.w3.org/2009/dap/file-system/file-writer.html" target="_new">http://dev.w3.org/2009/dap/file-system/file-writer.html</a>
+          </li>
+        </ul>
+      </li>
+      <li>Directories and System:
+        <ul>
+          <li><code>FileSystem</code><br>
+          <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/" target="_new">http://dev.w3.org/2009/dap/file-system/pub/FileSystem/</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIS: File
+ *
+-->
+<div class="slide">
+  <header>Getting File Handles: <code>File</code> / <code>FileList</code></header>
+  <section>
+    <pre>&lt;input type="file" id="files" name="files[]" <b>multiple</b> /&gt;
+&lt;output id="list"&gt;&lt;/output&gt;
+</pre>
+    <pre style="margin-top:10px;">
+document.querySelector('#files').onchange = function(e) {
+  var files = <b>e.target.files</b>; // FileList
+
+  var output = [];
+  for (var i = 0, f; f = files[i]; ++i) {
+    output.push('&lt;li&gt;&lt;b&gt;', f.name, '&lt;/b&gt; (',
+        f.type || 'n/a', ') - ', f.size, ' bytes&lt;/li&gt;');
+  }
+  document.querySelector('#list').innerHTML =
+      '&lt;ul&gt;' + output.join('') + '&lt;/ul&gt;';
+};
+</pre>
+    <p>
+      <input type="file" id="filereader-files" multiple />
+      <output id="filereader-list"></output>
+    </p>
+  </section>
+</div>
+<script>
+(function() {
+  document.querySelector('#filereader-files').onchange = function(e) {
+    var files = e.target.files; // FileList
+
+    var output = [];
+    for (var i = 0, f; f = files[i]; ++i) {
+      output.push('<li><b>', f.name, '</b> (',
+          f.type || 'n/a', ') - ', f.size, ' bytes</li>');
+    }
+    document.querySelector('#filereader-list').innerHTML =
+        '<ul>' + output.join('') + '</ul>';
+  };
+})();
+</script>
+
+
+<!--
+ *
+ * File APIs: Directory Upload
+ *
+--> 
+<div class="slide" id="slide-dndfiles"> 
+  <header>Getting File Handles: Directory Upload</header>
+  <section>
+    <pre class="hcenter">&lt;input type="file" <b>webkitdirectory</b> /&gt;</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Files in the <code>FileList</code> will have a <code>webkitRelativePath</code> property</li>
+    </ul>
+  </section>
+  <section class="hcenter">
+    <a href="demos/upload_directory/index.html" target="_new">
+      <img src="images/folder.png" class="clickable"/>
+    </a>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIS: FileReader
+ *
+-->
+<div class="slide">
+  <header><code>FileReader</code></header>
+  <section>
+      <p>Asynchronously read binary data into memory: <a href="demos/playlist/playlist.html" target="_blank">Demo</a></p>
+      <pre>
+var reader = new <b>FileReader</b>();
+
+reader.<b>readAsBinaryString</b>(File|Blob);
+
+reader.<b>readAsText</b>(File|Blob, opt_encoding); // default UTF-8
+
+reader.<b>readAsDataURL</b>(Blob|File);
+
+reader.<b>readAsArrayBuffer</b>(Blob|File);</pre>
+      <p>Reading byte ranges: <a href="http://www.html5rocks.com/tutorials/file/dndfiles/#toc-slicing-files" target="_new">Demo</a></p>
+      <pre>var blob = <b>file.slice</b>(startingByte, length); // Blob
+reader.<b>readAsBinaryString</b>(blob);</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: Drag and Drop File Access
+ *
+--> 
+<div class="slide" id="slide-dndfiles">
+  <header>Example: Drag &amp; Drop Files</header>
+  <section>
+    <pre>var reader = new <b>FileReader</b>();
+<b>reader.onload</b> = function(e) {
+  document.querySelector('img').src = <b>e.target.result</b>;
+};
+ 
+function onDrop(e) {
+  reader.<b>readAsDataURL</b>(<b>e.dataTransfer.files[0]</b>);
+};</pre>
+  </section> 
+  <section class="vbox boxcenter flex">
+    <div class="hbox boxcenter flex">
+      <div id="dropzone" class="vbox boxcenter flex"> 
+        Drop image files from your desktop
+      </div>
+    </div>
+    <div id="thumbnails" class="hcenter"></div>
+  </section>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function(e) {
+  var dndc = new DNDFileController('dropzone');
+}, false);
+</script>
+
+
+<!--
+ *
+ * File APIS: Monitoring a Read
+ *
+-->
+<div class="slide">
+  <header>Monitoring a Read</header>
+  <section>
+      <pre>
+reader.<b>onerror</b> = errorHandler;
+
+reader.<b>onprogress</b> = updateProgress;
+
+reader.<b>onabort</b> = cancelRead;
+
+reader.<b>onloadstart</b> = updateProgress;
+
+reader.<b>onloadend</b> = function(e) {
+  // <b>e.target.readyState</b> == <b>FileReader.DONE</b> == 2
+};
+
+reader.onload = readFile;</pre>
+  </section>
+  <section class="hcenter">
+    <p><a href="http://www.html5rocks.com/tutorials/file/dndfiles/#toc-monitoring-progress" target="_new">Demo</a></p>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: Blob URLs
+ *
+--> 
+<div class="slide">
+  <header>Blob URLs</header>
+  <aside class="note">
+    <section>
+      In Google Chrome, <code>chrome://blob-internals/</code> will give you an overview of
+      the Blob URLs that have been allocated for a given app.
+    </section>
+  </aside>
+  <section>
+    A unique (temporary) handle describing a resource:
+    <pre style="font-size:22px">
+if (file.type.match(/image.*/)) {
+  var blobURL = <b>window.URL.createObjectURL</b>(file);</b>
+
+  var img = document.createElement('img');
+  img.src = blobURL; // blob:example.com:///7a6fa-5496-42d4-9bbb-40f9a0
+  thumbnails.appendChild(img);
+
+  // Clean-up: window.URL.revokeObjectURL(img.src);
+}
+</pre>
+<pre style="margin-top:10px;font-size:22px">
+var bb = new <b>BlobBuilder()</b>;
+<b>bb.append</b>('&lt;marquee&gt;Flashy Lights!!!&lt;/marquee&gt;');
+
+var iframe = document.createElement('iframe');
+iframe.src = <b>window.URL.createObjectURL</b>(
+    <b>bb.getBlob('text/html')</b>);
+document.body.appendChild(iframe);
+</pre>
+  </section>
+  <section id="blobURL-demo">
+    <button onclick="buildBlob();" style="vertical-align:top">Run it</button>
+  </section>
+</div>
+<script>
+function buildBlob() {
+  var bb = new BlobBuilder();
+  bb.append('<marquee>');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('</marquee>');
+
+  var iframe = document.createElement('iframe');
+  iframe.src = window.URL.createObjectURL(bb.getBlob('text/html'));
+  iframe.style.backgroundColor = '#fff';
+  iframe.style.height = '35px';
+  iframe.style.width = '85%';
+  document.querySelector('#blobURL-demo').appendChild(iframe);
+  window.URL.revokeObjectURL(iframe.src);
+}
+</script>
+
+
+<!--
+ *
+ * File APIs: Blob URLs (Inline Worker)
+ *
+--> 
+<div class="slide">
+  <header>Example: Inline Worker</header>
+  <section>
+    <pre style="font-size:22px">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  <b>&lt;script id=&quot;worker1&quot; type=&quot;text/plain&quot;&gt;
+    onmessage = function(e) {
+      ...
+    };
+  &lt;/script&gt;</b>
+  &lt;script&gt;
+    var bb = new BlobBuilder();
+    bb.append(<b>document.querySelector('#worker1').textContent</b>);
+
+    var worker = new Worker(
+        <b>window.URL.createObjectURL(bb.getBlob())</b>);
+    worker.onmessage = function(e) {
+      ...
+    };
+    worker.postMessage(); // Start the worker.
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs - SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <aside class="note">
+    <section>
+      FF4 does not yet support <code>window.URL.createObjectURL()</code>
+    </section>
+  </aside>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png" class="supported"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png" class="supported"/>
+      <img src="images/browser_logos/opera_logo.png"/>
+      <img src="images/browser_logos/ie_logo.png"/>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem APIs
+ *
+-->
+<div class="slide image" data-image="images/fullslides/filecabinets2.jpg">
+  <div data-build>
+    <section class="topWide" data-auto>
+      <h1>FileSystem APIs</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/redjar/113152393/
+  </span>
+</div>
+
+
+<!--
+ *
+ * FileSystem: requestFileSystem()
+ *
+-->
+<div class="slide">
+  <header><code>requestFileSystem();</code></header>
+  <aside class="note">
+    <section>
+      <ul>
+        <li>If Chrome Web Store App: need to use <code>unlimitedStorage</code> manifest permission.</li>
+        <li>If not a Chrome app, need the <code>--unlimited-quota-for-files</code> flag set.</li>
+        <li>You also need the <code>--allow-file-access-from-files</code> flag to run this presentation from <code>file://</code>.</li>
+      </ul>
+    </section>
+  </aside>
+  <section>
+    <pre>
+<b>window.requestFileSystem</b>(
+  TEMPORARY,        // persistent vs. temporary storage
+  1024 * 1024,      // size (bytes) of needed space
+  initFs,           // success callback
+  opt_errorHandler  // opt. error callback, denial of access
+);</pre>
+    <ul style="font-size: 90%" data-build>
+      <li><code>TEMPORARY</code> storage
+        <ul>
+          <li>Meant for caching</li>
+          <li>Data can be deleted at the UA's convenience</li>
+          <li>(e.g. to deal with a shortage of disk space)</li>
+        </ul>
+      </li>
+      <li><code>PERSISTENT</code> storage
+        <ul>
+          <li>UA should require permission to use</li>
+          <li>Data should not be deleted by UA w/o user intervention
+            <ul>
+              <li>...but app can delete at will</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Fetching a file by name
+ *
+--> 
+<div class="slide">
+  <header>Fetching a file by name</header>
+  <aside class="note">
+    <section>
+      <pre style="font-size:16px;padding:0;border:none;background:none">
+function errorHandler(e) {
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      ...
+    case FileError.NOT_FOUND_ERR:
+      ...
+  }
+}</pre>
+    </section>
+  </aside>
+  <section>
+    <pre style="font-size:20px;">
+function initFs(fs) {
+
+  <b>fs.root.getFile</b>('logFile.txt', {create: true}, function(fileEntry) {
+
+    // <b>fileEntry.isFile</b> == true
+    // <b>fileEntry.name</b> == 'logFile.txt'
+    // <b>fileEntry.fullPath</b> == '/logFile.txt'
+
+    // Get a File obj
+    <b>fileEntry.file</b>(function(file) { /* TODO: Use FileReader */ }, errorHandler);
+
+    // <b>fileEntry.remove</b>(function() {}, errorHandler);
+    // <b>fileEntry.moveTo</b>(...);
+    // <b>fileEntry.copyTo</b>(...);
+    // <b>fileEntry.getParent</b>(function(dirEntry) {}, errorHandler);
+
+  }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Fetching a directory by name
+ *
+--> 
+<div class="slide">
+  <header>Fetching a directory by name</header>
+  <section>
+    <pre style="font-size:22px;">
+function initFs(fs) {
+
+  <b>fs.root.getDirectory</b>('myFolder', {create: true, <b>exclusive: true</b>},
+    function (dirEntry) {
+
+      // <b>dirEntry.isDirectory</b> == true
+
+      // Remove the directory
+      <b>dirEntry.removeRecursively</b>(function() {
+        console.log('Well, that was pointless!');
+      }, errorHandler);
+
+      // <b>dirEntry.getFile</b>(...);
+      // <b>dirEntry.getDirectory</b>(...);
+
+    }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Reading a directory's contents
+ *
+--> 
+<div class="slide">
+  <header>Reading directory contents</header>
+  <section>
+    <pre style="font-size:24px;">
+function initFs(fs) {
+
+  var root = <b>fs.root</b>;  // A DirectoryEntry itself
+
+  var dirReader = root.<b>createReader</b>(); // DirectoryReader
+  <b>dirReader.readEntries</b>(function(entries) {
+    for (var i = 0, entry; entry = entries[i]; ++i) {
+      console.log(<b>entry.name</b>, <b>entry.isFile</b>, <b>entry.isDirectory</b>);
+    }
+  }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Writing a file
+ *
+--> 
+<div class="slide">
+  <header>Writing a file ( <code>FileWriter</code> )</header>
+  <section>
+    <pre style="font-size:20px;">
+function initFs(fs) {
+
+  fs.root.getFile('logFile.txt', {create: true}, function(fileEntry) {
+
+    <b>fileEntry.createWriter</b>(function(<b>writer</b>) {  // FileWriter
+
+        <b>writer.onwrite</b> = function(e) {
+          console.log('Write completed.');
+        };
+
+        <b>writer.onerror</b> = function(e) {
+          console.log('Write failed: ' + e);
+        };
+
+        var bb = new BlobBuilder();
+        bb.append('Lorem ipsum');
+        <b>writer.write</b>(bb.getBlob('text/plain'));
+
+    }, errorHandler);
+  }
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem - SUPPORT
+ *
+--> 
+<div class="slide">
+  <header>Browser Support</header>
+  <section class="vbox boxcenter browser-support" data-build>
+    <div>
+      <img src="images/browser_logos/safari_logo.png"/>
+      <img src="images/browser_logos/chrome_logo.png" class="supported"/>
+      <img src="images/browser_logos/ff_logo.png"/>
+      <img src="images/browser_logos/opera_logo.png"/>
+      <img src="images/browser_logos/ie_logo.png"/>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Chrome Frame
+ *
+ -->
+<div class="slide transitionSlide">
+  <section class="flex hbox boxcenter">
+    <div class="noflex vbox boxcenter">
+      <p><img src="images/chrome_frame-430.png" width="430" height="430"/></p>
+      <h2 class="hcenter">Google Chrome Frame</h2>
+    </div>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Chrome: Headers
+ *
+-->
+<div class="slide">
+  <header>Telling IE to render with Chrome Frame</header>
+  <section>
+    <ol data-build>
+      <li>Add a single meta tag to your site:
+        <ul>
+          <li>if !installed: direct users to download</li>
+          <li>else: your site 'just works'</li>
+          <li>
+            <pre style="font-size:24px">&lt;meta http-equiv="X-UA-Compatible" content="chrome=1"&gt;</pre>
+          </li>
+        </ul>
+      </li>
+      <li>Add a response header:
+        <ul>
+          <li>
+            <pre>X-UA-Compatible: chrome=1</pre>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Modernizr.com
+ *
+-->
+<div class="slide iframe">
+  <header>Modernizr.com</header>
+  <section>
+    <iframe data-src="http://www.modernizr.com/"></iframe>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Modernizr.com: Usage
+ *
+-->
+<div class="slide">
+  <header>Detecting Support</header>
+  <section>
+    <pre style="font-size:24px">
+if (<b>Modernizr.localstorage</b>) { ... }
+if (<b>Modernizr.sessionstorage</b>) { ... }
+if (<b>Modernizr.websqldatabase</b>) { ... }
+if (<b>Modernizr.indexeddb</b>) { ... }
+if (<b>Modernizr.applicationcache</b>) { ... }
+
+Modernizr.addTest('file', function() {
+  return !!window.File &amp;&amp; !!window.FileList;
+});
+Modernizr.addTest('filereader', function() {
+  return !!window.FileReader;
+});
+Modernizr.addTest('blob', function() {
+  return !!window.Blob &amp;&amp; !!window.BlobBuilder &amp;&amp;
+         !!window.URL.createObjectURL;
+});
+Modernizr.addTest('filesystem', function() {
+  return !!window.requestFileSystem;
+});
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Caniuse.com
+ *
+-->
+<div class="slide iframe">
+  <header>caniuse.com</header>
+  <section>
+    <iframe data-src="http://caniuse.com/"></iframe>
+  </section>
+</div>
+
+
+<!--
+ *
+ * html5rocks.com
+ *
+-->
+<div class="slide iframe">
+  <header>html5rocks.com</header>
+  <section>
+    <iframe data-src="http://www.html5rocks.com/"></iframe>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Go Deeper
+ *
+-->
+<div class="slide">
+  <header>Go Deeper</header>
+  <section>
+    <ul>
+      <li><a href="http://www.html5rocks.com/features/storage" target="_new">www.html5rocks.com/features/storage</a></li>
+      <li><a href="groups.google.com/a/chromium.org/group/chromium-html5/" target="_new">groups.google.com/a/chromium.org/group/chromium-html5/</a></li>
+      <li><a href="http://html5boilerplate.com/">html5boilerplate.com</a></li>
+      <li>Google Chrome Frame - <a href="http://code.google.com/chrome/chromeframe/">code.google.com/chrome/chromeframe</a></li>
+      <li>File Bugs! <a href="http://crbug.com">crbug.com</a></li>
+      <li>Twitter: @ChromiumDev</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * THANKs
+ *
+--> 
+
+<div class="slide segue green">
+  <section class="flex vbox boxcenter">
+    <h1>Thanks!</h1>
+    <p>Questions?</p>
+  </section>
+</div>
+
+
+      </div> <!-- slides --> 
+    </div> <!-- presentation --> 
+
+<!--<script src="js/jquery.min.js"></script>-->
+<script src="js/prettify/prettify.js"></script>
+<script src="js/slide-presentation.js"></script>
+<script src="js/dnd-lib.js"></script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+  </body>
+</html>

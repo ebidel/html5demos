@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8 />
+  <link rel="stylesheet" type="text/css" href="../enhanced.css" />
+</head>
+<body>
+
+<pre id="log" style="float:left">
+ "js": {
+     "testfolder": {
+        "newfolder" : {
+          "test3.html"  : null
+        },
+        "test.html" : null,
+        "wow.html"  : null
+    },
+    "testfolder2": {
+        "wow.js"  : null,
+        'wow2.js'  : null 
+    },
+    'eric.html'  : null,
+    'b.html'  : null
+  },
+  "neat": {
+    "testing.webm"  : null
+  },
+  'one.html'  : null,
+  'two.html'  : null
+</pre>
+<ul id="dir-tree" style="float:left"></ul>
+
+<pre style="clear:both">
+"one.html",
+"two.html",
+"js/testfolder/newfolder/test3.html",
+"js/testfolder/test.html",
+"js/testfolder/wow.html",
+"js/testfolder2/wow.js",
+"js/testfolder2/wow2.js",
+"js/eric.html",
+"js/b.html",
+"neat/testing.webm"
+</pre>
+
+<script src="../../../jquery.min.1.4.js" type="text/javascript"></script>
+<script src="../jquery.tree.js" type="text/javascript"></script>
+<script>
+/*function buildTree(object) {
+  if (!!object.constructor.toString().match('Array')) { // Have an array, no subfolders here.
+    for (var i = 0, f; f = object[i]; ++i) {
+      html.push('<li><a href="#">', f, '</a></li>');
+    }
+  } else { //Object.keys({}).length
+    for (var folder in object) {
+      if (folder == 'NON_FOLDER_KEY') {
+        buildTree(object[folder]);
+      } else {
+        html.push('<li><a href="#">', folder, '</a>'); //Object.keys(object)[subFolderIndex++]
+        html.push('<ul>');
+        buildTree(object[folder]);
+        html.push('</ul>');
+      }
+    }
+  }
+};*/
+
+function buildTree(object) {
+  if (object) {
+    for (var folder in object) {
+      if (!object[folder]) { // file's will have a null value
+        html.push('<li><a href="#">', folder, '</a></li>');
+      } else {
+        html.push('<li><a href="#">', folder, '</a>'); //Object.keys(object)[subFolderIndex++]
+        html.push('<ul>');
+        buildTree(object[folder]);
+        html.push('</ul>');
+      }
+    }
+  }
+}
+
+var TREE = {
+  "js": {
+     "testfolder": {
+        "newfolder" : {
+          "test3.html"  : null
+        },
+        "test.html" : null,
+        "wow.html"  : null
+    },
+    "testfolder2": {
+        "wow.js"  : null,
+        'wow2.js'  : null 
+    },
+    'eric.html'  : null,
+    'b.html'  : null
+  },
+  "neat": {
+    "testing.webm"  : null
+  },
+  'one.html'  : null,
+  'two.html'  : null
+};
+
+var html = [];
+
+buildTree(TREE);
+$('#dir-tree').html(html.join(''));
+$('#dir-tree').tree();
+
+var paths = [
+"one.html",
+"two.html",
+"js/testfolder/newfolder/test3.html",
+"js/testfolder/test.html",
+"js/testfolder/wow.html",
+"js/testfolder2/wow.js",
+"js/testfolder2/wow2.js",
+"js/eric.html",
+"js/b.html",
+"neat/testing.webm"
+];
+
+function createTreeFromPathList(paths) {
+  var tree = {};
+  for (var i = 0, path; path = paths[i]; ++i) {
+    var pathParts = path.split('/');
+    var subObj = tree;
+    for (var j = 0, folderName; folderName = pathParts[j]; ++j) {
+      if (!subObj[folderName]) {
+        subObj[folderName] = j < pathParts.length - 1 ? {} : null;
+      }
+      subObj = subObj[folderName];
+    }
+  }
+  return tree;
+}
+
+var tree = createTreeFromPathList(paths);
+console.log(tree);
+</script>
+
+</body>
+</html>

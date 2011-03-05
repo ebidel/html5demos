@@ -1,0 +1,251 @@
+<!--
+ * Copyright (c) 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author: Eric Bidelman <e.bidelman@chromium.org>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>Audio Playlist</title>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  font: 12px normal Arial, sans-serif;
+}
+body {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  background: rgba(255,255,127,1);
+}
+body.playing {
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(white), to(rgba(255,255,127,1))) no-repeat;
+}
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#container {
+  background: #eee;
+  border: 8px solid #000333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  padding: 25px;
+  -webkit-box-shadow: 0 0 15px #333 inset;
+   border-radius: 10px;
+}
+#myfile,
+#playlist,
+audio {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
+  width: 280px;
+  background-color: white;
+  margin: 2px 0;
+}
+button {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  color: black;
+  padding: 7px 8px;
+  outline: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select:none;
+  user-select: none;
+  cursor: pointer;
+}
+button:hover {
+  border: 1px solid #939393;
+}
+button:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+}
+</style>
+</head>
+<body>
+  <div id="container">
+    <audio id="player" controls></audio>
+    <div id="playlist"></div>
+    <p>
+      <button onclick="playlist.load('playlist.pls');">Load default playlist</button>
+      <button onclick="playlist.clear();">Clear playlist</button>
+    </p>
+    <div id="myfileContainer"><input type="file" id="myfile" /></div>
+  </div>
+<script>
+function PlayList(selector, audio) {
+  var playlistDOM_ = document.querySelector(selector);
+  var plist_ = [];
+  var self_ = this;
+
+  this.audio = document.querySelector(audio);
+
+  this.load = function(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(e) {
+      self_.parse(e.target.responseText);
+      self_.render();
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
+  }
+
+  this.parse = function(fileText) {
+    this.clear();
+
+    var lines = fileText.split('\n');
+    lines.forEach(function(line) {
+      // http://en.wikipedia.org/wiki/PLS_(file_format)
+      var src = line.match(/^File\d{0,2}=(.*)$/);
+      var title = line.match(/^Title\d{0,2}=(.*)$/);
+
+      if (src && src[1]) {
+        plist_.push({'src': src[1]});
+      }
+      if (title && title[1]) {
+        plist_[plist_.length - 1].title = title[1];
+      }
+    });
+
+    this.save(plist_);
+
+    return plist_;
+  };
+
+  this.save = function(list) {
+    plist_ = list;
+    window.localStorage.setItem('plist', JSON.stringify(list));
+  }
+
+  this.recall = function() {
+    plist_ = window.localStorage.getItem('plist');
+    return plist_ ? JSON.parse(plist_) : [];
+  }
+
+  this.clear = function() {
+    plist_ = [];
+    window.localStorage.clear();
+    this.render('<h3>Load a playlist</h3>');
+  }
+
+  this.render = function(html) {
+    if (typeof html == 'string') {
+      playlistDOM_.innerHTML = html;
+    } else {
+      var html = [];
+      plist_ = this.recall();
+      plist_.forEach(function(item) {
+        html.push('<li>', '<a href="javascript:void(0);" data-src="', item.src,
+                  '"n onclick="playlist.play(this)">', item.title, '</a>', '</li>');
+      });
+      playlistDOM_.innerHTML = '<ul>' +  html.join('') + '</ul>';
+    }
+  }
+
+  this.play = function(el) {
+    if (el) {
+      this.audio.src = el.dataset.src;
+    }
+    if (this.audio.src) {
+      //this.audio.load();
+      this.audio.play();
+      document.body.classList.add('playing');
+    }
+  }
+
+  this.pause = function() {
+    this.audio.pause();
+    document.body.classList.remove('playing');
+  }
+  
+  this.playPause = function() {
+    if (this.audio.paused) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  };
+}
+
+var playlist = new PlayList('#playlist', '#player');
+
+window.addEventListener('keydown', function(e) {
+  switch (e.keyCode) {
+    case 32: // space
+      e.stopPropagation();
+      e.preventDefault();
+      playlist.playPause();
+      break;
+    case 38: // up
+    case 187: // +
+      e.stopPropagation();
+      e.preventDefault();
+      playlist.audio.volume = Math.min(playlist.audio.volume + 0.1, 1);
+      break;
+    case 40: // down
+    case 189: // -
+      e.stopPropagation();
+      e.preventDefault();
+      playlist.audio.volume = Math.max(playlist.audio.volume - 0.1, 0);
+      break;
+     case 77: // m
+      playlist.audio.volume = playlist.audio.volume > 0 ? 0 : 1;
+      break;
+    default:
+      break;
+  };
+}, false);
+
+document.querySelector('#myfile').addEventListener('change', function(e) {
+  var playListFile = this.files[0];
+
+  if (!playListFile.name.match(/\.pls$/)) {
+    alert('Please select a .pls file');
+    return;
+  }
+
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    playlist.save(playlist.parse(e.target.result));
+    playlist.render();
+  };
+
+  reader.readAsText(playListFile);
+}, false);
+
+if (playlist.recall().length) {
+  playlist.render();
+} else {
+  playlist.render('<h3>Load a playlist</h3>');
+}
+</script>
+</body>
+</html>

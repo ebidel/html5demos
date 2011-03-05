@@ -1,0 +1,190 @@
+/**
+ * Copyright 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+body {      
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+header {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+}
+
+section {
+  display: block;
+  overflow: hidden;
+  margin: 30px;
+}
+
+header+section.noflex {
+  margin-top: 90px;
+}
+section+section {
+  margin-top: 0;
+}
+
+.hbox {
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+}
+
+.slide,
+.vbox {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+}
+
+.flex {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+}
+
+section,
+.noflex {
+  -webkit-box-flex: 0;
+  -moz-box-flex: 0;
+  box-flex: 0;
+}
+
+.slide,
+.boxcenter {
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  box-pack: center;
+}
+
+.boxstart {
+  -webkit-box-pack: start;
+  -moz-box-pack: start;
+  box-pack: start;
+}
+
+.hcenter {
+  text-align: center;
+}     
+
+.presentation {        
+  position: absolute;
+  width: 100%;
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.presentationCounter {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.slides {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  position: absolute;
+  display: none;
+  -webkit-transition: -webkit-transform 2s ease-in-out; 
+  -moz-transition: -moz-transform 2s ease-in-out; 
+}
+
+.slide {
+  position: absolute;
+  overflow: hidden;
+  width: 900px;
+  height: 700px;
+  left: 50%;
+  top: 50%;
+  margin-top: -350px;
+
+  -webkit-transition-property: margin, -webkit-transform, opacity;
+  -webkit-transition-duration: 0.3s, 0.5s, 0.5s;
+  -webkit-transition-timing-function: ease-in-out;
+
+  -moz-transition-property: margin, -moz-transform, opacity;
+  -moz-transition-duration: 0.3s, 0.3s, 0.3s;
+  -moz-transition-timing-function: ease-in-out;
+}
+
+
+.slide.far-far-past {
+  display: none; 
+  margin-left: -2400px;
+}
+
+.slide.far-past {
+  z-index: 1;
+  margin-left: -2400px;
+}
+
+.slide.past {
+  z-index: 2;
+  margin-left: -1300px;
+  -webkit-transform: scale(0.75);
+  opacity: 0.35;
+}
+
+.slide.current {
+  z-index: 3;
+  margin-left: -450px;
+  opacity: 1.0;
+}
+
+.slide.future {
+  z-index: 2;
+  margin-left: 400px;
+  -webkit-transform: scale(0.75);
+  opacity: 0.35;
+}
+
+.slide.far-future {
+  z-index: 1;
+  margin-left: 1500px;
+}
+
+.slide.far-far-future {
+  margin-left: 1500px;
+  display: none; 
+}
+
+

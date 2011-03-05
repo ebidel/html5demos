@@ -1,0 +1,872 @@
+/**
+ * Copyright 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*******************************************************************************
+ * FONTS
+ ******************************************************************************/
+
+@font-face {
+  font-family: 'Droid Serif';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Serif'), url('../fonts/DroidSerif.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Neuton';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Neuton'), url('../fonts/Neuton.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Molengo';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Molengo-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Lobster';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Lobster.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/Inconsolata.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Josefin Sans Std Light';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/JosefinSansStd-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'OFL Sorts Mill Goudy TT';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../fonts/OFLGoudyStMTT.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Yanone Kaffeesatz';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/YanoneKaffeesatz-Regular.ttf') format('truetype');
+}
+
+/*******************************************************************************
+ * PRESENTATION STYLES
+ ******************************************************************************/
+body {
+  font: 30px Arial;
+  background: #000;
+}
+
+header {
+  font: 44px Arial;
+  letter-spacing: -.05em;
+  color: #0054AB;
+  font-weight: normal;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+}
+
+section {
+  font: 30px Arial;
+  font-weight: normal;
+  color: #3f3f3f;
+  text-shadow: rgba(0, 0, 0, 0.2) 0 2px 5px;
+}
+
+.presentation {
+  background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(50%, #0054AB), to(#fff));
+  background: -moz-linear-gradient(top, #fff, #7fcfff);
+}
+
+.presentationCounter {
+  color: #fff;
+  font: 100px 'Yanone Kaffeesatz';
+  letter-spacing: 1px;
+}
+
+.slide {
+  border-radius: 10px;
+  background: url('../images/DevFestLogo.png') no-repeat 97% 98%,
+              #fff url('../images/devfest_bars.png') no-repeat -225px 98%;
+  border: 2px solid #0054ab;
+}
+
+.slide:before {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  /*content: "Argentina 2010";*/
+  bottom: 10px;
+  font: 14px Arial;
+}
+
+.slide:nth-of-type(even) {
+  border-radius: 50px 20px 50px 20px;
+  -moz-border-radius: 50px 20px 50px 20px;
+}
+
+.slide:nth-of-type(even) header {
+  /*padding-left: 30px;*/
+}
+
+.slide:nth-of-type(odd) {
+  border-radius: 20px 50px 20px 50px;
+  -moz-border-radius: 20px 50px 20px 50px;
+}
+
+/*******************************************************************************
+ * GENERIC STYLES
+ ******************************************************************************/
+h2 {
+ margin: 0 0 10px 0;
+ padding: 0;
+ color: #0054ab;
+}
+
+button {
+  font: 20px Verdana;
+}
+
+a {
+  color: #00d;
+  text-decoration: none;
+  text-shadow: rgba(0, 0, 0, 0.4) 1px 1px 2px;
+  -webkit-text-stroke: 1px rgba(255,255,255, 0.5);
+}
+a strong {
+  color: #00d;
+  font-weight: bold;
+}
+
+p,
+ul {
+  margin: 10px 0;
+  padding: 5px;
+}
+
+li {
+  margin: 0 0 0 30px;
+  padding: 5px;
+}
+
+strong {
+  color: #000;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+img.clickable {
+  border: 3px solid transparent;
+  border-radius: 30px;
+}
+
+img.clickable:hover {
+  border: 3px solid #36b;
+  -webkit-transition-property: border-color;
+  -webkit-transition-duration: 0.6s;
+  -webkit-transition-timing-function: ease-in-out;
+
+  -moz-transition-property: border-color;
+  -moz-transition-duration: 0.6s;
+  -moz-transition-timing-function: ease-in-out;
+}
+
+pre {
+  font: 25px Inconsolata;
+  color: #000;
+  text-align: left;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: rgba(255, 204, 0, 0.05);
+  border: 2px solid rgba(255, 204, 0, 0.2);
+}
+
+pre b {
+  font-weight: normal;
+  color: #c61800;
+  text-shadow: #c61800 0 0 1px;
+  letter-spacing: -1px;
+}
+
+pre em {
+  font-weight: normal;
+  font-style: normal;
+  color: #18a600;
+  text-shadow: #18a600 0 0 1px;
+}
+
+.css {
+  background: #ff4;
+}
+.js {
+  background: #4f4;
+}
+.html {
+  background: #e88;
+}
+.html5 {
+  font-family: "OFL Sorts Mill Goudy TT" !important;
+}
+strong.html5 {
+  font-size: 120%;
+}
+
+.key {
+  font: 25px 'Molengo';
+  line-height: 30px;
+  color: #000;
+  display: inline-block;
+  padding: 6px 10px 3px 10px;
+  text-shadow: none;
+  letter-spacing: 0;
+  bottom: 10px;
+  position: relative;
+  border-radius: 10px;
+  background: #fff;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 2px 5px;
+  vertical-align: sub;
+}
+
+.todo {
+  background: #d00;
+  border-radius: 10px;
+  padding: 5px;
+  color: #fff;
+}
+
+.callout {
+  text-align: center;
+  font: 70px 'Molengo';
+  line-height: 65px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px 20px 20px;
+}
+
+.disclaimer {
+  font: 13px Arial;
+  color: #666;
+}
+
+img.shadowed {
+  -webkit-box-shadow: 0 6px 6px #333;
+  padding: 10px;
+  background: #fff;
+  border: 2px solid #666;
+}
+
+@-webkit-keyframes pulse {
+  0%   { -webkit-transform: scale(1) rotate(5deg); }
+  50%  { -webkit-transform: scale(2.5) rotate(-15deg);  }
+  100% { -webkit-transform: scale(1) rotate(5deg); }
+}
+
+.pulse {
+  display: block;
+  text-shadow: 1px 1px 1px #000;
+  -webkit-animation-name: pulse;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-direction: alternate;
+}
+
+.cssIsAwesomeBox {
+  width: 350px;
+  height: 350px;
+  border: 4px solid #000;
+  color: #000;
+  font: 110px Arial;
+  line-height: 120px;
+}
+
+.cssIsAwesomeBox2 {
+  -webkit-transform: rotate(-20deg);
+  width: 350px;
+  height: 350px;
+  border: 4px solid #000;
+  color: #000;
+  border-radius: 40px;
+  -webkit-box-shadow: 0px 8px 25px #000;
+  text-align: center;
+  background: -webkit-gradient(
+       linear, left top, left bottom,
+       from(#b00), color-stop(0.6, #fcc), to(#b00));
+  text-shadow: 5px 5px 0 #b00;
+}
+
+.cssIsAwesomeBox2 span {
+  display: block;
+  -webkit-transform: rotate(25deg);
+  font: 100px Molengo;
+  line-height: 80px;
+  position: relative;
+  top: 0.5em;
+}
+
+.cssIsAwesomeBox2 b {
+  display: block;
+  font: 120px Lobster;
+  -webkit-text-stroke: 4px #000;
+  color: #fff;
+  position: relative;
+  left: -0.6em;
+}
+
+
+/*******************************************************************************
+ * PREFLIGHT STYLES
+ ******************************************************************************/
+#slide-preflight .good {
+  color: #0d0;
+}
+#slide-preflight .bad {
+  color: #d00;
+}
+#slide-preflight .warning {
+  color: #f93
+}
+#slide-preflight .notice {
+  color: #06f;
+}
+#slide-preflight .explanation {
+  font-size: 14px;
+  color: #000;
+}
+#slide-preflight section {
+  width: 60%;
+  margin: 0 auto;
+}
+#slide-preflight .feature {
+  padding-top: 15px;
+}
+/*******************************************************************************
+ * LOGO STYLES
+ ******************************************************************************/
+#slide-logo {
+  background: #fff;
+}
+.logoBigImage {
+  width: 70%;
+  padding-top: 230px;
+}
+.logoFooterImage {
+  width: 100%;
+  padding-top: 130px;
+}
+
+/*******************************************************************************
+ * TITLE STYLES
+ ******************************************************************************/
+.titleContent {
+  font-family: Arial;
+  text-align: left;
+  line-height: 100%;
+  padding-left: 8%;"
+}
+.titleTitle {
+  font-size: 44px;
+  font-family: Arial;
+  line-height: 120%;
+  color: #000;
+}
+.titleText {
+  font-size: 28px;
+  margin: 50px 0px 0px 0px;
+  line-height: 120%;
+}
+
+/*******************************************************************************
+ * TIMELINE STYLES
+ ******************************************************************************/
+.timelineSlider {
+  position: absolute;
+  -webkit-transition-property: left top -webkit-transform;
+  -webkit-transition-duration: 0.8s;
+  -webkit-transition-timing-function: ease-in-out;
+  -webkit-transform-origin: left center;
+  left: 50%;
+  top: 50%;
+}
+.timelineContent {
+  position: absolute;
+  border-radius: 20px;
+  max-width: 200px;
+  display: inline-block;
+  padding: 20px;
+  font: 25px 'Molengo';
+  line-height: 22px;
+  color: #000;
+  border: 5px solid #000;
+  -webkit-transition-property: -webkit-transform;
+  -webkit-transition-duration: 0.6s;
+  -webkit-transition-timing-function: ease-in-out;
+  -webkit-box-shadow: 2px 2px 6px #000;
+  z-index: 1;
+  opacity: 0.9;
+}
+.timelineContent.selected {
+  z-index: 2;
+  -webkit-transform: scale(2.0);
+  -webkit-transform-origin: center center;
+}
+.timelineYear {
+  font: 42px Arial;
+  color: #000;
+}
+
+/*******************************************************************************
+ * PHYSICS STYLES
+ ******************************************************************************/
+.physicsText {
+  font: 80px 'Molengo';
+  line-height: 60px;
+  color: #999;
+  position: absolute;
+}
+.physicsText:nth-child(1) {
+  left: 50px;
+  top: 5%;
+  -webkit-transform: rotate(-10deg);
+}
+
+.physicsText:nth-child(2) {
+  left: 26%;
+  top: 16%;
+}
+.physicsText:nth-child(3) {
+  right: 25%;
+  top: 29%;
+}
+.physicsText:nth-child(4) {
+  right: 50px;
+  top: 41%;
+  -webkit-transform: rotate(10deg);
+}
+
+.physicsCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.physicsBox {
+  position: absolute;
+  font: 35px 'Molengo';
+  line-height: 34px;
+  vertical-align: super;
+  -webkit-transform-origin: center center;
+  border-radius: 10px;
+  padding: 1px 5px 5px;
+  border: 3px solid #000;
+  color: #000;
+  display: inline-block;
+  -webkit-box-shadow: 1px 2px 4px #333;
+}
+
+.physicsBoxMask {
+  display: inline-block;
+  position: absolute;
+  font: 80px 'OFL Sorts Mill Goudy TT';
+  line-height: 70px;
+  font-weight: bold;
+  border-radius: 30px;
+  padding: 20px 20px 10px 20px;
+
+  color: #fff;
+  background: #36b;
+  -webkit-box-shadow: 2px 4px 8px #333;
+  cursor: pointer;
+}
+
+/*******************************************************************************
+ * DEMO STYLES
+ ******************************************************************************/
+.demoText {
+  text-align: center;
+  font-size: 80px;
+}
+
+.demoText .chromabrush {
+  font-weight: bold;
+}
+
+.chromabrush {
+  font-family: 'Josefin Sans Std Light';
+}
+
+/*******************************************************************************
+ * CANVAS DEMO STYLES
+ ******************************************************************************/
+.drawingCanvas {
+  border-radius: 10px;
+  background: rgba(0, 128, 192, 0.05);
+  border: 2px solid rgba(0, 128, 192, 0.2);
+}
+
+.canvasIcon {
+  width: 130px;
+  height: 130px;
+}
+
+.canvasCodeIcon {
+  width: 90px;
+  height: 90px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+#slide-webgl .summary {
+  list-style: none;
+}
+
+/*******************************************************************************
+ * STORAGE STYLES
+ ******************************************************************************/
+.localStorageText {
+  -webkit-transform: rotate(-5deg);
+}
+.otherStorage {
+  padding: 0 20px;
+  text-align: center;
+}
+/*******************************************************************************
+ * WORKER STYLES
+ ******************************************************************************/
+.workerCanvas,
+.workerDiff {
+  border: 3px solid #000;
+}
+.workerCanvas {
+  background: #fff;
+}
+.workerDiff {
+  background: #000;
+}
+
+/*******************************************************************************
+ * DRAG AND DROP
+ ******************************************************************************/
+/*.dropTarget {
+  text-align: center;
+  background-color: #fcc;
+  margin: 0px 20px 20px;
+  width: 300px;
+  border-radius: 20px;
+  border: 3px solid rgba(0,0,0,0);
+  position: relative;
+}
+.dragObject {
+}
+.dropTarget.hover {
+  border: 3px solid #d00;
+}*/
+#progress_bar {
+  display: none;
+}
+progress {
+  background-color: black;
+  margin: 10px 0;
+  padding: 1px;
+  border: 1px solid #000;
+  font-size: 14px;
+  width: auto;
+}
+progress::-webkit-progress-bar-value {
+  background-color: #99ccff;
+}
+
+#dropzone {
+  height: 150px;
+  width: 350px;
+  border-radius: 10px;
+  border: 2px dashed #0687FF;
+  color: #0687FF;
+  font-family: 'Josefin Sans Std Light', Helvetica, sans-serif;
+  text-align: center;
+}
+#dropzone.rounded {
+  -webkit-box-shadow: inset 0px 0px 50px #777;
+  -moz-box-shadow: inset 0px 0px 50px #777;
+  box-shadow: inset 0px 0px 50px #777;
+}
+#thumbnails img {
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  -webkit-transition: -webkit-transform 0.2s ease-in, margin 0.7s ease-in-out;
+}
+#thumbnails img:hover {
+  -webkit-transform: scale(4.0) rotate(10deg);
+  -webkit-transform-origin: 50% 75px;
+  margin: 0 100px;
+}
+/*******************************************************************************
+ * NOTIFICATION STYLES
+ ******************************************************************************/
+.notificationText {
+  -webkit-transform: rotate(-1deg);
+}
+
+/*******************************************************************************
+ * FONT STYLES
+ ******************************************************************************/
+#ransomLetter {
+  text-align: center;
+  font-size: 55px;
+}
+#ransomLetter div {
+  display: inline-block;
+  margin-right: 10px;
+}
+#ransomLetter span {
+  padding: 2px 4px;
+  margin: 4px;
+  display: inline-block;
+}
+/*******************************************************************************
+ * CSS STYLES
+ ******************************************************************************/
+#slide-flexbox input {
+  width: 400px;
+}
+#flexibleBox {
+  border: 6px solid #999;
+  width: 300px;
+  height: 300px;
+  background: #fff;
+  padding: 3px;
+}
+#flexibleBox>div {
+  border: 3px solid #fff;
+}
+.boxA {
+  background: #33d;
+  width: 50px;
+}
+.boxB {
+  background: #3d3;
+}
+.boxC {
+  background: #d33;
+  width: 50px;
+}
+.boxD {
+  background: #ffff44;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border: 6px solid #fff;
+}
+.transformTable {
+  width: 100%;
+}
+.transformTable th {
+  font: 14px Arial;
+  color: #000;
+  font-weight: bold;
+  padding: 4px;
+}
+.transformTable td {
+  text-align: center;
+}
+.transitionExample {
+  -webkit-transition: -webkit-transform 2s ease-in-out;
+}
+.transitionExample:hover {
+  -webkit-transform: rotate(-20deg);
+}
+.animationExample {
+  display: block;
+  font: 100px Arial;
+  text-align: center;
+  padding: 30px;
+  color: #000;
+}
+.animationExample.pulse {
+  font-size: 80px;
+  color: #36b;
+}
+.rotate1 {
+  -webkit-transform: rotate(-45deg);
+}
+.rotate2 {
+  -webkit-transform: rotate(-15deg);
+}
+.rotate3 {
+  -webkit-transform: rotate(15deg);
+}
+.rotate4 {
+  -webkit-transform: rotate(45deg);
+}
+.rotate5 {
+  -webkit-transform: rotate(75deg);
+}
+.scale1 {
+  -webkit-transform: scale(0.2);
+}
+.scale2 {
+  -webkit-transform: scale(0.5);
+}
+.scale3 {
+  -webkit-transform: scaleX(0.5);
+}
+.scale4 {
+  -webkit-transform: scaleX(2.0);
+}
+.scale5 {
+  -webkit-transform: scaleY(1.5);
+}
+.skew1 {
+  -webkit-transform: skewX(10deg);
+}
+.skew2 {
+  -webkit-transform: skewX(20deg);
+}
+.skew3 {
+  -webkit-transform: skewX(30deg);
+}
+.skew4 {
+  -webkit-transform: skewX(40deg);
+}
+.skew5 {
+  -webkit-transform: skewX(50deg);
+}
+
+/*******************************************************************************
+ * LOGO STYLES
+ ******************************************************************************/
+#logoOutput {
+  font-size: 60px;
+  text-align: center;
+  font-family: 'Molengo';
+  display: inline-block;
+  margin: 20px auto 0 auto;
+  padding: 10px;
+}
+
+#logoWrap {
+  padding: 15px;
+  margin: 0;
+}
+#slide-logo .controls {
+  position: absolute;
+  right: 50px;
+}
+
+#slide-logo .controls input[type=range] {
+  width: 80px;
+}
+
+/*******************************************************************************
+ * MISC TITLE CARD SLIDES
+ ******************************************************************************/
+.partnerText p {
+  margin: 40px;
+}
+.partnerText .pulse {
+  color: #f60;
+  font-size: 70px;
+}
+.transitionSlide .section {
+  text-shadow: 2px 2px 4px #999;
+  color: #fff;
+  -webkit-text-stroke: 1px #000;
+  -webkit-transform: rotate(-15deg);
+  position: relative;
+  left: -50px;
+  font-weight: bold;
+  display: inline-block;
+}
+.transitionSlide p {
+  color: #0687ff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#slide-chrome {
+  background: #fff url('chrome-logo-sliced.jpg') no-repeat center 110%;
+}
+
+/*******************************************************************************
+ * Video
+ ******************************************************************************/
+.fancyVideo {
+  border: 5px solid #d00;
+  -webkit-box-shadow: 4px 4px 10px #000;
+  -webkit-box-reflect: below 10px -webkit-gradient(
+       linear, left top, left bottom,
+       from(transparent), color-stop(0.8, transparent), to(#fff));
+}
+.videoControls {
+  display: block;
+  text-align: center;
+}
+.videoContent {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/*******************************************************************************
+ * SVG 
+ ******************************************************************************/
+#slide-svg svg text {
+  font: 60px Lobster;
+  letter-spacing: 5px;
+  word-spacing: 5px;
+}
+
+#slide-svg svg {
+  display: block;
+  margin: 0 auto;
+}
+
+/*******************************************************************************
+ * DEVICE ORIENTATION STYLES
+ ******************************************************************************/
+#orientationWrap {
+  width: 300px;
+  height: 300px;
+  position: relative;  
+}
+#orientationWrap .layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-transition-property: x, y;
+  -webkit-transition-duration: 0.1s;
+  -webkit-transition-timing-function: linear;
+}
+/*******************************************************************************
+ * WEBSOCKETS
+ ******************************************************************************/
+#socketFrame {
+  border: 0;
+  overflow: hidden;
+}

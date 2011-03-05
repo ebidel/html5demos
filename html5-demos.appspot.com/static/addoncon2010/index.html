@@ -1,0 +1,1801 @@
+<!DOCTYPE html> 
+<!--
+Copyright 2010 Google Inc.
+ 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+ 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman)
+-->
+<html>
+  <head>
+    <title>Utilizing HTML5 in Google Chrome Extensions</title>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    <link rel="stylesheet" href="css/prettify.css"/>
+    <link rel="stylesheet" href="css/slide-presentation.css"/>
+    <link rel="stylesheet" href="css/slide-content.css"/>
+  </head>
+  <body>
+    <div class="presentation">
+      <div class="presentationCounter">Loading...</div>
+      <div class="slides">
+
+<!--
+ *
+ * Preflight
+ *
+--> 
+<div class="slide transitionSlide" id="slide-preflight">
+  <section class="flex vbox boxcenter"> 
+      <h2>Preflight</h2>
+      <div id="browser-webkit" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> Webkit</div> 
+        <div class="explanation"> 
+          If using Google Chrome, you will likely need the Dev channel to see
+          all of the functionality in this presentation.  If you are using
+          Safari, you will likely need a nightly build of Webkit in order to
+          see all of the functionality in this presentation.
+        </div> 
+      </div> 
+      <div id="browser-mozilla" class="hidden warning feature"> 
+        <div><img src='images/icon-warning.png'/> Mozilla</div> 
+        <div class="explanation"> 
+          You are running a Mozilla browser.  While such browsers generally have
+          excellent support for HTML5 features, this presentation has only
+          been tested using Webkit browsers such as 
+          <a href="http://www.google.com/chrome">Google Chrome</a> or 
+          <a href="http://www.apple.com/safari/">Safari</a>.
+          Eventually we hope to add Mozilla as a supported browser for this 
+          presentation.
+        </div> 
+      </div> 
+      <div id="browser-other" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> Other browser</div> 
+        <div class="explanation"> 
+          You are running a browser that has not been tested with this 
+          presentation.  You may not be able to run some or all of the samples
+          listed here.  While we want to add support for as many browsers as
+          possible, currently we only support Webkit-based browsers such as
+          <a href="http://www.google.com/chrome">Google Chrome</a> or 
+          <a href="http://www.apple.com/safari/">Safari</a>.
+        </div> 
+      </div>
+      <div id="feature-webgl" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> WebGL is enabled</div> 
+      </div> 
+      <div id="feature-no-webgl" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> WebGL is disabled</div> 
+        <div class="explanation"> 
+          You will not be able to see the WebGL demo
+          later in the slide deck.  If using Google Chrome, you will likely 
+          need to run the Chrome executable using the 
+          <code>--enable-webgl</code> flag.
+        </div> 
+      </div>
+      <div id="feature-notification" class="hidden"> 
+        <div id="notification-on" class='hidden warning feature'> 
+          <div><img src='images/icon-warning.png'/> Notification permission incorrect</div> 
+          <div class="explanation"> 
+            You have granted permission for this page to show notifications.
+            If you intended to demo the request permission functionality, you
+            may want to clear this permission by clicking 
+            <a href="javascript:resetNotifications();">here</a> and removing
+            the permission.
+          </div> 
+        </div> 
+        <div id="notification-off" class='hidden good feature'> 
+          <div><img src='images/icon-ok.png'/> Notification permission correct</div> 
+        </div> 
+      </div> 
+      <div id="feature-no-notification" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> No notification</div> 
+        <div class="explanation"> 
+          Your browser does not support displaying notifications.  Currently,
+          only <a href="http://www.google.com/chrome">Google Chrome</a> 
+          will support this functionality.
+        </div> 
+      </div>
+      <div id="feature-sqldb" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> WebSQL DB: available</div>
+      </div> 
+      <div id="feature-no-sqldb" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> WebSQL DB is not supported</div>
+      </div>
+      <div id="feature-indexeddb" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> Indexed DB: available</div>
+      </div>
+      <div id="feature-no-indexeddb" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> Indexed DB is not supported</div>
+      </div>
+      <div id="feature-appcache" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> AppCache: available</div>
+      </div> 
+      <div id="feature-no-appcache" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> AppCache is not supported</div>
+      </div>
+      <div id="feature-file" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> File APIs: available</div>
+      </div> 
+      <div id="feature-no-file" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> File APIs are not supported</div>
+        <div class="explanation">
+          Your browser does not support one or more of the following APIs:
+          <code>File</code>, <code>FileList</code>, <code>FileReader</code>.
+        </div>
+      </div>
+
+      <div id="feature-filesystem" class="hidden good feature"> 
+        <div><img src='images/icon-ok.png'/> FileSystem APIs: available</div>
+      </div> 
+      <div id="feature-no-filesystem" class="hidden bad feature"> 
+        <div><img src='images/icon-error.png'/> FileSystem APIs are not supported</div>
+        <div class="explanation">
+          Your browser does not support the <code>FileSystem</code> APIs for
+          reading/writing files and directories. If using Google Chrome, you will likely 
+          need to run the Chrome executable using the <code>--unlimited-quota-for-files</code> flag.
+        </div> 
+      </div>
+
+    </section>
+</div>
+<script defer>
+  function hide(id) {
+    util.addClass(util.query('#' + id)[0], 'hidden');
+  }
+  function unhide(id) {
+    util.removeClass(util.query('#' + id)[0], 'hidden');
+  };
+  function checkWebGL() {
+    try {
+      var canvas = document.createElement('canvas');
+      var context = canvas.getContext('experimental-webgl');
+      if (context) {
+        unhide('feature-webgl');
+        return;
+      }
+    } catch(e) {}
+    unhide('feature-no-webgl');
+  };
+  function checkBrowser() {
+    if (util.isWK) {
+      unhide('browser-webkit');
+    } else if (util.isFF) {
+      unhide('browser-mozilla');
+    } else {
+      unhide('browser-other');
+    }
+  };
+  function resetNotifications() {
+    webkitNotifications.requestPermission(function() {
+      window.location.reload();
+    });
+  };
+  function checkNotifications() {
+    if (!window.hasOwnProperty('webkitNotifications')) {
+      unhide('feature-no-notification');
+    } else {
+      unhide('feature-notification');
+      if (webkitNotifications.checkPermission() == 0) {
+        unhide('notification-on');
+      } else {
+        unhide('notification-off');
+      }
+    }
+  };
+  function checkAppCache() {
+    if (!!window.applicationCache) {
+      unhide('feature-appcache');
+    } else {
+      unhide('feature-no-appcache');
+    }
+  };
+  function checkFileAPIs() {
+    if (!!window.File && !!window.FileList && !!window.FileReader) {
+      unhide('feature-file');
+    } else {
+      unhide('feature-no-file');
+    }
+  };
+  function checkFileSystem() {
+    if (!!window.requestFileSystem) {
+      unhide('feature-filesystem');
+    } else {
+      unhide('feature-no-filesystem');
+    }
+  };
+  function checkWebSQLDB() {
+    if (!!window.openDatabase) {
+      unhide('feature-sqldb');
+    } else {
+      unhide('feature-no-sqldb');
+    }
+  };
+  function checkIndexedDB() {
+    if (!!window.indexedDB || !!window.webkitIndexedDB || !!window.moz_indexedDB) {
+      unhide('feature-indexeddb');
+    } else {
+      unhide('feature-no-indexeddb');
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function(e) {
+    checkBrowser();
+    checkFileAPIs();
+    checkFileSystem();
+    checkWebSQLDB();
+    checkIndexedDB();
+    //checkAppCache();
+  }, false);
+</script>
+
+
+<div class="slide transitionSlide">
+  <aside class="note">
+    <section>
+      Welcome! (This field is for presenter notes and commentary.)
+    </section>
+  </aside>
+  <section>
+    Press:
+    <ul>
+      <li>Space or <span class="key">&larr;</span> / <span class='key'>&rarr;</span> to move around</li>
+      <li><span class="key">Ctrl/Command</span> / <span class='key'>–</span> or <span class='key'>+</span> to zoom in and out if slides don’t fit</li>
+      <li><span class="key">N</span> to show/hide speaker notes</li>
+      <li><span class="key">H</span> to highlight important elements in code snippets</li>
+      <li><span class="key">3</span> to toggle 3D</li>
+    </ul>
+  </section>
+</div>
+
+
+<div class="slide titleSlide" data-image="images/fullslides/extensioncords.jpg">
+  <section class="flex vbox boxcenter" style="margin:0">
+    <hgroup>
+      <h2 class="html5">Utilizing HTML5 in<br>Google Chrome Extensions</h2>
+      <h3 class="titleText">
+        Eric Bidelman <small>&lt;</small> e.bidelman@google.com <small>&gt;</small><br>
+        Add-On-Con 2010, Computer History Museum<br>
+        <time pubdate datetime="2010-12-08">December 8, 2010</time>
+      </h3>
+    </hgroup>
+  </section>
+</div>
+
+
+<!--
+ *
+ * ABOUT ME
+ *
+--> 
+<div class="slide">
+  <header>Eric Bidelman ( <a href="http://twitter.com/ebidel" targe="_new">@ebidel</a> )</header>
+  <section>
+    <ul>
+      <li>Developer Programs Engineer - Google
+        <ul>
+          <li>Docs, Sites, Health, OAuth, Chrome, <span class="html5">HTML5</span></li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+  <section class="hcenter">
+    <img src="http://www.google.com/profiles/c/u/0/photos/public/AIbEiAIAAABECO-Y5MewoKTt-gEiC3ZjYXJkX3Bob3RvKigyNjY3MGIxNDViZTBhNzM0NDg1OGRjYzAzNzIwMWMzYWM4ZDc0MWVjMAGXjMEt6eU5zxIEJtTHk1HkqE0Stw"/>
+  </section>
+</div>
+
+<!--
+<div class="slide image" data-image="images/fullslides/clutter.jpg">
+  <div data-build>
+    <section class="topRight dark">
+      <h1>Keep yourself organized</h1>
+    </section> 
+    <section class="bottomLeft dark">
+      <h1>...instant retrieval of structured data</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/squirmelia/2451382877/
+  </span>
+</div>
+-->
+
+<!--
+ *
+ * Agenda
+ *
+--> 
+<div class="slide">
+  <header>Agenda</header>
+  <section>
+    <ul>
+      <li>Web Storage APIs</li>
+      <li>Database: Web SQL Database, IndexedDB</li>
+      <li>File Access: File/FileSystem APIs</li>
+      <li>XMLHttpRequest 2</li>
+    </ul>
+  </section>
+</div>
+
+
+<div class="slide segue blue">
+  <section class="flex vbox boxcenter">
+    <hgroup>
+      <h1>Web Storage APIs</h1>
+      <h2>saving user preferences</h2>
+    </hgroup>
+  </section>
+</div>
+
+<!--
+ *
+ * LOCALSTORAGE
+ *
+--> 
+<div class="slide">
+  <header><code>localStorage</code></header>
+  <section class="hcenter"><h4><code>window.localStorage</code></h4></section>
+  <section>
+    <ul>
+      <li>Key / value pairs - hash table</li>
+      <li>Persistent on page reloads</li>
+      <li>Avoids HTTP overhead of cookies</li>
+      <li>Great for storing user preferences</li>
+    </ul>
+  </section>
+</div>
+
+<!--
+ *
+ * LOCALSTORAGE API
+ *
+--> 
+<div class="slide">
+  <header>Local Storage API</header>
+    <section>
+    <pre>
+localStorage.setItem('someKey', someValue);
+localStorage.getItem('someKey'); // value
+
+// Can also access as a property, but not recommended.
+localStorage.someKey = someValue;
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE EXAMPLE
+ *
+--> 
+<div class="slide">
+  <header>Local Storage API</header>
+    <section>
+    <pre>
+localStorage.setItem('dateOfBirth', '1984-07-22');
+localStorage.getItem('dateOfBirth'); // '1984-07-22'
+localStorage.length // num of items stored
+localStorage.key(0); // 'dateOfBirth'
+localStorage.removeItem('dateOfBirth');
+localStorage.clear();
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE API - JSON
+ *
+--> 
+<div class="slide">
+  <header>Using Native JSON</header>
+  <section>
+    <ul>
+      <li>Web Storage APIs only store strings!</li>
+    </ul>
+  </section>
+    <section>
+    <p>Solution:</p>
+    <pre style="font-size:22px">
+localStorage.setItem('user', <b>JSON.stringify</b>({user: 'john', id: 10}));
+
+var user = <b>JSON.parse</b>(localStorage.getItem('user'));
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE EXAMPLE
+ *
+--> 
+<div class="slide" id="localstorage-example">
+  <header>Example: Auto-save Text</header>
+  <section>
+    <pre>
+&lt;textarea id="ta" placeholder="Start typing..."&gt;&lt;/textarea&gt;
+</pre>
+<pre style="margin-top:10px;font-size: 22px">
+document.querySelector('#ta').addEventListener('keyup', function(e) {
+  <b>localStorage.setItem('value', this.value);</b>
+  <b>localStorage.setItem('timestamp', (new Date()).getTime());</b>
+}, false);
+</pre>
+  </section>
+  <section>
+    <textarea id="localstorage-ta" placeholder="Start typing..."></textarea>
+    <br>
+    <button id="localstorage-save">Save</button><button id="localstorage-clear">Clear</button>
+    <p id="localstorage-log"></p>
+  </section>
+  <script defer>
+    (function() {
+      var area = document.querySelector('#localstorage-ta');
+      var log = document.querySelector("#localstorage-log");
+      var timeoutId = null;
+      if (!area.value) {
+        area.value = window.localStorage.getItem('value');
+      }
+      updateLog(false);
+
+      // your content will be saved locally
+      document.querySelector('#localstorage-save').addEventListener('click', function (e) {
+        window.localStorage.setItem('value', area.value);
+        window.localStorage.setItem('timestamp', (new Date()).getTime());
+        updateLog(true);
+      }, false);
+
+      document.querySelector('#localstorage-clear').addEventListener('click', function () {
+        localStorage.removeItem('value');
+        localStorage.removeItem('timestamp');
+        log.style.opacity = 1;
+        log.textContent = 'Cleared';
+        area.value = '';
+        hideLog();
+      }, false);
+
+      area.addEventListener('keyup', function(e) {
+        window.localStorage.setItem('value', this.value);
+        updateLog(false);
+      }, false);
+
+      function hideLog() {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {
+          log.style.opacity = 0;
+        }, 3000);
+      }
+
+      function updateLog(newSave) {
+        var delta = 0;
+        if (window.localStorage.getItem('value')) {
+          log.style.opacity = 1;
+          delta = ((new Date()).getTime() - (new Date()).setTime(window.localStorage.getItem('timestamp'))) / 1000;
+
+          if (newSave) {
+            log.style.opacity = 1;
+            log.textContent = 'Saved';
+            hideLog();
+          } else {
+            log.textContent = 'Last saved: ' + delta + 's ago';
+            hideLog();
+          }
+        }
+      }
+    })();
+  </script>
+  </section>
+</div>
+
+
+<!--
+ *
+ * LOCALSTORAGE Extension - Screen Capture
+ *
+--> 
+
+<div class="slide transitionSlide">
+  <section class="flex hbox boxcenter">
+    <div class="noflex vbox boxcenter">
+      <h2>Extension: <a href="https://chrome.google.com/extensions/detail/cpngackimfmofbokmjmljamhdncknpmg" target="_new">Screen Capture</a></h2>
+      <ul>
+      <li>&lt;canvas&gt;</li>
+      <li><code>localStorage</code></li>
+      <li><code>chrome.tabs.captureVisibleTab()</code></li>
+      <li>options page</li>
+    </ul>
+    </div>
+  </section>
+</div>
+
+
+<div class="slide segue red">
+  <section class="flex vbox boxcenter">
+    <hgroup>
+      <h1>Databases</h1>
+      <h2>Web SQL DB, IndexedDB</h2>
+    </hgroup>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB
+ *
+--> 
+<div class="slide">
+  <header>Web SQL Database</header>
+  <section>
+    <ul>
+      <li>Client-side SQL database</li>
+      <li>Asynchronous &amp; Synchronous* API</li>
+      <li>Basically wrapper around SQLite</li>
+      <li>Put processing (sorting, filtering, etc.) on client</li>
+    </ul>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB - OPENDATABASE
+ *
+--> 
+<div class="slide">
+  <header>openDatabase();</header>
+  <section>
+    <pre>
+var db = window.<b>openDatabase</b>(
+  'MyDB',           // dbName
+  '1.0',            // version
+  'test database',  // description
+  2 * 1024 * 1024,  // estimatedSize in bytes
+  function(db) {}   // optional creationCallback
+);
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - OPENDATABASE 2
+ *
+--> 
+<div class="slide">
+  <header>openDatabase();</header>
+  <section style="font-size: 80%">
+    <ul>
+      <li>Size <small>( required )</small>
+        <ul>
+          <li>Default: 5MB</li>
+          <li>Prompted after that: 5, 10, 50, 100, etc.</li>
+        </ul>
+      </li>
+      <li>Versioning <small>( required )</small>
+        <ul>
+          <li>Expected version - empty string means any version is fine.</li>
+          <li>Exception if version mismatch</li>
+        </ul>
+      </li>
+      <li>Creation Callback <small>( optional )</small>
+        <ul>
+          <li>Called if database is brand new</li>
+          <li>For updating version and/or schema:
+          <pre>
+db.<b>changeVersion</b>('', '1.0', function (tx) { // opt
+  // TODO: create schema
+}, opt_errorCallback, opt_successCallback);</pre>
+          </li>
+        </ul>
+      </li>
+      <li>Returns <code>null</code> if creation is unsuccessful</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - TRANSACTIONS
+ *
+--> 
+<div class="slide">
+  <header>Transactions</header>
+  <section>
+    <ul>
+      <li><code>readTransaction</code>
+        <ul>
+          <li>read-only operations</li>
+          <li><pre>
+db.<b>readTransaction</b>(function(tx) {
+  // executeSql
+}, opt_errorCallback, opt_successCallback);
+</pre>
+          </li>
+        </ul>
+      </li>
+      <li><code>transaction</code>
+        <ul>
+          <li>read/write operations</li>
+          <li>Locks the entire database</li>
+          <li><pre>
+db.<b>transaction</b>(function(tx) {
+  // executeSql
+}, opt_errorCallback, opt_successCallback);
+</pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - executeSql
+ *
+--> 
+<div class="slide">
+  <header><code>executeSql();</code></header>
+  <section>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>(sqlStatement, opt_arguments, opt_callback, opt_errorCb);
+</pre>
+<p>Create:</p>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>('CREATE TABLE IF NOT EXISTS ' +
+    'todo(id INTEGER PRIMARY KEY ASC, task TEXT, added_on DATETIME)');
+</pre>
+<p>Insert:</p>
+<pre style="font-size: 22px">
+var taskText = 'buy groceries';
+tx.<b>executeSql</b>(
+  'INSERT INTO todo(task, added_on) VALUES (?,?)', [taskText, new Date()],
+  renderFunc, onError);</pre>
+<p>Delete:</p>
+<pre style="font-size: 22px">
+tx.<b>executeSql</b>('DELETE FROM todo WHERE id=?', [id], renderFunc, onError);
+</pre>
+  </section>
+</div>
+
+<!--
+ *
+ * Web SQL DB - executeSql 2
+ *
+--> 
+<div class="slide">
+  <header><code>executeSql();</code></header>
+  <section>
+<pre style="font-size:22px">
+tx.<b>executeSql</b>(sqlStatement, opt_arguments, opt_callback, opt_errorCb);
+</pre>
+<p>Query:</p>
+<pre style="font-size: 22px">
+function renderFunc(tx, results) {
+  // <b>results.insertId</b>: last row inserted in db.
+  // <b>results.rowsAffected</b>: num of rows changed by the SQL statement.
+  var len = <b>results.rows</b>.length;
+  for (var i = 0; i &lt; len; ++i) {
+    var row = <b>results.rows.item(i)</b>;
+    console.log(row.task, row.added_on.toJSON());
+  }
+}
+
+tx.<b>executeSql</b>('SELECT * FROM todo', [], renderFunc, onError);</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Web SQL DB - EXAMPLE
+ *
+--> 
+<div class="slide" id="websql-example">
+  <header>Example: Todo List</header>
+  <section>
+    <ol id="db-results"></ol>
+    <div id="db-log"></div>
+    <p><button onclick="db.createTable();">create table</button>
+    <button onclick="db.dropTable();">drop table</button></p>
+    <input type="text" id="todoitem" />
+    <button onclick="db.newRecord();">Add</button>
+    <p>See the generated database:<br>Developer > Developer Tools > Resources</p>
+
+    <script defer>
+      function DB() {
+        var self = this;
+        var db_ = null;
+        var log_ = document.querySelector('#db-log');
+        var results_ = document.querySelector('#db-results');
+
+        this.init = function() {
+          if (window.openDatabase) {
+            db_ = openDatabase("DBTest", "1.0", "HTML5 Database API example", 200000);
+            this.showRecords();
+            return this;
+          }
+
+          results_.addEventListener('click', function(e) {
+            e.preventDefault();
+          }, false);
+        }
+
+        this.onError = function(tx, error) {
+          log_.innerHTML = '';
+          log_.innerHTML = '<p class="error">Error: ' + error.message + '</p>';
+        };
+
+        // select all records and display them
+        this.showRecords = function() {
+          results_.innerHTML = '';
+          db_.transaction(function(tx) {
+            tx.executeSql("SELECT * FROM Table1Test", [], function(tx, result) {
+              var html = [];
+              for (var i = 0, item = null; i < result.rows.length; ++i) {
+                item = result.rows.item(i);
+                html.push('<li><span contenteditable onkeyup="db.updateRecord(',
+                    item['id'], ', this)">', item['text'],
+                    '</span> <a href="javascript:void(0)" onclick="db.deleteRecord(', item['id'],
+                    ')">[ delete ]</a></li>');
+              }
+              results_.innerHTML = html.join('');
+            });
+          });
+        };
+
+        this.createTable = function() {
+          db_.transaction(function(tx) {
+            tx.executeSql("CREATE TABLE Table1Test (id REAL UNIQUE, text TEXT)", [],
+                function(tx) {  log_.innerHTML = '<p>Table1Test created!</p>' },
+                self.onError);
+          });
+        };
+
+        // add record with random values
+        this.newRecord = function() {
+          var num = Math.round(Math.random() * 10000); // random data
+          db_.transaction(function(tx) {
+            tx.executeSql("INSERT INTO Table1Test (id, text) VALUES (?, ?)", [num, document.querySelector('#todoitem').value],
+                function(tx, result) {
+                  log_.innerHTML = '';
+                  self.showRecords();
+                },
+                self.onError);
+          });
+        };
+
+        this.updateRecord = function(id, textEl) {
+          db_.transaction(function(tx) {
+            tx.executeSql("UPDATE Table1Test SET text = ? WHERE id = ?", [textEl.innerHTML, id], null, self.onError);
+          });
+        };
+
+        this.deleteRecord = function(id) {
+          db_.transaction(function(tx) {
+            tx.executeSql("DELETE FROM Table1Test WHERE id=?", [id],
+                function(tx, result) { self.showRecords() }, self.onError);
+          });
+        };
+
+        // delete table from db
+        this.dropTable = function() {
+          db_.transaction(function(tx) {
+            tx.executeSql("DROP TABLE Table1Test", [],
+                function(tx) { self.showRecords() }, self.onError);
+          });
+        };
+      };
+      var db = (new DB()).init();
+    </script>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB
+ *
+-->
+<div class="slide image" data-image="images/fullslides/index.jpg">
+  <div data-build>
+    <section class="bottomWide dark" data-auto>
+      <h1>Indexed Database</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/31408547@N06/4671916278
+  </span>
+</div>
+
+<!--
+ *
+ * Indexed DB
+ *
+--> 
+<div class="slide">
+  <header>IndexedDB</header>
+  <section class="hcenter"><h4><code>window.indexedDB</code></h4></section>
+  <section>
+    <ul>
+      <li>Best of <code>localStorage</code>/<code>sessionStorage</code> and Web SQL DB:
+        <ul>
+          <li>Object based data store</li>
+          <li>In-order retrieval by index or locate by key</li>
+        </ul>
+      </li>
+      <li>Asynchronous &amp; Synchronous API
+        <ul>
+          <li>For the browser and for Web Workers</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Creating
+ *
+--> 
+<div class="slide">
+  <header>Creating an Object Store</header>
+  <section>
+    <pre>
+var db = <b>window.indexedDB.open</b>('FriendDB', 'My Friends!');
+
+if (db.version != '1') {
+  // User's first visit, initialize database.
+  db.<b>createObjectStore</b>('Friends', // name of new object store
+                        'id',      // key path
+                        true);     // auto increment?
+  db.setVersion('1');
+} else {
+  // DB already initialized.
+}
+</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Key path must be the name of an enumerated property of all objects being stored in the object store</li>
+      <li>DB versioning up to caller</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Stocking
+ *
+--> 
+<div class="slide">
+  <header>Stocking the Store</header>
+  <section>
+    <pre>
+var store = db.<b>openObjectStore</b>('Friends');
+
+var user = <b>store.put</b>({name: 'Eric',
+                       gender: 'male',
+                       likes: 'html5'});
+
+console.log(user.id); // Expect 1
+</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Auto-increment keys get assigned automatically</li>
+      <li>Schema flexible, store anything</li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * Indexed DB: Finding
+ *
+--> 
+<div class="slide">
+  <header>Finding things</header>
+  <section>
+    <p>Retrieving by key ( indexes ):</p>
+    <pre class="hcenter">db.createIndex(indexName, keyPath, unique?);</pre>
+    <pre style="margin-top:10px">
+// db.createObjectStore("Friend", "id", true);
+db.<b>createIndex</b>("FriendNames", "name", false);
+var index = db.<b>openIndex</b>('FriendNames');
+var id = <b>index.get</b>('Eric');
+</pre>
+    <p>Querying ( cursors ):</p>
+    <pre>
+// Restrict to names beginning A-E
+var range = new <b>KeyRange.bound</b>('A', 'E');
+var cursor = <b>index.openObjectCursor</b>(range);
+
+while (<b>cursor.continue</b>()) {
+  console.log(<b>cursor.value.name</b>);
+}
+</pre>
+  </section>
+</div>
+
+
+<div class="slide segue yellow">
+  <section class="flex vbox boxcenter">
+    <hgroup>
+      <h1>File Access</h1>
+      <h2>File/FileSystem APIs</h2>
+    </hgroup>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: INTRO
+ *
+-->
+<div class="slide">
+  <header>File APIs</header>
+  <section>
+    <ul>
+      <li>Reading and manipulating:
+        <ul>
+          <li><code>File</code> / <code>Blob</code>, <code>FileList</code>, <code>FileReader</code><br>
+          <a href="http://dev.w3.org/2006/webapi/FileAPI/" target="_new">http://dev.w3.org/2006/webapi/FileAPI/</a>
+          </li>
+        </ul>
+      </li>
+      <li>Creating and writing:
+        <ul>
+          <li><code>BlobBuilder</code>, <code>FileWriter</code>,  <code>FileSaver</code><br>
+          <a href="http://dev.w3.org/2009/dap/file-system/file-writer.html" target="_new">http://dev.w3.org/2009/dap/file-system/file-writer.html</a>
+          </li>
+        </ul>
+      </li>
+      <li>Directories and System:
+        <ul>
+          <li><code>FileSystem</code><br>
+          <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/" target="_new">http://dev.w3.org/2009/dap/file-system/pub/FileSystem/</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<div class="slide image" data-image="images/fullslides/storage.jpg">
+  <div data-build>
+    <section class="bottomWide" data-auto>
+      <h1>File APIs</h1>
+    </section>
+  </div>
+  <span class="credit">
+    http://www.flickr.com/photos/daddo83/3406962115/
+  </span>
+</div>
+
+
+<!--
+ *
+ * File APIS: File
+ *
+-->
+<div class="slide">
+  <header>Getting File Handles: <code>File</code> / <code>FileList</code></header>
+  <section>
+    <pre>&lt;input type="file" id="files" name="files[]" <b>multiple</b> /&gt;
+&lt;output id="list"&gt;&lt;/output&gt;
+</pre>
+    <pre style="margin-top:10px;">
+document.querySelector('#files').onchange = function(e) {
+  var files = <b>e.target.files</b>; // FileList
+
+  var output = [];
+  for (var i = 0, f; f = files[i]; ++i) {
+    output.push('&lt;li&gt;&lt;b&gt;', f.name, '&lt;/b&gt; (',
+        f.type || 'n/a', ') - ', f.size, ' bytes&lt;/li&gt;');
+  }
+  document.querySelector('#list').innerHTML =
+      '&lt;ul&gt;' + output.join('') + '&lt;/ul&gt;';
+};
+</pre>
+    <p>
+      <input type="file" id="filereader-files" multiple />
+      <output id="filereader-list"></output>
+    </p>
+  </section>
+</div>
+<script defer>
+(function() {
+  document.querySelector('#filereader-files').onchange = function(e) {
+    var files = e.target.files; // FileList
+
+    var output = [];
+    for (var i = 0, f; f = files[i]; ++i) {
+      output.push('<li><b>', f.name, '</b> (',
+          f.type || 'n/a', ') - ', f.size, ' bytes</li>');
+    }
+    document.querySelector('#filereader-list').innerHTML =
+        '<ul>' + output.join('') + '</ul>';
+  };
+})();
+</script>
+
+
+<!--
+ *
+ * File APIs: Directory Upload
+ *
+--> 
+<div class="slide" id="slide-dndfiles"> 
+  <header>Getting File Handles: Directory Upload</header>
+  <section>
+    <pre class="hcenter">&lt;input type="file" <b>webkitdirectory</b> /&gt;</pre>
+  </section>
+  <section>
+    <ul>
+      <li>Files in the <code>FileList</code> will have a <code>webkitRelativePath</code> property</li>
+    </ul>
+  </section>
+  <section class="hcenter">
+    <a href="demos/upload_directory/index.html" target="_new">
+      <img src="images/folder.png" class="clickable"/>
+    </a>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIS: FileReader
+ *
+-->
+<div class="slide">
+  <header><code>FileReader</code></header>
+  <section>
+      <p>Asynchronously read binary data into memory: <a href="demos/playlist/playlist.html" target="_blank">Demo</a></p>
+      <pre>
+var reader = new <b>FileReader</b>();
+
+reader.<b>readAsBinaryString</b>(File|Blob);
+
+reader.<b>readAsText</b>(File|Blob, opt_encoding); // default UTF-8
+
+reader.<b>readAsDataURL</b>(Blob|File);
+
+reader.<b>readAsArrayBuffer</b>(Blob|File);</pre>
+      <p>Reading byte ranges: <a href="http://www.html5rocks.com/tutorials/file/dndfiles/#toc-slicing-files" target="_new">Demo</a></p>
+      <pre>var blob = <b>file.slice</b>(startingByte, length); // Blob
+reader.<b>readAsBinaryString</b>(blob);</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: Drag and Drop File Access
+ *
+--> 
+<div class="slide" id="slide-dndfiles">
+  <header>Example: Drag-in Files from Desktop</header>
+  <section>
+    <pre>var reader = new <b>FileReader</b>();
+<b>reader.onload</b> = function(e) {
+  document.querySelector('img').src = <b>e.target.result</b>;
+};
+ 
+function onDrop(e) {
+  reader.<b>readAsDataURL</b>(<b>e.dataTransfer.files[0]</b>);
+};</pre>
+  </section> 
+  <section class="vbox boxcenter flex">
+    <div class="hbox boxcenter flex">
+      <div id="dropzone" class="vbox boxcenter flex"> 
+        Drop image files from your desktop
+      </div>
+    </div>
+    <div id="thumbnails" class="hcenter"></div>
+  </section>
+</div>
+<script defer>
+document.addEventListener('DOMContentLoaded', function(e) {
+  var dndc = new DNDFileController('dropzone');
+}, false);
+</script>
+
+
+<!--
+ *
+ * Blob URLs: Drag-Out Files
+ *
+--> 
+<div class="slide" id="slide-dndfiles">
+  <header>Example: Drag-out Files from Desktop</header>
+  <section>
+    <pre style="font-size: 20px;">
+&lt;a href="src/star.mp3" <b>draggable="true"</b> class="dragout"
+   data-downloadurl="<b>MIMETYPE:FILENAME:ABSOLUTE_URI_TO_FILE</b>"&gt;download&lt;/a&gt;
+</pre>
+  <pre style="margin-top:10px;font-size: 22px;">
+var files = document.querySelectorAll('.dragout');
+for (var i = 0, file; file = files[i]; ++i) {
+  file.addEventListener('dragstart', function(e) {
+    <b>e.dataTransfer.setData</b>('<b>DownloadURL</b>', this.dataset.downloadurl);
+  }, false);
+}
+</pre>
+  </section>
+  <section class="hcenter flex vbox">
+    <p>
+      Drag these files onto your desktop:
+      <a href="http://static.googleusercontent.com/external_content/untrusted_dlcp/www.google.com/en/us/intl/en/landing/chrome/cadie/glasses.pdf" class="dragout" data-downloadurl="application/pdf:Chrome3DGlasses.pdf:http://static.googleusercontent.com/external_content/untrusted_dlcp/www.google.com/en/us/intl/en/landing/chrome/cadie/glasses.pdf">.pdf file</a>
+      <a href="src/star.mp3" class="dragout" data-downloadurl="audio/mpeg:star.mp3:http://slides.html5rocks.com/src/star.mp3">.mp3 file</a>
+    </p>
+  </section>
+</div>
+<script defer>
+(function() {
+  var files = document.querySelectorAll('.dragout');
+  for (var i = 0, file; file = files[i]; ++i) {
+    file.setAttribute('draggable', 'true'); // Don't really need, but good practice.
+    file.addEventListener('dragstart', function(evt) {
+      evt.dataTransfer.setData('DownloadURL', this.getAttribute('data-downloadurl'));
+    }, false);
+  }
+})();
+</script>
+
+
+<!--
+ *
+ * File APIS: Monitoring Read Progress
+ *
+-->
+<div class="slide">
+  <header>Monitoring Read Progress</header>
+  <section>
+      <pre>
+reader.<b>onerror</b> = errorHandler;
+
+reader.<b>onprogress</b> = updateProgress;
+
+reader.<b>onabort</b> = cancelRead;
+
+reader.<b>onloadstart</b> = updateProgress;
+
+reader.<b>onload</b> = readFile;
+
+reader.<b>onloadend</b> = function(e) {
+  // <b>e.target.readyState</b> == <b>FileReader.DONE</b> == 2
+};
+</pre>
+  </section>
+  <section class="hcenter">
+    <p><a href="http://www.html5rocks.com/tutorials/file/dndfiles/#toc-monitoring-progress" target="_new">Demo</a></p>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: Blob URLs
+ *
+--> 
+<div class="slide">
+  <header>Blob URLs</header>
+  <section>
+    A unique (temporary) handle describing a resource:
+    <pre style="font-size:22px">
+if (file.type.match(/image.*/)) {
+  var blobURL = <b>window.URL.createObjectURL</b>(file);</b>
+
+  var img = document.createElement('img');
+  img.src = blobURL; // blob:example.com:///7a6fa-5496-42d4-9bbb-40f9a0
+  thumbnails.appendChild(img);
+
+  // Clean-up: window.URL.revokeObjectURL(img.src);
+}
+</pre>
+<pre style="margin-top:10px;font-size:22px">
+var bb = new <b>BlobBuilder()</b>;
+<b>bb.append</b>('&lt;marquee&gt;Flashy Lights!!!&lt;/marquee&gt;');
+
+var iframe = document.createElement('iframe');
+iframe.src = <b>window.URL.createObjectURL</b>(<b>bb.getBlob('text/html')</b>);
+document.body.appendChild(iframe);
+</pre>
+  </section>
+  <section id="blobURL-demo">
+    <button onclick="buildBlob();" style="vertical-align:top">Run it</button>
+  </section>
+</div>
+<script defer>
+function buildBlob() {
+  var bb = new BlobBuilder();
+  bb.append('<marquee>');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('  <b>Flashy Lights!!!</b>  ');
+  bb.append('</marquee>');
+
+  window.URL = window.URL ? window.URL :
+               window.webkitURL ? window.webkitURL : window;
+  var iframe = document.createElement('iframe');
+  iframe.src = window.URL.createObjectURL(bb.getBlob('text/html'));
+  iframe.style.backgroundColor = '#fff';
+  iframe.style.height = '35px';
+  iframe.style.width = '85%';
+  document.querySelector('#blobURL-demo').appendChild(iframe);
+  window.URL.revokeObjectURL(iframe.src);
+}
+</script>
+
+
+<!--
+ *
+ * Blob URLs: Download manager
+ *
+--> 
+<div class="slide">
+  <header>Example: Downloads without a Server</header>
+  <section>
+<pre class="hcenter">
+&lt;iframe id="myframe" style="display:none"&gt;&lt;/iframe&gt;
+</pre>
+<pre style="margin-top:10px;font-size:22px">
+document.querySelector('#download-button').onclick = function(e) {
+  var bb = new BlobBuilder();
+  bb.append('Lorem ipsum');
+
+  var blob = bb.getBlob()
+  document.querySelector('#myframe').src =
+      window.<b>URL.createObjectURL</b>(blob);
+};
+</pre>
+  </section>
+  <section>
+    <button id="download-blob">Download it</button>
+    <iframe id="myframe" style="display:none"></iframe>
+  </section>
+</div>
+<script defer>
+document.querySelector('#download-blob').onclick = function(e) {
+  var bb = new BlobBuilder();
+  bb.append('Lorem ipsum');
+  window.URL = window.URL ? window.URL :
+               window.webkitURL ? window.webkitURL : window;
+  document.querySelector('#myframe').src = window.URL.createObjectURL(bb.getBlob());
+};
+</script>
+
+
+
+<!--
+ *
+ * Blob URLs: Canvas Exporter
+ *
+--> 
+<div class="slide" id="slide-dndfiles">
+  <header>Download with a Server: Canvas Exporter</header>
+  <section>
+    <pre style="font-size: 18px;">
+&lt;form action=&quot;downloadFile.php&quot; method=&quot;POST&quot; name=&quot;myform&quot; id=&quot;myform&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;dataUrl&quot; /&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;filename&quot; /&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;mimetype&quot; /&gt;
+&lt;/form&gt;
+</pre>
+
+<pre style="font-size: 18px;margin-top:10px;">
+function downloadImage(name, format) {
+  var form = document.forms['myform'];
+  form.filename.value = name;
+  form.mimetype.value = format;
+  form.dataUrl.value = document.querySelector('#mycanvas').<b>toDataURL</b>(format);
+  form.submit();
+}
+</pre>
+
+  <pre style="margin-top:10px;font-size: 18px;">
+&lt;?php
+  <b>header("Content-type: {$_REQUEST['mimetype']}");
+  header("Content-Disposition: attachment; filename={$_REQUEST['filename']}");</b>
+
+  $uri = substr($_REQUEST['dataUrl'], strpos($_REQUEST['dataUrl'], ',') + 1);
+  echo base64_decode($uri);
+?&gt;
+</pre>
+  </section>
+  <section class="hcenter flex vbox">
+      <a href="http://localhost/~ericbidelman/php/html5/canvas2download/" target="_new">Demo</a>
+  </section>
+</div>
+
+
+<!--
+ *
+ * File APIs: Blob URLs (Inline Worker)
+ *
+--> 
+<div class="slide">
+  <header>Example: Inline Worker</header>
+  <section>
+    <pre style="font-size:22px">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  <b>&lt;script id=&quot;worker1&quot; type=&quot;text/plain&quot;&gt;
+    onmessage = function(e) {
+      ...
+    };
+  &lt;/script&gt;</b>
+  &lt;script&gt;
+    var bb = new BlobBuilder();
+    bb.append(<b>document.querySelector('#worker1').textContent</b>);
+
+    var worker = new Worker(
+        <b>window.URL.createObjectURL(bb.getBlob())</b>);
+    worker.onmessage = function(e) {
+      ...
+    };
+    worker.postMessage(); // Start the worker.
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem APIs
+ *
+-->
+<div class="slide image" data-image="images/fullslides/filecabinets.jpg">
+  <div data-build>
+    <section class="topWide right dark" data-auto>
+      <h1>FileSystem APIs</h1>
+    </section>
+  </div>
+  <span class="credit dark">
+    http://www.flickr.com/photos/christosnyc/87637818/
+  </span>
+</div>
+
+
+<!--
+ *
+ * FileSystem: requestFileSystem()
+ *
+-->
+<div class="slide">
+  <header><code>requestFileSystem();</code></header>
+  <aside class="note">
+    <section>
+      <ul>
+        <li>If Chrome Web Store App: need to use <code>unlimitedStorage</code> manifest permission.</li>
+        <li>If not a Chrome app, need the <code>--unlimited-quota-for-files</code> flag set.</li>
+        <li>You also need the <code>--allow-file-access-from-files</code> flag to run this presentation from <code>file://</code>.</li>
+      </ul>
+    </section>
+  </aside>
+  <section>
+    <pre>
+<b>window.requestFileSystem</b>(
+  TEMPORARY,        // persistent vs. temporary storage
+  1024 * 1024,      // size (bytes) of needed space
+  initFs,           // success callback
+  opt_errorHandler  // opt. error callback, denial of access
+);</pre>
+    <ul style="font-size: 90%" data-build>
+      <li><code>TEMPORARY</code> storage
+        <ul>
+          <li>Meant for caching</li>
+          <li>Data can be deleted at the UA's convenience</li>
+          <li>(e.g. to deal with a shortage of disk space)</li>
+        </ul>
+      </li>
+      <li><code>PERSISTENT</code> storage
+        <ul>
+          <li>UA should require permission to use</li>
+          <li>Data should not be deleted by UA w/o user intervention
+            <ul>
+              <li>...but app can delete at will</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Fetching a file by name
+ *
+--> 
+<div class="slide">
+  <header>Fetching a file by name</header>
+  <aside class="note">
+    <section>
+      <pre style="font-size:16px;padding:0;border:none;background:none">
+function errorHandler(e) {
+  switch (e.code) {
+    case FileError.QUOTA_EXCEEDED_ERR:
+      ...
+    case FileError.NOT_FOUND_ERR:
+      ...
+  }
+}</pre>
+    </section>
+  </aside>
+  <section>
+    <pre style="font-size:20px;">
+function initFs(fs) {
+
+  <b>fs.root.getFile</b>('logFile.txt', {create: true}, function(fileEntry) {
+
+    // <b>fileEntry.isFile</b> == true
+    // <b>fileEntry.name</b> == 'logFile.txt'
+    // <b>fileEntry.fullPath</b> == '/logFile.txt'
+
+    // Get a File obj
+    <b>fileEntry.file</b>(function(file) { /* TODO: Use FileReader */ }, errorHandler);
+
+    // <b>fileEntry.remove</b>(function() {}, errorHandler);
+    // <b>fileEntry.moveTo</b>(...);
+    // <b>fileEntry.copyTo</b>(...);
+    // <b>fileEntry.getParent</b>(function(dirEntry) {}, errorHandler);
+
+  }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Fetching a directory by name
+ *
+--> 
+<div class="slide">
+  <header>Fetching a directory by name</header>
+  <section>
+    <pre style="font-size:22px;">
+function initFs(fs) {
+
+  <b>fs.root.getDirectory</b>('myFolder', {create: true, <b>exclusive: true</b>},
+    function (dirEntry) {
+
+      // <b>dirEntry.isDirectory</b> == true
+
+      // Remove the directory
+      <b>dirEntry.removeRecursively</b>(function() {
+        console.log('Well, that was pointless!');
+      }, errorHandler);
+
+      // <b>dirEntry.getFile</b>(...);
+      // <b>dirEntry.getDirectory</b>(...);
+
+    }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Reading a directory's contents
+ *
+--> 
+<div class="slide">
+  <header>Reading directory contents</header>
+  <section>
+    <pre style="font-size:24px;">
+function initFs(fs) {
+
+  var root = <b>fs.root</b>;  // A DirectoryEntry itself
+
+  var dirReader = root.<b>createReader</b>(); // DirectoryReader
+  <b>dirReader.readEntries</b>(function(entries) {
+    for (var i = 0, entry; entry = entries[i]; ++i) {
+      console.log(<b>entry.name</b>, <b>entry.isFile</b>, <b>entry.isDirectory</b>);
+    }
+  }, errorHandler);
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Writing a file
+ *
+--> 
+<div class="slide">
+  <header>Writing a file ( <code>FileWriter</code> )</header>
+  <section>
+    <pre style="font-size:20px;">
+function initFs(fs) {
+
+  fs.root.getFile('logFile.txt', {create: true}, function(fileEntry) {
+
+    <b>fileEntry.createWriter</b>(function(<b>writer</b>) {  // FileWriter
+
+        <b>writer.onwrite</b> = function(e) {
+          console.log('Write completed.');
+        };
+
+        <b>writer.onerror</b> = function(e) {
+          console.log('Write failed: ' + e);
+        };
+
+        var bb = new BlobBuilder();
+        bb.append('Lorem ipsum');
+        <b>writer.write</b>(bb.getBlob('text/plain'));
+
+    }, errorHandler);
+  }
+
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * XHR2
+ *
+-->
+<div class="slide image" data-image="images/fullslides/ajax.jpg">
+  <div data-build>
+    <section class="bottomWide dark" data-auto>
+      <h1>XMLHttpRequest 2</h1>
+    </section>
+  </div>
+  <span class="credit dark">
+    http://www.flickr.com/photos/carrick/8247817/
+  </span>
+</div>
+
+
+<!--
+ *
+ * XHR2: xhr.send(string)
+ *
+--> 
+<div class="slide">
+  <header><code>xhr.send(string)</code></header>
+  <section>
+    <p>Sending txt is not new:</p>
+    <pre>
+function sendText() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = function(e) {
+    if (this.status == 200) {
+      console.log(this, this.responseText);
+    }
+  };
+  xhr.send('test string');
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * XHR2: xhr.send(FormData)
+ *
+--> 
+<div class="slide">
+  <header><code>xhr.send(FormData)</code></header>
+  <section>
+    <pre>
+function sendFormData() {
+  var formData = new <b>FormData</b>(); // or FormData(window.myform)
+  <b>formData.append</b>("username", "Groucho");
+  <b>formData.append</b>("accountnum", 123456);
+
+  var file = document.querySelector('#afile').files[0];
+  if (file) {
+    <b>formData.append</b>('afile', file);
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/sever', true);
+  xhr.onload = onLoad;
+  xhr.send(<b>formData</b>);
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * XHR2: xhr.send(Blob|File)
+ *
+--> 
+<div class="slide">
+  <header><code>xhr.send(Blob|File)</code></header>
+  <section>
+    <pre>
+function sendBlob() {
+  var builder = new <b>BlobBuilder</b>();
+  <b>builder.append</b>('12345');
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = onLoad;
+  xhr.send(<b>builder.getBlob('text/plain')</b>);
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * XHR2: xhr.send(ArrayBuffer)
+ *
+--> 
+<div class="slide">
+  <header><code>xhr.send(ArrayBuffer)</code></header>
+  <section>
+    <pre>
+function sendArrayBuffer() {
+  var data = [1, 2, 3];
+  var buffer = new <b>ArrayBuffer</b>(data.length);
+  var uInt8Array = new <b>Uint8Array</b>(buffer);
+  for (var i = 0, l = uInt8Array.length; i &lt; l; ++i) {
+    uInt8Array[i] = data[i];
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = onLoad;
+  xhr.send(<b>buffer</b>);
+}
+</pre>
+  </section>
+</div>
+
+
+<!--
+ *
+ * FileSystem: Example fetching binary data
+ *
+--> 
+<div class="slide">
+  <header>Example: Fetch + Write Binary Data with XHR</header>
+  <section>
+    <p>Chrome Extensions can make XD XHRs</p>
+    <pre>
+function getRequest(data) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', data.url, true);
+
+  // Fetch as binary data.
+  xhr.overrideMimeType('text/plain; charset=x-user-defined');
+
+  xhr.onload = function(e) {
+    writeToFS(this.responseText, data.filename, data.type);
+  };
+  xhr.send();
+}
+</pre>
+  </section>
+</div>
+
+<!--
+ *
+ * FileSystem: Example fetching binary data
+ *
+--> 
+<div class="slide">
+  <header>Example: Fetch + Write Binary Data with XHR</header>
+  <section>
+    <pre style="font-size:20px;">
+function writeToFS(data, filename, type) {
+  window.requestFileSystem(TEMPORARY, 1024 * 1024, function(fs) {
+    fs.root.getFile(filename, {create: true}, function(fileEntry) {
+      fileEntry.createWriter(function(writer) {
+        writer.onwrite = ...;
+
+        <b>var bb = new BlobBuilder();
+        var ui8a = new Uint8Array(data.length);
+        for (var i = 0; i &lt; ui8a.length; ++i) {
+          ui8a[i] = data.charCodeAt(i);
+        }
+        bb.append(ui8a.buffer);</b>
+
+        <b>writer.write(bb.getBlob(type));</b>
+      }, onError);
+    }, onError);
+  }, onError);
+}
+getRequest({filename: 'google_logo.png', type: 'image/png',
+            url: 'http://www.google.com/images/logos/ps_logo2.png'});
+</pre>
+  <p class="hcenter"><a href="http://localhost/~ericbidelman/html5/xhr_fetch_binary.html" target="_new">Demo</a> / 
+  <a href="file:///users/ericbidelman/projects/chrome/nacl-chrome-profile/Default/FileSystem/http_localhost_0/Temporary/chrome-cRFvABjaUzzVSSQi/" target="_new">See it</a>
+  </p>
+  </section>
+</div>
+
+<!--
+ *
+ * Go Deeper
+ *
+-->
+<div class="slide">
+  <header>Go Deeper</header>
+  <section>
+    <ul>
+      <li><a href="http://www.html5rocks.com/" target="_new">www.html5rocks.com</a></li>
+      <li>Learn <span class="html5">HTML5</span> by themes: <a href="http://www.html5rocks.com/features/" target="_new">www.html5rocks.com/features/</a></li>
+      <li><a href="http://groups.google.com/a/chromium.org/group/chromium-html5/" target="_new">groups.google.com/a/chromium.org/group/chromium-html5/</a></li>
+      <li>File Bugs! <a href="http://crbug.com">crbug.com</a></li>
+      <li>Twitter: <a href="http://twitter.com/ChromiumDev" target="_new">@ChromiumDev</a></li>
+    </ul>
+  </section>
+</div>
+
+
+<!--
+ *
+ * THANKs
+ *
+--> 
+<div class="slide segue green">
+  <section class="flex vbox boxcenter">
+    <h1>Thanks!</h1>
+    <p>Questions?</p>
+  </section>
+</div>
+
+
+      </div> <!-- slides --> 
+    </div> <!-- presentation --> 
+
+<!--<script src="js/jquery.min.js" defer></script>-->
+<script src="js/prettify/prettify.js" defer></script>
+<script src="js/slide-presentation.js" defer></script>
+<script src="js/dnd-lib.js" defer></script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+  </body>
+</html>
