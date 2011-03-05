@@ -1014,8 +1014,9 @@ document.querySelector('#files').onchange = function(e) {
 
   var output = [];
   for (var i = 0, f; f = files[i]; ++i) {
-    output.push('&lt;li&gt;&lt;b&gt;', f.name, '&lt;/b&gt; (',
-        f.type || 'n/a', ') - ', f.size, ' bytes&lt;/li&gt;');
+    output.push('&lt;li&gt;&lt;b&gt;', f.name, '&lt;/b&gt; (', f.type || 'n/a',
+        ') - ', f.size, ' bytes, last modified: ',
+        f.lastModifiedDate.toLocaleDateString(), '&lt;/li&gt;');
   }
   document.querySelector('#list').innerHTML =
       '&lt;ul&gt;' + output.join('') + '&lt;/ul&gt;';
@@ -1035,7 +1036,8 @@ document.querySelector('#files').onchange = function(e) {
     var output = [];
     for (var i = 0, f; f = files[i]; ++i) {
       output.push('<li><b>', f.name, '</b> (',
-          f.type || 'n/a', ') - ', f.size, ' bytes</li>');
+          f.type || 'n/a', ') - ', f.size, ' bytes, last modified: ',
+          f.lastModifiedDate.toLocaleDateString(), '</li>');
     }
     document.querySelector('#filereader-list').innerHTML =
         '<ul>' + output.join('') + '</ul>';
