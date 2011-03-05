@@ -1066,8 +1066,8 @@ while (<b>cursor.continue</b>()) {
   </aside>
    <section>
 <pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
-idbRequest.onsuccess = function(event) {
-  <b>var db = event.result</b>;
+idbRequest.onsuccess = function(e) {
+  <b>var db = e.targe.result</b>;
   var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
   var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
   curRequest.<b>onsuccess</b> = ...;
@@ -1103,18 +1103,18 @@ idbRequest.onsuccess = function(event) {
         if (window.indexedDB) {
           idbRequest_ = window.indexedDB.open("Test", "A test object store.");
           idbRequest_.onerror = idbError_;
-          idbRequest_.addEventListener('success', function(event) {
-            idb_ = event.result;
-            idbShow_(event);
+          idbRequest_.addEventListener('success', function(e) {
+            idb_ = e.target.result;
+            idbShow_(e);
           }, false);
         }
 
-        function idbError_(event) {
+        function idbError_(e) {
           idbLog_.innerHTML += '<p class="error">Error: ' +
-                               event.message + ' (' + event.code + ')</p>';
+                               e.message + ' (' + e.code + ')</p>';
         }
 
-        function idbShow_(event) {
+        function idbShow_(e) {
           if (!idb_.objectStoreNames.contains('myObjectStore')) {
             idbLog_.innerHTML = "<p>Object store not yet created.</p>";
             return;
@@ -1125,7 +1125,7 @@ idbRequest.onsuccess = function(event) {
           var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
           // This callback will continue to be called until we have no more results.
           request.onsuccess = function(e) {
-            var cursor = e.result;
+            var cursor = e.target.result;
             if (!cursor) {
               idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
               return;
@@ -1144,7 +1144,7 @@ idbRequest.onsuccess = function(event) {
         function idbCreate_() {
           if (!idb_) {
             if (idbRequest_) {
-              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+              idbRequest_.addEventListener('success', idb_.removeObjectStore, false); // If indexedDB is still opening, just queue this up.
             }
             return;
           }
@@ -1168,7 +1168,7 @@ idbRequest.onsuccess = function(event) {
         function idbSet_() {
           if (!idb_) {
             if (idbRequest_) {
-              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+              idbRequest_.addEventListener('success', idb_.removeObjectStore, false); // If indexedDB is still opening, just queue this up.
             }
             return;
           }
@@ -1194,15 +1194,15 @@ idbRequest.onsuccess = function(event) {
           var objectStore = transaction.objectStore("myObjectStore");
           var request = objectStore.get(key);
           request.onerror = idbError_;
-          request.onsuccess = function(event) {
-            var value = event.result;
+          request.onsuccess = function(e) {
+            var value = e.target.result;
             if (objectStore.delete) {
               var request = objectStore.delete(key);
             } else {
               var request = objectStore.remove(key);
             }
             request.onerror = idbError_;
-            request.onsuccess = function(event) {
+            request.onsuccess = function(e) {
               var request = objectStore.add(value, newKey);
               request.onerror = idbError_;
               request.onsuccess = idbShow_;
@@ -1233,14 +1233,14 @@ idbRequest.onsuccess = function(event) {
         function idbRemove_() {
           if (!idb_) {
             if (idbRequest_) {
-              idbRequest_.addEventListener('success', removeObjectStore, false); // If indexedDB is still opening, just queue this up.
+              idbRequest_.addEventListener('success', idb_.removeObjectStore, false); // If indexedDB is still opening, just queue this up.
             }
             return;
           }
 
           var request = idb_.setVersion("the new version string");
           request.onerror = idbError_;
-          request.onsuccess = function(event) {
+          request.onsuccess = function(e) {
 
             if (idb_.objectStoreNames.contains('myObjectStore')) {
               try {
@@ -1287,7 +1287,7 @@ idbRequest.onsuccess = function(event) {
       <p>Browser support is still sparse:</p>
       <ul>
         <li>Implemented in FF4 and Chromium Dev Channel</li>
-        <li>Prefixed: <code>webkitIndexedDB</code></li>
+        <li>Prefixed: <code>window.webkitIndexedDB</code>in WebKit and <code>window.moz_indexedDB</code> in FF4</li>
       </ul>
     </section>
   </aside>
@@ -1394,7 +1394,7 @@ idbRequest.onsuccess = function(event) {
   </aside>
   <section>
     <pre class="hcenter">
-&lt;html <b>manifest="example.manifest"</b>&gt;... &lt;/html&gt;
+&lt;html <b>manifest="example.appcache"</b>&gt;... &lt;/html&gt;
 </pre>
     <pre style="margin-top:10px;font-size:18px">
 <b>CACHE MANIFEST</b>
@@ -1442,24 +1442,23 @@ var cache = <b>window.applicationCache</b>;
 </pre>
     <pre style="margin-top:10px;font-size:20px">
 cache.addEventListener('<b>cached</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>checking</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>downloading</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>error</b>', handleCacheError, false);
-
 cache.addEventListener('<b>noupdate</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>obsolete</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>progress</b>', handleCacheEvent, false);
-
 cache.addEventListener('<b>updateready</b>', handleCacheEvent, false);
 
-if (cache.<b>status</b> == cache.<b>UPDATEREADY</b>) {
-  cache.<b>swapCache</b>(); // Fetch was successful, swap the new cache.
-}
+// When a new manifest is successfully downloaded, swap the new cache and reload page.
+cache.addEventListener('updateready', function(e) {
+  if (cache.<b>status</b> == cache.<b>UPDATEREADY</b>) {
+    cache.<b>swapCache</b>();
+    if (confirm('A new version of this site is available. Load it?')) {
+      window.location.reload();
+    }
+  }
+}, false);
 </pre>
   </section>
 </div>
@@ -1767,7 +1766,7 @@ if (file.type.match(/image.*/)) {
   var blobURL = <b>window.URL.createObjectURL</b>(file);</b>
 
   var img = document.createElement('img');
-  img.src = blobURL; // blob:example.com:///7a6fa-5496-42d4-9bbb-40f9a0
+  img.src = blobURL; // blob:blobinternal:///d8c2c85e-ab1b-4b7b3d37bff6
   thumbnails.appendChild(img);
 
   // Clean-up: window.URL.revokeObjectURL(img.src);
@@ -1778,8 +1777,7 @@ var bb = new <b>BlobBuilder()</b>;
 <b>bb.append</b>('&lt;marquee&gt;Flashy Lights!!!&lt;/marquee&gt;');
 
 var iframe = document.createElement('iframe');
-iframe.src = <b>window.URL.createObjectURL</b>(
-    <b>bb.getBlob('text/html')</b>);
+iframe.src = <b>window.URL.createObjectURL</b>(<b>bb.getBlob('text/html')</b>);
 document.body.appendChild(iframe);
 </pre>
   </section>
@@ -1852,7 +1850,7 @@ function buildBlob() {
   <header>Browser Support</header>
   <aside class="note">
     <section>
-      FF4 does not yet support <code>window.URL.createObjectURL()</code>
+      Chrome is prefixed with <code>window.webkitURL.createObjectURL()</code>
     </section>
   </aside>
   <section class="vbox boxcenter browser-support" data-build>

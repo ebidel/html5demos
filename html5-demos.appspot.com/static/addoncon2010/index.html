@@ -24,6 +24,10 @@ Author: Eric Bidelman (ericbidelman)
     <link rel="stylesheet" href="css/prettify.css"/>
     <link rel="stylesheet" href="css/slide-presentation.css"/>
     <link rel="stylesheet" href="css/slide-content.css"/>
+    <script>
+      window.URL = window.URL ? window.URL :
+                   window.webkitURL ? window.webkitURL : window;
+    </script>
   </head>
   <body>
     <div class="presentation">
@@ -1237,8 +1241,6 @@ function buildBlob() {
   bb.append('  <b>Flashy Lights!!!</b>  ');
   bb.append('</marquee>');
 
-  window.URL = window.URL ? window.URL :
-               window.webkitURL ? window.webkitURL : window;
   var iframe = document.createElement('iframe');
   iframe.src = window.URL.createObjectURL(bb.getBlob('text/html'));
   iframe.style.backgroundColor = '#fff';
