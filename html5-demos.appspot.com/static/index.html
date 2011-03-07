@@ -30,21 +30,9 @@ li {
   margin: 5px 0;
   background: -webkit-linear-gradient(#eee, white);
   border-radius: 10px;
-  border: 3px solid #ccc;
+  border: 2px solid #ccc;
   width: 450px;
   cursor: pointer;
-}
-li footer {
-  font-size: 10px;
-  font-style: italic;
-  margin-top: 5px;
-}
-a {
-  color: #36B;
-  text-shadow: rgba(0, 0, 0, 0.4) 1px 1px 2px;
-}
-li:hover {
-  border: 3px solid #36B;
   -webkit-transition-property: border-color;
   -webkit-transition-duration: 0.4s;
   -webkit-transition-timing-function: ease-in-out;
@@ -55,9 +43,23 @@ li:hover {
   -o-transition-duration: 0.4s;
   -o-transition-timing-function: ease-in-out;
 }
+li footer {
+  font-size: 10px;
+  font-style: italic;
+  margin-top: 5px;
+}
+a {
+  text-decoration: none;
+  color: #36B;
+  text-shadow: rgba(0, 0, 0, 0.4) 1px 1px 2px;
+}
+li:hover {
+  border-color: #36B;
+}
 </style>
 </head>
 <body>
+
 <h3>Presentations</h3>
 <ul>
   <li><a href="/static/addoncon2010/index.html">Utilizing HTML5 in Google Chrome Extensions</a>
@@ -70,5 +72,21 @@ li:hover {
    <footer>Sao Paulo, Brazil</footer>
   </li>
 </ul>
+
+<h3>Demos</h3>
+<ul>
+  <li><a href="/static/filesystem/generatingResourceURIs.html">Generating URIs to File Resources</a>
+    <footer>Using window.URL.createObjectURL(), FileEntry.toURI(), and dataURIs with the FileSystem API.</footer>
+  </li>
+</ul>
+
+<script>
+var lis = document.querySelectorAll('li');
+for (var i = 0, li; li = lis[i]; ++i) {
+  li.addEventListener('click', function(e) {
+  window.location.href = this.querySelector('a').href;
+  }, false);
+}
+</script>
 </body>
 </html>
