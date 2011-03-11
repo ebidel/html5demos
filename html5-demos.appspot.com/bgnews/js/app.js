@@ -57,6 +57,8 @@ function onArticleOpen(el) {
     el.classList.add('on');
     el.classList.add('read');
 
+    news.updateReadState($(el).closest('.feed').data('table'), el.dataset['id']);
+
     // Insert content iframe if it's not already present.
     if (!el.querySelector('iframe')) {
       var table = el.parentNode.parentNode.dataset['table'];

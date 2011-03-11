@@ -212,8 +212,17 @@ h2, ul, li {
   opacity: 0.4;
 }
 .feed h4 {
+  color: navy;
   margin: 0 0 10px 0;
   text-shadow: 0 1px 0 white, 0 2px 0 white, 0 3px 0 rgba(0, 0, 0, .25);
+}
+.feed h4 a {
+  font-size: small;
+  margin-left: 15px;
+  text-shadow: none;
+  background: transparent url('data:image/png;base64,R0lGODlhCQAJAIABADNmzP///yH5BAEAAAEALAAAAAAJAAkAAAISDI5niRYPgYNP0pioVdFJVl0FADs=') no-repeat center right;
+  padding-right: 14px;
+  padding-bottom: 2px;
 }
 .feed .snippet {
   font-size: 10pt;
@@ -260,22 +269,20 @@ li {
   padding: 5px 0;
 }
 #unsupported {
-  padding: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  padding: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   text-align: center;
-  font-size: 12pt;
+  font-size: 10pt;
   background: #ffcc00;
   color: black;
   font-weight: bold;
-  -moz-box-shadow: 0 0 7px rgba(0,0,0,0.6) inset, 0 0 1px rgba(0,0,0,0.6) inset;
-  box-shadow: 0 0 7px rgba(0,0,0,0.6) inset, 0 0 1px rgba(0,0,0,0.6) inset;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 h1.loading {
   font-size: 300%;
-  color: rgba(0,0,0,0.8);
+  color: rgba(0,0,0,0.6);
   text-shadow: 0 1px 0px rgba(255,255,255,0.4);
   letter-spacing: 3px;
   top: 15%;

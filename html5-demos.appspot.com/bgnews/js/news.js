@@ -140,8 +140,8 @@ news.articleHTML = function(entry) {
 
   return ['<li onclick="onArticleOpen(this)" data-id="', entry.id,
           '" class="', entry.read ? 'read' : '', '">',
-          '<h4><a href="', entry.link, '" target="_new">', entry.title,
-          '</a>', '<span class="date">', formattedDateStr, '</span></h4>',
+          '<h4>', entry.title, '<a href="', entry.link, '" target="_new">open</a>',
+          '<span class="date">', formattedDateStr, '</span></h4>',
           '<div class="snippet"><span>', entry.snippet, '</span></div>',
           '</li>'].join('');
 };
