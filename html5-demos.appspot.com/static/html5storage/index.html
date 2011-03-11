@@ -1067,7 +1067,7 @@ while (<b>cursor.continue</b>()) {
    <section>
 <pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
 idbRequest.onsuccess = function(e) {
-  <b>var db = e.targe.result</b>;
+  <b>var db = idbRequest.result</b>;
   var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
   var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
   curRequest.<b>onsuccess</b> = ...;
@@ -1104,7 +1104,7 @@ idbRequest.onsuccess = function(e) {
           idbRequest_ = window.indexedDB.open("Test", "A test object store.");
           idbRequest_.onerror = idbError_;
           idbRequest_.addEventListener('success', function(e) {
-            idb_ = e.target.result;
+            idb_ = idbRequest_.result || e.result;  // FF4 requires e.result. IDBRequest.request isn't set :(
             idbShow_(e);
           }, false);
         }
@@ -1125,7 +1125,7 @@ idbRequest.onsuccess = function(e) {
           var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
           // This callback will continue to be called until we have no more results.
           request.onsuccess = function(e) {
-            var cursor = e.target.result;
+            var cursor = request.result || e.result;  // FF4 requires e.result. IDBRequest.request isn't set :(
             if (!cursor) {
               idResultsWrapper_.innerHTML = '<ul class="record-list" id="idb-results">' + html.join('') + '</ul>';
               return;
@@ -1195,11 +1195,11 @@ idbRequest.onsuccess = function(e) {
           var request = objectStore.get(key);
           request.onerror = idbError_;
           request.onsuccess = function(e) {
-            var value = e.target.result;
+            var value = e.result || this.result;  // FF4 requires e.result. IDBRequest.request isn't set :(;
             if (objectStore.delete) {
               var request = objectStore.delete(key);
             } else {
-              var request = objectStore.remove(key);
+              var request = objectStore.remove(key); // FF4 not up to spect
             }
             request.onerror = idbError_;
             request.onsuccess = function(e) {
@@ -1224,7 +1224,7 @@ idbRequest.onsuccess = function(e) {
           if (objectStore.delete) {
             var request = objectStore.delete(key);
           } else {
-            var request = objectStore.remove(key);
+            var request = objectStore.remove(key);  // FF4 not up to spect
           }
           request.onerror = idbError_;
           request.onsuccess = idbShow_;
