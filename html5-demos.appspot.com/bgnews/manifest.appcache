@@ -1,0 +1,16 @@
+CACHE MANIFEST
+
+CACHE:
+index.html
+css/styles.css
+js/app.js
+js/news.js
+js/jquery.1.5.1.min.js
+js/jquery.scrollTo-min.js
+images/bg2.png
+
+
+NETWORK:
+*
+
+# 2011-03-10:6:07

@@ -6,8 +6,23 @@ api_version: 1
 default_expiration: "30d"
 
 handlers:
+
+- url: /(.*\.(appcache|manifest))
+  static_files: \1
+  mime_type: text/cache-manifest
+  upload: (.*\.(appcache|manifest))
+  expiration: "0s"
+
+- url: /(.*\.crx)
+  static_files: \1
+  mime_type: application/x-chrome-extension
+  upload: (.*\.crx)
+
 - url: /static
   static_dir: static
+
+- url: /bgnews
+  static_dir: bgnews
 
 #- url: /gddbr2010
 #  static_files: static/gddbr2010-keynote/index.html
@@ -17,12 +32,12 @@ handlers:
 #  static_files: static/gddbr2010-keynote/\1
 #  upload: /gddbr2010/(.*)
 
-- url: /admin.*
-  script: $PYTHON_LIB/apphosting/ext/admin/__init__.py
-
 - url: /
   static_files: static/index.html
   upload: /static/index.html
+
+- url: /admin.*
+  script: $PYTHON_LIB/apphosting/ext/admin/__init__.py
 
 - url: /.*
   script: main.py

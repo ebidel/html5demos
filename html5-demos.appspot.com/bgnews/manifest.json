@@ -1,0 +1,22 @@
+{
+  "name": "Background News (Sample)",
+  "description": "Sample application that uses Google Chrome 10's new background feature.",
+  "version": "0.0.1",
+  "icons": {
+    "16": "images/icons/newspaper-icon.jpg",
+    "48": "images/icons/newspaper-icon.jpg",
+    "128": "images/icons/newspaper-icon.jpg"
+  },
+  "app": {
+    "urls": [
+      "http://html5-demos.appspot.com/bgnews/"
+    ],
+    "launch": {
+      "web_url": "http://html5-demos.appspot.com/bgnews/index.html"
+    }
+  },
+  "permissions": [
+    "background",
+    "unlimitedStorage"
+  ]
+}
