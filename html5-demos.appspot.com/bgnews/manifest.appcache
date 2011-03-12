@@ -7,10 +7,13 @@ js/app.js
 js/news.js
 js/jquery.1.5.1.min.js
 js/jquery.scrollTo-min.js
+js/yepnope.1.0.1-min.js
+js/classList.min.js
+js/dataset.js
 images/bg2.png
 
 
 NETWORK:
 *
 
-# 2011-03-10:10:55
+# 2011-03-12:2:03

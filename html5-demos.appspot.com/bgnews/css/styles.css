@@ -73,11 +73,11 @@ h2, ul, li {
   position: relative;
   width: 610px;
 }
-.help section > div:first-child {
+.help section > div:first-of-type {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-.help section > div:last-child {
+.help section > div:last-of-type {
   padding-top: 0;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -339,4 +339,43 @@ button:not([disabled]):active {
 }
 button[disabled] {
   color: #ccc;
+}
+
+@media handheld, only screen and (max-width: 420px) {
+  body {
+    padding: 5px;
+  }
+  .help > section {
+    width: auto;
+  }
+  .help section > div:first-of-type {
+    display: none;
+  }
+  .help section > div:last-of-type {
+    padding-top: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .help .shortcuts,
+  .help #feed-list {
+    -webkit-columns: 1;
+    -moz-columns: 1;
+    columns: 1;
+  }
+  .feed h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .feed .snippet {
+    text-indent: 0;
+  }
+  .feed .date {
+    display: none;
+  }
+  #unsupported {
+    display: none;
+  }
+  .overlay {
+    display: none;
+  }
 }

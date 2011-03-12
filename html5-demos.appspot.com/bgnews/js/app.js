@@ -120,7 +120,7 @@ function toggleFeedVisibility(id) {
   document.querySelector('#' + id).classList.toggle('hidden');
 }
 
-window.addEventListener('scroll', onScroll, false);
+//window.addEventListener('scroll', onScroll, false);
 
 window.addEventListener('keydown', function(e) {
 
@@ -184,7 +184,6 @@ document.querySelector('#feeds').addEventListener('webkitTransitionEnd', functio
   if (e.propertyName == 'height' && e.target.nodeName == 'LI' &&
       e.target.classList.contains('on')) {
     $.scrollTo($(e.target), 800, {offset: {top:-40, left:0}});
-    //currentArticle.table = $(e.target).closest('.feed').data('table');
   }
 }, false);
 
@@ -208,6 +207,18 @@ document.querySelector('#refresh-rate').addEventListener('change', function(e) {
 
 
 (function() {
+var testA = document.createElement('a');
+yepnope([{
+  test: 'classList' in testA,
+  nope: ['js/classList.min.js'],
+  complete: function (url, result, key) {
+    window.addEventListener('scroll', onScroll, false);
+  }
+}, {
+  test: 'dataset' in testA,
+  nope: ['js/dataset.js'],
+}]);
+
 // Check for support
 if (window.chrome && window.chrome.app && window.chrome.app.isInstalled) {
   var CHROME_VERSION = parseFloat(navigator.userAgent.split('Chrome')[1].split(' ')[0].substring(1));

@@ -1,11 +1,11 @@
 {
-  "name": "Background News (Sample)",
+  "name": "Background News",
   "description": "Sample application that uses Google Chrome 10's new background feature.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "icons": {
-    "16": "images/icons/newspaper-icon.jpg",
-    "48": "images/icons/newspaper-icon.jpg",
-    "128": "images/icons/newspaper-icon.jpg"
+    "16": "images/icons/newspaper-icon256.png",
+    "48": "images/icons/newspaper-icon256.png",
+    "128": "images/icons/newspaper-icon128.png"
   },
   "app": {
     "urls": [

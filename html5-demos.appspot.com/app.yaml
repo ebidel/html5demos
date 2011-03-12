@@ -3,9 +3,13 @@ version: 1
 runtime: python
 api_version: 1
 
-default_expiration: "30d"
+#default_expiration: "30d"
 
 handlers:
+
+- url: /google7833d615495f1112.html
+  static_files: google7833d615495f1112.html
+  upload: google7833d615495f1112.html
 
 - url: /(.*\.(appcache|manifest))
   static_files: \1

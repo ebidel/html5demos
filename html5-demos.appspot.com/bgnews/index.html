@@ -20,6 +20,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold|Droid+Sans+Mono|Gruppo|Permanent+Marker" rel="stylesheet" type="text/css">
 <link rel="stylesheet" media="all" href="css/styles.css">
 <title>Background News (Sample)</title>
@@ -30,8 +31,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 
 <aside class="help hidden">
   <section>
+    <span onclick="toggleHelp()" id="close">x</span>
     <div>
-      <span onclick="toggleHelp()" id="close">x</span>
       <h2>Keyboard shortcuts</h2>
       <div class="shortcuts">
         <p><strong>space</strong> : advance to next unread article</p>
@@ -61,7 +62,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 </aside>
 
 <div id="unsupported" class="hidden">
-  You are not using Google Chrome 10+ or have not <a href="#" target="_new">installed this web app</a> as a Chrome Web Store application.
+  You are not using Google Chrome 10+ or have not <a href="https://chrome.google.com/webstore/detail/knhfnnnpmoenoblkgdeaoffjniioldbp" target="_new">installed this web app</a> as a Chrome Web Store application.
 </div>
 
 <header><a href="javascript:toggleHelp()">Press 'h' for help</a></header>
@@ -74,7 +75,19 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 
 <script src="js/jquery.1.5.1.min.js"></script>
 <script src="js/jquery.scrollTo-min.js"></script>
+<script src="js/yepnope.1.0.1-min.js"></script>
 <script src="js/news.js"></script>
 <script src="js/app.js"></script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </body>
 </html>

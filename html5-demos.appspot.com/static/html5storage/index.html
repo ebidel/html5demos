@@ -1067,7 +1067,7 @@ while (<b>cursor.continue</b>()) {
    <section>
 <pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
 idbRequest.onsuccess = function(e) {
-  <b>var db = idbRequest.result</b>;
+  <b>var db = this.result</b>;
   var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
   var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
   curRequest.<b>onsuccess</b> = ...;
@@ -2248,6 +2248,17 @@ Modernizr.addTest('filesystem', function() {
 <script src="js/prettify/prettify.js"></script>
 <script src="js/slide-presentation.js"></script>
 <script src="js/dnd-lib.js"></script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 
 <!--[if IE]>
   <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
