@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-  <title>FileEntry.toURI(), createObjectURL, dataURI</title>
+  <title>FileEntry.toURL(), createObjectURL, dataURL</title>
   <style>
     html { height: 100%; }
     body {
@@ -109,7 +109,7 @@
 </head>
 <body>
 
-<h2>Generating URIs to File Resources</h3>
+<h2>Generating URLs to File Resources</h3>
 
 <details open="open">
   <summary>
@@ -117,8 +117,8 @@
     <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/">FileSystem API</a>:</p>
     <ul>
       <li><code>window.URL.createObjectURL()</code></li>
-      <li><code>FileEntry.toURI()</code></li>
-      <li>Read the file contents as a <code>dataURI</code></li>
+      <li><code>FileEntry.toURL()</code></li>
+      <li>Read the file contents as a <code>dataURL</code></li>
     </ul>
   </summary>
   <p>You can use one of these generated URLs as the <code>src</code> attribute
@@ -141,6 +141,7 @@
 <script>
 var FS_ = null;
 window.URL = window.URL || window.webkitURL;
+window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.resolveLocalFileSystemURI;
 
 function errorCallback(e) {
   console.log('Error: ', e);
@@ -191,7 +192,7 @@ function onFileSelect(filename) {
       // it's always a good idea to free the memory if you're done using it.
       // window.URL.revokeObjectURL(src);
 
-      // Method 2: use the FileReader API to read the contents into a dataURI.
+      // Method 2: use the FileReader API to read the contents into a dataURL.
       var reader = new FileReader();
 
       // Closure to capture the file information.
@@ -203,15 +204,15 @@ function onFileSelect(filename) {
       reader.readAsDataURL(file);
     });
 
-    // Method 3: use the FileSystem's Entry.toURI() to create a URL to the file.
-    src = fileEntry.toURI();
+    // Method 3: use the FileSystem's Entry.toURL() to create a URL to the file.
+    src = fileEntry.toURL ? fileEntry.toURL() : fileEntry.toURI()
     output.appendChild(buildFigure(src));
 
   }, errorCallback);
 }
 
 function deleteFile(filesystemPath) {
-  window.resolveLocalFileSystemURI(filesystemPath, function(fileEntry) {
+  window.resolveLocalFileSystemURL(filesystemPath, function(fileEntry) {
     fileEntry.remove(function() {
       readDirectories();
     }, errorCallback);
@@ -235,7 +236,7 @@ function readDirectories() {
             var div = document.createElement('div');
             div.innerHTML =
                 ['<a href="javascript:onFileSelect(\'', entry.name, '\');">', entry.name,
-                 '</a><a href="javascript:deleteFile(\'', entry.toURI(),
+                 '</a><a href="javascript:deleteFile(\'', entry.toURL ? entry.toURL() : entry.toURI(),
                  '\');" class="remove">delete</a>'].join('');
             fragment.appendChild(div);
           }
