@@ -235,7 +235,7 @@ TODO(ericbidelman): Add jump to slide
     }
   };
   function checkIndexedDB() {
-    if (!!window.indexedDB || !!window.webkitIndexedDB || !!window.moz_indexedDB) {
+    if (!!window.indexedDB || !!window.webkitIndexedDB || !!window.mozIndexedDB) {
       unhide('feature-indexeddb');
     } else {
       unhide('feature-no-indexeddb');
@@ -1095,8 +1095,8 @@ idbRequest.onsuccess = function(e) {
         if ('webkitIndexedDB' in window) {
           window.indexedDB = window.webkitIndexedDB;
           window.IDBTransaction = window.webkitIDBTransaction;
-        } else if ('moz_indexedDB' in window) {
-          window.indexedDB = window.moz_indexedDB;
+        } else if ('mozIndexedDB' in window) {
+          window.indexedDB = window.mozIndexedDB;
         }
 
         // Open our IndexedDB if the browser supports it.
@@ -1287,7 +1287,7 @@ idbRequest.onsuccess = function(e) {
       <p>Browser support is still sparse:</p>
       <ul>
         <li>Implemented in FF4 and Chromium Dev Channel</li>
-        <li>Prefixed: <code>window.webkitIndexedDB</code>in WebKit and <code>window.moz_indexedDB</code> in FF4</li>
+        <li>Prefixed: <code>window.webkitIndexedDB</code>in WebKit and <code>window.mozIndexedDB</code> in FF4</li>
       </ul>
     </section>
   </aside>
