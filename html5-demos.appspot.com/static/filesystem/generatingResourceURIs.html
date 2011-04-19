@@ -272,6 +272,9 @@ document.getElementById('files').addEventListener('change', function(e) {
   readDirectories();
 }, false);
 
+
+window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem || window.WebKitRequestFileSystem;
+
 window.requestFileSystem(TEMPORARY, 1024 * 1024,  function(fs) {
   FS_ = fs;
   readDirectories();
