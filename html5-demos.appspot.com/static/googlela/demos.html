@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>HTML5 Demos</title>
+<link href="http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold|Droid+Sans+Mono|Permanent+Marker" rel="stylesheet" type="text/css">
+<style>
+html { height: 100%; }
+body {
+  overflow: hidden;
+  padding: 2em;
+  margin: 0;
+  font: 10pt 'Droid Sans', Arial, sans-serif;
+  background: -moz-radial-gradient(center center, #fff, orange) no-repeat;
+  background: -webkit-radial-gradient(center center, #fff, orange) no-repeat;
+  color: #222;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+}
+ul {
+  padding: 0;
+  margin-left: 1em;
+}
+li {
+  list-style: none;
+}
+li:not(:last-child) {
+  margin-bottom: 5px;
+}
+h2 {
+  font-family: 'Permanent Marker';
+  text-shadow: 2px 1px black;
+  letter-spacing: 2px;
+  margin: 0.5em 0;
+  color: orange;
+}
+h2:first-of-type {
+  margin-top: 0;
+}
+a {
+  color: rgb(61, 92, 157);
+}
+a:hover {
+  color: black;
+}
+div {
+  background: rgba(255,255,255,0.75);
+  border: 7px solid black;
+  border-radius: 25px;
+  padding: 15px;
+}
+div + div {
+  margin-left: 3em;
+}
+#apps img {
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+#chromelogo {
+  background: url('chromelogo.png') no-repeat 50% 50%;
+  height: 256px;
+  width: 256px;
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+aside {
+  z-index: -1;
+}
+#html5logo {
+  background: url('HTML5_Badge_256.png') no-repeat 50% 50%;
+  height: 256px;
+  width: 256px;
+  position: absolute;
+  bottom: 2%;
+  right: 1%;
+}
+#chromelogo:hover {
+  -webkit-animation-name: rotateLeft;
+  -webkit-animation-duration: 5s;
+}
+.spin {
+  -webkit-animation-name: rotateRight;
+  -webkit-animation-duration: 15s;
+  -webkit-animation-timing-function: linear;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-iteration-count: infinite;
+}
+.pulse {
+  -webkit-animation-name: pulse;
+  -webkit-animation-duration: 4s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+}
+@-webkit-keyframes rotateRight {
+  from {
+    -webkit-transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rotateLeft {
+  from {
+    -webkit-transform: rotate(360deg);
+  }
+  to {
+    -webkit-transform: rotate(0deg);
+  }
+}
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale(1, 1);
+  }
+  50% {
+    -webkit-transform: scale(1.1, 1.1);
+  }
+  to {
+    -webkit-transform: scale(0.5, 0.5);
+  }
+}
+</style>
+</head>
+<body>
+
+<aside id="chromelogo" class="spin"></aside>
+<div id="demos"></div>
+<div id="apps"></div>
+<aside id="html5logo" class="pulse"></aside>
+
+<script>
+var DEMOS = {
+  'HTML5 Demo Sites': [
+    'http://demos.mozilla.org/en-US/',
+    'http://studio.html5rocks.com/',
+    'http://www.chromeexperiments.com/detail/the-wilderness-downtown/',
+    'http://www.monocubed.com/2010/10/29/make3d-native-drag-drop-in-browser/'
+  ],
+
+  'Games' : [
+    'http://mozillademos.org/demos/runfield/demo.html',
+    'http://monocubed.com/doodles/processingjs/gmail/26/'
+  ],
+
+  'Orientation': [
+    'http://html5-demos.appspot.com/static/gddbr2010-keynote/index.html#slide10',
+    'http://www.monocubed.com/2010/10/20/fight-or-flight-html5-game/'
+  ],
+
+  'Speech': [
+    'http://html5-demos.appspot.com/static/gddbr2010-keynote/Google.com.html'
+  ],
+
+  'WebGL': [
+    'http://www.chromeexperiments.com/webgl',
+    'http://bodybrowser.googlelabs.com/body.html'
+  ],
+
+  'Websockets': [
+    'http://mrdoob.com/projects/multiuserpad/'
+  ],
+
+  'Vide / Audio (FF4)' : [
+    'http://www.craftymind.com/2010/04/20/blowing-up-html5-video-and-mapping-it-into-3d-space/',
+    'http://weare.buildingsky.net/processing/dsp.js/examples/sampler.html',
+    'http://haptic-data.com/sketches/html5/fft1.html'
+  ],
+};
+
+var APPS = {
+  'New York Times': ['https://chrome.google.com/webstore/detail/ecmphppfkcfflgglcokcbdkofpfegoel', '/1300296533.58/logo128/7001?itemtype=app'],
+  'NPR': ['https://chrome.google.com/webstore/detail/hkpcelemhneoooapbbopolpjhmbfmnbf', '/1298072328.56/logo128/1?itemtype=app'],
+  'Math Board': ['https://chrome.google.com/webstore/detail/ocjpbdojdmdmnoijibadlmpiamcmmmcj', '/1298070329.78/logo128/1?itemtype=app'],
+  'Sports Illustrated Snapshot': ['https://chrome.google.com/webstore/detail/fhpknagfeicadegdhaipgklmnpekbgeb', '/1300144793.62/logo128/3001?itemtype=app'],
+  'Grooveshark': ['https://chrome.google.com/webstore/detail/ipmhoehjioleannhdgjkpdmkcdlaagek', '/1292863083.26/logo128/1?itemtype=app'],
+  'TweetDeck': ['https://chrome.google.com/webstore/detail/hbdpomandigafcibbmofojjchbcdagbl', '/1298679643.73/logo128/24001?itemtype=app'],
+  'deviantART muro': ['https://chrome.google.com/webstore/detail/namljbfbglehfnlonjmebceimaalofei', '/1300911480.81/logo128/7001?itemtype=app'],
+  'Marvel Comics': ['https://chrome.google.com/webstore/detail/hjhfaknohpjconjoefidanhihokmkice', '/1298677110.35/logo128/1001?itemtype=app']
+};
+
+(function() {
+
+for (var title in DEMOS) {
+  var html = [];
+  for (var i = 0, link; link = DEMOS[title][i]; ++i) {
+    html.push('<li><a href="', DEMOS[title][i], '" target="_new">',
+              DEMOS[title][i].replace('http://', ''), '</a></li>')
+  }
+  document.querySelector('#demos').insertAdjacentHTML(
+      'beforeEnd', '<h2>' + title + '</h2><ul>' + html.join('') + '</ul>');
+}
+
+var html = [];
+for (var title in APPS) {
+  var imgSrc =  (APPS[title][0] + APPS[title][1]).replace('/detail/', '/img/');
+  html.push(
+      '<li><img src="', imgSrc, '"><a href="', APPS[title][0], '" target="_new">', title, '</a></li>');
+}
+document.querySelector('#apps').insertAdjacentHTML(
+    'beforeEnd', '<h2>Apps</h2><ul>' + html.join('') + '</ul>');
+})();
+</script>
+</body>
+</html>
