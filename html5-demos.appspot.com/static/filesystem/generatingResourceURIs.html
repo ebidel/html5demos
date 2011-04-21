@@ -142,6 +142,8 @@
 var FS_ = null;
 window.URL = window.URL || window.webkitURL;
 window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.resolveLocalFileSystemURI;
+window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
+window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
 function errorCallback(e) {
   console.log('Error: ', e);
@@ -271,9 +273,6 @@ document.getElementById('files').addEventListener('change', function(e) {
 
   readDirectories();
 }, false);
-
-
-window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem || window.WebKitRequestFileSystem;
 
 window.requestFileSystem(TEMPORARY, 1024 * 1024,  function(fs) {
   FS_ = fs;
