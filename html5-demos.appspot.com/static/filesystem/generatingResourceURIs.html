@@ -141,7 +141,7 @@
 <script>
 var FS_ = null;
 window.URL = window.URL || window.webkitURL;
-window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.resolveLocalFileSystemURI;
+window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL || window.resolveLocalFileSystemURI;
 window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
