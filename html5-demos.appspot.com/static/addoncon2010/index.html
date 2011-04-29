@@ -1703,9 +1703,9 @@ function sendArrayBuffer() {
  *
 --> 
 <div class="slide">
-  <header>Example: Fetch + Write Binary Data with XHR</header>
+  <header>Example: Fetch + Write Binary Data with XHR1</header>
   <section>
-    <p>Chrome Extensions can make XD XHRs</p>
+    <p>BTW, Chrome Extensions can make XD XHRs.</p>
     <pre>
 function getRequest(data) {
   var xhr = new XMLHttpRequest();
@@ -1719,6 +1719,9 @@ function getRequest(data) {
   };
   xhr.send();
 }
+
+getRequest({filename: 'google_logo.png', type: 'image/png',
+            url: 'http://www.google.com/images/logos/ps_logo2.png'});
 </pre>
   </section>
 </div>
@@ -1729,14 +1732,14 @@ function getRequest(data) {
  *
 --> 
 <div class="slide">
-  <header>Example: Fetch + Write Binary Data with XHR</header>
+  <header>Example: Fetch + Write Binary Data with XHR1</header>
   <section>
     <pre style="font-size:20px;">
 function writeToFS(data, filename, type) {
   window.requestFileSystem(TEMPORARY, 1024 * 1024, function(fs) {
     fs.root.getFile(filename, {create: true}, function(fileEntry) {
       fileEntry.createWriter(function(writer) {
-        writer.onwrite = ...;
+        writer.onwrite = function(e) { ... };
 
         <b>var bb = new BlobBuilder();
         var ui8a = new Uint8Array(data.length);
@@ -1750,14 +1753,50 @@ function writeToFS(data, filename, type) {
     }, onError);
   }, onError);
 }
-getRequest({filename: 'google_logo.png', type: 'image/png',
-            url: 'http://www.google.com/images/logos/ps_logo2.png'});
 </pre>
   <!--<p class="hcenter"><a href="http://localhost/~ericbidelman/html5/xhr_fetch_binary.html" target="_new">Demo</a> / 
   <a href="file:///users/ericbidelman/projects/chrome/nacl-chrome-profile/Default/FileSystem/http_localhost_0/Temporary/chrome-cRFvABjaUzzVSSQi/" target="_new">See it</a>
   </p>-->
   </section>
 </div>
+
+<!--
+ *
+ * FileSystem: Example fetching binary data using new XHR2
+ *
+--> 
+<div class="slide">
+  <header>Example: Fetch + Write Binary Data with XHR2</header>
+  <section>
+<pre style="font-size:19px">
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/path/to/image.png', true);
+
+<b>xhr.responseType = 'arraybuffer';</b> // OR, xhr.responseType = 'blob';
+
+<b>xhr.onload</b> = function(e) {
+
+  <b>var bb = new BlobBuilder();</b>
+  <b>bb.append</b>(<b>this.response</b>); // Note: not xhr.responseText
+
+  window.requestFileSystem(TEMPORARY, 1024 * 1024, function(fs) {
+    fs.root.getFile('image.png', {create: true}, function(fileEntry) {
+      fileEntry.createWriter(function(writer) {
+
+        writer.onwrite = function(e) { ... };
+
+        <b>writer.write</b>(bb.getBlob('image/png'));
+
+      }, onError);
+    }, onError);
+  }, onError);
+};
+
+xhr.send();
+</pre>
+  </section>
+</div>
+
 
 <!--
  *
