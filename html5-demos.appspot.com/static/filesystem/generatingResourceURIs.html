@@ -142,7 +142,7 @@
 var FS_ = null;
 window.URL = window.URL || window.webkitURL;
 window.resolveLocalFileSystemURL = window.resolveLocalFileSystemURL || window.webkitResolveLocalFileSystemURL || window.resolveLocalFileSystemURI;
-window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
+window.BlobBuilder = window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder;
 window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 
 function errorCallback(e) {

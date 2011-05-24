@@ -27,7 +27,7 @@ Author: Eric Bidelman (ericbidelman)
     <script>
       window.URL = window.URL ? window.URL :
                    window.webkitURL ? window.webkitURL : window;
-      window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
+      window.BlobBuilder = window.WebKitBlobBuilder || window.MozBlobBuilder || window.BlobBuilder;
       window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
     </script>
   </head>
