@@ -26,7 +26,7 @@ html, body {
    height: 100%;
 }
 body {
-  padding: 1em 3em;
+  padding: 0 3em;
   font: 12pt normal 'Myriad Pro', Arial, sans-serif;
   background: -moz-radial-gradient(right center, #fff, #bbb) no-repeat;
   background: -webkit-radial-gradient(right center, #fff, #bbb) no-repeat;
@@ -61,7 +61,7 @@ li {
 }
 li footer {
   font-size: 10px;
-  font-style: italic;
+ 
   margin-top: 5px;
 }
 a {
@@ -97,8 +97,12 @@ h3 {
 
 <h3>Demos</h3>
 <ul>
+  <li><a href="/static/navigator.onLine.html">navigator.onLine demo</a>
+    <footer>Using <code>navigator.onLine</code> and online/offline events to check for connectivity.</footer>
+  </li>
   <li><a href="/static/filesystem/generatingResourceURIs.html">Generating URIs to File Resources</a>
-    <footer>Using window.URL.createObjectURL(), FileEntry.toURL(), and dataURIs with the FileSystem API.</footer>
+    <footer>Using <code>window.URL.createObjectURL()</code>, <code>FileEntry.toURL()</code>,
+    and dataURLs with the FileSystem API.</footer>
   </li>
   <li><a href="/bgnews/index.html">Background News</a> <small>[ <a href="https://chrome.google.com/webstore/detail/knhfnnnpmoenoblkgdeaoffjniioldbp">install</a> ]</small>
     <footer>Using Google Chrome 10's <a href="http://code.google.com/chrome/apps/docs/background.html">background feature</a>.</footer>
