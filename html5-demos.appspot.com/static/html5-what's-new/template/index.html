@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+  <title>The Latest in HTML5</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <script src='../slides.js'></script>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Kameron|Muli|Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono&v2">
+</head>
+<body style="display: none">
+
+<section class='slides layout-regular'>
+
+  <article id="title">
+    <h1>The Latest in HTML <img src="../images/HTML5_Badge_64.png"></h1>
+    <p>
+      Eric Bidelman ( <a href="https://plus.google.com/118075919496626375791/" target="_blank">G+</a>, <a href="http://twitter.com/ebidel" target="_blank">@ebidel</a> )
+      <br>
+      Developer Relations Brown Bag
+      <br>
+      <time pubdate datetime="2011-07-07">July 7, 2011</time>
+    </p>
+  </article>
+
+  <article>
+    <h3>There's a lot this presentation doesn't cover!</h3>
+    <ul class="build">
+      <li>CSS3 / WebGL / Canvas</li>
+      <li>HTML5 Forms</li>
+      <li>Device Orientation API</li>
+      <li>FileSystem API</li>
+      <li>IndexedDB</li>
+      <li>History API</li>
+      <li>Websockets, Server-Sent Events</li>
+      <li>XHR2</li>
+      <li>...</li>
+    </ul>
+    <p class="build centered"><a href="http://www.htmlfivewow.com" target="_blank">http://www.htmlfivewow.com</a></p>
+  </article>
+
+  <article>
+    <h3>OK...then what does it cover?</h3>
+    <ul class="build">
+      <li>Lesser known <u>gems</u></li>
+      <li>Smaller APIs for building more <u>powerful web apps</u></li>
+      <li>One new/sexy API: Web Audio API</li>
+      <li>Things in the pipeline</li>
+    </ul>
+  </article>
+
+  <article class="fill">
+    <h2>Semantics &amp; Markup</h2>
+    <img src="images/rings.jpg" style="opacity:0.25">
+  </article>
+
+  <article>
+    <h3>&lt;details&gt; / &lt;summary&gt;</h3>
+    <section>
+        <pre>
+&lt;details open=&quot;open&quot;&gt;
+  &lt;summary&gt;Information&lt;/summary&gt;
+  &lt;p&gt;If your browser supports this element, it should allow
+  you to expand and collapse these details.&lt;/p&gt;
+&lt;/details&gt;
+</pre>
+    </section>
+    <details open="open">
+      <summary>Information</summary>
+      <p>If your browser supports this element, it should allow
+      you to expand and collapse these details.</p>
+    </details>
+  </article>
+
+  <article>
+    <h3>&lt;output&gt;</h3>
+    <style>
+      #output-example input {
+        width: 125px;
+      }
+    </style>
+    <section>
+  <pre style="font-size:65%">
+&lt;form oninput="result.value=a.<b>valueAsNumber</b> + b.<b>valueAsNumber</b>"&gt;
+0&lt;input type=&quot;range&quot; name=&quot;b&quot;&gt;100 +&lt;input type=&quot;number&quot; name=&quot;a&quot;&gt; =
+&lt;output name=&quot;result&quot;&gt;&lt;/output&gt;
+&lt;/form&gt;
+</pre>
+    </section>
+    <section>
+      <form id="output-example" oninput="result.value=a.valueAsNumber + b.valueAsNumber">
+        0<input name="a" type="range" min="0" max="100" value="25">100 +
+        <input name="b" type="number" value="1"> =
+        <output name="result"></output>
+      </form>
+    </section>
+  </article>
+
+  <article>
+    <h3>&lt;mark&gt;</h3>
+    <style>
+      #mark-example {
+        line-height: 2;
+      }
+      #mark-example mark {
+        border-radius: 5px;
+        padding: 5px;
+        color: white;
+        text-shadow: none;
+      }
+      #mark-example mark:nth-of-type(1) {
+        background-color: navy;
+      }
+      #mark-example mark:nth-of-type(2) {
+        background-color: red;
+      }
+      #mark-example mark:nth-of-type(3) {
+        background-color: #ffcc00;
+      }
+      #mark-example mark:nth-of-type(4) {
+        background-color: green;
+      }
+      #mark-example mark:nth-of-type(5) {
+        color: black;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+      }
+    </style>
+    <p>Semantically highlight parts of your text:</p>
+    <section>
+      <pre>Lorem ipsum dolor, <b>&lt;mark&gt;</b>consectetur<b>&lt;/mark&gt;</b> adipiscing...</pre>
+    </section>
+    <section>
+      <p id="mark-example">Lorem ipsum dolor, <mark>consectetur</mark> adipiscing elit. Maecenas egestas
+      facilisis <mark>lectus</mark> a sagittis. <mark>Integer</mark> imperdiet nisl non tortor blandit
+      lobortis at eu <mark>justo</mark>. Etiam viverra nunc id dolor <mark>hendrerit</mark> vestibulum lobortis tellus ornare.</p>
+    </section>
+  </article>
+
+  <article>
+      <h3>Speech input <input type="text" x-webkit-speech></h3>
+        <pre class="centered">
+    &lt;input type="text" <b>x-webkit-speech</b>&gt;
+</pre>
+  <pre>
+function inputChange(e) {
+  if (<b>e.results</b>) { // e.type == 'webkitspeechchange'
+    for (var i = 0, result; result = e.results[i]; ++i) {
+      console.log(<b>result.utterance</b>, <b>result.confidence</b>);
+    }
+    console.log('Best result: ' + this.value);
+  }
+}
+
+var input = document.querySelector('[x-webkit-speech]');
+input.addEventListener('change', inputChange, false);
+input.addEventListener('<b>webkitspeechchange</b>', inputChange, false);
+</pre>
+  </article>
+
+  <article class="fill">
+    <h2>Core Platform ( JS )</h2>
+    <img src='images/core.jpg'>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/jim031956/5176010917/sizes/l/in/photostream/">http://www.flickr.com/photos/jim031956/5176010917/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+
+  <article>
+    <h2 class="blue">Element Properties</h2>
+  </article>
+
+  <article>
+    <h3><code>Element.classList</code> - cut the cord  ( library deps )</h3>
+    <pre class="centered">
+&lt;div id="main" class="shadow rounded">&lt;/div>
+</pre>
+    <pre>
+var el = document.querySelector('#main').classList;
+el.add('highlight');
+el.remove('shadow');
+el.toggle('highlight');
+
+console.log(el.contains('highlight')); // false
+console.log(el.contains('shadow')); // false
+console.log(el.classList.toString() == el.className); // true
+</pre>
+    <p>Output:</p>
+    <pre class="centered">
+&lt;div id="main" class="rounded">&lt;/div>
+</pre>
+  </article>
+
+  <article class="smaller">
+    <h3><code>Element.dataset</code> - stash things for latter</h3>
+    <p>Define, store, and retrieve custom data on the DOM.</p>
+    <pre class="centered">
+&lt;p id="out" data-id="good" data-name="joe" data-screen-name="user1">&lt;/p>
+</pre>
+      <pre>
+var el = document.querySelector('#out');
+
+// Add new data attributes via JS.
+el.dataset.foo = 'bar'; // == el.setAttribute('data-foo', 'bar');
+
+var html = [];
+for (var key in el.dataset) {
+  html.push(key, ': ', el.dataset[key], '&lt;br>');
+}
+
+el.innerHTML = html.join('');
+</pre>
+      <p>Output:</p>
+      <pre>
+id: good
+name: joe
+screenName: user1
+foo: bar
+</pre>
+  </article>
+
+  <article class="smaller">
+    <h3><code>Element.matchesSelector()</code> - If the shoe fits, where it!</h3>
+    <p>Check if an element matches a given CSS selector:</p>
+    <pre class="centered">&lt;div id="main" class="active" data-type="tweet"&gt;140 chars&lt;/div&gt;</pre>
+    <pre>
+document.querySelector('div').<b>matchesSelector</b>('[data-type="tweet"]') // == true
+</pre>
+    <p>Note: <code>[webkit|moz|ms]MatchesSelector</code></p>
+  </article>
+
+    <article class="smaller">
+      <h3><code>MediaElement.crossOrigin</code> - read pixels, XD</h3>
+      <style>
+        #crossorigin-demo > div {
+          float: left;
+          text-align: center;
+          padding: 10px;
+        }
+        #crossorigin-demo canvas {
+          border: 1px solid black;
+        }
+      </style>
+      <aside class="note">
+        <section>
+          <ul>
+            <li>See blog post <a href="http://blog.chromium.org/2011/07/using-cross-domain-images-in-webgl-and.html" target="_new">Using Cross-domain images in WebGL and Chrome 13</a></li>
+          </ul>
+        </section>
+      </aside>
+      <ul>
+        <li>Allows cross-domain images to be read by WebGL and &lt;canvas&gt; (without <code>SECURITY_ERR</code> )
+        using <a href="http://enable-cors.org/" target="_blank">CORS</a>.</li>
+      </ul>
+      <pre>
+  var img = document.createElement('img');
+  img.onload = function(e) {
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var url = canvas.toDataURL(); // Succeeds. Canvas won't be dirty.
+  };
+  <b>img.crossOrigin = 'anonymous';</b>
+  img.src = 'http://other-domain.com/image.jpg';
+  </pre>
+    <section id="crossorigin-demo">
+      <div>
+        <button id="crossorigin-button" data-url="http://lh4.googleusercontent.com/_DtxSDesXuhE/TYjQ-wnkF7I/AAAAAAAAAu4/0ZTlsnfajsQ/s800/IMG_1118.JPG">NO img.crossOrigin</button><br>
+        <canvas width="300" height="200"></canvas>
+      </div>
+      <div>
+        <button id="crossorigin-button2" data-url="https://lh5.googleusercontent.com/-q-yReXx-G68/Tfe_W5I2HZI/AAAAAAAAKHo/-qu4TPEynSM/s640/DSCF8027.JPG">img.crossOrigin</button><br>
+        <canvas width="300" height="200"></canvas>
+      </div>
+    </section>
+    </article>
+    <script>
+    (function() {
+      var onClick = function(e) {
+        var container = e.target.parentElement;
+        var canvas = container.querySelector('canvas');
+        var ctx = canvas.getContext('2d');
+        var img = document.createElement('img');
+        img.onload = function(e) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var a = document.createElement('a');
+          a.href = canvas.toDataURL(); // Read succeeds, canvas won't be dirty.
+          a.textContent = 'view dataURL';
+          a.target = '_blank';
+          container.appendChild(document.createElement('br'));
+          container.appendChild(a);
+        };
+        if (e.target.id == 'crossorigin-button2') {
+          img.crossOrigin = '';
+        }
+        img.src = e.target.dataset.url + '?' + Date.now(); // Picasa supports CORS.
+      };
+
+      document.getElementById('crossorigin-button').addEventListener('click', onClick, false);
+      document.getElementById('crossorigin-button2').addEventListener('click', onClick, false);
+    })();
+    </script>
+
+  <article>
+    <h2 class="red">Global Methods &amp; Properties</h2>
+  </article>
+
+  <article class="smaller" onslideenter="matchMediaSlideLoad()" onslideleave="matchMediaSlideUnLoad()">
+    <h3><code>matchMedia()</code> - form-factor detection</h3>
+    <style>
+      #matchMedia-example {
+        font-size: 20pt;
+      }
+      #matchMedia-example img {
+        max-height: 150px;
+        vertical-align: middle;
+      }
+    </style>
+    <p>Testing CSS media queries in JS:</p>
+  <pre>
+if (window.<b>matchMedia</b>('only screen and (max-device-width: 480px)').matches) {
+  // Asynchronously load iphone.js
+} else if (window.<b>matchMedia</b>('only screen and (min-device-width: 481px) and ' +
+                              '(max-device-width: 1024px) and ' +
+                              '(orientation: portrait)').matches) {
+  // Asynchronously load ipad-portrait.js
+}
+  </pre>
+    <p id="matchMedia-example" class="centered">
+      You are on a:<br>
+    <img src="../images/laptop.png"><br>
+    <small>( resize window )</small>
+  </p>
+  </article>
+  <script>
+  (function() {
+    var el = document.querySelector('#matchMedia-example img');
+
+    function onWinResize(e) {
+      if (window.matchMedia('only screen and (max-width: 480px)').matches) {
+        //el.textContent = 'iPhone';
+        el.src = '../images/nexuss.jpg';
+      } else if (window.matchMedia('only screen and (min-width: 481px) and (max-width: 1024px)').matches) {
+        //el.textContent = 'iPad';
+        el.src = '../images/ipad.png';
+      } else {
+        //el.textContent = 'Desktop';
+        el.src = '../images/laptop.png';
+      }
+    }
+
+    window.matchMediaSlideLoad = function(e) {
+      window.addEventListener('resize', onWinResize, false);
+    };
+
+    window.matchMediaSlideUnLoad = function(e) {
+      window.removeEventListener('resize', onWinResize, false);
+    };
+  }());
+  </script>
+
+  <article class="smaller">
+    <h3><code>requestAnimationFrame</code> - Tell the browser you're animating</h3>
+    <p>Common technique for JS animations:</p>
+    <pre>
+window.setInterval(function() {
+  // move elem
+}, 1000 / 60);
+</pre>
+<pre>
+window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+
+function animate(time) { // time is the Unix time.
+  // move element.
+  window.requestAnimationFrame(animate, opt_elem);
+}
+window.requestAnimationFrame(animate, opt_elem /* bounding elem */);
+</pre>
+    <ul class="build">
+      <li>Now possible to synchronize JS-based animations with CSS/SVG animations</li>
+      <li>Chrome caps sampling at 60fps (no big, your monitor is ~60Hz)</li>
+      <li>Callback won't be invoked if tab/element is not visible  ( <code>display:none</code> )</li>
+      <li><b>Tells the browser your intentions are to animate something</b></li>
+    </ul>
+  </article>
+
+  <article id="slide-requestanimationframe" class="smaller">
+      <h3>Example - <code>requestAnimationFrame</code></h3>
+      <input type="radio" value="setTimeout" name="reqanimradio" id="settimeoutanimradio"/> <label for="settimeoutanimradio">Old and busted:</label>
+      <pre>function draw() {
+  var now = new Date().getTime();
+  updateModels(now - last);
+  last = now;
+  paintScene(canvas);
+  <strong>window.setTimeout(draw, 10);</strong>
+});
+draw();
+</pre>
+      <input type="radio" value="requestAnimationFrame" name="reqanimradio" id="reqanimradio" /> <label for="reqanimradio">New hotness:</label>
+      <pre>function draw(future) {
+  updateModels(future - last);
+  last = future;
+  paintScene(canvas);
+  <strong>window.requestAnimationFrame(draw, canvas);</strong>
+};
+draw();</pre>
+  <div class="output"></div>
+  </article>
+  <script>
+  (function() {
+    var slide = document.getElementById('slide-requestanimationframe');
+    var radios = slide.querySelectorAll('input[type=radio]');
+    var output = slide.querySelector('.output');
+    var last = new Date().getTime();
+    var active = false;
+    var oldtitle = document.title;
+
+    function getState() {
+      var radio = slide.querySelector('input[type=radio]:checked');
+      var state = radio ? radio.value : false;
+      return state;
+    };
+
+    function draw(future) {
+      var now = new Date().getTime();
+      var state = getState();
+      if (active && state) {
+        var ms = now - last;
+        var hz = Math.round(1000 / ms);
+        output.innerHTML = 'Using <strong>' + state + '</strong>:<br>' +
+                           ms + 'ms elapsed since last frame (' +
+                           hz + 'hz)';
+        document.title = ms + 'ms';
+        last = now;
+        switch (state) {
+          case 'requestAnimationFrame':
+            window.requestAnimationFrame(draw, output);
+            break;
+          case 'setTimeout':
+            setTimeout(draw, 10);
+            break;
+        }
+      }
+    };
+    slide.addEventListener('onslideenter', function() {
+      oldtitle = document.title;
+      if (getState()) {
+        active = true;
+        draw();
+      }
+    }, false);
+    slide.addEventListener('slideleave', function() {
+      active = false;
+      window.setTimeout(function() {
+        document.title = oldtitle;
+      }, 500);
+    }, false);
+    for (var i = 0, radio; radio = radios[i]; i++) {
+      radio.addEventListener('click', function() {
+        if (!active) {
+          active = true;
+          draw();
+        }
+      }, false);
+    }
+  })();
+  </script>
+
+  <article>
+    <h3><code>window.crypto</code> - pseudorandom number generator</h3>
+    <aside class="note">
+      <section>
+        WebKit uses RC4 as the internal PRNG.
+      </section>
+    </aside>
+    <pre>
+// Fill typed array with 5 8-bit unsigned random integers.
+var uInt8Arr = new Uint8Array(5);
+<b>window.crypto.getRandomValues</b>(uInt8Arr);
+</pre>
+    <ul class="build">
+      <li>Cryptographically "strong" PRN seeded from the OS (e.g. <code>/dev/random</code>):</li>
+      <li>Entropy ( "true" randomness ) is better than <code>Math.random()</code>, which is seeded by current time.</li>
+      <li><code>NOT_SUPPORTED_ERR</code> thrown if UA is unable to obtain "true" randomness</li>
+    </ul>
+  <section id="prn-example">
+    <button>Generate</button>
+    <output></output>
+  </section>
+  </article>
+  <script>
+  (function() {
+    document.querySelector('#prn-example button').addEventListener('click', function(e) {
+      if (window.crypto && window.crypto.getRandomValues) {
+        var uInt8Arr = new Uint8Array(5);
+        window.crypto.getRandomValues(uInt8Arr);
+        var out = [];
+        for (var i = 0, val; val = uInt8Arr[i]; ++i) {
+          out.push(val);
+        }
+        document.querySelector('#prn-example output').textContent += out.join(', ') + '|';
+      }
+    }, false);
+  })();
+  </script>
+
+  <article>
+    <h3><code>window.performance</code> - know the numbers</h3>
+    <ul class="build">
+      <li><code>performance.timing</code></li>
+      <li><code>performance.navigation</code></li>
+      <li><code>performance.memory</code> - via <i>--enable-memory-info</i> flag</li>
+    </ul>
+  </article>
+
+  <article>
+    <h2 class="yellow">Events</h2>
+  </article>
+
+  <article onslideenter="pageVisiblitySlideLoad()" onslideleave="pageVisiblitySlideUnload()">
+    <h3>Page Visibility API & Prerendering- keep things transparent</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed in Chrome: <code>webkitvisibilitychange</code>, <code>document.webkitHidden</code>,
+          <code>document.webkitVisibilityState</code></li>
+          <li><a href="http://msdn.microsoft.com/en-us/ie/hh272906.aspx" target="_blank">IE10 implementation</a></li>
+        </ul>
+      </section>
+    </aside>
+    <p><a href="http://code.google.com/chrome/whitepapers/prerender.html" target="_blank">Prerendering</a> pages ( <a href="http://prerender-test.appspot.com/" target="_blank">test</a> ):</p></p>
+    <pre>
+&lt;link rel="prerender" href="http://example.org/index.html"&gt;
+</pre>
+    <p>Determine if your app is visible or not:</p>
+    <pre>
+document.addEventListener('<b>visibilitychange</b>', function(e) {
+  console.log('hidden:' + document.hidden,
+              'state:' + document.visibilityState)
+}, false);
+</pre>
+    <p>Demo: change tabs</p>
+    <output id="visibilitylog"></output>
+  </article>
+  <script>
+  function onPageVisible(e) {
+    var log = document.getElementById('visibilitylog');
+    log.innerHTML += 'hidden:' + document.webkitHidden + 
+                     ', state:' + document.webkitVisibilityState + '<br>';
+  }
+  function pageVisiblitySlideLoad() {
+    document.addEventListener('webkitvisibilitychange', onPageVisible, false);
+  }
+  function pageVisiblitySlideUnload() {
+    document.removeEventListener('webkitvisibilitychange', onPageVisible, false);
+    document.getElementById('visibilitylog').innerHTML = '';
+  }
+  </script>
+
+  <article>
+    <h3><code>navigator.onLine</code> - know when you're all alone</h3>
+  <pre>
+if (<b>navigator.onLine</b>) {
+  console.log('ONLINE!');
+} else {
+  console.log('Connection flaky');
+}
+</pre>
+<pre>
+window.addEventListener('online', function(e) {
+  // Re-sync data with server.
+}, false);
+
+window.addEventListener('offline', function(e) {
+  // Queue up events for server.
+}, false);
+</pre>
+  </article>
+
+  <article class="fill">
+    <iframe src="http://html5-demos.appspot.com/static/navigator.onLine.html"></iframe>
+  </article>
+
+  <article> <!--onslideenter="registerOnError()" onslideleave="unRegisterOnError()">-->
+    <h3><code>window.onerror</code> - let nothing go unnoticed</h3>
+    <ul>
+     <li>Know about JS errors in your app.</li>
+     <li>Global error handler. No need to wrap everything in try/catch blocks.</li>
+    </ul>
+    <pre>
+<b>window.onerror</b> = function(msg, url, line) {
+  // Track JS errors in GA.
+  _gaq.push(['_trackEvent', 'Error Log', msg, url + '_' + line]);
+
+  // Log to your server.
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/jserror', true);
+  xhr.send('Line ' + num + ': (' + url + ') - ' + msg);
+
+  return false; // false prevents default error handling.
+};
+</pre>
+  <button onclick="awesomeUndefinedFunctionThatBlowsUpMyApp()">Make a boo boo</button>
+  </article>
+  <script>
+    window.onerror = function(msg, url, line) {
+      alert(url + ' (line ' + line + ') : ' + msg);
+      return false;
+    };
+    /*function registerOnError(evt) {
+      window.onerror = function(e) {
+        onWinError(e);
+        return false;
+      };
+    }
+    function unRegisterOnError(evt) {
+      window.onerror = null;
+      return false;
+    }*/
+  </script>
+
+  <article>
+    <h2 class="green">Capabilities</h2>
+  </article>
+
+  <article>
+      <h3>Pasting files</h3>
+      <pre>
+document.body.onpaste = function(e) {
+  var items = e.clipboardData.items;
+  for (var i = 0; i &lt; items.length; ++i) {
+    if (items[i].kind == 'file' && items[i].type == 'image/png') {
+      var blob = items[i].getAsFile();
+
+      var img = document.createElement('img');
+      img.src = window.URL.createObjectURL(blob);
+
+      document.body.appendChild(img);
+    }
+  }
+};
+</pre>
+      <p>Click in this window and paste and image ( Copy image from a right-click )</p>
+      <img id="paste-img">
+  </article>
+  <script>
+  document.body.onpaste = function(e) {
+    var items = e.clipboardData.items;
+    for (var i = 0; i < items.length; ++i) {
+      if (items[i].kind == 'file' && items[i].type == 'image/png') {
+        var blob = items[i].getAsFile();
+        var url = window.URL.createObjectURL(blob);
+        document.getElementById('paste-img').src = url;
+      }
+    }
+  };
+  </script>
+
+   <article>
+      <h3>Custom (web-based) protocol handlers</h3>
+      <aside class="note">
+        <section>
+          <ul>
+            <li>The URL supplied in the template when registering must be from same domain as the web app.</li>
+            <li>'%s' is replaced with the href of the link. A GET is executed on the resultant URL.</li>
+            <li>The following protocols do not need a "web+" prefix: "mailto", "mms", "nntp", "rtsp", "webcal"</li>
+            <li>Chrome 13 and Firefox 3</li>
+          </ul>
+        </section>
+      </aside>
+      <section class="build">
+      <pre>
+  navigator.registerProtocolHandler(
+    'web+myscheme', 'http://example.com/handler?q=%s', 'My App');
+</pre>
+      <p><img src="images/rph.png"></p>
+      <pre>
+&lt;a href="web+myscheme:some%20data%20here"&gt;send data&lt;/a&gt;
+</pre>
+
+  <pre>
+GET http://example.com/handler?q=web+myscheme:some%20data%20here
+</pre>
+    </section>
+    <section>
+      <button id="rph-button">Register this app</button> <a href="web+myscheme:some%20data%20here">send data</a><br>
+      <p style="font-size:70%">( <a href="chrome://settings/handlers" target="_blank">chrome://settings/handlers</a> )</p>
+    </section>
+    </article>
+    <script>
+      document.getElementById('rph-button').addEventListener('click', function(e) {
+        navigator.registerProtocolHandler('web+myscheme',
+            document.location.origin + document.location.pathname + 'handler?q=%s', 'My App');
+      }, false);
+    </script>
+
+   <article class="smaller">
+      <h3>Typed Arrays</h3>
+      <ul>
+        <li><code>ArrayBuffer</code> - chunk of bytes in memory. Create "views" from it:
+          <ul>
+            <li><code>Int8Array</code>, <code>Uint8Array</code></li>
+            <li><code>Int16Array</code>, <code>Uint16Array</code></li>
+            <li><code>Int32Array</code>, <code>Uint32Array</code></li>
+            <li><code>Float32Array</code>, <code>Float64Array</code></li>
+          </ul>
+        </li>
+        <li>Multiple representations can be created from a single <code>ArrayBuffer</code> source:
+          <pre>
+var uInt8Array = new Uint8Array(buffer);
+var byte3 = uInt8Array[4]; // byte at offset 4.
+var uInt32Array = new Uint32Array(buffer);
+</pre>
+        </li>
+        <li><code>ArrayBufferView</code> - view of a portion of an <code>ArrayBuffer</code></li>
+        <li><code>DataView</code> - an <code>ArrayBufferView</code> that understands endianness:
+        <pre>
+var data = new DataView(buffer);
+var byte3 = data.getUint8(4);
+var i = data.getInt32(0, false); // Big-endian
+</pre>
+        </li>
+      </ul>
+    </article>
+
+    <article>
+      <h3>Example - Audio Synthesis ( 1 )</h3>
+      <pre>
+var header = new Uint8Array([
+    0x52,0x49,0x46,0x46, // "RIFF"
+    0, 0, 0, 0,          // put total size here
+    0x57,0x41,0x56,0x45, // "WAVE"
+    0x66,0x6d,0x74,0x20, // "fmt "
+    16,0,0,0,            // size of the following
+    1, 0,                // PCM format
+    1, 0,                // Mono: 1 channel
+    0,80,0,0,            // 20,000 samples per second
+    0,80,0,0,            // byte rate: one byte per sample 
+    1, 0,                // aligned on any byte
+    8, 0,                // 8 bits per sample
+    0x64,0x61,0x74,0x61, // "data"
+    0, 0, 0, 0           // put number of samples here
+]).buffer;  // Note: we just want the ArrayBuffer.
+</pre>
+    <p>
+      <a href="http://davidflanagan.com/Talks/jsconf11/BytesAndBlobs.html" target="_blank">Original source</a><br>
+      <a href="https://ccrma.stanford.edu/courses/422/projects/WaveFormat/" target="_blank">WAVE PCM file format</a>
+    </p>
+    </article>
+
+    <article>
+        <h3>Example - Audio Synthesis ( 2 )</h3>
+        <pre>
+function makeWave(samples) {
+  var bb = new WebKitBlobBuilder();
+  var dv = new DataView(header);
+  dv.setInt32(4, 36 + samples.length, true);
+  dv.setInt32(40, samples.length, true);
+  bb.append(header);
+  bb.append(samples.buffer);
+  return bb.getBlob('audio/wav');
+}
+</pre>
+    </article>
+
+    <article>
+      <h3>Example - Audio Synthesis ( 3 )</h3>
+      <pre>
+// Play a note of the specifed frequency and duration
+// We've hardcoded 20,000 samples per second
+function playNote(frequency, duration) {
+  var samplespercycle = 20000 / frequency;
+  var samples = new Uint8Array(20000 * duration);
+  var da = 2 * Math.PI / samplespercycle;
+  for(var i = 0, a = 0; i &lt; samples.length; i++, a += da) {
+    samples[i] = Math.floor(Math.sin(a) * 255);
+  }
+  var blob = makeWave(samples);
+  var url = window.webkitURL.createObjectURL(blob);
+  var player = new Audio(url);
+  player.play();
+  player.addEventListener('ended', function(e) {
+    window.webkitURL.revokeObjectURL(url);
+  }, false);
+}
+</pre>
+    <button id="generate-tone-button">Generate tone</button>
+    <input type="number" id="tone-hz" min="220" max="1600" value="440">Hz
+    <input type="number" id="tone-duration" min="0" max="5" step="0.1" value="1">seconds
+    </article>
+    <script>
+    (function() {
+      var header = new Uint8Array([
+          0x52,0x49,0x46,0x46, // "RIFF"
+          0, 0, 0, 0,          // put total size here
+          0x57,0x41,0x56,0x45, // "WAVE"
+          0x66,0x6d,0x74,0x20, // "fmt "
+          16,0,0,0,            // size of the following
+          1, 0,                // PCM format
+          1, 0,                // Mono: 1 channel
+          0,80,0,0,            // 20,000 samples per second
+          0,80,0,0,            // byte rate: one byte per sample 
+          1, 0,                // aligned on any byte
+          8, 0,                // 8 bits per sample
+          0x64,0x61,0x74,0x61, // "data"
+          0, 0, 0, 0           // put number of samples here
+      ]).buffer;  // Note: we just want the ArrayBuffer.
+
+      function makeWave(samples) {
+        var bb = new WebKitBlobBuilder();
+        var dv = new DataView(header);
+        dv.setInt32(4, 36 + samples.length, true);
+        dv.setInt32(40, samples.length, true);
+        bb.append(header);
+        bb.append(samples.buffer);
+        return bb.getBlob('audio/wav');
+      }
+
+      function playNote(frequency, duration) {
+          var samplespercycle = 20000/frequency;
+          var samples = new Uint8Array(20000 * duration);
+          var da = 2*Math.PI/samplespercycle;
+          for(var i = 0, a = 0; i < samples.length; i++, a += da) {
+            samples[i] = Math.floor(Math.sin(a) * 255);
+          }
+          var blob = makeWave(samples);
+          var url = window.webkitURL.createObjectURL(blob);
+          var player = new Audio(url);
+          player.play();
+          player.addEventListener('ended', function(e) {
+            window.webkitURL.revokeObjectURL(url);
+          }, false);
+      }
+
+      document.querySelector('#generate-tone-button').addEventListener('click', function(e) {
+        var hz = document.querySelector('#tone-hz').valueAsNumber;
+        var duration = document.querySelector('#tone-duration').valueAsNumber;
+        playNote(hz, duration);
+      }, false);
+    })();
+    </script>
+
+  <article class="fill">
+    <h2 class="white">Bleeding Edge</h2>
+    <img src='images/edge.jpg'>
+    <div class='source white'>
+      <a href="http://www.flickr.com/photos/quipith/5811312746/sizes/l/in/photostream/">http://www.flickr.com/photos/quipith/5811312746/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+  
+
+  <article class="fill">
+    <h3 class="black">Web Audio API</h3>
+    <img src="images/audio.jpg">
+    <div class='source white'>
+      <a href="http://www.flickr.com/photos/timsnell/3105266077/sizes/z/in/photostream/">http://www.flickr.com/photos/timsnell/3105266077/sizes/z/in/photostream/</a>
+    </div>
+  </article>
+
+
+  <article>
+    <h3>Comparison to Mozilla's Audio Data API</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Mozilla <a href="https://wiki.mozilla.org/Audio_Data_API" target="_new">Audio Data API</a> spec</li>
+          <li><a href="http://chromium.googlecode.com/svn/trunk/samples/audio/specification/specification.html" target="_new">Web Audio API</a> spec</li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build">
+      <li>Similarities:
+        <ul>
+          <li>Extends the &lt;audio&gt; element</li>
+          <li>Generate audio</li>
+          <li>Load + manipulate sound files</li>
+        </ul>
+      </li>
+      <li>Differences:
+        <ul>
+          <li>FF intensive audio processing operations must be done in JS (slow).
+          Web Audio API exposes calls for <a href="http://chromium.googlecode.com/svn/trunk/samples/audio/index.html" target="_blank">common effects/operations</a> under the covers.</li>
+          <li>Nodes are created + strung together to produce overall system:<br>
+            <img src="../images/audio-routing.png"></li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+
+  <article>
+    <style>
+    #currentTime { border: none; font-size: 12pt;}
+    #currentTime::-webkit-outer-spin-button,
+    #currentTime::-webkit-inner-spin-button {
+      display: none;
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    </style>
+    <h3>Scheduled playback</h3>
+    <ul>
+      <li>Prefixed <code>window.webkitAudioContext()</code> in Chrome 14.</li>
+    </ul>
+    <pre>
+var ctx = new window.AudioContext();
+
+function playSound(arrayBuffer) { // Obtain arrayBuffer from XHR.
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.looping = false;
+    src.connect(ctx.destination);
+    src.noteOn(0); // Play immediately.
+  }, function(e) {
+    console.log(e);
+  });
+}
+</pre>
+  Shoot: <button onclick="shootGun()">Now</button>
+  <button onclick="shootGun(2)">2s delay</button>
+  <button onclick="shootGun(-1)">Semi-automatic</button>
+  <button onclick="stopGun()">Stop</button>
+  <input type="number" id="currentTime" readonly value="0" title="currentTime">
+  </article>
+  <script>
+  (function() {
+    var currentTime = document.getElementById('currentTime');
+
+    if (window.AudioContext) {
+      var ctx = new AudioContext();
+      var sample = null;
+      var src = null;
+      var jsNode = null;
+
+      window.shootGun = function(opt_delay) {
+        stopGun();
+
+        src = ctx.createBufferSource();
+        src.buffer = sample;
+
+        jsNode = ctx.createJavaScriptNode(1024, 1, 1);
+        jsNode.onaudioprocess = function(e) {
+          currentTime.value = ctx.currentTime;
+        };
+
+        src.connect(jsNode);
+        src.connect(ctx.destination);
+        jsNode.connect(ctx.destination);
+
+        if (opt_delay && opt_delay == -1) {
+          src.looping = true;
+          src.noteGrainOn(opt_delay, 0.1, 0.3);
+        } else if (opt_delay) {
+          src.noteOn(opt_delay + ctx.currentTime);
+        } else {
+          src.noteOn(0); // play immediately.
+        }
+      };
+
+      window.stopGun = function() {
+        if (src && jsNode) {
+          src.noteOff(0);
+          src.disconnect(0);
+          jsNode.disconnect(0);
+        }
+      };
+
+      var request = new XMLHttpRequest();
+      request.open('GET', 'sounds/gun.ogg', true);
+      request.responseType = 'arraybuffer';
+      request.onload = function() {
+        ctx.decodeAudioData(request.response, function(buffer) {
+          sample = buffer;
+        }, function(e) {
+          console.log(e);
+        });
+      };
+      request.send();
+    }
+  })();
+  </script>
+
+  <article>
+    <h3>Audio processing</h3>
+    <pre>
+var ctx = new AudioContext();
+var analyser = <b>ctx.createAnalyser</b>();
+var jsNode = <b>ctx.createJavaScriptNode</b>(2048 /*samples*/,
+                                        1 /*inputs*/, 1 /*outputs*/);
+<b>jsNode.onaudioprocess = function(e) {</b>
+  <b>var byteData = new Uint8Array(analyser.frequencyBinCount);</b>
+  <b>analyser.getByteFrequencyData(byteData);</b>
+  // render visualization of byteData.
+<b>};</b>
+
+function initAudio(arrayBuffer) {
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    <b>src.connect(analyser);</b> // src -> analyser -> js node -> dest
+    <b>analyser.connect(jsNode);</b>
+    <b>jsNode.connect(ctx.destination);</b>
+  }, function(e) { console.log('Error decoding audio file', e); });
+};
+</pre>
+  </article>
+
+  <article class="fill">
+    <iframe src="http://www.htmlfivewow.com/demos/hal/index.html"></iframe>
+  </article>
+
+  <article class="fill">
+    <iframe src="http://www.htmlfivewow.com/demos/audio-visualizer/index.html"></iframe>
+  </article>
+
+  <article>
+    <h3>Generating audio</h3>
+    <ul class="build">
+      <li>...It can be done :)</li>
+      <li><a href="http://www.htmlfivewow.com/demos/waveform-generator/index.html" target="_blank">Demo</a></li>
+    </ul>
+  </article>
+
+  <article class="fill">
+    <h2 class="white">Coming attractions...</h2>
+    <p>
+      <img src='images/railroadtracks.png'>
+    </p>
+    <div class='source white'>
+      <a href="http://www.flickr.com/photos/jg76/4905570341/sizes/l/in/photostream/">http://www.flickr.com/photos/jg76/4905570341/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+
+  <article>
+    <h3>Spellcheck API - no more mistakes!</h3>
+    <p>Supply suggestions for mispelled &larr; words.</p>
+    <pre>
+void addSpellcheckRange(unsigned long start, unsigned long length,
+    DOMStringList suggestions[, unsigned short options]);
+void removeSpellcheckRange(SpellcheckRange range);
+</pre>
+    <pre>
+var input = document.querySelector('input');
+input.addSpellcheckRange(
+    4, 9, ['Chrome', 'Firefox', 'Opera', 'Internet Explorer']);
+</pre>
+    <img src="images/spellcheck-api.png">
+    <p>More info: <a href="http://peter.sh/experiments/spellcheck-api/" target="_blank">peter.sh/experiments/spellcheck-api/</a></p>
+  </article>
+
+  <article>
+    <h3>Fullscreen API</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Need <code>--enable-fullscreen</code></li>
+          <li>More info: <a href="https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI">https://wiki.mozilla.org/index.php?title=Gecko:FullScreenAPI</a></li>
+        </ul>
+      </section>
+    </aside>
+    <p>Enable fullscreen on a element. Still a work in progress.</p>
+    <pre>
+Element.webkitRequestFullScreen();
+Element.webkitRequestFullScreenWithKeys();
+document.webkitCancelFullScreen(); // only on Document
+</pre>
+    <ul>
+      <li><code>allowFullScreen</code> attribute added for &lt;iframes&gt;</li>
+      <li>new pseudo-classes:<br>
+        <code>-webkit-full-screen</code><br>
+        <code>:-webkit-full-screen-doc</code><br>
+        <code>:-webkit-full-screen-root-with-target</code>
+      </li>
+    </ul>
+  </article>
+
+  <article id="fullscreen-slide">
+    <h3>Example usage - Fullscreen API</h3>
+    <pre>
+&lt;video width="300" src="movie.webm" controls&gt;&lt;/video&gt;
+&lt;button onclick="enterFullscreen()">Get Huge!&lt;/button&gt;
+</pre>
+  <pre>
+function enterFullscreen() {
+  var elem = document.getElementById("fs");
+  elem.onwebkitfullscreenchange = function(e) {
+    console.log("Entered fullscreen!");
+    document.getElementById("exit").style.display="inline";
+    elem.onwebkitfullscreenchange = onFullscreenExit;
+  };
+  elem.<b>webkitRequestFullScreen</b>();
+}
+</pre>
+    <section id="fullscreen-demo">
+      <button disabled>Make this slide huge!</button>
+    </section>
+  </article>
+  <script>
+  (function() {
+  document.querySelector('#fullscreen-demo button').addEventListener('click', function(e) {
+    var el = document.querySelector('#fullscreen-slide pre:nth-of-type(2)');
+    el.onwebkitfullscreenchange = function(e) {
+      console.log("Entered fullscreen!");
+      //document.getElementById("exit").style.display = 'inline';
+      //el.onwebkitfullscreenchange = onFullscreenExit;
+    };
+    el.webkitRequestFullScreen();
+  }, false);
+  })();
+  </script>
+
+  <article class="smaller">
+    <h3><code>navigator.getUserMedia()</code> - create a moment</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Will be prefixed as <code>navigator.webkitGetUserMedia</code></li>
+          <li>Will need <code>--enable-media-stream</code> flag.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Camera, microphone, device access.</p>
+    <pre class="centered">
+&lt;video autoplay controls&gt;&lt;/video&gt;
+</pre>
+    <pre>
+var mediaStream, recorder;
+
+if (navigator.getUserMedia) {
+  var successCallback = function(stream) {
+    document.querySelector('video').src = stream;
+    mediaStream = stream;
+  };
+  var errorCallback = function(e) {
+    console.log(e);
+  };
+  <b>navigator.getUserMedia</b>('video', successCallback, errorCallback);
+}
+
+var record = function() {
+  recorder = mediaStream.recorder();
+};
+
+var stop = function() {
+  mediaStream.stop();
+  recorder.getRecordedData(function(blob) {
+    // Upload blob using XHR2.
+  });
+};
+</pre>
+  </article>
+
+   <article>
+    <h3>WebRTC - fo realz...time</h3>
+    <ul>
+      <li>Real time voice/video communication in the browser</li>
+      <li>Signal processing, noise cancellation engine - Royalty free and open-source</li>
+      <li>Builds on the PeerConnection API</li>
+      <li>Mozilla and Opera supportive</li>
+      <li><a href="http://www.webrtc.org/" target="_blank">webrtc.org</a> ( <a href="http://code.webrtc.org/" target="_blank">code.webrtc.org</a> )</li>
+    </ul>
+  </article>
+
+  <article class="fill">
+    <h2 class="white">Too much?</h2>
+    <p>
+      <img src='images/tired.jpg'>
+    </p>
+    <div class='source black'>
+      <a href="http://www.flickr.com/photos/lancasteruk/135438686/">http://www.flickr.com/photos/lancasteruk/135438686/</a>
+    </div>
+  </article>
+
+  <article lass="nobackground">
+    <h3>chromestatus.com</h3>
+    <iframe src='http://chromestatus.com'></iframe>
+  </article>
+
+  <article class="nobackground">
+    <h3>updates.html5rocks.com</h3>
+    <iframe src='http://updates.html5rocks.com'></iframe>
+  </article>
+
+  <article>
+    <h3>Tools</h3>
+    <ul>
+      <li>Chrome's DevTools - invaluable</li>
+      <li><a href="http://www.html5rocks.com" target="_blank">html5rocks.com</a> - learn by tutorial</li>
+      <li><a href="http://html5boilerplate.com/" target="_blank">HTML5 Boilerplate</a>  and <a href="http://www.modernizr.com/" target="_blank">Modernizr</a> - foundation</li>
+      <li><a href="http://caniuse.com" target="_blank">caniuse.com</a> - compatibility tables</li>
+      <li>Google <a href="http://code.google.com/chrome/chromeframe/" target="_blank">Chrome Frame</a> - plugin that brings Chrome to IE6-9</li>
+      <li><a href="http://swiffy.googlelabs.com/" target="_blank">Google Swiffy</a> - .swf -> HTML5 converter</li>
+      <li>Adobe Edge - CSS animation tool</li>
+    </ul>
+    <p class="centered"><img src="../images/top.gif"></p>
+  </article>
+
+  <article class="biglogo"></article>
+
+</section>
+
+<script> 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script> 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+
+</body>
+</html>
