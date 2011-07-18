@@ -37,6 +37,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
       <br>
       <time pubdate datetime="2011-07-07">July 7, 2011</time>
     </p>
+    <div class="centered" style="font-size:12pt;position:absolute;bottom:15%">( View this presentation in a nightly build of Chrome, FF, or WebKit.
+      Also, some of this presentation <em>does</em> require Chrome 14+ dev. )</div>
   </article>
 
   <article>
@@ -750,10 +752,10 @@ var header = new Uint8Array([
     16,0,0,0,            // size of the following
     1, 0,                // PCM format
     1, 0,                // Mono: 1 channel
-    0,80,0,0,            // 20,000 samples per second
-    0,80,0,0,            // byte rate: one byte per sample 
-    1, 0,                // aligned on any byte
-    8, 0,                // 8 bits per sample
+    0x44,0xAC,0,0,       // 44,100 samples per second
+    0x88,0x58,0x01,0,    // byte rate: two bytes per sample
+    2, 0,                // aligned on every two bytes
+    16, 0,               // 16 bits per sample
     0x64,0x61,0x74,0x61, // "data"
     0, 0, 0, 0           // put number of samples here
 ]).buffer;  // Note: we just want the ArrayBuffer.
@@ -785,11 +787,11 @@ function makeWave(samples) {
 // Play a note of the specifed frequency and duration
 // We've hardcoded 20,000 samples per second
 function playNote(frequency, duration) {
-  var samplespercycle = 20000 / frequency;
-  var samples = new Uint8Array(20000 * duration);
+  var samplespercycle = 44100 / frequency;
+  var samples = new Uint16Array(44100 * duration);
   var da = 2 * Math.PI / samplespercycle;
-  for(var i = 0, a = 0; i &lt; samples.length; i++, a += da) {
-    samples[i] = Math.floor(Math.sin(a) * 255);
+  for (var i = 0, a = 0; i &lt; samples.length; i++, a += da) {
+    samples[i] = Math.floor(Math.sin(a) * 32768);
   }
   var blob = makeWave(samples);
   var url = window.webkitURL.createObjectURL(blob);
@@ -807,19 +809,19 @@ function playNote(frequency, duration) {
     <script>
     (function() {
       var header = new Uint8Array([
-          0x52,0x49,0x46,0x46, // "RIFF"
-          0, 0, 0, 0,          // put total size here
-          0x57,0x41,0x56,0x45, // "WAVE"
-          0x66,0x6d,0x74,0x20, // "fmt "
-          16,0,0,0,            // size of the following
-          1, 0,                // PCM format
-          1, 0,                // Mono: 1 channel
-          0,80,0,0,            // 20,000 samples per second
-          0,80,0,0,            // byte rate: one byte per sample 
-          1, 0,                // aligned on any byte
-          8, 0,                // 8 bits per sample
-          0x64,0x61,0x74,0x61, // "data"
-          0, 0, 0, 0           // put number of samples here
+        0x52,0x49,0x46,0x46, // "RIFF"
+        0, 0, 0, 0,          // put total size here
+        0x57,0x41,0x56,0x45, // "WAVE"
+        0x66,0x6d,0x74,0x20, // "fmt "
+        16,0,0,0,            // size of the following
+        1, 0,                // PCM format
+        1, 0,                // Mono: 1 channel
+        0x44,0xAC,0,0,       // 44,100 samples per second
+        0x88,0x58,0x01,0,    // byte rate: two bytes per sample 
+        2, 0,                // aligned on every two bytes
+        16, 0,               // 16 bits per sample
+        0x64,0x61,0x74,0x61, // "data"
+        0, 0, 0, 0           // put number of samples here
       ]).buffer;  // Note: we just want the ArrayBuffer.
 
       function makeWave(samples) {
@@ -833,19 +835,20 @@ function playNote(frequency, duration) {
       }
 
       function playNote(frequency, duration) {
-          var samplespercycle = 20000/frequency;
-          var samples = new Uint8Array(20000 * duration);
-          var da = 2*Math.PI/samplespercycle;
-          for(var i = 0, a = 0; i < samples.length; i++, a += da) {
-            samples[i] = Math.floor(Math.sin(a) * 255);
-          }
-          var blob = makeWave(samples);
-          var url = window.webkitURL.createObjectURL(blob);
-          var player = new Audio(url);
-          player.play();
-          player.addEventListener('ended', function(e) {
-            window.webkitURL.revokeObjectURL(url);
-          }, false);
+        var samplespercycle = 44100 / frequency;
+        var samples = new Uint16Array(44100 * duration);
+        var da = 2 * Math.PI / samplespercycle;
+        for (var i = 0, a = 0; i < samples.length; i++, a += da) {
+          samples[i] = Math.floor(Math.sin(a) * 32768);
+        }
+
+        var blob = makeWave(samples);
+        var url = window.webkitURL.createObjectURL(blob);
+        var player = new Audio(url);
+        player.play();
+        player.addEventListener('ended', function(e) {
+          window.webkitURL.revokeObjectURL(url);
+        }, false);
       }
 
       document.querySelector('#generate-tone-button').addEventListener('click', function(e) {
