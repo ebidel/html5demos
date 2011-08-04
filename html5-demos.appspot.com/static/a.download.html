@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>a[download]</title>
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<style>
+::selection {
+  color: #eee;
+  background: darkred;
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #222;
+  font-family: 'Droid Sans', arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.6) 150%) #fff;
+  background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  display: -o-box;
+  -o-box-orient: vertical;
+  -o-box-align: center;
+  -o-box-pack: center;
+}
+body > section {
+  position: relative;
+}
+a {
+  color: #555;
+}
+a[data-disabled] {
+  color: #ccc;
+  text-decoration: line-through;
+}
+textarea {
+  font-size: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 0 3px 7px #ccc inset;
+  -moz-box-shadow: 0 3px 7px #ccc inset;
+  -o-box-shadow: 0 3px 7px #ccc inset;
+  -ms-box-shadow: 0 3px 7px #ccc inset;
+  box-shadow: 0 3px 7px #ccc inset;
+  outline: none;
+  width: 500px;
+  height: 100px;
+  resize: none;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:hover {
+  border-color: black;
+}
+button:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+ul :last-child {
+  margin-top: 10px;
+}
+details {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  margin: 1em 0;
+  cursor: pointer;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  max-width: 600px;
+  font-size: 10pt;
+  z-index: 100;
+}
+details > div {
+  margin: 10px 0;
+}
+details blockquote {
+  font-style: italic;
+}
+input[type="text"] {
+  font-size: inherit;
+  padding: 5px 7px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  vertical-align: middle;
+}
+[contenteditable] {
+  width: 500px;
+  height: 200px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 3px 5px #ccc inset, 0 -1px 1px #ccc inset;
+  margin-bottom: 1em;
+  background: url('roughness_less.png') 50% 50%;
+}
+[contenteditable],
+input[type="text"] {
+  -webkit-transition: all 0.2s ease-in-out;
+  color: #aaa;
+}
+[contenteditable]:hover,
+[contenteditable]:focus,
+input[type="text"]:hover,
+input[type="text"]:focus {
+  outline: none;
+  color: black;
+}
+aside {
+  position: absolute;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 10pt;
+
+  width: 200px;
+  display: inline-block;
+  text-shadow: 1px 1px 1px black;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  -webkit-transition: all 0.1s ease-in-out;
+}
+aside:before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.7) 50%, transparent 50%);
+  -webkit-transform: rotateZ(45deg);
+  left: -8px;
+  top: 45px;
+  position: absolute;
+}
+aside a {
+  color: inherit;
+}
+output:hover + aside {
+  opacity: 1;
+}
+#download-help {
+  top: 200px;
+  left: 420px;
+}
+h1 {
+  color: #aaa;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 1.5em 0;
+  font-size: 175%;
+  line-height: 1.5;
+}
+h1 a {
+  color: inherit;
+  text-decoration: none;
+}
+h1 a:hover {
+  padding-bottom: 3px;
+  border-bottom: 2px solid #eee;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What is this?</summary>
+  <div>
+    <p>A demo of the HTML5 <code>download</code> attribute.
+    When used on an anchor, this attribute signifies that the resource it points to should be downloaded
+    by the browser rather than navigating to it.</p>
+    <p>'Create file' creates a .txt file from the <code>contenteditable</code> region's content. This is done
+    by using <code>window.URL.createObjectURL()</code>. That generated file can be named and saved to
+    the user's machine by setting the  <code>download</code> attribute on a link.</p>
+    <p><b>Browser support</b>: right now, only Chrome dev channel (14.0.835.15+) supports this attribute.</p>
+  </div>
+</details>
+
+<h1>Navigating to a <a href="http://www.google.com/intl/en_com/images/srpr/logo2w.png" target="_blank">something</a> isn't cool.
+You know what's cool?<br>
+Telling the browser to <a href="http://www.google.com/intl/en_com/images/srpr/logo2w.png" download="MyGLogo">download it</a>.</h1>
+
+<section>
+  <div id="container">
+    <div contenteditable>My epic novel that I don't want to lose.</div>
+    <input type="text" value="MyFile.txt" placeholder="filename.txt">
+    <button onclick="downloadFile()">Create file</button> <output></output>
+    <aside id="download-help">
+      <ul>
+        <li>This link was created using a <code>blob:</code> URL
+        ( <a href="http://www.html5rocks.com/en/tutorials/workers/basics/#toc-inlineworkers-bloburis" target="_blank">huh?</a> ).
+        It contains the <code>download</code> attribute, which means clicking it will
+        force the browser to download the resource rather than navigating to it.</li>
+        <li>In Chrome, you can also drag this link out of the browser tab and the file
+        will be saved. ( <a href="http://www.thecssninja.com/javascript/gmail-dragout" target="_blank">huh?</a> )</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<script>
+var container = document.querySelector('#container');
+var typer = container.querySelector('[contenteditable]');
+var output = container.querySelector('output');
+
+const MIME_TYPE = 'text/plain';
+
+// Rockstars use event delegation!
+document.body.addEventListener('dragstart', function(e) {
+  var a = e.target;
+  if (a.classList.contains('dragout')) {
+    e.dataTransfer.setData('DownloadURL', a.dataset.downloadurl);
+  }
+}, false);
+
+document.body.addEventListener('dragend', function(e) {
+  var a = e.target;
+  if (a.classList.contains('dragout')) {
+    cleanUp(a);
+  }
+}, false);
+
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode == 27) {  // Esc
+    document.querySelector('details').open = false;
+  } else if (e.shiftKey && e.keyCode == 191) { // shift + ?
+    document.querySelector('details').open = true;
+  }
+}, false);
+
+var cleanUp = function(a) {
+  a.textContent = 'Downloaded';
+  a.dataset.disabled = true;
+
+  // Need a small delay for the revokeObjectURL to work properly.
+  setTimeout(function() {
+    window.URL.revokeObjectURL(a.href);
+  }, 1500);
+};
+
+var downloadFile = function() {
+  window.URL = window.webkitURL || window.URL;
+  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
+                       window.MozBlobBuilder;
+
+  var prevLink = output.querySelector('a');
+  if (prevLink) {
+    window.URL.revokeObjectURL(prevLink.href);
+    output.innerHTML = '';
+  }
+
+  var bb = new BlobBuilder();
+  bb.append(typer.textContent);
+
+  var a = document.createElement('a');
+  a.download = container.querySelector('input[type="text"]').value;
+  a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));
+  a.textContent = 'Download ready';
+
+  a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
+  a.draggable = true; // Don't really need, but good practice.
+  a.classList.add('dragout');
+
+  output.appendChild(a);
+
+  a.onclick = function(e) {
+    if ('disabled' in this.dataset) {
+      return false;
+    }
+
+    cleanUp(this);
+  };
+};
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</body>
+</html>
