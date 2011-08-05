@@ -87,6 +87,8 @@ button {
   background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
   border: 1px solid #999;
   -webkit-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
   padding: 5px 8px;
   outline: none;
@@ -160,6 +162,10 @@ input[type="text"] {
 [contenteditable],
 input[type="text"] {
   -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   color: #aaa;
 }
 [contenteditable]:hover,
@@ -168,6 +174,9 @@ input[type="text"]:hover,
 input[type="text"]:focus {
   outline: none;
   color: black;
+}
+aside:hover {
+  opacity: 1;
 }
 aside {
   position: absolute;
@@ -184,13 +193,22 @@ aside {
   left: 0;
   opacity: 0;
   -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 aside:before {
   content: '';
   width: 15px;
   height: 15px;
   background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.7) 50%, transparent 50%);
+  background: -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.7) 50%, transparent 50%);
   -webkit-transform: rotateZ(45deg);
+  -moz-transform: rotateZ(45deg);
+  -ms-transform: rotateZ(45deg);
+  -o-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
   left: -8px;
   top: 45px;
   position: absolute;
