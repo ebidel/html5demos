@@ -37,7 +37,7 @@ body {
   color: #222;
   font-family: 'Droid Sans', arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.6) 150%) #fff;
+  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
   background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -51,6 +51,7 @@ body {
   -o-box-orient: vertical;
   -o-box-align: center;
   -o-box-pack: center;
+  width: 100%; /* for FF */
 }
 body > section {
   position: relative;
