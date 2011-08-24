@@ -113,19 +113,16 @@
 
 <details open="open">
   <summary>
-    <p>There are 3 different ways to obtain a URL handle for a file stored in the HTML5
-    <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/">FileSystem API</a>:</p>
-    <ul>
-      <li><code>window.URL.createObjectURL()</code></li>
-      <li><code>FileEntry.toURL()</code></li>
-      <li>Read the file contents as a <code>dataURL</code></li>
-    </ul>
+    There are 3 different ways to obtain a URL handle for a file stored in the HTML5
+    <a href="http://dev.w3.org/2009/dap/file-system/pub/FileSystem/">FileSystem API</a>:
   </summary>
+  <ul>
+    <li><code>window.URL.createObjectURL()</code></li>
+    <li><code>FileEntry.toURL()</code></li>
+    <li>Read the file contents as a <code>dataURL</code></li>
+  </ul>
   <p>You can use one of these generated URLs as the <code>src</code> attribute
   for an &lt;iframe&gt; / &lt;img&gt; element.</p>
-
-  <p><strong>Requires</strong>: Google Chrome 11.0.692.0 (76995)+ and
-  the <code>--unlimited-quota-for-files</code> flag.</p>
 
   <p><strong>Instructions</strong>: Use the button below to import image files
   into the app's FileSystem. Once you've got a list of files, click one to display it.</p>
