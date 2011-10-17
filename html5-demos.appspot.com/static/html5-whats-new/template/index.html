@@ -563,14 +563,26 @@ document.addEventListener('<b>visibilitychange</b>', function(e) {
   <script>
   function onPageVisible(e) {
     var log = document.getElementById('visibilitylog');
-    log.innerHTML += 'hidden:' + document.webkitHidden + 
-                     ', state:' + document.webkitVisibilityState + '<br>';
+    if ('mozHidden' in document) {
+      log.innerHTML += 'hidden:' + document.mozHidden + 
+                       ', state:' + document.mozVisibilityState + '<br>';
+    } else if ('msHidden' in document) {
+      log.innerHTML += 'hidden:' + document.msHidden + 
+                       ', state:' + document.msVisibilityState + '<br>';
+    } else {
+      log.innerHTML += 'hidden:' + document.webkitHidden + 
+                       ', state:' + document.webkitVisibilityState + '<br>';
+    }
   }
   function pageVisiblitySlideLoad() {
     document.addEventListener('webkitvisibilitychange', onPageVisible, false);
+    document.addEventListener('msvisibilitychange', onPageVisible, false);
+    document.addEventListener('mozvisibilitychange', onPageVisible, false);
   }
   function pageVisiblitySlideUnload() {
     document.removeEventListener('webkitvisibilitychange', onPageVisible, false);
+    document.removeEventListener('msvisibilitychange', onPageVisible, false);
+    document.removeEventListener('mozvisibilitychange', onPageVisible, false);
     document.getElementById('visibilitylog').innerHTML = '';
   }
   </script>
