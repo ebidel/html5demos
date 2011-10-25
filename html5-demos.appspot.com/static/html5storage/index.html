@@ -1070,8 +1070,9 @@ while (<b>cursor.continue</b>()) {
 <pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
 idbRequest.onsuccess = function(e) {
   <b>var db = this.result</b>;
-  var transaction = db.<b>transaction</b>(['ObjectStoreName'], <b>IDBTransaction.READ_ONLY</b>);
-  var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
+  var transaction = db.<b>transaction</b>(
+      ['ObjectStoreName'],<b>IDBTransaction.READ_ONLY</b>);
+  var curRequest = transaction.<b>objectStore</b>('ObjectStoreName').<b>openCursor</b>();
   curRequest.<b>onsuccess</b> = ...;
 };
 </pre>
