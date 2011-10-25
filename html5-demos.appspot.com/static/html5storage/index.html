@@ -1070,7 +1070,7 @@ while (<b>cursor.continue</b>()) {
 <pre style="font-size:20px">var idbRequest = window.<b>indexedDB</b>.<b>open</b>('Database Name');
 idbRequest.onsuccess = function(e) {
   <b>var db = this.result</b>;
-  var transaction = db.<b>transaction</b>([], <b>IDBTransaction.READ_ONLY</b>);
+  var transaction = db.<b>transaction</b>(['ObjectStoreName'], <b>IDBTransaction.READ_ONLY</b>);
   var curRequest = transaction.<b>objectStore</b>('ObjectStore Name').<b>openCursor</b>();
   curRequest.<b>onsuccess</b> = ...;
 };
@@ -1123,8 +1123,8 @@ idbRequest.onsuccess = function(e) {
           }
 
           var html = [];
-          var transaction = idb_.transaction([], IDBTransaction.READ_ONLY); // Ready is default.
-          var request = transaction.objectStore("myObjectStore").openCursor(); // Get all results.
+          var transaction = idb_.transaction(['myObjectStore'], IDBTransaction.READ_ONLY); // Ready is default.
+          var request = transaction.objectStore('myObjectStore').openCursor(); // Get all results.
           // This callback will continue to be called until we have no more results.
           request.onsuccess = function(e) {
             var cursor = request.result || e.result;  // FF4 requires e.result. IDBRequest.request isn't set :(
@@ -1181,7 +1181,7 @@ idbRequest.onsuccess = function(e) {
           }
 
            // Create a transaction that locks the world.
-          var objectStore = idb_.transaction([], IDBTransaction.READ_WRITE)
+          var objectStore = idb_.transaction(["myObjectStore"], IDBTransaction.READ_WRITE)
                                 .objectStore("myObjectStore");
           var request = objectStore.put(
               document.getElementById('idb-value').value,
@@ -1192,7 +1192,7 @@ idbRequest.onsuccess = function(e) {
 
         function updateKey_(key, element) {
           var newKey = element.textContent;
-          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var transaction = idb_.transaction(["myObjectStore"], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
           var objectStore = transaction.objectStore("myObjectStore");
           var request = objectStore.get(key);
           request.onerror = idbError_;
@@ -1213,7 +1213,7 @@ idbRequest.onsuccess = function(e) {
         }
 
         function updateValue_(key, element) {
-          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var transaction = idb_.transaction(["myObjectStore"], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
           var objectStore = transaction.objectStore("myObjectStore");
           var request = objectStore.put(element.textContent, key);
           request.onerror = idbError_;
@@ -1221,7 +1221,7 @@ idbRequest.onsuccess = function(e) {
         }
 
         function deleteKey_(key) {
-          var transaction = idb_.transaction([], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
+          var transaction = idb_.transaction(["myObjectStore"], IDBTransaction.READ_WRITE); // Create a transaction that locks the world.
           var objectStore = transaction.objectStore("myObjectStore");
           if (objectStore.delete) {
             var request = objectStore.delete(key);
