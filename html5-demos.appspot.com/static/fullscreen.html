@@ -142,6 +142,12 @@ button:active {
   background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
   background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
 }
+iframe {
+  width: 100%;
+  height: 95px;
+  border: 1px solid #eee;
+  box-sizing: border-box;
+}
 </style>
 </head>
 <body>
@@ -155,7 +161,7 @@ lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictum
 malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
 
 <div id="fs">
-  <div class="tohide">My awesome video</div>
+  <div class="tohide">Check out this awesome video!</div>
   <video controls ondblclick="toggleFS(this)">
     <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.webm"></source>
     <source src="http://www.yo-yo.org/mp4/yu.mp4"></source>
@@ -185,19 +191,11 @@ malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convalli
 Ut tellus nisi, convallis at gravida id, interdum sit amet augue. Nullam et lacus ac elit
 pellentesque ornare ac a urna. Sed vestibulum porta erat, vel vulputate nunc pellentesque a.
 Ut neque dui, vulputate quis pretium vitae, ornare ac turpis. Vivamus quam tellus, fringilla
-at rhoncus eget, placerat vitae nunc. Nam feugiat quam vel nisl dignissim bibendum. Cras dictum,
-sem et cursus rutrum, turpis magna dictum orci, lacinia sagittis elit elit sit amet elit.
-Cras feugiat erat sit amet elit sagittis ultrices. Nam rhoncus mollis massa, ut ultricies
-lectus dignissim nec.</p>
+at rhoncus eget, placerat vitae nunc.</p>
 
-<h2>Subtitle</h2>
+<h2>&lt;iframe&gt; content</h2>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec hendrerit mauris.
-Nulla pellentesque, tortor ac euismod elementum, erat risus pellentesque magna, feugiat
-posuere dui diam quis risus. Duis gravida sagittis viverra. Mauris a pretium diam. Mauris
-lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictumst. Fusce
-malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
-
+<iframe src="fullscreen-frame.html" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec hendrerit mauris.
 Nulla pellentesque, tortor ac euismod elementum, erat risus pellentesque magna, feugiat

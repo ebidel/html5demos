@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<title>Fullscreen API</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300|Raleway:100" rel="stylesheet" type="text/css">
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300; 
+  text-align: center;
+}
+/* A full-screen element that is not the root element should be stretched to cover the viewport. */
+:-webkit-full-screen:not(:root) {
+  width: 90% !important;
+  float: none !important;
+}
+:-webkit-full-screen video {
+  width: 100%;
+}
+:-webkit-full-screen .tohide {
+  color: transparent;
+}
+:-webkit-full-screen .tohide::after {
+  display: block;
+  width: 100%;
+  height: 128px;
+  content: 'FULLSCREEN IFRAME CONTENT!!';
+  color: white;
+  font-size: 50pt;
+  font-weight: bold;
+  -webkit-text-stroke: 2px orange;
+  -moz-text-stroke: 2px orange;
+  -o-text-stroke: 2px orange;
+  text-stroke: 2px orange;
+  text-shadow: 3px 4px 10px black;
+  background: url('http://www.html5rocks.com/static/images/identity/HTML5_Badge_128.png');
+}
+:-moz-full-screen:not(:root) {
+  width: 90% !important;
+  float: none !important;
+}
+:-moz-full-screen video {
+  width: 100%;
+}
+:-moz-full-screen .tohide {
+  display: none;
+}
+#fs {
+  background: -webkit-linear-gradient(white 20%, #eee);
+  background: -moz-linear-gradient(white 20%, #eee);
+  box-shadow: 0 0 10px #ccc inset;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:hover {
+  border-color: black;
+}
+button:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+</style>
+</head>
+<body>
+
+<div id="fs">
+  <div class="tohide">I am a lame frame</div>
+  <button id="enter-exit-fs" onclick="enterFullscreen()">Toggle iframe content fullscreen</button>
+</div>
+
+<script>
+document.cancelFullScreen = document.webkitCancelFullScreen ||
+                            document.mozCancelFullScreen;
+
+var elem = document.querySelector('#fs');
+
+function onFullScreenEnter() {
+  console.log("Entered fullscreen initiated from iframe!");
+  elem.onwebkitfullscreenchange = onFullScreenExit;
+  elem.onmozfullscreenchange = onFullScreenExit;
+};
+
+// Called whenever the browser exits fullscreen.
+function onFullScreenExit() {
+  console.log("Exited fullscreen initiated from iframe");
+};
+
+// Note: FF nightly needs about:config full-screen-api.enabled set to true.
+function enterFullscreen() {
+  console.log("enterFullscreen()");
+  elem.onwebkitfullscreenchange = onFullScreenEnter;
+  elem.onmozfullscreenchange = onFullScreenEnter;
+  if (elem.webkitRequestFullScreen) {
+    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+  } else {
+    elem.mozRequestFullScreen();
+  }
+  document.getElementById('enter-exit-fs').onclick = exitFullscreen;
+}
+
+function exitFullscreen() {
+  console.log("exitFullscreen()");
+  document.cancelFullScreen();
+  document.getElementById('enter-exit-fs').onclick = enterFullscreen;
+}
+</script>
+</body>
+</html>
