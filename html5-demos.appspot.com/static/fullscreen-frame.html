@@ -54,6 +54,17 @@ body {
   text-shadow: 3px 4px 10px black;
   background: url('http://www.html5rocks.com/static/images/identity/HTML5_Badge_128.png');
 }
+
+:-moz-full-screen #fs-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
+#fs-container:-moz-full-screen {
+  display: table;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
 :-moz-full-screen:not(:root) {
   width: 90% !important;
   float: none !important;
@@ -110,16 +121,20 @@ button:active {
 </head>
 <body>
 
-<div id="fs">
-  <div class="tohide">I am a lame frame</div>
-  <button id="enter-exit-fs" onclick="enterFullscreen()">Toggle iframe content fullscreen</button>
+<div id="fs-container">
+  <div id="fs-inner">
+    <div id="fs">
+      <div class="tohide">I am a lame frame</div>
+      <button id="enter-exit-fs" onclick="enterFullscreen()">Toggle iframe content fullscreen</button>
+    </div>
+  </div>
 </div>
 
 <script>
 document.cancelFullScreen = document.webkitCancelFullScreen ||
                             document.mozCancelFullScreen;
 
-var elem = document.querySelector('#fs');
+var elem = document.querySelector(document.webkitCancelFullScreen ? "#fs" : "#fs-container");
 
 function onFullScreenEnter() {
   console.log("Entered fullscreen initiated from iframe!");

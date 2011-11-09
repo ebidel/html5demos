@@ -81,14 +81,31 @@ h2 {
   width: 90% !important;
   float: none !important;
 }
+:-moz-full-screen #fs-inner {
+  display: table-cell;
+  vertical-align: middle;
+}
+:-moz-full-screen #fs {
+  width: 90%;
+  margin: auto;
+}
 :-moz-full-screen video {
   width: 100%;
 }
 :-moz-full-screen .tohide {
   display: none;
 }
-#fs {
+#fs-container:-moz-full-screen {
+  display: table;
+  margin: auto;
+  float: none;
+  width: 100%;
+  height: 100%;
+}
+#fs-container {
   float: right;
+}
+#fs {
   width: 400px;
   background: -webkit-linear-gradient(white 20%, #eee);
   background: -moz-linear-gradient(white 20%, #eee);
@@ -98,8 +115,6 @@ h2 {
   padding: 1em;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  display: -moz-box;
-  -moz-box-orient: vertical;
   margin-left: 1em;
 }
 #fs div:first-of-type {
@@ -160,14 +175,18 @@ posuere dui diam quis risus. Duis gravida sagittis viverra. Mauris a pretium dia
 lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictumst. Fusce
 malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
 
-<div id="fs">
-  <div class="tohide">Check out this awesome video!</div>
-  <video controls ondblclick="toggleFS(this)">
-    <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.webm"></source>
-    <source src="http://www.yo-yo.org/mp4/yu.mp4"></source>
-  </video>
-  <button id="enter-exit-fs" onclick="enterFullscreen()">Toggle fullscreen</button>
-  <div><small class="tohide">fullscreen: 'f',</small> <small>close: 'ENTER' or 'ESC'</small></div>
+<div id="fs-container">
+  <div id="fs-inner">
+    <div id="fs">
+      <div class="tohide">Check out this awesome video!</div>
+      <video controls ondblclick="toggleFS(this)">
+        <source src="http://www.html5rocks.com/en/tutorials/video/basics/Chrome_ImF.webm"></source>
+        <source src="http://www.yo-yo.org/mp4/yu.mp4"></source>
+      </video>
+      <button id="enter-exit-fs" onclick="enterFullscreen()">Toggle fullscreen</button>
+      <div><small class="tohide">fullscreen: 'f',</small> <small>close: 'ENTER' or 'ESC'</small></div>
+    </div>
+  </div>
 </div>
 
 <p>Donec volutpat est et augue consectetur ac auctor libero ultrices.
@@ -206,7 +225,7 @@ malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convalli
 <script>
 document.cancelFullScreen = document.webkitCancelFullScreen || document.mozCancelFullScreen;
 
-var elem = document.querySelector('#fs');
+var elem = document.querySelector(document.webkitCancelFullScreen ? "#fs" : "#fs-container");
 
 document.addEventListener('keydown', function(e) {
   switch (e.keyCode) {
