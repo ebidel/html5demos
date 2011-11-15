@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>MediaSource API Demo</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<style>
+::selection {
+  color: #fff;
+  background: pink;
+}
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+body {
+  color: #222;
+  font-family: 'Open Sans', arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  display: -o-box;
+  -o-box-orient: vertical;
+  -o-box-align: center;
+  -o-box-pack: center;
+  width: 100%; /* for FF */
+}
+details {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  margin: 1em 0;
+  cursor: pointer;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  max-width: 600px;
+  font-size: 10pt;
+  z-index: 100;
+}
+details > div {
+  margin: 10px 0;
+}
+details blockquote {
+  font-style: italic;
+}
+pre:not(#log) {
+  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -webkit-gradient(radial, center center, 100, center center, 1500, from(transparent), to(rgba(0, 0, 0, 0.6))) white;
+  border-radius: 5px;
+  padding: 3px 17px;
+}
+code {
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What is this?</summary>
+  <div>
+    <p>This demo splits a <a href="Chrome_ImF.webm">.webm video</a> into
+    <span data-num-chunks></span> chunks using the File APIs. The entire movie
+    is then 'streamed' to a <code>&lt;video&gt;</code> element by appending each 
+    chunk using the
+    <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" target="_blank">MediaSource API</a>.</p>
+    <p><b>Support:</b> Chrome Dev Channel 17+ and the <code>--enable-media-source</code> flag set. The feature can also be enabled via <code>about:flags</code>.</p>
+  </div>
+</details>
+
+<video autoplay></video>
+
+<pre><code>
+var video = document.querySelector('video');
+video.src = video.webkitMediaSourceURL;
+
+video.addEventListener('webkitsourceopen', function(e) {
+  ...
+  video.webkitSourceAppend(oneChunk);
+  ....
+}, false);
+</code></pre>
+
+<pre id="log"></pre>
+<script>
+window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
+Blob.prototype.slice = Blob.prototype.webkitSlice || Blob.prototype.mozSlice;
+
+const FILE = 'test.webm';
+const NUM_CHUNKS = 5;
+var video = document.querySelector('video');
+
+if (!video.webkitMediaSourceURL) {
+  alert('webkitMediaSourceURL is not available');
+  return;
+}
+
+document.querySelector('[data-num-chunks]').textContent = NUM_CHUNKS;
+
+video.src = video.webkitMediaSourceURL;
+
+video.addEventListener('webkitsourceopen', function(e) {
+  var video = this;
+
+  logger.log('webkitSourceState: ' + getSourceStateName(video.webkitSourceState));
+
+  var bb = new BlobBuilder();
+  bb.append(GET(FILE).buffer);
+
+  var file = bb.getBlob('video/webm');
+
+  var chunkSize = Math.ceil(file.size / NUM_CHUNKS);
+
+  logger.log('num chunks:' + NUM_CHUNKS);
+  logger.log('chunkSize:' + chunkSize + ', totalSize:' + file.size);
+
+  // Slice the video into NUM_CHUNKS and append each to the media element.
+  for (var i = 0; i < NUM_CHUNKS; ++i) {
+    var startByte = chunkSize * i;
+
+    var chunk = file.slice(startByte, startByte + chunkSize);
+
+    var reader = new FileReader();
+    reader.onload = (function(idx) {
+      return function(e) {
+        video.webkitSourceAppend(new Uint8Array(e.target.result));
+        logger.log('appending chunk:' + idx);
+        if (idx == NUM_CHUNKS - 1) {
+          video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
+        }
+      };
+    })(i);
+
+    reader.readAsArrayBuffer(chunk);
+  }
+
+}, false);
+
+video.addEventListener('webkitsourceended', function(e) {
+  logger.log('webkitSourceState: ' + getSourceStateName(this.webkitSourceState));
+}, false);
+
+function getSourceStateName(state) {
+  var stateName = "UNKNOWN";
+  switch (state) {
+    case HTMLMediaElement.SOURCE_CLOSED:
+      stateName = "SOURCE_CLOSED";
+      break;
+    case HTMLMediaElement.SOURCE_OPEN:
+      stateName = "SOURCE_OPEN";
+      break;
+    case HTMLMediaElement.SOURCE_ENDED:
+      stateName = "SOURCE_ENDED";
+      break;
+    default:
+      // Noop
+  }
+  return stateName;
+}
+
+function GET(url) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, false); // synchronous!!!
+  xhr.responseType = 'arraybuffer';
+  xhr.send();
+
+  if (xhr.status != 200) {
+    alert("Unexpected status code " + xhr.status + " for " + url);
+    return false;
+  }
+
+  return new Uint8Array(xhr.response);
+}
+</script>
+<script>
+function Logger(id) {
+  this.el = document.getElementById('log');
+}
+Logger.prototype.log = function(msg) {
+  var fragment = document.createDocumentFragment();
+  fragment.appendChild(document.createTextNode(msg));
+  fragment.appendChild(document.createElement('br'));
+  this.el.appendChild(fragment);
+};
+
+Logger.prototype.clear = function() {
+  this.el.textContent = '';
+};
+
+var logger = new Logger('log');
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
