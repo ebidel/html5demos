@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<title>Directory Upload</title>
+<style type="text/css">
+body {
+  font-family: Arial;
+}
+#dir-tree, 
+#directory-list {
+  margin-top: 7px;
+}
+#directory-list {
+  font-size: 18px;
+  display: block;
+  height: 125px;
+  width: 100%;
+  box-sizing: border-box;
+}
+button, input[type='submit'] {
+  font: 18px Futura, 'Century Gothic', AppleGothic, Arial, sans-serif;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin: 0 8px 0 0;
+  color: black;
+  padding: 4px 8px 3px;
+  outline: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
+button:hover,
+input[type='submit']:hover {
+  border: 1px solid #939393;
+}
+
+button:active,
+input[type='submit']:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+}
+input[type='text'], input[type='number'], textarea {
+  font-size: 105%;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 0 3px 10px #ccc inset;
+  outline: none;
+}
+input[type="file"].hidden-input {
+  /* display:none on the input won't trigger the click event in WebKit.
+     Setting visibility to hidden and width 0 works.*/
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+#file-select {
+  color: #08233e;
+  padding: 3px 10px;
+  background: #ffcc00 -webkit-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background: #ffcc00 -moz-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  border: 1px solid #ffcc00;
+  border-radius: 7px;
+  border-bottom: 1px solid #9f9f9f;
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  cursor: pointer;
+}
+
+#file-select:hover {
+  background: -webkit-linear-gradient(-90deg, #fff, #ffcc00);
+  background: -moz-linear-gradient(-90deg, #fff, #ffcc00);
+}
+
+#file-select:active{
+  position: relative;
+  top: 2px;
+}
+.hidden {
+  display: none !important;
+}
+a[data-next] {
+  text-decoration: none;
+  font-size: 16px;
+  color: navy;
+  font-weight: 700;
+}
+
+/**
+ * --------------------------------------------------------------------
+ * jQuery tree plugin
+ * Author: Scott Jehl, scott@filamentgroup.com
+ * Copyright (c) 2009 Filament Group 
+ * licensed under MIT (filamentgroup.com/examples/mit-license.txt)
+ * --------------------------------------------------------------------
+ */
+#files { margin:2em 0 5em; width:400px; }
+.tree,.tree ul,.tree li { list-style:none; margin:0; padding:0; zoom: 1; }
+.tree ul { margin-left:8px; }
+.tree li a { color:#555; padding:.1em 7px .1em 27px; display:block; text-decoration:none; border:1px dashed #fff; background:url(file.gif) 5px 50% no-repeat; }
+.tree li a.tree-parent { background:url(folder-open.gif) 5px 50% no-repeat; }
+.tree li a.tree-parent-collapsed { background:url(folder.gif) 5px 50% no-repeat; }
+.tree li a:hover,.tree li a.tree-parent:hover,.tree li a:focus,.tree li a.tree-parent:focus,.tree li a.tree-item-active { color:#000; border:1px solid#eee; background-color:#fafafa; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px; }
+.tree li a:focus,.tree li a.tree-parent:focus,.tree li a.tree-item-active { border:1px solid #e2f3fb; background-color:#f2fafd; }
+.tree ul.tree-group-collapsed { display:none; }
+</style>
+</head>
+<body>
+
+<input type="file" class="hidden-input" webkitdirectory>
+<button id="directory-upload">Select a directory</button>
+
+View as: <a id="toggle" href="" onclick="javascript:toggleTree(this);" data-next="Tree">List</a>
+<textarea id="directory-list" class="hidden"></textarea>
+<ul id="dir-tree"></ul>
+
+<script src="jquery.min.1.5.2.js" type="text/javascript"></script>
+<script src="jquery.tree.js" type="text/javascript"></script>
+<script type="text/javascript">
+  
+  window.URL = window.URL || window.webkitURL;
+
+  function toggleTree(a) {
+    document.querySelector('#dir-tree').classList.toggle('hidden');
+    document.querySelector('#directory-list').classList.toggle('hidden');
+
+    var next = a.dataset.next;
+    a.dataset.next = a.textContent;
+    a.textContent = next;
+
+    window.event.preventDefault();
+    return false;
+  }
+
+  function Tree(selector) {
+    this.$el = $(selector);
+    this.fileList = [];
+    var html_ = [];
+    var tree_ = {};
+    var pathList_ = [];
+    var self = this;
+
+    this.render = function(object) {
+      if (object) {
+        for (var folder in object) {
+          if (!object[folder]) { // file's will have a null value
+            html_.push('<li><a href="#" data-type="file">', folder, '</a></li>');
+          } else {
+            html_.push('<li><a href="#">', folder, '</a>');
+            html_.push('<ul>');
+            self.render(object[folder]);
+            html_.push('</ul>');
+          }
+        }
+      }
+    };
+
+    this.buildFromPathList = function(paths) {
+      for (var i = 0, path; path = paths[i]; ++i) {
+        var pathParts = path.split('/');
+        var subObj = tree_;
+        for (var j = 0, folderName; folderName = pathParts[j]; ++j) {
+          if (!subObj[folderName] && folderName != '.') {
+            subObj[folderName] = j < pathParts.length - 1 ? {} : null;
+          }
+          subObj = subObj[folderName];
+        }
+      }
+      return tree_;
+    }
+
+    this.init = function(e) {
+      // Reset
+      html_ = [];
+      tree_ = {};
+      pathList_ = [];
+      self.fileList = e.target.files;
+
+      // TODO: optimize this so we're not going through the file list twice
+      // (here and in buildFromPathList).
+      var output = [];
+      for (var i = 0, file; file = self.fileList[i]; ++i) {
+        pathList_.push(file.webkitRelativePath);
+        output.push(file.webkitRelativePath);
+      }
+
+      document.querySelector('#directory-list').value = output.join('\n');
+
+      self.render(self.buildFromPathList(pathList_));
+
+      self.$el.html(html_.join('')).tree({
+        expanded: 'li:first'
+      });
+
+      // Add full file path to each DOM element.
+      var fileNodes = self.$el.get(0).querySelectorAll("[data-type='file']");
+      for (var i = 0, fileNode; fileNode = fileNodes[i]; ++i) {
+        fileNode.dataset['index'] = i;
+      }
+    }
+  };
+
+  var tree = new Tree('#dir-tree');
+
+  var fileInput = document.querySelector('input[webkitdirectory]');
+
+  document.querySelector('#directory-upload').addEventListener('click', function(e) {
+    fileInput.click();
+  }, false);
+
+
+  $(fileInput).change(function(e) {
+    tree.init(e);
+  });
+</script>
+</body>
+</html>

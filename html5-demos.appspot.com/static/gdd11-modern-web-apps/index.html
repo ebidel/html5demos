@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+Updated By: Pete LePage (petele@google.com)
+Updated: 10/17/2011 to include DART content
+Updated: 10/26/2011 with new screenshots and customized for SE Asia [ericbidelman]
+-->
+
+<html>
+<head>
+  <title>These Aren't the Sites You're Looking For: Modern Web Apps</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono&v2">
+  <link rel="icon" type="image/png" href="images/chrome-logo-tiny2.png">
+</head>
+
+<body style="display: none">
+
+<section class='slides layout-regular'>
+
+  <article class="title-slide">
+    <div>
+      <div data-config-logo class="spin"></div>
+      <p style="color:#545454;">These Aren't the Sites You're Looking For:</p>
+      <h1>Modern Web Applications</h1>
+      <p class="info">
+        <span data-config-name></span><br>
+        <time datetime="YYYY-MM-DD" data-config-date>MM DD, 2011</time> &nbsp; - &nbsp; <span data-config-location></span>
+      </p>
+      <img data-config-map class="rounded" title="Of course we're using Geolocation!" alt="Of course we're using Geolocation!">
+    </div>
+  </article>
+  
+  <article id="who">
+    <h3>Who?</h3>
+    <p>
+      <img class="avatar rounded" data-config-pic>
+    </p>
+    <br>
+    <p>
+      <a rel="author" data-config-gplus target="_blank">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-44.png" width="44" height="44">
+      </a> +<a rel="author" data-config-gplus target="_blank"><span data-config-name></span></a>
+    </p>
+    <p>
+      <a rel="author" data-config-twitter target="_blank" style="margin-left:-8px;">
+        <img src="images/twitter_newbird_blue.png" width="58" height="58">
+      </a> @ <a rel="author" data-config-twitter target="_blank" style="margin-left:-8px;"><span data-config-twitter></span></a>
+    </p>
+    <p>
+      <a rel="author" data-config-blog target="_blank"><span data-config-blog></span></a>
+    </p>
+  </article>
+
+  <article>
+    <h3>Agenda</h3>
+    <ul class="build fade" style="font-size:150%;">
+      <li>What's a modern web application?</li>
+      <li>How can we achieve greatness?</li>
+      <li>Sharing our greatness with others!</li>
+    </ul>
+  </article>
+  
+  <article>
+    <h3>What's a modern web application?</h3>
+    <div class="build" style="margin-top: 150px;">
+      <div class="formula">The Power Of The Cloud</div>
+      <div class="formula">+</div>
+      <div class="formula" style="border-bottom: 1px solid black;padding-bottom: 25px;">Native &amp; Desktop Richness</div>
+      <div class="formula" style="margin-top:40px;"><strong>Modern Web Apps</strong></div>
+    </div>
+  </article>
+    
+  <article class="fill build">
+    <img src="images/h5_logo.png">
+  </article>
+   
+  <article class="fill">
+    <img src="images/springpad.png">
+    <div class="build">
+      <div class="principle"><h4>Tight Focus</h4>A great web application has a tight focus encouraging people to <strong>interact</strong>, <strong>engage</strong>, and <strong>accomplish</strong> something, rather than passively view content.</div>
+    </div>
+    <!--<div class="source"><a href="http://bit.ly/p7G6IA">http://bit.ly/p7G6IA</a></div>-->
+    <!-- screen shot from Chrome Web Store app -->
+  </article>
+
+  <article class="fill">
+    <img src="images/gojee.png">
+    <div class="build">
+      <div class="principle"><h4>Provide Rich Visuals</h4>A great web application provides rich visuals that will <strong>delight the eye without distracting the mind.</strong></div>
+    </div>
+    <!--<div class="source"><a href="http://bit.ly/oZEqJh">http://bit.ly/oZEqJh</a></div>-->
+    <!-- screen shot from Chrome Web Store app -->
+  </article>
+  
+  <article class="fill">
+    <img src="images/280slides.png">
+    <div class="build">
+      <div class="principle"><h4>Great User Experiences</h4>A great web application uses the <strong>latest web technologies</strong> enhance the user experience, so users can complete their work faster, easier and with confidence.</div>
+    </div>
+    <!--<div class="source"><a href="http://bit.ly/qSIzFl">http://bit.ly/qSIzFl</a></div>-->
+    <!-- screen shot from Chrome Web Store app -->
+  </article>
+
+<!--
+  <article class="centered">
+    <img src="images/dj-working.png">
+    <h2>DJ BreakPoint</h2>
+    <div style="position:absolute;bottom:105px;padding-top:4px;">
+      <a data-config-djbpDemo target="_blank" style="font-size: 100%">Demo</a> 
+      <span style="font-size: 70%">[<a data-config-djbpSrc target="_blank">Source</a>]</span>
+    </div>
+  </article>
+-->
+
+  <article class="centered">
+    <h2>IO Reader</h2>
+    <div style="position:absolute;bottom:105px;padding-top:4px;">
+      <a data-config-ioreaderDemo target="_blank" style="font-size: 100%">Demo</a> 
+      <span style="font-size: 70%">[<a data-config-ioreaderSrc target="_blank">Source</a>]</span>
+    </div>
+  </article>
+
+  
+  <article>
+    <h2>How do I build something like that?</h2>
+  </article>
+
+<!--  
+  <article class="nobackground">
+    <div class="build">
+      <div>
+        <img src="images/messofwires.png" style="position:absolute;margin: -35px 0px 0px -60px;border-radius: 10px; z-index: -1;">
+      </div>
+      <div>
+        <h3 class="fakeFill">MVC Frameworks - Prevent Spaghetti Code</h3>
+          <div class="overlayBox centered" style="height:525px;margin-top:-50px">
+            <img src="images/mvc-c.png" alt="MVC controller"><br/>
+            <div style="margin-top:25px;">
+              <img class="arrow-llur" src="images/arrow.png"> <img src="images/mvc-v.png" alt="view"> <img class="arrow-lr" src="images/arrow.png"> <img src="images/mvc-m.png" alt="model"> <img class="arrow-lrul" src="images/arrow.png">
+            </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <article>
+    <h3>MVC frameworks</h3>
+    <p class="centered">
+      <a href="http://bit.ly/nltwjB" target="_blank"><img src="images/sproutcore.png" style="vertical-align:middle;"></a><br><br>
+      <a href="http://bit.ly/pLINm5" target="_blank"><img src="images/backbone.png" style="vertical-align:middle;margin-right:20px;"></a>
+      <a href="http://bit.ly/pv4o6j" target="_blank"><img src="images/extjs.png" style="vertical-align:middle;margin-left:20px;"></a>
+    </p>
+    <div class="build" style="margin-top:40px;">
+      <div>
+        <h3>CSS frameworks</h3>
+        <p class="centered" style="margin-top:-25px;">
+          <a href="http://bit.ly/ozkwJq" target="_blank"><img src="images/less.png" style="vertical-align:middle;margin-right:20px;"></a>
+          <a href="http://bit.ly/pIuMGe" target="_blank"><img src="images/sass.png" style="vertical-align:middle;margin-left:20px;"></a>
+        </p>
+      </div>
+    </div>
+  </article>
+-->
+  
+  <article>
+    <h2>...with a great user experience!</h2>
+  </article>
+  
+  <article class="fill">
+    <h3>Lower the barrier to entry</h3>
+    <img src="images/barriers2.png">
+    <div class="build">
+      <div class="overlayBox" style="margin-top:50px;">
+        <ul class="build fade">
+          <li>Make it <strong>easy to try without signing up</strong> first</li>
+          <li>Provide an <strong>OpenID</strong> sign-up option</li>
+          <li>Try the <a href="http://bit.ly/qrM2V0" target="_blank">Google Identity Toolkit</a>
+          </li>
+        </ul>        
+      </div>
+    </div>
+    <!-- iStock_000002174820Medium -->
+    <!--<img src="images/gitk_ss.png" style="z-index:100;width:685px;height:293px;min-height:293px;min-width:685px;margin-top:175px;margin-left:60px;">-->
+  </article>
+  
+  <article class="smaller" onslideenter="matchMediaSlideLoad();" onslideleave="matchMediaSlideUnLoad()">
+    <h3>Use responsive layout for different form factors</h3>
+    <div class="centered" style="height:175px;">
+      <img id="mqPhone" src="images/nexuss.jpg" class="device"><img id="mqTablet" src="images/ipad.png" class="device"><img id="mqLaptop" src="images/laptop.png" class="device">
+    </div>
+    <div class="build fade" style="margin-bottom:0px;">
+      <div>
+        <p style="margin-top:2px;">Media Queries for Style Sheets</p>
+        <pre style="margin-top:5px;margin-bottom:10px;">&lt;link rel="stylesheet" media="all" href="/static/css/base.min.css" /&gt;
+&lt;link rel="stylesheet" media="only screen and (max-width: 480px)" 
+  href="/static/css/mobile.min.css" /&gt;</pre>
+      </div>
+      <div>
+        <p>Testing CSS media queries in JavaScript with <code>window.<strong>matchMedia()</strong></code></p>
+        <pre style="margin-top:2px;margin-bottom:20px;">if (window.matchMedia('only screen and (max-width: 480px)').matches) {
+  // Asynchronously provide experience optimized for phone
+} else if (window.matchMedia('only screen and (min-width: 481px) and ' +
+                             '(max-width: 1024px)').matches) {
+  // Asynchronously provide experience optimized for table or smaller screen
+} else {
+  // Asynchronously provide full screen experience
+}</pre>
+      </div>
+      <div>
+        <p>Lib: <a href="http://bit.ly/pSXbYW" target="_blank">http://formfactorjs.com</a></p>
+      </div>
+    </div>
+    <script type="text/javascript">
+      (function() {
+    
+        function onWinResize(e) {
+          if (window.matchMedia('only screen and (max-width: 480px)').matches) {
+            document.getElementById("mqPhone").classList.add("mqHighlight");
+            document.getElementById("mqTablet").classList.remove("mqHighlight");
+            document.getElementById("mqLaptop").classList.remove("mqHighlight");
+          } else if (window.matchMedia('only screen and (min-width: 481px) and (max-width: 1024px)').matches) {
+            document.getElementById("mqPhone").classList.remove("mqHighlight");
+            document.getElementById("mqTablet").classList.add("mqHighlight");
+            document.getElementById("mqLaptop").classList.remove("mqHighlight");
+          } else {
+            document.getElementById("mqPhone").classList.remove("mqHighlight");
+            document.getElementById("mqTablet").classList.remove("mqHighlight");
+            document.getElementById("mqLaptop").classList.add("mqHighlight");
+          }
+        }
+    
+        window.matchMediaSlideLoad = function(e) {
+          onWinResize('x');
+          window.addEventListener('resize', onWinResize, false);
+        };
+    
+        window.matchMediaSlideUnLoad = function(e) {
+          window.removeEventListener('resize', onWinResize, false);
+        };
+      }());
+    </script>
+
+  </article>
+  
+  <article>
+    <h3>Make a single page app: navigation &amp; deep linking</h3>
+    <div class="build fade">
+      <div>
+        <pre style="margin-bottom: 20px;">function updateHash(push) {
+  if (push) {
+    var slideNo = curSlide + 1;
+    var hash = '#' + slideNo;
+    <b>window.history.pushState</b>(slideNo, 'Slide ' + slideNo, hash);
+  }
+}</pre>
+        </div>
+        <div>
+          <pre style="margin-bottom: 20px;margin-top:10px;">window.addEventListener('popstate', handlePopState, false);</pre>
+        </div>
+        <div>
+          <pre style="margin-bottom: 20px;margin-top:10px;">function handlePopState(event) {
+  if (event.state != null) {
+    curSlide = event.state - 1;
+    updateSlides(true);
+  }
+}</pre>
+          <p>Lib: <a href="http://bit.ly/pXCfY6" target="_blank">http://www.leviroutes.com</a>
+          &nbsp;&nbsp; <a href="http://warpspire.com/experiments/history-api/" target="_blank">Demo</a>
+          </p>
+        </div>
+      </div>
+        
+  </article>
+  
+  <article>
+    <h3>Make importing files easier</h3>
+    <pre class="centered">&lt;input type="file" id="dir-select" <b>webkitdirectory</b> /&gt;</pre>
+    <div class="build">
+      <div>
+        <iframe style="height:185px;margin-top:-20px;border:0px;" src="demos/dir-upload.html" frameborder="0"></iframe>
+        <pre>document.querySelector('#dir-select').onchange = function(e) {
+  var out = [];
+  for (var i = 0, f; f = <b>e.target.files</b>[i]; ++i) {
+    out.push(<b>f.webkitRelativePath</b>);
+  }
+  document.querySelector('output').textContent = out.join('/n');
+};</pre>
+      </div>
+    </div>
+  </article>
+  
+  <article>
+    <h3>Utilize desktop paradigms: file drag-in</h3>
+    <pre>document.querySelector('#dropzone').
+  window.addEventListener('drop', function(e) {
+    var reader = new <b>FileReader</b>();
+    reader.onload = function(e) {
+      document.querySelector('img').src = e.target.<b>result</b>;
+    };
+    reader.<b>readAsDataURL</b>(e.<b>dataTransfer.files[0]</b>);
+}, false);</pre>
+    <div id="dnd-dropzone" class="dnd-dropzone demo-area">
+      Drop in images from your desktop
+    </div>
+    <div id="dnd-thumbnails" class="center dnd-thumbnails"></div>
+    <script type="text/javascript" defer>
+      window.addEventListener('load', function(e) {
+        var dndc = new DNDFileController('dnd-dropzone', 'dnd-thumbnails');
+      }, false);
+    </script>
+  </article>
+
+  <article>
+    <h3>Utilize desktop paradigms: paste from clipboard</h3>
+    <pre>
+document.body.onpaste = function(e) {
+  var items = e.clipboardData.items;
+  for (var i = 0; i &lt; items.length; ++i) {
+    if (items[i].kind == 'file' && items[i].type == 'image/png') {
+      var blob = items[i].getAsFile();
+
+      var img = document.createElement('img');
+      img.src = window.URL.createObjectURL(blob);
+
+      document.body.appendChild(img);
+    }
+  }
+};
+</pre>
+      <p>Click in this window and paste and image ( Copy image from a right-click )</p>
+      <img id="paste-img">
+  </article>
+  <script>
+  document.body.onpaste = function(e) {
+    var items = e.clipboardData.items;
+    for (var i = 0; i < items.length; ++i) {
+      if (items[i].kind == 'file' && items[i].type == 'image/png') {
+        var blob = items[i].getAsFile();
+        var url = window.URL.createObjectURL(blob);
+        document.getElementById('paste-img').src = url;
+      }
+    }
+  };
+  </script>
+
+  <article>
+    <h3>Utilize desktop paradigms: file drag-out</h3>
+    <pre>&lt;a href="src/star.mp3" draggable="true" class="dragout"
+  data-downloadurl="<b>MIMETYPE:FILENAME:ABSOLUTE_URI_TO_FILE</b>"&gt;
+download
+&lt;/a&gt;</pre>
+
+<pre>var files = document.querySelectorAll('.dragout');
+for (var i = 0, file; file = files[i]; ++i) {
+  file.addEventListener('dragstart', function(e) {
+    e.dataTransfer.setData('DownloadURL', this.dataset.downloadurl);
+  }, false);
+}</pre>
+
+    <div class="dragout-zone demo-area">
+      Drag each of these files onto your desktop:
+      <a href="http://static.googleusercontent.com/external_content/untrusted_dlcp/www.google.com/en/us/intl/en/landing/chrome/cadie/glasses.pdf" class="dragout" data-downloadurl="application/pdf:Chrome3DGlasses.pdf:http://static.googleusercontent.com/external_content/untrusted_dlcp/www.google.com/en/us/intl/en/landing/chrome/cadie/glasses.pdf">3D Glasses [PDF]</a>
+      <a href="http://slides.html5rocks.com/src/star.mp3" class="dragout" data-downloadurl="audio/mpeg:star.mp3:http://slides.html5rocks.com/src/star.mp3">Star [MP3]</a>
+    </div>
+    <p class="center" style="font-size:50%;text-align:center;">( this feature is only available in Google Chrome )</p>
+    <script defer type="text/javascript">
+      (function() {
+        var files = document.querySelectorAll('.dragout');
+        for (var i = 0, file; file = files[i]; ++i) {
+          file.setAttribute('draggable', 'true'); // Don't really need, but good practice.
+          file.addEventListener('dragstart', function(evt) {
+            evt.dataTransfer.setData('DownloadURL', this.getAttribute('data-downloadurl'));
+          }, false);
+        }
+      })();
+    </script>
+  </article>
+
+  <article>
+    <h3>Utilize desktop paradigms: save data to folders</h3>
+    <pre>window.webkitRequestFileSystem(TEMPORARY, 1024*1024, initFs, fsError);</pre>
+    <pre style="margin-bottom:10px;">function saveFile(arrayBuffer, filename, type, callback) {
+  fs.root.getFile(filename, {create: true}, function(fileEntry) {
+    fileEntry.createWriter(function(fileWriter) {
+      var bb = new WebKitBlobBuilder();
+      bb.append(arrayBuffer);
+      fileWriter.write(bb.getBlob(type));
+      callback(fileEntry);
+    }, fsError);
+  }, fsError);
+}</pre>
+    <p class="centered"><a href="http://www.htmlfivewow.com/demos/terminal/terminal.html" target="_blank">Terminal Demo</a> </p>
+<!--
+    <button id="butSetupFS" type="button" onclick="initFileSystem(1, fsReady)">Setup File System</button> 
+    <button id="butSaveToFS" disabled="disabled" type="button" onclick="saveFileDemo()">Save File</button>
+    <a id="fsLink" target="_blank" style="font-size:50%;">Browse File System</a>
+    <div id="dnd-thumbnails2" class="center dnd-thumbnails"></div>
+
+
+    <script src="helpers/fileapi.js" type="text/javascript"></script>
+    <script type="text/javascript">    
+      function fsReady(fs) {
+        document.getElementById("butSaveToFS").removeAttribute("disabled");
+        document.getElementById("butSetupFS").setAttribute("disabled", "disabled");
+      }
+      
+      function saveFileDemo() {
+        var item = {};
+        item.url = "./images/h5_logo.png";
+        item.filename = "filename.png";
+        item.type = "image/png";
+        saveURLToDisk(item, addToPage);
+      }
+      
+      function addToPage(fileentry) {
+        var image = "<a href='"+ fileentry.toURL() +"' target='_blank'><img src='"+ fileentry.toURL() +"'></a>";
+        document.getElementById("dnd-thumbnails2").innerHTML = image;
+        var fileURL = fileentry.toURL();
+        fileURL = fileURL.substr(0, fileURL.lastIndexOf('/')+1);
+        var link = document.getElementById("fsLink");
+        link.href = fileURL;
+      }
+    
+    </script>
+-->
+  </article>
+  
+  <article>
+    <h3 id="offline-head">Make it work offline</h3>
+    <div class="build fade">
+      <div style="margin-top:20px;">
+        <p>Application Cache to for static content:</p>
+        <pre class="centered" style="margin-top:5px;margin-bottom:20px;">&lt;html <b>manifest="cache.appcache"</b>&gt;</pre>
+      </div>
+      <div>
+        <p>Store data locally:</p>
+        <pre style="margin-top:5px;margin-bottom:10px;">window.webkitRequestFileSystem(PERSISTENT, 1024*1024, initFs, fsError);</pre>
+        <pre style="margin-bottom:10px;margin-top:0px;">var idbRequest = window.indexedDB.open('Database Name');</pre>
+        <pre style="margin-bottom:20px;margin-top:0px;">window.localStorage.setItem('key', 'value');</pre>
+        </pre>
+      </div>
+      <div>
+        <p>Detect online/offline states:</p>
+        <pre style="margin-top:5px;margin-bottom:20px;">
+window.addEventListener('online', function(e) {
+  // Re-sync stored data to server.
+}, false);
+</pre>
+      </div>      
+    </div> 
+    <script type="text/javascript">
+      if (navigator.onLine) {
+        document.getElementById("offline-head").classList.add("green");
+      } else {
+        document.getElementById("offline-head").classList.add("red");
+      }
+      
+      window.addEventListener('online', function(e) {
+        document.getElementById("offline-head").classList.add("green");
+        document.getElementById("offline-head").classList.remove("red");    
+      }, false);
+
+      window.addEventListener('offline', function(e) {
+        document.getElementById("offline-head").classList.add("red");
+        document.getElementById("offline-head").classList.remove("green");
+      }, false);
+    </script>
+  </article>
+  
+  <article>
+    <h3>Persist user data</h3>
+    <textarea id="text-area-input" placeholder="Type your text here..." class="data-persistence-demo"></textarea>
+    <p id="data-persistence-debug"></p>
+    <div>
+      <button id="data-persistence-restore" disabled="disabled" onclick="FormPersistenceRestore('gddAppsForm');" >Restore auto-saved</button>
+      <button id="data-persistence-clear" disabled="disabled" onclick="FormPersistenceClear('gddAppsForm');">Clear auto-saved data</button>
+    </div>
+    <pre style="margin-bottom: 10px;">var elems = document.querySelectorAll('textarea, input');
+for (var i = 0, elem; elem = elems[i]; ++i) {
+  elem.addEventListener('input', function(item) {
+    localStorage[formName + '-' + item.srcElement.id] = 
+      item.srcElement.value;
+    var debug = document.getElementById('data-persistence-debug');
+    debug.innerHTML = 'Last auto-saved at: ' + new Date();
+  }, false);
+}</pre>
+    <p>
+      <a href="http://bit.ly/pNR0VI">LawnChair - simple json storage</a>
+    </p>
+    <script src="helpers/form-persist.js"></script>
+    <script type="text/javascript">
+      FormPersistenceSetup("gddAppsForm");
+      if (FormPersistenceCanRestore("gddAppsForm")) {
+        var elem = document.getElementById("data-persistence-restore");
+        elem.removeAttribute("disabled");
+        elem = document.getElementById("data-persistence-clear");
+        elem.removeAttribute("disabled");
+      }
+    </script>
+  </article>
+  
+  <article class="hidden">
+    <h3>Make entering information easy &amp; understandable</h3>
+    <div class="build fade">
+      <pre class="form-inputs"><input type="text" required />&lt;input type="text" <b>required</b> /&gt;</pre>
+      <pre class="form-inputs"><input type="email" value="some@email.com" />&lt;input type="<b>email</b>" value="some@email.com" /&gt;</pre>
+      <pre class="form-inputs"><input type="date" min="2010-08-14" max="2011-08-14" value="2010-08-14" />&lt;input type="<b>date</b>" <b>min</b>="2010-08-14" <b>max</b>="2011-08-14" 
+value="2010-08-14"/&gt;</pre>
+      <pre class="form-inputs"><input type="range" min="0" max="50" value="10" />&lt;input type="<b>range</b>" <b>min</b>="0" <b>max</b>="50" value="10" /&gt;</pre>
+      <pre class="form-inputs"><input results="10" type="search" placeholder="Search..." />&lt;input type="<b>search</b>" <b>results</b>="10" <b>placeholder</b>="Search..." /&gt;</pre>
+      <pre class="form-inputs"><input type="tel" placeholder="(555) 555-5555" pattern="^\(?\d{3}\)?[-\s]\d{3}[-\s]\d{4}.*?$" />&lt;input type="<b>tel</b>"  <b>placeholder</b>="(555) 555-5555"
+ <b>pattern</b>="^\(?\d{3}\)?[-\s]\d{3}[-\s]\d{4}.*?$" /&gt;</pre>
+      <pre class="form-inputs"><input type="color" placeholder="e.g. #bbbbbb" />&lt;input type="<b>color</b>" <b>placeholder</b>="e.g. #bbbbbb" /&gt;</pre> 
+      <pre class="form-inputs"><input type="number" step="1" min="-5" max="10" value="0" />&lt;input type="<b>number</b>" <b>step</b>="1" <b>min</b>="-5" <b>max</b>="10" value="0" /&gt;</pre>        
+    </div>
+  </article>
+  
+  <article>
+    <h3>Speech enable your app</h3>
+    <pre class="centered">&lt;input type="text" x-webkit-speech /&gt;</pre>
+    <input id="speech-input-textbox" type="text" x-webkit-speech style="width:400px;height:50px;font-size:135%;margin-left:auto;margin-right:auto;display:block;">
+    <div class="build">
+      <div>
+        <pre>function startSearch(e) {
+  if (e.target.results.length) {
+    var second = e.target.results[1]<b>.utterance</b>;
+    document.getElementById('second_best').value = second;
+  }
+  e.target.form.submit();
+}</pre>
+        <div id="speech-results" class="speech-results demo-area">
+        </div>
+         
+        <script> 
+          document.getElementById("speech-input-textbox").addEventListener("webkitspeechchange", function(event) {
+            var speechresults = document.getElementById('speech-results');
+            speechresults.innerHTML = '';
+            for (var res in event.results) {
+              speechresults.innerHTML += 'Utterance: ' + event.results[res]['utterance'] + '<br />Confidence: ' 
+                + event.results[res]['confidence'] + '<br /><br />';
+            }
+          }, false);
+        </script>
+      </div>
+    </div>
+  </article>
+  
+  <article>
+    <h3>Keep users informed</h3>
+    <pre>
+window.notifications = window.notifications ||
+    window.webkitNotifications || window.mozNotifications;
+
+function showNotifications(pic, title, text) {
+  if (notifications.checkPermission() == 0) {
+    return;
+  }
+
+  var note = <b>notifications.createNotification(pic, title, text);</b>
+  note.<b>show();</b>
+    
+  setTimeout(function(note) { // close note after a timeout  
+    <b>note.cancel();</b>
+  }, 6000, notification);
+}</pre>
+
+    <button id="request-not-permission-button" type="button" onclick="requestNotificationPermission();" disabled="disabled">Request Permission</button>
+    <button id="show-notification-button" type="button" onclick="showNotification();" disabled="disabled">Show Simple Notification</button>
+    <button id="show-html-notification-button" type="button" onclick="showHTMLNotification('demos/notification/notification.html');" disabled="disabled">Show HTML Notification</button>
+    <script type="text/javascript" defer>
+      if (window.webkitNotifications) {
+        updateNotificationButtons();
+      }
+    
+      function requestNotificationPermission() {
+        if (window.webkitNotifications) {
+          if (window.webkitNotifications.checkPermission() != 0) {
+            window.webkitNotifications.requestPermission(updateNotificationButtons);
+          }
+        }
+      }
+      
+      function updateNotificationButtons() {
+        if (window.webkitNotifications.checkPermission() == 0) {
+          document.getElementById("show-html-notification-button").removeAttribute("disabled");
+          document.getElementById("show-notification-button").removeAttribute("disabled");
+          document.getElementById("request-not-permission-button").setAttribute("disabled", "disabled");
+        } else {
+          document.getElementById("request-not-permission-button").removeAttribute("disabled");
+        }
+      }
+      
+      function showNotification() {
+        showNotifications("images/chrome-logo.png", "Title", "Specific packets interpreted before the BDD. Elected stack trace time boxed along assorted aspect oriented programming.");
+      }
+      
+      function showHTMLNotification(url) {
+        if (window.webkitNotifications.checkPermission() == 0) {
+          //var notificationWindow = window.webkitNotifications.createNotification(pic, title, text);
+          var notificationWindow = window.webkitNotifications.createHTMLNotification(url);
+          notificationWindow.show();
+    
+          // close notification automatically after a timeout    
+          /*setTimeout(function(popup) { 
+            popup.cancel();
+          }, 6000, notificationWindow);*/
+        }
+      }
+  
+      function showNotifications(pic, title, text) {
+        if (window.webkitNotifications.checkPermission() == 0) {
+          var notificationWindow = window.webkitNotifications.createNotification(pic, title, text);
+          notificationWindow.show();
+    
+          // close notification automatically after a timeout    
+          setTimeout(function(popup) { 
+            popup.cancel();
+          }, 6000, notificationWindow);
+        }
+      }
+    </script>
+  </article>
+  
+  <article>
+    <h3>Treat performance like a feature</h3>
+    <div class="build fade">
+      <div style="margin-top:20px;">
+        <p>AppCache for faster initial load:</p>
+        <pre class="centered" style="margin-top:5px;margin-bottom:20px;">&lt;html <b>manifest="cache.appcache"</b>&gt;</pre>
+      </div>
+      <div>
+        <p>Store data locally:</p>
+        <pre style="margin-top:5px;margin-bottom:10px;">window.webkitRequestFileSystem(TEMPORARY, 1024*1024, initFs, fsError);</pre>
+        <pre style="margin-bottom:10px;margin-top:0px;">var idbRequest = window.indexedDB.open('Database Name');</pre>
+        <pre style="margin-bottom:20px;margin-top:0px;">window.localStorage.setItem('key', 'value');</pre>
+        </pre>
+      </div>
+      <div>
+        <p>Animate with CSS3 instead of JS:</p>
+        <pre style="margin-top:5px;margin-bottom:20px;" class="transition-demo">transition: all 1s ease-in-out;</pre>
+      </div>
+      <div>
+        <p>Workers for non-blocking (responsive) UI:</p>
+        <pre style="margin-top:5px;margin-bottom:20px;">var worker = new Worker('myworker.js');</pre>
+        <p style="font-size:70%;">More great tips at <a href="http://bit.ly/rizNVE" target="_blank">http://bit.ly/rizNVE</a></p>
+      </div>
+      
+    </div>
+  </article>
+  
+  <article class="dart-slide">
+    <h3><img src="images/dart.png"></h3>
+    <ul class="build">
+      <li>A preview of a new structured language for the Web</li>
+      <li>Familiar and natural, yet new</li>
+      <ul class="build">
+        <li>Class-based</li>
+        <li>Optional typing</li>
+        <li>New DOM API</li>
+      </ul>
+      <li style="font-size: 1.25em;line-height:1.25em;">Try the early preview at <a href="http://dartlang.org" target="_blank">dartlang.org</a>, and share your feedback!</li>
+    </ul>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><strong>NOTE:</strong> this is an early preview of the Dart language and programming environment</li>
+          <li>Some elements are missing from the current release, and the details are subject to change based on the feedback we receive</li>
+          <li>Syntax familiar to devs from many languages: Javascript, Java, C#, etc.</li>
+          <li>Optional typing allows rigor where you need it (large projects, tooling support), speed where you don't</li>
+          <li>New DOM API like jQuery--see Bob Nystrom's article on <a href="http://www.dartlang.org/articles/improving-the-dom/" target="_blank">dartlang.org</a></li>
+        </ul>
+      </section>
+    </aside>
+  </article>
+  
+  <article class="dart-slide">
+  <pre class="prettyprint dart-lang" onclick="highlight()">
+interface Shape {
+<span class="dart-highlight1">  perimeter(); // return type optional</span>
+}
+
+class Rectangle implements Shape {
+  final num height, width; 
+<span class="dart-highlight2">  // Compact constructor syntax
+  Rectangle(num this.height, num this.width);</span>
+<span class="dart-highlight3">  // Terse function syntax
+  perimeter() => 2*height + 2*width;</span>
+}
+
+class Square extends Rectangle {
+<span class="dart-highlight2">  Square(num size) : super(size, size);</span>
+}
+
+main() {
+<span class="dart-highlight4">  var p = new Square(5).perimeter(); // dynamic type</span>
+<span class="dart-highlight5">  print('Perimeter=$p'); // String interpolation</span>
+}</pre>
+    <aside class="note">
+      <section>
+        <ol>
+          <li>example of optional typing: declaration of return type not required</li>
+          <li>common constructor idiom: this.height = height, etc. Dart offers shortcut syntax for this, also shortcut for calling a super-constructor</li>
+          <li>functions that simply return an expression can be defined in one line</li>
+          <li>as perimeter() doesn't specify return type, we can just use var to indicate dynamic type for the result</li>
+          <li>string interpolation is shorter and easier to read than concatenation</li>
+        </ol>
+      </section>
+    </aside>
+  </article>
+  
+  <script type="text/javascript">
+    var blockNum = 0;
+    function highlight() {
+     if (blockNum > 0) {
+      toggleHighlight("dart-highlight" + blockNum);
+     }
+     toggleHighlight("dart-highlight" + ++blockNum);
+    }
+    function toggleHighlight(className) {
+     elements = document.getElementsByClassName(className);
+     for (var i = 0; i < elements.length; ++i) {
+       elements[i].classList.toggle("highlight");
+     }
+     if (elements.length == 0) {
+      blockNum = 0; // start over
+     }
+    }
+  </script>
+  
+  <article class="fill">
+    <h2 class="transparentBar">How about <strong>older browsers</strong>?</h2>
+    <div class="build">
+      <div>
+        <img src="images/polyfill.png">
+          <a class="transparentBar build" style="position:absolute;bottom:100px;padding-top:4px;" href="http://bit.ly/HTML5PolyFills" target="_blank">HTML5 Cross Browser Polyfills</a>
+      </div>
+    </div>
+  </article>
+  
+  <article>
+    <h3>Chrome Frame</h3>
+    <a href="http://bit.ly/nJjfDS" style="text-decoration:none;">
+      
+      <img src="images/chrome-frame.png" class="centered" style="width: 600px;">
+      <div class="build">
+        <pre class="chrome-frame">&lt;meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"&gt;</pre>
+      </div>
+    </a>
+    <!-- image from iStockPhoto iStock_000006291377Small --> 
+  </article>
+  
+  <article class="fill">
+    <img src="images/libraries.png">
+    <h2 class="transparentBar">Other helpful libraries</h2>
+    <div class="build">
+      <p class="transparentBar" style="position:absolute;bottom:100px;padding-top:4px;">
+        <a href="http://bit.ly/qzgRPN" class="fade" target="_blank">HTML5 BoilerPlate,</a> 
+        <a href="http://bit.ly/pV8Xp5" class="fade" target="_blank">Modernizr,</a> 
+        <a href="http://bit.ly/qlKqOc" class="fade" target="_blank">jQuery</a>
+      </p>
+    </div>
+  </article>
+  
+  <article id="cws-question" class="cws-slide">
+    <div class="steps">
+      <span><strong>Step 1.</strong> Build web app<br/></span>
+      <span><strong>Step 2.</strong> ???????<br /></span>
+      <span><strong>Step 3.</strong> Profit!</span>
+      <div class='author'>
+        <a href="http://chzb.gr/o8tlUQ" target="_blank">Internet adage</a>
+      </div>
+    </div>
+  </article>
+
+  <article id="cws-intro" class="cws-slide">
+    <img class="centered" src="images/cws-logo.png" style="width: 100%;margin-top: -50px;">
+    <div class="build">
+      <div class="build overlayBox">
+        <div>Make it <strong>easy</strong> for user to <strong>discover great apps</strong>, extensions, and themes</div>
+        <div>Make it <strong>easy</strong> for developers and brands to reach the <strong>200+ million Chrome users</strong></div>
+      </div>
+    </div>
+  </article>
+  
+  <article id="cws-about" class="cws-slide">
+    <a href="https://chrome.google.com/webstore" target="_blank"><img class="centered" src="images/cws-screenshot-new.png" style="width: 100%;"></a>
+    <div class="build">
+      <div class="overlayBox">
+        <ul class="build">
+          <li class="fade">Multiple monetization models, including one-time, subscriptions and in-app payments</li>
+          <li class="fade">One-time $5 developer registration fee</li>
+          <li class="fade">No review or approval process</li>
+          <li class="fade">No restrictions on advertising</li>
+          <li class="fade">No restrictions on the platform</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  
+  <article id="cws-i18n" class="cws-slide">
+    <h3>Available in 41 Languages</h3>
+    <img class="centered" src="images/worldmap.png" style="width: 750px;margin-top:50px">
+    <aside class="note">
+      <section>
+        Argentina, Australia, Austria, Belgium, Brazil, Canada, Czech Republic, Denmark, Finland, 
+        France, Germany, Hong Kong, India, Indonesia, Israel, Italy, Japan, Mexico, Netherlands, 
+        New Zealand, Norway, Philippines, Poland, Portugal, Russia, Singapore, Spain, Sweden, 
+        Switzerland, United Kingdom and United States
+      </section>
+    </aside>
+  </article>
+  
+  <article id="cws-case1" class="cws-slide">
+    <img src="images/wgt-logo.png">
+    <span class="build">
+      <q class="casestudy">Play <strong>23%</strong> more and spend <strong>147%</strong> more</q>
+    </span>
+    <div class="source"><a href="http://bit.ly/nMCxgo" target="_blank">http://bit.ly/nMCxgo</a></div>
+  </article>
+  
+  <article id="cws-case2" class="cws-slide">
+    <img src="images/springpad-logo.png">
+    <span class="build">
+    <q class="casestudy"><strong>100%</strong> more engagement</q></span>
+    <div class="source"><a href="http://bit.ly/p59XJb" target="_blank">http://bit.ly/p59XJb</a></div>
+  </article>
+
+  <article id="cws-how" class="cws-slide">
+    <img class="centered" src="images/newtabpage.png" style="width: 100%;">
+    <div class="build">
+      <div class="overlayBox" style="margin-top: -50px;">
+        <div class="build" style="line-height:120%;">
+          <span class="fade"><strong>Step 1.</strong> Create application manifest<br/></span>
+          <span class="fade"><strong>Step 2.</strong> Upload manifest &amp; graphics<br/></span>
+          <span class="fade"><strong>Step 3.</strong> Publish<br><br></span>
+          <span class="fade" style="text-align:center;width:100%;display:block;"><strong>OR</strong><br><br></span>
+          <span class="fade" style="text-align:center;width:100%;display:block;">
+            <a href="http://appmator.appspot.com/" target="_blank"><strong>AppMator</strong></a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <article id="cws-manifest" class="cws-slide">
+    <h3>Chrome Web Store manifest file</h3>
+    <pre>
+{
+  "name": "My Chrome Web Store",
+  "description": "Discover great apps, games, extensions and...",
+  "version": "1.0", 
+  "icons": {
+    "16": "16.png",
+    "128": "128.png"
+  },
+  "app": {
+    "urls": ["*://chrome.google.com/webstore"],
+    "launch": { 
+      "web_url": "https://chrome.google.com/webstore"
+    }
+  },
+  "permissions": ["unlimitedStorage", "notifications", 
+                  "offline_enabled"]
+}</pre> 
+  </article>
+  
+  <article id="iap-intro" class="iap-slide">
+    <img src="images/inapp.png" style="width:45%;margin-top:175px;">
+    <div style="float:right;width:45%;" class="build">
+      <div>
+      <h4 style="font-size:156pt;margin-top:120px;margin-bottom: 75px;">5%</h4>
+      <p style="text-align:center;font-weight:bold;">In App Payments</p></div>           
+      <ul>
+        <li>No per transaction fees</li>
+        <li>No monthly fees</li>
+        <li>No sign up fees</li>
+        <li>PCI compliance</li>
+      </ul>
+    </div>
+  </article>
+    
+  <article class="segue">
+    <h2>One last thing...</h2>
+  </article>
+
+  <article class="build">
+    <q class="casestudy" style="font-size:64pt;font-weight:bold">Aim for a great experience, everything else will follow.</q>
+  </article>
+  
+  <article class="fill nobackground">
+    <h2 class="shadow-banner">chromestatus.com</h2>
+    <iframe src='http://chromestatus.com'></iframe>
+  </article>
+
+  <article class="nobackground fill">
+    <h2 class="shadow-banner">HTML5Rocks.com</h2>
+    <iframe src='http://html5rocks.com'></iframe>
+  </article>
+
+  <article>
+    <h3>Resources</h3>
+    <h4 style="margin-bottom: 10px;">Developer Guides</h4>
+    <ul style="margin-top:10px;">
+      <li>Chrome Web Store Developer Guides <a href="http://bit.ly/r3K8bm" target="_blank">http://bit.ly/r3K8bm</a></li>
+      <li>Tutorial <a href="http://bit.ly/pYwzkY" target="_blank">http://bit.ly/pYwzkY</a></li>
+      <li>Background - Extending your app's life <a href="http://bit.ly/pc5HiT" target="_blank">http://bit.ly/pc5HiT</a></li>
+      <li>Using the Notifications API <a href="http://bit.ly/qNfeeN" target="_blank">http://bit.ly/qNfeeN</a></li>
+      <li>OpenID &amp; Identifying Your User <a href="http://bit.ly/oqsAfI" target="_blank">http://bit.ly/oqsAfI</a></li>
+    </ul>
+    <h4 style="margin-bottom: 10px;">Best Practices</h4>
+    <ul style="margin-top: 10px;">
+      <li>What makes for a great web app? <a href="http://bit.ly/nJWZQA">http://bit.ly/nJWZQA</a></li>
+      <li>Anatomy of a Great Chrome Web Store Listing <a href="http://bit.ly/iUdFLb" target="_blank">http://bit.ly/iUdFLb</a></li>
+    </ul>
+  </article>
+
+  <article class="title-slide">
+    <div>
+      <div data-config-logo></div>
+      <p style="color:#545454;">Thanks!</p>
+      <h3 class="questions">Questions?</h3>
+      <p style="margin-top:0px;">
+        <a rel="author" data-config-gplus target="_blank" style="margin-right:10px;text-decoration:none;">+<span data-config-name></span></a>
+        <a rel="author" data-config-twitter target="_blank" style="text-decoration:none;">@<span data-config-twitter></span></a>
+      </p>
+      <p class="info" style="margin-top:5em;font-size:100%;line-height:1.25em;">
+        <!--Slides: <a data-config-slides target="_blank"><span data-config-slides></span></a><br>-->
+        <!--Feedback: <a data-config-feedback target="_blank"><span data-config-feedback></span></a><br>-->
+      </p>
+    </div>
+  </article>
+
+        
+
+  <article class="nobackground">
+    <a href="http://goo.gl/J6eaB" target="_blank"><img src="images/chrome-big.png" style="margin-top:150px;"></a>
+    <h4 style="width: 100%;text-align:center;">The web is what you make of it.</h4>
+  </article>
+
+  <!--<article class="biglogo"></article>-->
+
+</section>
+
+<script src="js/config.js"></script>
+<script src="js/hide-slides.js"></script>
+<script src='js/slides.js'></script>
+<script src="helpers/dnd-lib.js" defer></script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  //_gaq.push(['_setAccount', 'UA-25678279-1']);
+  //_gaq.push(['_setAccount', 'UA-9988000-4']);
+  //_gaq.push(['_setDomainName', '.bleedinghtml5.appspot.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+ 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+
+<script type="text/javascript" src="js/timer.js"></script>
+<script type="text/javascript">
+  var t = PresentationTimer();
+  t.start()
+</script>
+</body>
+</html>

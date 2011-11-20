@@ -1,0 +1,15 @@
+{ "name": "My Chrome Web Store",
+  "description": "Discover great apps, games, extensions and...",
+  "version": "1.0", 
+  "icons": {
+    "16": "16.png",
+    "128": "128.png"
+  },
+  "app": {
+    "urls": ["*://chrome.google.com/webstore"],
+    "launch": { 
+      "web_url": "https://chrome.google.com/webstore"
+    }
+  },
+  "permissions": ["unlimitedStorage", "notifications"]
+}
