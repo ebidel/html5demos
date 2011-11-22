@@ -97,7 +97,7 @@ code {
   </div>
 </details>
 
-<video autoplay></video>
+<video controls autoplay></video>
 
 <pre><code>
 var video = document.querySelector('video');
@@ -155,6 +155,9 @@ video.addEventListener('webkitsourceopen', function(e) {
         video.webkitSourceAppend(new Uint8Array(e.target.result));
         logger.log('appending chunk:' + idx);
         if (idx == NUM_CHUNKS - 1) {
+          if (video.paused) {
+            video.play(); // insure video starts playing.
+          }
           video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
         }
       };
