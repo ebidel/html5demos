@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>Transferable Objects Demo</title>
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<style>
+body {
+  font-family: "Droid Sans", Arial, sans-serif;
+  padding: 2em;
+}
+details {
+  position: absolute;
+  top: 0;
+  left: 1em;
+  margin: 1em 0;
+  cursor: pointer;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  max-width: 600px;
+  font-size: 10pt;
+  z-index: 100;
+  background: #F7F7F7;
+}
+details > div {
+  margin: 10px 0;
+}
+details blockquote {
+  font-style: italic;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:hover {
+  border-color: black;
+}
+button:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+section {
+  margin-top: 2em;
+}
+.down {
+  margin-top: 17em;
+}
+</style>
+<body>
+
+<details>
+  <summary>Yo dawg, what is this?</summary>
+  <div>
+    <p>This demo illustrates <a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">transferable objects</a>.
+    Transferable objects are objects that are not copied (e.g. using something like <a href="http://updates.html5rocks.com/2011/09/Workers-ArrayBuffer" target="_blank">structured cloning</a>). Instead, the data is transferred
+    and from one context to another. The 'version' from the calling context is no longer available once transferred
+    to the new context. For example, when transferring an <code>ArrayBuffer</code> from main app to Worker, the
+    original <code>ArrayBuffer</code> from the main thread is cleared and no longer usable.
+    This vastly improves performance of sending data to a Worker. </p>
+    <p>This demo sends a 32MB <code>ArrayBuffer</code> to a worker and back using a prefixed version of <code>postMessage()</code>
+    that supports transferable objects: <code><a href="http://dev.w3.org/html5/workers/#dedicated-workers-and-the-dedicatedworkerglobalscope-interface" target="_blank">webkitPostMessage()</a></code>.
+    If your browser doesn't support transferrables, the sample falls back to structured cloning.</p>
+    <p><b>Support:</b> Chrome Dev Channel 17+</p>
+  </div>
+</details>
+<section>
+  <p><a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">Transferable Objects</a> are lightning fast! The prefixed <code>[window|worker].webkitPostMessage()</code>
+  now supports sending an <code>ArrayBuffer</code> as a transferrable.</p>
+  <button onclick="test();">Run test</button>
+  <!--<input type="checkbox" id="enable-transferable" checked> Enable transferable?-->
+  <pre id="result"></pre>
+</section>
+
+<script src="shared.js"></script>
+<script>
+var worker = null;
+var startTime = 0;
+
+// Move output panel down further if <details> isn't supported (collapsible).
+var details = document.querySelector('details');
+if (!('open' in details)) {
+  document.querySelector('section').classList.add('down');
+}
+
+function log(str) {
+  var elem = document.getElementById('result');
+  var log = function(s) {
+   elem.innerHTML += ''.concat(time(), ' ', s, '\n');
+  };
+  log(str);
+}
+
+function init() {
+  worker = new Worker('transferrable.js');
+
+  // Take care of vendor prefixes.
+  worker.postMessage = worker.webkitPostMessage || worker.postMessage;
+
+  worker.onmessage = function(e) {
+    console.timeEnd('actual postMessage round trip was');
+    // capture elapsed time since the original postMessage();
+    if (!e.data.type) {
+      var elapsed = seconds(startTime);
+    }
+
+    var data = e.data;
+
+    if (data.type && data.type == 'debug') {
+      log(data.msg);
+    } else {
+      var rate = Math.round(toMB(data.byteLength) / elapsed);
+      log(source() + 'postMessage roundtrip took: ' + (elapsed * 1000) + ' ms');
+      log(source() + 'postMessage roundtrip rate: ' + rate + ' MB/s');
+    }
+  };
+
+  // To feature detect: send a small ArrayBuffer. If transferable objects are
+  // supported, the ArrayBuffer will be neutered (cleared out) after sent.
+  if (USE_TRANSFERRABLE) {
+    var ab = new ArrayBuffer(1);
+    worker.postMessage(ab, [ab]);
+    if (ab.byteLength) {
+      alert('Transferables are not supported in your browser!');
+      log(source() + 'USING STRUCTURED CLONE (copy) :(');
+    } else {
+      log(source() + 'USING TRANSFERABLE OBJECTS :)');
+    }
+  } else {
+    worker.postMessage(ab); // send anyway to init worker.
+    log(source() + 'USING STRUCTURED CLONE (copy) :(');
+  }
+
+  log(source() + 'READY!');
+}
+
+function test() {
+
+  setupArray(); // Need to do this on every run for the repeated runs with transferrable arrays. They're cleared out after they're transferred.
+
+  startTime = new Date();
+  console.time('actual postMessage round trip was');
+
+  if (USE_TRANSFERRABLE) {
+    // Note: clears the uInt8View and it's underlying ArrayBuffer, transfering it
+    // out of this view, to the worker.
+    // Passing multiple transferables:
+    //   worker.webkitPostMessage({view1: int8View; buffer2: anotherBuffer}, [int8View.buffer, anotherBuffer]);
+    worker.postMessage(uInt8View.buffer, [uInt8View.buffer]);
+  } else {
+    worker.postMessage(uInt8View.buffer);
+  }
+}
+
+window.addEventListener('load', function(e) {
+  init();
+}, false);
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
