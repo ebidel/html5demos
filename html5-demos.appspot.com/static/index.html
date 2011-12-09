@@ -22,17 +22,51 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <meta http-equiv="X-UA-Compatible" content="chrome=1" />
 <title>HTML5 Demos</title>
 <style>
+body ::-webkit-scrollbar {
+  height: 16px;
+  overflow: visible;
+  width: 16px;
+}
+body ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .1);
+  background-clip: padding-box;
+  border: solid transparent;
+  min-height: 28px;
+  padding: 100px 0 0;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+  border-width: 1px 1px 1px 6px;
+}
+body ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+body ::-webkit-scrollbar-button {
+  height: 0;
+  width: 0;
+}
+::-webkit-scrollbar-track {
+  background-clip: padding-box;
+  border: solid transparent;
+  border-width: 0 0 0 4px;
+}
+body ::-webkit-scrollbar-corner {
+  background: transparent;
+}
 html, body {
   height: 100%;
 }
 body {
-  margin-top: -15px;
+  margin-top: -5px;
   padding: 0 3em;
   font: 12pt normal 'Myriad Pro', Arial, sans-serif;
-  background: -moz-radial-gradient(right center, #fff, #bbb) no-repeat;
-  background: -webkit-radial-gradient(right center, #fff, #bbb) no-repeat;
+  background: -moz-radial-gradient(right center, #fff, #bbb);
+  background: -webkit-radial-gradient(right center, #fff, #bbb);
 }
-ul { padding: 0; margin: 0; }
+ul {
+  padding: 0;
+  margin: 0;
+  max-height: 475px;
+  overflow: auto;
+}
 li {
   list-style: none;
   padding: 10px 0 10px 10px;
@@ -98,6 +132,11 @@ section {
 <section>
 <h3>Demos</h3>
 <ul>
+  <li><a href="/static/workers/transferables/index.html">Transferable Objects</a>
+    <footer>Demonstrates the performance gain from using <code>webkitPostMessage()</code>, which uses
+    <a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">transferable objects</a>.
+    </footer>
+  </li>
   <li><a href="/static/media-source.html">MediaSource API</a>
     <footer>Uses the <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" target="_blank">MediaSource API</a> 
     and the File APIs to split a movie into chunks and 'stream' each chunk to a <code>&lt;video&gt;</code> element.
