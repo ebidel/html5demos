@@ -94,20 +94,20 @@ section {
   <summary>Yo dawg, what is this?</summary>
   <div>
     <p>This demo illustrates <a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">transferable objects</a>.
-    Transferable objects are objects that are not copied (e.g. using something like <a href="http://updates.html5rocks.com/2011/09/Workers-ArrayBuffer" target="_blank">structured cloning</a>). Instead, the data is transferred
-    and from one context to another. The 'version' from the calling context is no longer available once transferred
+    Transferable objects are objects that are not copied (e.g. using something like <a href="http://updates.html5rocks.com/2011/09/Workers-ArrayBuffer" target="_blank">structured cloning</a>).
+    Instead, the data is transferred from one context to another. The 'version' from the calling context is no longer available once transferred
     to the new context. For example, when transferring an <code>ArrayBuffer</code> from main app to Worker, the
     original <code>ArrayBuffer</code> from the main thread is cleared and no longer usable.
     This vastly improves performance of sending data to a Worker. </p>
     <p>This demo sends a 32MB <code>ArrayBuffer</code> to a worker and back using a prefixed version of <code>postMessage()</code>
     that supports transferable objects: <code><a href="http://dev.w3.org/html5/workers/#dedicated-workers-and-the-dedicatedworkerglobalscope-interface" target="_blank">webkitPostMessage()</a></code>.
-    If your browser doesn't support transferrables, the sample falls back to structured cloning.</p>
+    If your browser doesn't support transferables, the sample falls back to old-skool structured cloning.</p>
     <p><b>Support:</b> Chrome Dev Channel 17+</p>
   </div>
 </details>
 <section>
   <p><a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">Transferable Objects</a> are lightning fast! The prefixed <code>[window|worker].webkitPostMessage()</code>
-  now supports sending an <code>ArrayBuffer</code> as a transferrable.</p>
+  now supports sending an <code>ArrayBuffer</code> as a transferable.</p>
   <button onclick="test();">Run test</button>
   <!--<input type="checkbox" id="enable-transferable" checked> Enable transferable?-->
   <pre id="result"></pre>
@@ -183,7 +183,7 @@ function init() {
 
 function test() {
 
-  setupArray(); // Need to do this on every run for the repeated runs with transferrable arrays. They're cleared out after they're transferred.
+  setupArray(); // Need to do this on every run for the repeated runs with transferable arrays. They're cleared out after they're transferred.
 
   startTime = new Date();
   console.time('actual postMessage round trip was');
