@@ -171,7 +171,7 @@ function init() {
         supported = true;
       }
     } catch(e) {
-      log(source() + 'USING STRUCTURED CLONE (copy) :(');
+      alert('Transferables are not supported in your browser!');
     }
   } else {
     worker.postMessage(ab); // send anyway to init worker.
