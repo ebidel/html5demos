@@ -117,6 +117,7 @@ section {
 <script>
 var worker = null;
 var startTime = 0;
+var supported = false;
 
 // Move output panel down further if <details> isn't supported (collapsible).
 var details = document.querySelector('details');
@@ -160,12 +161,17 @@ function init() {
   // supported, the ArrayBuffer will be neutered (cleared out) after sent.
   if (USE_TRANSFERRABLE) {
     var ab = new ArrayBuffer(1);
-    worker.postMessage(ab, [ab]);
-    if (ab.byteLength) {
-      alert('Transferables are not supported in your browser!');
+    try {
+      worker.postMessage(ab, [ab]);
+      if (ab.byteLength) {
+        alert('Transferables are not supported in your browser!');
+        log(source() + 'USING STRUCTURED CLONE (copy) :(');
+      } else {
+        log(source() + 'USING TRANSFERABLE OBJECTS :)');
+        supported = true;
+      }
+    } catch(e) {
       log(source() + 'USING STRUCTURED CLONE (copy) :(');
-    } else {
-      log(source() + 'USING TRANSFERABLE OBJECTS :)');
     }
   } else {
     worker.postMessage(ab); // send anyway to init worker.
@@ -182,7 +188,7 @@ function test() {
   startTime = new Date();
   console.time('actual postMessage round trip was');
 
-  if (USE_TRANSFERRABLE) {
+  if (USE_TRANSFERRABLE && supported) {
     // Note: clears the uInt8View and it's underlying ArrayBuffer, transfering it
     // out of this view, to the worker.
     // Passing multiple transferables:
