@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>Web Audio API: Simple load sound, play on demand</title>
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+<style>
+body {
+  font-family: "Droid Sans", Arial, sans-serif;
+  padding: 2em;
+}
+button {
+  vertical-align: middle;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:not(:disabled):hover {
+  border-color: black;
+}
+button:not(:disabled):active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+.button {
+  height: 30px;
+  width: 120px;
+  vertical-align: middle;
+}
+.button::-webkit-file-upload-button,
+.button::-moz-file-upload-button {
+  visibility: hidden;
+}
+.button:before {
+  content: 'Load audio file';
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+.button:hover:before {
+  border-color: black;
+}
+.button:active:before {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+}
+</style>
+</head>
+<body>
+  <p>Simple example of using the Web Audio API to load a sound file and start playing it on user-click.</p>
+  <input type="file" accept="audio/*" class="button">
+  <button onclick="playSound()" disabled>Start</button>
+  <button onclick="stopSound()" disabled>Stop</button>
+<script>
+if (!window.webkitAudioContext) {
+  alert('The Web Audio API is not supported in your browser!');
+}
+var context = new window.webkitAudioContext();
+var source = null;
+var audioBuffer = null;
+ 
+function stopSound() {
+  if (source) {
+    source.noteOff(0);
+  }
+}
+
+function playSound() {
+  source = context.createBufferSource(); // Global so we can .noteOff() later.
+  source.buffer = audioBuffer;
+  source.loop = false;
+  source.connect(context.destination);
+  source.noteOn(0);    
+}
+
+function initSound(arrayBuffer) {
+  context.decodeAudioData(arrayBuffer, function(buffer) {
+    audioBuffer = buffer;
+    var buttons = document.querySelectorAll('button');
+    buttons[0].disabled = false;
+    buttons[1].disabled = false;
+  }, function(e) {
+    console.log('Error decoding', e);
+  }); 
+}
+
+document.querySelector('input[type="file"]').addEventListener('change', function(e) {  
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    initSound(e.target.result);
+  };
+  reader.readAsArrayBuffer(e.target.files[0]);
+}, false);
+  
+// Example loading via xhr2: loadSoundFile('sounds/A220_A880.wav');
+function loadSoundFile(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+  request.onload = function(e) {
+    initSound(e.target.response);
+  };
+  request.send();
+}
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
