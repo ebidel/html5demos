@@ -168,13 +168,13 @@ body > section:first-of-type {
   <p>Here's a big <code>&lt;button&gt;</code>:</p>
   <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)">
   <button id="fileSelect">Select some files</button>
-  <p>It's pretty. When clicked, it opens the file dialog of a hidden <code>&lt;input type="file"&gt;</code>. Hot!</p>
+  <p>It's pretty. When clicked, it opens the file dialog of a hidden <code>&lt;input type="file"&gt;</code>, programmatically. Hot!</p>
   <p class="small">( Tested in Chrome, Safari 5.1.1, FF 11.0a1, Opera 11.60 )</p>
 </section>
 <section>
   <p>In WebKit, you can also [ easily ] style an <code>&lt;input type="file"&gt;</code> using <code>::before</code>:</p>
   <input type="file" class="button" multiple onchange="handleFiles(this.files)">
-  <p>In other browsers, doing the same is a bit <a href="http://www.quirksmode.org/dom/inputfile.html">more involved</a>.</p>
+  <p>You can do the same in other browsers but it's a bit <a href="http://www.quirksmode.org/dom/inputfile.html">more involved</a>.</p>
 </section>
 
 <script>
