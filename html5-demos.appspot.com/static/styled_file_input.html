@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>Styled input[type="file"]</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<style>
+::selection {
+  color: #eee;
+  background: darkred;
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #222;
+  font-family: 'Open Sans', arial, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  padding: 2em;
+  background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;
+  background: -moz-linear-gradient(top, white 50%, transparent 50%),
+              -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -webkit-linear-gradient(top, white 50%, transparent 50%),
+              -webkit-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -ms-linear-gradient(top, white 50%, transparent 50%),
+              -ms-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -o-linear-gradient(top, white 50%, transparent 50%),,
+              -o-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: linear-gradient(top, white 50%, transparent 50%),,
+              radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+}
+h2 {
+  margin: 0;
+  text-align: center;
+  font-weight: 300;
+}
+input[type="file"] {
+  margin-left: 2em;
+}
+input[type="file"]#fileElem {
+  /* Note: display:none on the input won't trigger the click event in WebKit.
+     Setting visibility to hidden and width 0 works.*/
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+#fileSelect {
+  color: #08233e;
+  font-size: 18pt;
+  padding: 12px;
+  background: -webkit-gradient(linear, left top, left bottom,
+      color-stop(0.5, rgba(255,255,255,0.3)), color-stop(0.5, #ffcc00), to(#ffcc00));
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background: -moz-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background: -ms-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background: -o-linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background: linear-gradient(top, rgba(255,255,255,0.3) 50%, #ffcc00 50%, #ffcc00);
+  background-color: #ffcc00;
+  border: 1px solid #ffcc00;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  border-bottom: 1px solid #9f9f9f;
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  -o-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  -ms-box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  cursor: pointer;
+  text-shadow: 0 1px #fff;
+}
+#fileSelect:hover {
+  background: -webkit-gradient(linear, left top, left bottom,
+                               color-stop(0, #fff), color-stop(0.7, #ffcc00),
+                               to(#ffcc00));
+  background: -webkit-linear-gradient(top, #fff, #ffcc00 70%, #ffcc00);
+  background: -moz-linear-gradient(top, #fff, #ffcc00 70%, #ffcc00);
+  background: -o-linear-gradient(top, #fff, #ffcc00 70%, #ffcc00);
+  background: -ms-linear-gradient(top, #fff, #ffcc00 70%, #ffcc00);
+  background: linear-gradient(top, #fff, #ffcc00 70%, #ffcc00);
+}
+#fileSelect:active {
+  position: relative;
+  top: 2px;
+}
+.button {
+  width: 135px;
+  height: 27px;
+}
+.button::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.button:before {
+  content: 'Select some files';
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(top, #F9F9F9, #E3E3E3);
+  background: -moz-linear-gradient(top, #F9F9F9, #E3E3E3);
+  background: -ms-linear-gradient(top, #F9F9F9, #E3E3E3);
+  background: -o-linear-gradient(top, #F9F9F9, #E3E3E3);
+  background: linear-gradient(top, #F9F9F9, #E3E3E3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+.button:hover:before {
+  border-color: black;
+}
+.button:active:before {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(top, #E3E3E3, #F9F9F9);
+  background: -moz-linear-gradient(top, #E3E3E3, #F9F9F9);
+  background: -ms-linear-gradient(top, #E3E3E3, #F9F9F9);
+  background: -o-linear-gradient(top, #E3E3E3, #F9F9F9);
+  background: linear-gradient(top, #E3E3E3, #F9F9F9);
+}
+body > section {
+  padding: 1em 0;
+}
+body > section:first-of-type {
+  padding-top: 0;
+  border-bottom: 1px solid #eee;
+}
+.small {
+  font-size: small;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+<h2>Styled file inputs</h2>
+<section>
+  <p>Here's a big <code>&lt;button&gt;</code>:</p>
+  <input type="file" id="fileElem" multiple onchange="handleFiles(this.files)">
+  <button id="fileSelect">Select some files</button>
+  <p>It's pretty. When clicked, it opens the file dialog of a hidden <code>&lt;input type="file"&gt;</code>. Hot!</p>
+  <p class="small">( Tested in Chrome, Safari 5.1.1, FF 11.0a1, Opera 11.60 )</p>
+</section>
+<section>
+  <p>In WebKit, you can also [ easily ] style an <code>&lt;input type="file"&gt;</code> using <code>::before</code>:</p>
+  <input type="file" class="button" multiple onchange="handleFiles(this.files)">
+  <p>In other browsers, doing the same is a bit <a href="http://www.quirksmode.org/dom/inputfile.html">more involved</a>.</p>
+</section>
+
+<script>
+function click(el) {
+  // Simulate click on the element.
+  var evt = document.createEvent('Event');
+  evt.initEvent('click', true, true);
+  el.dispatchEvent(evt);
+}
+
+document.querySelector('#fileSelect').addEventListener('click', function(e) {
+  var fileInput = document.querySelector('#fileElem');
+  //click(fileInput); // Simulate the click with a custom event.
+  fileInput.click(); // Or, use the native click() of the file input.
+}, false);
+
+function handleFiles(files) {
+  alert('Well done!');
+}
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
