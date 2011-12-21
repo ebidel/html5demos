@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>CSS Filters</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<style>
+::selection {
+  color: #eee;
+  background: darkred;
+}
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: #222;
+  font-family: 'Open Sans', arial, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  padding: 2em;
+  background: -webkit-gradient(radial, center center, 500, center center, 1400, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.6))) #fff;
+  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -webkit-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -ms-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: -o-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  background: radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
+  box-sizing: border-box;
+}
+a {
+  color: navy;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:hover,
+button.active {
+  border-color: black;
+}
+button:active,
+button.active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+input[type="range"]{
+  -webkit-appearance: none !important;
+  background-color: #555;
+  box-shadow: 0 -1px 1px rgba(255,255,255,0.5) inset;
+  border-radius: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 20px;
+  height: 8px;
+  box-shadow: 1px 1px 5px rgba(0,0,0,1);
+  cursor: pointer;
+  border-top: 1px solid #fff;
+  background: #ccc -webkit-linear-gradient(top, rgb(240, 240, 240), rgb(210, 210, 210));
+}
+details {
+  position: absolute;
+  top: 0;
+  left: 1em;
+  margin: 1em 0;
+  cursor: pointer;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 5px;
+  max-width: 600px;
+  font-size: 10pt;
+  z-index: 100;
+  background: #F7F7F7;
+}
+details > div {
+  margin: 10px 0;
+}
+article {
+  display: -webkit-flexbox;
+  -webkit-flex-flow: column;
+  -webkit-flex-pack: center;
+  -webkit-flex-alight: center;
+}
+article > section {
+  -webkit-flex-align: center;
+  margin: 1em 0;
+}
+.cols {
+  -webkit-columns: 3;
+  width: 80%;
+}
+.cols > span {
+  display: inline-block;
+  width: 100%;
+}
+.cols > span > span {
+  width: -webkit-flex(35%);
+  display: inline-block;
+  white-space: nowrap;
+}
+.cols > span > span:after {
+  content: '():';
+}
+hgroup {
+  text-align: center;
+  margin-bottom: 1em;
+}
+h2 {
+  margin: 0;
+  font-weight: 300;
+}
+output {
+  display: block;
+  font-size: 14pt;
+  font-weight: 600;
+  display: -webkit-flexbox;
+  -webkit-flex-pack: center;
+}
+@-webkit-keyframes sepia-anim {
+  from { -webkit-filter: sepia(0); }
+  to   { -webkit-filter: sepia(1); }
+}
+@-webkit-keyframes grayscale-anim {
+  from { -webkit-filter: grayscale(0); }
+  to   { -webkit-filter: grayscale(1); }
+}
+@-webkit-keyframes blur-anim {
+  from { -webkit-filter: blur(0); }
+  to   { -webkit-filter: blur(10px); }
+}
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotateZ(0deg); }
+  to   { -webkit-transform: rotateZ(360deg); }
+}
+.sepia {
+  -webkit-animation: sepia-anim 2s ease-in-out;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-iteration-count: infinite;
+}
+.grayscale {
+  -webkit-animation: grayscale-anim 2s ease-in-out;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-iteration-count: infinite;
+}
+.blur {
+  -webkit-animation: blur-anim 0.5s linear;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-iteration-count: infinite;
+}
+.spin {
+  -webkit-animation: spin 10s linear;
+  -webkit-animation-iteration-count: infinite;
+}
+/*.filter {
+  -webkit-filter: url(#myfilter);
+}*/
+article > section > div {
+  border-radius: 10px;
+}
+#pic {
+  height: 300px;
+  border-radius: 10px;
+  /* hw accel filters */
+  /*-webkit-transform: translateZ(0);*/
+}
+#chrome-logo {
+  height: 256px;
+  position: absolute;
+  bottom: -4em;
+  right: -4em;
+  opacity: 0.2;
+  -webkit-filter: grayscale(0.3) blur(8px);
+}
+.drop-shadow {
+  padding: 1em 1em 0.8em 1em;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
+  -ms-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
+  -o-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
+}
+</style>
+</head>
+<body>
+
+<!-- CSS: filters, new flexbox, columns, linear/radial gradient, input[range], animations, rounded corners -->
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>Demo showing CSS <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html" target="_blank">Filter Effects 1.0</a>,
+    specifically the <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html#FilterFunction" target="_blank">filter functions</a>,
+    which are being implemented in Webkit.</p>
+    <p>In Webkit, filters can be applied to hw accelerated content ( e.g. <code>img { -webkit-transform: translateZ(0); }</code> ).
+    In Chrome, filters on hw accelerated content are still a work in progress (use the <code>--enable-accelerated-filters</code> flag).
+    This includes <code>&lt;video&gt;</code>, which is accelerated by default.</p>
+    <p><b>Support:</b> Chrome 18.0.976.0 (currently canary), Webkit nightly</p>
+  </div>
+</details>
+
+<!--
+<video src="http://www.html5rocks.com/en/tutorials/video/basics/chromeicon.mp4" controls></video>
+-->
+
+<hgroup>
+  <h2>CSS Filter Effects</h2>
+</hgroup>
+
+<article>
+  <section>
+    <div>
+      <img id="pic">
+    </div>
+  </section>
+  <section>
+    <output>-webkit-filter: none;</output>
+  </section>
+  <section class="cols">
+    <span><span>blur</span><input type="range" onchange="set('blur', this.value + 'px');" value="0" step="1" min="0" max="10"></span>
+    <span><span>grayscale</span><input type="range" onchange="set('grayscale', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>drop-shadow</span><input type="range" onchange="set('drop-shadow', this.value + 'px ' + this.value + 'px 20px black');" value="0" step="1" min="0" max="100"></span>
+    <span><span>sepia</span><input type="range" onchange="set('sepia', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>brightness</span><input type="range" onchange="set('brightness', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>contrast</span><input type="range" onchange="set('contrast', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>hue-rotate</span><input type="range" onchange="set('hue-rotate', this.value + 'deg');" value="0" step="30" min="0" max="360"></span>
+    <span><span>invert</span><input type="range" onchange="set('invert', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>saturate</span><input type="range" onchange="set('saturate', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>opacity</span><input type="range" onchange="set('opacity', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><button onclick="reset()" style="margin-top:10px;">reset</button></span>
+  </section>
+  <section>
+    Animations:
+    <button onclick="go(this, 'blur')">blur</button>
+    <button onclick="go(this, 'grayscale')">grayscale</button>
+    <button onclick="go(this, 'sepia')">sepia</button>
+    <button onclick="stop()">stop</button>
+  </section>
+</article>
+
+<img id="chrome-logo" src="chrome_logo_new_256.png">
+
+<!--
+<img style="-webkit-filter: custom(url('vertex-explode-detached.vs'), 2 2 detached)" src="chrome_logo-chrome.png">
+<img style="-webkit-filter: custom(url('vertex-offset.vs'), 5 10)" src="chrome_logo-chrome.png">
+
+<filter id="myfilter" filterUnits="userSpaceOnUse" x="0" y="0" width="200" height="120">
+  <desc>Produces a 3D lighting effect.</desc>
+  <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+  <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+  <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75" 
+                      specularExponent="20" lighting-color="#bbbbbb" 
+                      result="specOut">
+    <fePointLight x="-5000" y="-10000" z="20000"/>
+  </feSpecularLighting>
+  <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut"/>
+  <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" 
+               k1="0" k2="1" k3="1" k4="0" result="litPaint"/>
+  <feMerge>
+    <feMergeNode in="offsetBlur"/>
+    <feMergeNode in="litPaint"/>
+  </feMerge>
+</filter>
+-->
+
+<script>
+var FILTER_VALS = {};
+var el = document.querySelector('img');
+
+function go(me, className) {
+  var activeButton = document.querySelector('button.active');
+  if (activeButton) {
+    activeButton.classList.remove('active');
+    el.classList.remove(activeButton.textContent);
+  }
+
+  me.classList.add('active');
+  el.classList.toggle(className);
+}
+
+function stop() {
+  var activeButton = document.querySelector('button.active');
+  if (activeButton) {
+    activeButton.classList.remove('active');
+  }
+  el.className = '';
+}
+
+function reset() {
+  FILTER_VALS = {};
+  render();
+  document.querySelector('output').textContent = '-webkit-filter: none;';
+  el.className = '';
+
+  var ranges = document.querySelectorAll('input[type="range"]');
+  for (var i = 0, r; r = ranges[i]; i++) {
+    r.value = r.min;
+  }
+}
+
+function set(filter, value) {
+  FILTER_VALS[filter] = typeof value == 'number' ? Math.round(value * 10) / 10 : value;
+  if (value == 0 || (typeof value == 'string' && value.indexOf('0') == 0)) {
+    delete FILTER_VALS[filter];
+  }
+  render();
+}
+
+function render() {
+  var vals = [];
+  Object.keys(FILTER_VALS).sort().forEach(function(key, i) {
+    vals.push(key + '(' + FILTER_VALS[key] + ')');
+  });
+  var val = vals.join(' ');
+  el.style.webkitFilter = val;
+  document.querySelector('output').textContent = '-webkit-filter: ' + (val ? val : 'none') + ';';
+}
+
+function jsonFlickrFeed(feed) {
+  var items = feed.items;
+  el.src = items[Math.floor(Math.random() * items.length)].media.m;
+  el.onload = function(e) {
+    this.parentElement.classList.add('drop-shadow');
+  }
+}
+
+window.addEventListener('keydown', function(e) {
+  if (e.keyCode == 27) { // ESC
+    document.querySelector('details').open = false;
+  }
+}, false);
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<script src="http://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=ocean"></script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
