@@ -192,7 +192,7 @@ function test() {
     // Note: clears the uInt8View and it's underlying ArrayBuffer, transfering it
     // out of this view, to the worker.
     // Passing multiple transferables:
-    //   worker.webkitPostMessage({view1: int8View; buffer2: anotherBuffer}, [int8View.buffer, anotherBuffer]);
+    //   worker.webkitPostMessage({view1: int8View, buffer2: anotherBuffer}, [int8View.buffer, anotherBuffer]);
     //   window.webkitPostMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
     worker.postMessage(uInt8View.buffer, [uInt8View.buffer]);
   } else {
