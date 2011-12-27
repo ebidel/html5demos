@@ -1,0 +1,3 @@
+[submodule "html5-demos.appspot.com/static/filesystem/filer.js"]
+	path = html5-demos.appspot.com/static/filesystem/filer.js
+	url = git@github.com:ebidel/filer.js.git
