@@ -133,38 +133,40 @@ video.addEventListener('webkitsourceopen', function(e) {
 
   logger.log('webkitSourceState: ' + getSourceStateName(video.webkitSourceState));
 
-  var bb = new BlobBuilder();
-  bb.append(GET(FILE).buffer);
+  GET(FILE, function(uInt8Array) {
+    var bb = new BlobBuilder();
+    bb.append(uInt8Array.buffer);
 
-  var file = bb.getBlob('video/webm');
+    var file = bb.getBlob('video/webm');
 
-  var chunkSize = Math.ceil(file.size / NUM_CHUNKS);
+    var chunkSize = Math.ceil(file.size / NUM_CHUNKS);
 
-  logger.log('num chunks:' + NUM_CHUNKS);
-  logger.log('chunkSize:' + chunkSize + ', totalSize:' + file.size);
+    logger.log('num chunks:' + NUM_CHUNKS);
+    logger.log('chunkSize:' + chunkSize + ', totalSize:' + file.size);
 
-  // Slice the video into NUM_CHUNKS and append each to the media element.
-  for (var i = 0; i < NUM_CHUNKS; ++i) {
-    var startByte = chunkSize * i;
+    // Slice the video into NUM_CHUNKS and append each to the media element.
+    for (var i = 0; i < NUM_CHUNKS; ++i) {
+      var startByte = chunkSize * i;
 
-    var chunk = file.slice(startByte, startByte + chunkSize);
+      var chunk = file.slice(startByte, startByte + chunkSize);
 
-    var reader = new FileReader();
-    reader.onload = (function(idx) {
-      return function(e) {
-        video.webkitSourceAppend(new Uint8Array(e.target.result));
-        logger.log('appending chunk:' + idx);
-        if (idx == NUM_CHUNKS - 1) {
-          if (video.paused) {
-            video.play(); // insure video starts playing.
+      var reader = new FileReader();
+      reader.onload = (function(idx) {
+        return function(e) {
+          video.webkitSourceAppend(new Uint8Array(e.target.result));
+          logger.log('appending chunk:' + idx);
+          if (idx == NUM_CHUNKS - 1) {
+            if (video.paused) {
+              video.play(); // insure video starts playing.
+            }
+            video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
           }
-          video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
-        }
-      };
-    })(i);
+        };
+      })(i);
 
-    reader.readAsArrayBuffer(chunk);
-  }
+      reader.readAsArrayBuffer(chunk);
+    }
+  });
 
 }, false);
 
@@ -190,18 +192,19 @@ function getSourceStateName(state) {
   return stateName;
 }
 
-function GET(url) {
+function GET(url, callback) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', url, false); // synchronous!!!
+  xhr.open('GET', url, true); // synchronous!!!
   xhr.responseType = 'arraybuffer';
   xhr.send();
 
-  if (xhr.status != 200) {
-    alert("Unexpected status code " + xhr.status + " for " + url);
-    return false;
-  }
-
-  return new Uint8Array(xhr.response);
+  xhr.onload = function(e) {
+    if (xhr.status != 200) {
+      alert("Unexpected status code " + xhr.status + " for " + url);
+      return false;
+    }
+    callback(new Uint8Array(xhr.response));
+  };
 }
 </script>
 <script>
