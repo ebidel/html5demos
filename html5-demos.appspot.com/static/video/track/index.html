@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans" type="text/css">
+<link href="../../common.css" rel="stylesheet" type="text/css">
+<title>&lt;track&gt; example</title>
+<style>
+body {
+  background: #111;
+  color: white;
+  font-family: "Open Sans";
+}
+video {
+  -webkit-box-reflect: below 5px -webkit-linear-gradient(top, transparent, transparent 80%, rgba(255,255,255,0.2));
+}
+section {
+  text-align: center;
+  margin-top: 5em;
+}
+section > div {
+  margin-top: 2em;
+  text-align: center;
+  -webkit-perspective: 800;
+  -webkit-transform-style: preserve-3d;
+}
+section > div > div:last-child {
+  position: relative;
+  top: -36px;
+}
+section > div > div {
+  opacity: 0;
+  font-size: 25px;
+  -webkit-transition: all 500ms ease-in-out;
+  -webkit-transform-origin: 50% 100%;
+  -webkit-transform: rotateX(-90deg);
+}
+section > div > div.on {
+  opacity: 1;
+  -webkit-transform: rotateX(0);
+}
+details {
+  color: black;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>Example of the <a href="http://dev.w3.org/html5/spec/Overview.html#the-track-element" target="_blank">&lt;track&gt;</a> element.</p>
+    <p><b>Support:</b> Chrome 18.0.1009.0 (currently Canary) with the <code>--enable-video-track</code> flag set or enabled in <code>about:flags</code>.</p>
+  </div>
+</details>
+
+<section>
+  <video width="400" autoplay controls>
+    <source src="Google_Developer_Stories.webm" type='video/webm; codecs="vp8, vorbis"'>
+    <track label="English subtitles" kind="subtitles" srclang="en" src="video-subtitles-en.vtt" default>
+    Your browser does not support the video tag
+  </video>
+  <div><div>test1</div><div>asdf2</div></div>
+</section>
+
+<script>
+if (!document.createElement('track').track)  {
+  alert('<track is not available in your browser.');
+}
+
+var video = document.querySelector('video');
+var span1 = document.querySelector('section > div :first-child');
+var span2 = document.querySelector('section > div :last-of-type');
+
+var track = video.textTracks[0];
+track.mode = TextTrack.HIDDEN;
+
+console.log(track);
+var idx = 0;
+
+track.oncuechange = function(e) {
+
+  var cue = this.activeCues[0];
+  if (cue) {
+    if (idx == 0) {
+      span2.className = '';
+      span1.classList.remove('on');
+      span1.innerHTML = '';
+      span1.appendChild(cue.getCueAsHTML());
+      span1.classList.add('on');
+    } else {
+      span1.className = '';
+      span2.classList.remove('on');
+      span2.innerHTML = '';
+      span2.appendChild(cue.getCueAsHTML());
+      span2.classList.add('on');
+    }
+
+    idx = ++idx % 2;
+  }
+};
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

@@ -20,37 +20,9 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<link href="/static/common.css" rel="stylesheet" type="text/css">
 <title>HTML5 Demos</title>
 <style>
-body ::-webkit-scrollbar {
-  height: 16px;
-  overflow: visible;
-  width: 16px;
-}
-body ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, .1);
-  background-clip: padding-box;
-  border: solid transparent;
-  min-height: 28px;
-  padding: 100px 0 0;
-  box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
-  border-width: 1px 1px 1px 6px;
-}
-body ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-body ::-webkit-scrollbar-button {
-  height: 0;
-  width: 0;
-}
-::-webkit-scrollbar-track {
-  background-clip: padding-box;
-  border: solid transparent;
-  border-width: 0 0 0 4px;
-}
-body ::-webkit-scrollbar-corner {
-  background: transparent;
-}
 html, body {
   height: 100%;
 }
@@ -143,6 +115,9 @@ body > footer {
 <section>
 <h3>Demos</h3>
 <ul>
+  <li><a href="/static/video/track/index.html">Video subtitles</a>
+    <footer>The <code>&lt;track&gt;</code> element has a full API to add track information to a <code>HTMLMediaElement</code>.</footer>
+  </li>
   <li><a href="/static/filesystem/filer.js/demos/index.html">HTML5 Filesystem Playground</a>
     <footer>Playground to showcase <a href="https://github.com/ebidel/filer.js" target="_blank">filer.js</a>, a library for the HTML5 Filesystem API.</footer>
   </li>
