@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<link href="../common.css" rel="stylesheet" type="text/css">
+<title>Photobooth</title>
+<style>
+@-webkit-keyframes glowRed {
+  from {
+    box-shadow: rgba(255, 0, 0, 0) 0 0 0;
+  }
+  50% {
+    box-shadow: rgba(255, 0, 0, 1) 0 0 15px 1px;
+  }
+  to {
+    box-shadow: rgba(255, 0, 0, 0) 0 0 0;
+  }
+}
+html, body {
+  height: -webkit-flex(100%);
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: -webkit-flexbox;
+  -webkit-flex-item-align: center;
+  -webkit-flex-pack: center;
+  box-sizing: border-box;
+}
+article {
+  -webkit-flex-item-align: center;
+  text-align: center;
+}
+#monitor {
+  /*-webkit-transform: scaleX(-1);*/
+  height: 400px;
+  -webkit-box-reflect: below 20px -webkit-linear-gradient(top, transparent, transparent 80%, rgba(255,255,255,0.2));
+}
+#live {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  font-weight: 600;
+  font-family: Arial;
+  font-size: 16pt;
+  right: 35px;
+  top: 20px;
+  text-shadow: 1px 1px red;
+  letter-spacing: 1px;
+}
+#live:before {
+  content: '';
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: red;
+  position: absolute;
+  left: -20px;
+  margin-top: 5px;
+}
+/*
+#connection div {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: red;
+  position: absolute;
+  left: -20px;
+  margin-top: 5px;
+  display: inline-block;
+  background-color: red;
+  -webkit-animation-name: glowRed;
+  -webkit-animation-duration: 2.5s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}*/
+/*
+#gallery {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+#gallery img {
+  float: left;
+  height: 75px;
+}
+*/
+#gallery img {
+  position: absolute;
+  z-index: -1;
+  height: 75px;
+}
+#gallery img {
+  float: left;
+  height: 75px;
+}
+.container {
+  padding: 10px 25px 5px 25px;
+  background: black;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+}
+h1 {
+  font-weight: 300;
+}
+.blur {
+  -webkit-filter: blur(3px);
+}
+.brightness {
+  -webkit-filter: brightness(5);
+}
+.contrast {
+  -webkit-filter: contrast(8);
+}
+.hue-rotate {
+  -webkit-filter: hue-rotate(90deg);
+}
+.hue-rotate2 {
+  -webkit-filter: hue-rotate(180deg);
+}
+.hue-rotate3 {
+  -webkit-filter: hue-rotate(270deg);
+}
+.saturate {
+  -webkit-filter: saturate(10);
+}
+.grayscale {
+  -webkit-filter: grayscale(1);
+}
+.sepia {
+  -webkit-filter: sepia(1);
+}
+.invert {
+  -webkit-filter: invert(1)
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>Example of the <a href="http://dev.w3.org/2011/webrtc/editor/getusermedia.html" target="_blank" title="Spec link" alt="Spec link"><code>navigator.getUserMedia()</code></a>
+    API for capturing audio and video, sans plugin. This demo also shows the video being rendered
+    to canvas while <a href="/static/css/filters/index.html">CSS filters</a> are applied in realtime.</p>
+    <p><b>Support:</b> Chrome 18.0.1009.0 (currently Canary) with the <code>--enable-media-stream</code> flag set.</p>
+  </div>
+</details>
+
+<article>
+ <h1>Photobooth</h1>
+ <section id="app" hidden>
+  <div class="container" style="display:none;"><video id="monitor" autoplay></video> <canvas id="photo" style="display:none"></canvas></div>
+  <div class="container"><!--<div id="connection"><div></div></div>--><span id="live">LIVE</span><img id="effect" onclick="changeFilter()" title="Click to see different filters"></div>
+  <p>Click the video to see different CSS filters</p>
+ </section>
+ <p><button onclick="init(this)">Capture</button></p>
+ <div id="splash">
+  <p id="errorMessage">&uarr;<br>Click to begin</p>
+ </div>
+ <div id="gallery"></div>
+</article>
+<script>
+navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+window.URL = window.URL || window.webkitURL;
+
+var app = document.getElementById('app');
+var video = document.getElementById('monitor');
+var canvas = document.getElementById('photo');
+var effect = document.getElementById('effect');
+var gallery = document.getElementById('gallery');
+var ctx = canvas.getContext('2d');
+
+var SAMPLE_RATE = (1 / 30) * 1000; // 60Hz
+var intervalId = null;
+
+var idx = 0;
+var filters = [
+  'grayscale',
+  'sepia',
+  'blur',
+  'brightness',
+  'contrast',
+  'hue-rotate', 'hue-rotate2', 'hue-rotate3',
+  'saturate',
+  'invert',
+  '',
+];
+
+function changeFilter() {
+  effect.className = '';
+  effect.classList.add(filters[idx++ % filters.length]);
+}
+
+/*function getIdealCoords() {
+  var left = 0;
+  var top = 0;
+  var maxLeft = document.body.clientWidth;
+  var maxTop = document.body.clientHeight;
+
+  var bounds = app.getBoundingClientRect();
+
+  while(1) {
+    left = Math.floor(Math.random() * maxLeft);
+
+    if (!(bounds.left <= left && left <= bounds.left + bounds.width)) {
+      break;
+    }
+  }
+
+  while(1) {
+     top = Math.floor(Math.random() * maxTop);
+
+     if (!(bounds.top <= top && top <= bounds.top + bounds.height)) {
+       break;
+     }
+   }
+
+  return {top: top, left: left};
+}*/
+
+function gotStream(stream) {
+  if (window.URL) {
+    video.src = window.URL.createObjectURL(stream);
+  } else {
+    video.src = stream; // Opera.
+  }
+
+  video.onerror = function(e) {
+    stream.stop();
+  };
+
+  stream.onended = noStream;
+
+  /*video.onloadedmetadata = function(e) { // Not firing in Chrome
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    document.getElementById('splash').hidden = true;
+    document.getElementById('app').hidden = false;
+  };*/
+
+  // Since video.onloadedmetadata isn't firing for getUserMedia video, we have
+  // to fake it.
+  setTimeout(function() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    document.getElementById('splash').hidden = true;
+    document.getElementById('app').hidden = false;
+  }, 50);
+
+  // Until Chrome supports CSS filters on hwd accelerated content (e.g. <video>),
+  // we're stuck with a hack of rendering to canvas and setting an image with the filter applied.
+  setInterval(function() { //(function render(time) {
+    snapshot();
+    //window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
+  }, SAMPLE_RATE); //})();
+}
+
+function noStream(e) {
+  document.getElementById('errorMessage').textContent = 'No camera available.';
+}
+
+function capture() {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+    return;
+  }
+
+  intervalId = setInterval(function() {
+    ctx.drawImage(video, 0, 0);
+    var img = document.createElement('img');
+    img.src = canvas.toDataURL();
+
+    var angle = Math.floor(Math.random() * 36);
+    var sign = Math.floor(Math.random() * 2) ? 1 : -1;
+    img.style.webkitTransform = 'rotateZ(' + (sign * angle) + 'deg)';
+
+    var maxLeft = document.body.clientWidth;
+    var maxTop = document.body.clientHeight;
+
+    img.style.top = Math.floor(Math.random() * maxTop) + 'px';
+    img.style.left = Math.floor(Math.random() * maxLeft) + 'px';
+
+    gallery.appendChild(img);
+  }, 150);
+}
+
+function snapshot() {
+  ctx.drawImage(video, 0, 0);
+  effect.src = canvas.toDataURL();
+}
+
+function init(el) {
+  if (!navigator.getUserMedia) {
+    document.getElementById('errorMessage').innerHTML = 'Sorry. <code>navigator.getUserMedia()</code> is not available.';
+    return;
+  }
+  el.onclick = capture;
+  el.textContent = 'Snapshot';
+  navigator.getUserMedia('video', gotStream, noStream);
+}
+
+window.addEventListener('keydown', function(e) {
+  if (e.keyCode == 27) { // ESC
+    document.querySelector('details').open = false;
+  }
+}, false);
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
