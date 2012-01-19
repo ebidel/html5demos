@@ -243,6 +243,13 @@ function changeFilter() {
   return {top: top, left: left};
 }*/
 
+// Until Chrome supports CSS filters on hwd accelerated content (e.g. <video>),
+// we're stuck with a hack of rendering to canvas and setting an image with the filter applied.
+function render(time) { //setInterval(function() {
+  snapshot();
+  window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
+} //}, SAMPLE_RATE);
+
 function gotStream(stream) {
   if (window.URL) {
     video.src = window.URL.createObjectURL(stream);
@@ -270,14 +277,9 @@ function gotStream(stream) {
     canvas.height = video.videoHeight;
     document.getElementById('splash').hidden = true;
     document.getElementById('app').hidden = false;
-  }, 50);
 
-  // Until Chrome supports CSS filters on hwd accelerated content (e.g. <video>),
-  // we're stuck with a hack of rendering to canvas and setting an image with the filter applied.
-  (function render(time) { //setInterval(function() {
-    snapshot();
-    window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
-  })(); //}, SAMPLE_RATE);
+    render();
+  }, 50);
 }
 
 function noStream(e) {
