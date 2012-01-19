@@ -195,7 +195,7 @@ var effect = document.getElementById('effect');
 var gallery = document.getElementById('gallery');
 var ctx = canvas.getContext('2d');
 
-var SAMPLE_RATE = (1 / 30) * 1000; // 60Hz
+var SAMPLE_RATE = (1 / 60) * 1000; // 60Hz. Used for setInterval.
 var intervalId = null;
 
 var idx = 0;
@@ -274,10 +274,10 @@ function gotStream(stream) {
 
   // Until Chrome supports CSS filters on hwd accelerated content (e.g. <video>),
   // we're stuck with a hack of rendering to canvas and setting an image with the filter applied.
-  setInterval(function() { //(function render(time) {
+  (function render(time) { //setInterval(function() {
     snapshot();
-    //window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
-  }, SAMPLE_RATE); //})();
+    window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
+  })(); //}, SAMPLE_RATE);
 }
 
 function noStream(e) {
