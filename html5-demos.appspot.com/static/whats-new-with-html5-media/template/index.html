@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+  <title>What's New in HTML5 Media</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="icon" type="image/png" href="../images/chrome-logo-tiny2.png">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Orbitron|Kameron|Muli|Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono&v2">
+  <script src="../demos/buffer-loader.js"></script>
+  <script src='../slides.js'></script>
+</head>
+<body style="display: none">
+
+<section class='slides layout-regular'>
+
+  <article id="title" class="fill" style="background-image: url('images/camera.jpg')">
+    <section class="vflex middle left" style="height: 100%;text-shadow: 1px 1px 3px #555;background:rgba(0,0,0,0.5);border-radius: 10px;padding:0 2em;">
+      <h1 class="white">What's New in HTML5 Media</h1>
+      <p style="margin-top:1.5em;">
+        <a href="http://ericbidelman.com/" target="_blank">Eric Bidelman</a>
+        <br>
+        <time pubdate datetime="2012-01-19">Jan 19, 2012</time>
+      </p>
+    </section>
+  </article>
+
+  <article id="legend-slide">
+    <aside class="note">
+      <section>
+        <h3>See!</h3>
+      </section>
+    </aside>
+    <div class="vflex left" style="height:90%">
+      <h3>Legend:</h3>
+      <div><img src="../images/icons/radar.svg"> Not quite ready. Keep it on your radar.</div>
+      <div><img src="../images/icons/bug.png"> Relevant Chrome/WebKit bug.</div>
+      <div><img src="../images/icons/bug_closed.png"> Bug has been fixed/resolved.</div>
+      <div><img src="../images/icons/gears.svg"> Specification link</div>
+    </div>
+    <div style="text-align:center;font-size:12pt;">
+       ( Press 'n' for additional notes on some slides. Some of this presentation requires Chrome 18+. )
+    </div>
+  </article>
+
+  <article id="who">
+    <h3>Who?</h3>
+    <p>
+      <img class="avatar rounded" src="https://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAB_g/7HEywOGyz5A/photo.jpg?sz=200">
+    </p>
+    <p>
+      <a rel="author" href="http://plus.ericbidelman.com" target="_blank">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-44.png" width="44" height="44"></a> +<a rel="author" href="http://plus.ericbidelman.com" target="_blank">Eric Bidelman</a>
+    </p>
+    <br>
+    <p>
+      <a rel="author" href="http://twitter.com/ebidel" target="_blank" style="margin-left:-8px;">
+        <img src="../images/twitter_newbird_blue.png" width="58" height="58"></a> @ <a rel="author" href="http://twitter.com/ebidel" target="_blank" style="margin-left:-5px;">ebidel</a>
+    </p>
+    <br>
+    <p>
+      Blog: <a href="http://ericbidelman.com" target="_blank">ericbidelman.com</a>
+    </p>
+  </article>
+
+  <article>
+    <h3>Agenda</h3>
+    <ul class="build">
+      <li>Multimedia Helpers</li>
+      <li>Media Capture</li>
+      <li>Web RTC</li>
+      <li>Web Audio API</li>
+    </ul>
+  </article>
+
+  <article>
+    <h2 class="red">Multimedia Helpers</h2>
+  </article>
+
+<article>
+    <h3>Using cross origin media</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>See MDN article <a href="https://developer.mozilla.org/en/HTML/CORS_settings_attributes" target="_new">CORS settings attributes</a>.</li>
+        </ul>
+      </section>
+    </aside>
+    <ul>
+      <li>Some HTML elements (<code>img</code>, <code>video</code>) have a <code>crossorigin</code> attribute (<code>.crossOrigin</code> property in JS) to indicate that the resource should be fetched with a <a href="http://enable-cors.org/" target="_blank">CORS</a> request.</li>
+      <li>Allows cross-domain images to be read by WebGL and <code>&lt;canvas&gt;</code> without <code>SECURITY_ERR</code>.</li>
+    </ul>
+    <pre>
+var img = document.createElement('img');
+img.onload = function(e) {
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  var url = canvas.toDataURL(); // Succeeds. Canvas won't be dirty.
+};
+<b>img.crossOrigin = 'anonymous';</b> // or 'use-credentials'
+img.src = 'http://other-domain.com/image.jpg';
+</pre>
+  </article>
+
+  <article>
+    <h3>Demo</h3>
+    <style>
+      #crossorigin-demo > div {
+        text-align: center;
+        padding: 10px;
+      }
+      #crossorigin-demo canvas {
+        border: 1px solid black;
+      }
+    </style>
+    <section id="crossorigin-demo" class="vflex middle center" style="height:90%">
+      <div>
+        <button id="crossorigin-button" data-url="http://lh4.googleusercontent.com/_DtxSDesXuhE/TYjQ-wnkF7I/AAAAAAAAAu4/0ZTlsnfajsQ/s800/IMG_1118.JPG">NO img.crossOrigin</button><br>
+        <canvas width="300" height="200"></canvas>
+      </div>
+      <div>
+        <button id="crossorigin-button2" data-url="https://lh5.googleusercontent.com/-q-yReXx-G68/Tfe_W5I2HZI/AAAAAAAAKHo/-qu4TPEynSM/s640/DSCF8027.JPG">img.crossOrigin</button><br>
+        <canvas width="300" height="200"></canvas>
+      </div>
+    </section>
+  </article>
+  <script>
+  (function() {
+    var onClick = function(e) {
+      var container = e.target.parentElement;
+      var canvas = container.querySelector('canvas');
+      var ctx = canvas.getContext('2d');
+      var img = document.createElement('img');
+      img.onload = function(e) {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        var a = document.createElement('a');
+        try {
+          a.href = canvas.toDataURL('image/webp'); // Read succeeds, canvas won't be dirty.
+          a.textContent = 'view dataURL';
+          a.target = '_blank';
+          container.appendChild(document.createElement('br'));
+          container.appendChild(a);
+        } catch(e) {
+          alert(e);
+        }
+      };
+      if (e.target.id == 'crossorigin-button2') {
+        img.crossOrigin = '';
+      }
+      img.src = e.target.dataset.url + '?' + Date.now(); // Picasa supports CORS.
+    };
+
+    document.getElementById('crossorigin-button').addEventListener('click', onClick, false);
+    document.getElementById('crossorigin-button2').addEventListener('click', onClick, false);
+  })();
+  </script>
+
+  <article id="slide-pagevisibility">
+    <h3>Page Visibility API</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed in Chrome/FF: <code>[webkit|moz]visibilitychange</code>, <code>document.[webkit|moz]Hidden</code>.</li>
+          <li>In WebKit, special state property: <code>document.webkitVisibilityState</code></li>
+          <li><a href="http://msdn.microsoft.com/en-us/ie/hh272906.aspx" target="_blank">IE10 implementation</a></li>
+          <li><a href="http://code.google.com/chrome/whitepapers/prerender.html" target="_blank">Prerendering documentation</a></li>
+        </ul>
+      </section>
+    </aside>
+    <p>Determine if your media is visible or not:</p>
+    <pre>
+document.addEventListener('<b>visibilitychange</b>', function(e) {
+  console.log('hidden:' + document.hidden,
+              'state:' + document.visibilityState)
+}, false);
+</pre>
+    <p class="centered"><a href="http://www.samdutton.com/pageVisibility/" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article class="smaller">
+    <h3><code>requestAnimationFrame</code> - Smarter animations</h3>
+    <p>Common technique for JS animations:</p>
+    <pre>
+window.setTimeout(function() {
+  // move element. Call this again.
+}, 1000 / 60); // 60fps.
+</pre>
+    <p>Preferred technique:</p>
+    <pre>
+window.requestAnimationFrame = window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+
+var reqId_ = null;
+(function callback(time) { // time is the Unix time.
+  // move element.
+  reqId_ = window.requestAnimationFrame(callback, opt_elem /* bounding elem */);
+})();
+</pre>
+    <ul class="build">
+      <li>Now possible to synchronize JS-based animations with CSS/SVG animations</li>
+      <li>Chrome caps sampling at 60fps (no big, your monitor is ~60Hz)</li>
+      <li>Callback won't be invoked if tab/element is not visible  ( <code>display:none</code> )</li>
+      <li><b>Tells the browser your intentions are to animate something</b></li>
+    </ul>
+  </article>
+
+  <article id="slide-requestanimationframe" class="smaller">
+    <h3>Example</h3>
+    <p><input type="radio" value="setTimeout" name="reqanimradio" id="settimeoutanimradio"/> <label for="settimeoutanimradio">Old and busted:</label></p>
+    <pre>
+function draw() {
+  var now = new Date().getTime();
+  // update models.
+  paintScene(canvas);
+  <b>window.setTimeout(draw, 10);</b>
+}
+draw();
+</pre>
+    <p><input type="radio" value="requestAnimationFrame" name="reqanimradio" id="reqanimradio" /> <label for="reqanimradio">New hotness:</label></p>
+    <pre>
+function draw(time) {
+  // update models.
+  paintScene(canvas);
+  <b>window.requestAnimationFrame(draw, canvas);</b>
+}
+draw();
+</pre>
+  <div class="output"></div>
+  </article>
+  <script>
+  (function() {
+    var slide = document.getElementById('slide-requestanimationframe');
+    var radios = slide.querySelectorAll('input[type=radio]');
+    var output = slide.querySelector('.output');
+    var last = new Date().getTime();
+    var active = false;
+    var oldtitle = document.title;
+
+    function getState() {
+      var radio = slide.querySelector('input[type=radio]:checked');
+      var state = radio ? radio.value : false;
+      return state;
+    };
+
+    function draw(future) {
+      var now = new Date().getTime();
+      var state = getState();
+      if (active && state) {
+        var ms = now - last;
+        var hz = Math.round(1000 / ms);
+        output.innerHTML = 'Using <strong>' + state + '</strong>:<br>' +
+                           ms + 'ms elapsed since last frame (' +
+                           hz + 'hz)';
+        document.title = ms + 'ms';
+        last = now;
+        switch (state) {
+          case 'requestAnimationFrame':
+            window.requestAnimationFrame(draw, output);
+            break;
+          case 'setTimeout':
+            setTimeout(draw, 10);
+            break;
+        }
+      }
+    };
+    slide.addEventListener('slideenter', function() {
+      oldtitle = document.title;
+      if (getState()) {
+        active = true;
+        draw();
+      }
+    }, false);
+    slide.addEventListener('slideleave', function() {
+      active = false;
+      window.setTimeout(function() {
+        document.title = oldtitle;
+      }, 500);
+    }, false);
+    for (var i = 0, radio; radio = radios[i]; i++) {
+      radio.addEventListener('click', function() {
+        if (!active) {
+          active = true;
+          draw();
+        }
+      }, false);
+    }
+  })();
+  </script>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>Media Fragment URIs</h3>
+      <span>
+        <a href="http://www.w3.org/TR/media-frags/#naming-time" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <ul>
+      <li>Specify the portion of the &lt;audio&gt; or &lt;video &gt; to play.</li>
+      <li>Supposedly implemented in FF and <a href="http://trac.webkit.org/changeset/104197" target="_blank">WebKit nightlies</a>.</li>
+    </ul>
+    <pre>
+&lt;!-- Play the range 10 seconds through 20 seconds. -->
+&lt;video src="http://foo.com/video.ogg#t=10,20"&gt;&lt;/video&gt;
+
+&lt;!-- Play from the beginning through 10.5 seconds. -->
+&lt;video src="http://foo.com/video.ogg#t=,10.5"&gt;&lt;/video&gt;
+
+&lt;!-- Play from the beginning through two hours. -->
+&lt;video src="http://foo.com/video.ogg#t=,02:00:00"&gt;&lt;/video&gt;
+
+&lt;!-- Start playing at 60s, through to end. -->
+&lt;video src="http://foo.com/video.ogg#t=60,"&gt;&lt;/video&gt;
+</pre>
+    <p style="margin-top:2em;">See <a href="https://developer.mozilla.org/en/Using_HTML5_audio_and_video#Specifying_playback_range<" target="_blank">MDN Documentation</a> for more info.</p>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>Video subtitles using &lt;track&gt;</h3>
+      <span>
+        <a href="http://webk.it/43668" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#the-track-element" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Needs <code>--enable-video-track</code> flag set in Chrome Canary. Also enable in <code>about:flags</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Subtitles are created in the <a href="http://dev.w3.org/html5/webvtt/" target="_blank">WebVTT</a> format.</p>
+    <pre>
+&lt;video width="390" id="clip" controls&gt;
+  &lt;source src="movie.webm" type='video/webm; codecs="vp8, vorbis"' />
+  &lt;<b>track</b> kind="subtitles" src="<em>subtitles-en.vtt</em>" srclang="en" 
+         label="English subtitles" default />
+  &lt;<b>track</b> kind="captions" src="brave.en.vtt" srclang="en"
+         label="English for the Hard of Hearing">
+&lt;/video>
+</pre>
+    <div id="video-column">
+      <video width="390" id="track-clip" controls>
+        <source src="../demos/Google_Developer_Stories.webm" type='video/webm; codecs="vp8, vorbis"'>
+        <track label="English subtitles" kind="subtitles" srclang="en" src="../demos/video-subtitles-en.vtt" default>
+        Your browser does not support the video tag
+      </video>
+    </div>
+    <div id="track-column">
+      <textarea readonly></textarea>
+    </div>
+  </article>
+  <script>
+    (function() {
+      var track = document.querySelector('#track-clip track');
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', track.src, true);
+      xhr.onload = function(e) {
+        document.querySelector('#track-column textarea').textContent = e.target.response;
+      };
+      xhr.send();
+    })();
+  </script>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>&lt;track&gt; ( JS API )</h3>
+      <span>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#text-track-api" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Information on each <code>TextTrack</code>:</p>
+    <pre>
+var track = video.textTracks[0];
+track.mode = TextTrack.HIDDEN; // Hide, show (SHOWING), or disable (DISABLE) track.
+track.oncuechange = function(e) {
+  ...
+};
+</pre>
+    <p>Information on each <code>TextTrackCue</code>:</p>
+    <pre>
+var allCues = track.cues; (TextTrackCueList)
+var activeCue = track.activeCues[0]; (TextTrackCue)
+activeCue.id (DOMString)
+activeCue.startTime (bool)
+activeCue.endTime (bool)
+activeCue.pauseOnExit (bool)
+activeCue.getCueAsSource(); (DOMString)
+activeCue.getCueAsHTML(); (DocumentFrament)
+
+activeCue.onenter = function(e) { ... };
+activeCue.onexit = function(e) {  ... };
+</pre>
+    <p class="centered">
+      <a href="http://html5-demos.appspot.com/static/video/track/index.html" class="demo" target="_blank">Demo</a>
+    </p>
+  </article>
+
+  <article>
+    <h3>Not just for video</h3>
+    <p>Play scheduled portions of a given audio file:</p>
+    <pre>
+var sfx = new Audio('sfx.wav');
+var track = a.addTextTrack('metadata');
+
+// Add cues for sounds we care about.
+track.addCue(
+  new TextTrackCue('dog bark', 12.783, 13.612, '', '', '', true));
+track.addCue(
+  new TextTrackCue('kitten mew', 13.612, 15.091, '', '', '', true));
+
+function playSound(id) {
+  sfx.currentTime = track.getCueById(id).startTime;
+  sfx.play();
+}
+
+playSound('dog bark');
+playSound('kitten mew');
+</pre>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>Media Source API - "Streaming"</h3>
+      <span>
+        <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>For Chrome (17+), enabled in <code>about:flags</code> or run with <code>--enable-media-source</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Extends <code>HTMLMediaElement</code> by allowing JavaScript to append media for playback.</p>
+    <ul class="build">
+      <li><code>video.src = video.webkitMediaSourceURL;</code> opens the stream.</li>
+      <li><code>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</code> appends data.</li>
+      </li>
+      <li><code>video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR)</code> signals end of stream (no errors).</li>
+      <li><code>video.webkitSourceState</code> status indicates state of stream (<code>HTMLMediaElement.SOURCE_CLOSED=0</code>, <code>HTMLMediaElement.SOURCE_OPEN=1</code>, <code>HTMLMediaElement.SOURCE_ENDED=2</code>).</li>
+      <li><code>webkitsourceopen</code> and <code>webkitsourceended</code> events
+      fire on start and end of stream.</li>
+      <li>Only <code>.webm</code> container is supported for now.</li>
+    </ul>
+    <p style="margin-top:2em;">See <a href="http://updates.html5rocks.com/2011/11/Stream-video-using-the-MediaSource-API" target="_blank">HTML5Rocks Update</a> for more info.<br>
+    Or <a href="http://www.ioncannon.net/utilities/1515/segmenting-webm-video-and-the-mediasource-api/" target="_blank">Segmenting WebM Video and the MediaSource API</a></p>
+  </article>
+
+  <article>
+    <h3>Example</h3>
+    <pre>
+var video = document.querySelector('video');
+<b>video.src = video.webkitMediaSourceURL;</b>
+
+video.addEventListener(<b>'webkitsourceopen'</b>, function(e) {
+  while(!isLastChunk) {
+    <b>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</b>
+    ...
+  }
+  <b>video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);</b>
+}, false);
+
+video.addEventListener(<b>'webkitsourceended'</b>, function(e) {
+  console.log(<b>video.webkitSourceState</b> ==
+              <b>HTMLMediaElement.SOURCE_CLOSED</b>);
+}, false);
+</pre>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="http://html5-demos.appspot.com/static/media-source.html" target="_blank">Demo</a> - Break <code>File</code> into chunks and append each.</li>
+      <li><a href="http://d28nuaxr58rcpu.cloudfront.net/MediaSourceAPIDemo/demo.html" target="_blank">Demo2</a> - Stream video chunks using XHR.</li>
+    </ul>
+  </article>
+
+  <article>
+    <h3>First step to speech enabled apps</h3>
+     <aside class="note">
+      <section>
+        <ul>
+          <li>Support: Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <pre class="centered">&lt;input type="text" x-webkit-speech&gt;</pre>
+    <input id="speech-input-textbox" type="text" x-webkit-speech style="width:400px;height:50px;font-size:135%;margin-left:auto;margin-right:auto;display:block;">
+    <div class="build">
+      <div>
+      <pre>
+input.addEventListener('<b>webkitspeechchange</b>', function(e) {
+  if (<b>e.results</b>) { // e.type == 'webkitspeechchange'
+    for (var i = 0, result; result = e.results[i]; ++i) {
+      console.log(<b>result.utterance</b>, <b>result.confidence</b>);
+    }
+  }
+}, false);
+</pre>
+        <div id="speech-results" class="speech-results"></div>
+         
+        <script> 
+          document.getElementById("speech-input-textbox").addEventListener("webkitspeechchange", function(event) {
+            var speechresults = document.getElementById('speech-results');
+            speechresults.innerHTML = '';
+            for (var res in event.results) {
+              speechresults.innerHTML += 'Utterance: ' + event.results[res]['utterance'] + '<br />Confidence: ' 
+                + event.results[res]['confidence'] + '<br /><br />';
+            }
+          }, false);
+        </script>
+      </div>
+    </div>
+    <p>See new <a href="http://lists.w3.org/Archives/Public/public-webapps/2011OctDec/att-1696/speechapi.html" target="_blank">Speech JavaScript API</a> unofficial specification.</p>
+  </article>
+
+  <article>
+    <h3>Camera &amp; microphone access - the real deal</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed as <code>navigator.webkitGetUserMedia()</code> in WebKit</li>
+          <li><code>window.URL</code> is prefixed as <code>window.webkitURL</code> in WebKit</li>
+          <li>Needs <code>--enable-media-stream</code> flag in Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Plugin-free acess to camera/microphone.</p>
+    <pre class="centered">
+&lt;video autoplay controls&gt;&lt;/video&gt;
+</pre>
+    <pre>
+<b>navigator.getUserMedia</b>({audio: true, video: true}, function(s) {
+  var video = document.querySelector('video');
+  video.src = <b>window.URL.createObjectURL(s)</b>;
+}, function(e) {
+  console.log(e);
+});
+</pre>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="../demos/getusermedia.html" target="_blank">Basic demo</a></li>
+      <li><a href="http://people.opera.com/danield/webapps/instant-camera/" target="_blank">Instant Camera</a></li>
+      <li><a href="http://people.opera.com/danield/html5/explode/" target="_blank">Explode Video</a></li>
+      <li><a href="http://neave.com/webcam/html5/" target="_blank">Live Effects</a></li>
+    </ul>
+  </article>
+
+  <article>
+    <h3>Recording your hard work</h3>
+    <pre>
+&lt;input type="button" value="⚫" onclick="record(this)">
+&lt;input type="button" value="◼" onclick="stop(this)">
+</pre>
+    <pre>
+var localMediaStream, recorder;
+
+var record = function(button) {
+  recorder = localMediaStream.record();
+};
+
+var stop = function(button) {
+  localMediaStream.stop();
+  recorder.getRecordedData(function(blob) {
+    // Upload blob using XHR2.
+  });
+};
+</pre>
+  </article>
+
+  <article id="fullscreen-slide">
+    <h3>Fullscreen - let the content take over</h3>
+    <pre class="centered">
+&lt;video width="300" src="movie.webm" controls&gt;&lt;/video&gt;
+&lt;button onclick="enterFullscreen()">Get Huge!&lt;/button&gt;
+</pre>
+  <pre>
+function enterFullscreen() {
+  var elem = document.querySelector('body');
+  elem.onwebkitfullscreenchange = function(e) {
+    console.log("Entered fullscreen!");
+    elem.onwebkitfullscreenchange = onFullscreenExit;
+  };
+  elem.<b>webkitRequestFullScreen</b>(Element.ALLOW_KEYBOARD_INPUT);
+}
+</pre>
+    <p class="centered" style="margin-top:2em;"><a href="http://html5-demos.appspot.com/static/fullscreen.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+   <article>
+    <h3>Fullscreen API ( JS )</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Support: Chrome 16 (<code>webkitRequestFullScreen</code>), FF 10 (<code>mozRequestFullScreen</code>)</li>
+          <li>Docs: <a href="https://developer.mozilla.org/en/DOM/Using_full-screen_mode" target="_blank">https://developer.mozilla.org/en/DOM/Using_full-screen_mode</a></li>
+        </ul>
+      </section>
+    </aside>
+    <p>Control of the entire document and elements:</p>
+    <pre>
+document.webkitIsFullScreen ( bool )
+document.webkitCurrentFullScreenElement ( DOMElement )
+document.webkitFullScreenKeyboardInputAllowed ( bool )
+document.webkitCancelFullScreen();
+</pre>
+    <pre>
+Element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+</pre>
+  </article>
+
+  <article>
+    <h3>Fullscreen API ( non-standard )</h3>
+    <p>WebKit has extra stuff for media elements:</p>
+    <pre>
+HTMLMediaElement.webkitSupportsFullscreen ( bool )
+HTMLMediaElement.webkitDisplayingFullscreen ( bool )
+HTMLMediaElement.webkitEnterFullScreen()
+HTMLMediaElement.webkitExitFullScreen()
+</pre>
+  </article>
+
+  <article>
+    <h3>Fullscreen API</h3>
+    <p>New CSS pseudo-classes:</p>
+    <ul>
+      <li><code>:-webkit-full-screen</code></li>
+      <li><code>:-webkit-full-screen-document</code></li>
+      <li><code>:-webkit-full-screen-root-with-target</code></li>
+    </ul>
+    <p>iframed content needs special treatment by the parent page:</p>
+    <pre>
+&lt;iframe src="..." <b>webkitallowfullscreen</b>&gt;&lt;/iframe>
+</pre>
+  </article>
+
+  <article class="fill" style="background-image: url(images/phonebank.jpg)">
+    <h2 class="megabottom">Web RTC</h2>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/">http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+
+  <article id="webrtc-images" class="webrtc-slide">
+    <h3>What's the problem?</h3>
+    <style>
+    /*#webrtc-images > section > div {
+      -webkit-perspective: 1000;
+    }*/
+    #webrtc-images > section {
+      -webkit-perspective: 1000;
+      height: 70%;
+      cursor: pointer;
+    }
+    #webrtc-images > section > div {
+      -webkit-transform-style: preserve-3d;
+      -webkit-transform: translateX(125px) translateY(15px) rotateY(30deg);
+      height: 90%;
+    }
+    #webrtc-images > section > div figure {
+      position: absolute;
+      -webkit-user-select: none;
+      -webkit-transform-style: preserve-3d;
+      -webkit-backface-visibility: hidden;
+      -webkit-transition: -webkit-transform 0.35s ease-in, opacity 0.25s ease-out;
+      -webkit-transform: rotateX(-91deg);
+      -webkit-transform-origin: 50% 0;
+      visibility: hidden;
+      bottom: 0;
+      margin: 0;
+    }
+    #webrtc-images figure figcaption {
+      text-align: center;
+      font-size: 60%;
+    }
+    #webrtc-images figure img {
+      width: 500px;
+      height: 300px;
+      box-shadow: 0 0 15px #ccc;
+    }
+    </style>
+    <p>The demand for RTC is real!</p>
+    <section>
+      <div>
+        <figure><img src="../images/gmailchat.png"><figcaption>GMail Video Chat</figcaption></figure>
+        <figure><img src="../images/hangout.png"><figcaption>Google Plus Hangout</figcaption></figure>
+        <figure><img src="../images/facebook-skype.png"><figcaption>Facebook Video Chat</figcaption></figure>
+        <figure><img src="../images/tokbox.png"><figcaption>Tokbox</figcaption></figure>
+      </div>
+    </section>
+    <div class="build"><p>...all browser based. All requiring a special download or Flash</p></div>
+  </article>
+  <script>
+  var container = document.querySelector('#webrtc-images > section > div');
+  var imgs = container.children;
+  var index = 0;
+  container.addEventListener('click', function(e) {
+    if (index == imgs.length) {
+      return;
+    }
+
+    imgs[index].style.visibility = 'visible';
+    imgs[index].style.webkitTransform = 'rotateX(0deg)';
+
+    if (index > 0) {
+      imgs[index - 1].style.webkitTransform = 'rotateX(125deg)';
+      imgs[index - 1].style.opacity = '0';
+    }
+
+    //index = (index + 1) % imgs.length;
+    index++;
+
+    /*imgs[index].addEventListener('webkitTransitionEnd', function(e) {
+      //console.log(e, this.style.webkitTransform);
+      for (var i = 0; i < index; ++i) {
+        imgs[i].style.visibility = 'hidden';
+      }
+    }, false);*/
+  }, false);
+  </script>
+
+  <article class="webrtc-slide">
+    <h3>What is WebRTC?</h3>
+    <p class="centered"><em><label class="underline">Plugin-free</label> high quality real-time voice/video communication in the browser</em></p>
+    <br>
+    <ul class="build fade">
+      <li>Browser engine:
+        <ul>
+          <li>Echo cancellation, noise reduction, automatic gain control</li>
+          <li>Network jitter management</li>
+        </ul>
+      </li>
+      <li>Web APIs:
+        <ul>
+          <li>Audio/video capture and playback</li>
+          <li>Device management</li>
+          <li><a href="http://dev.w3.org/2011/webrtc/editor/webrtc.html" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers spec</a></li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Architecture</h3>
+    <p class="centered"><img src="../images/webrtc-arch.jpg" class="centered rounded reflect"></p>
+  </article>
+
+  <article class="webrtc-slide smaller">
+  <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed as <code>window.webkitPeerConnection()</code> in WebKit.</li>
+          <li>Needs <code>--enable-media-stream</code> flag in Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <h3>Example</h3>
+      <pre>
+function onSignalingMsg(msg, source) {
+  // send message to the other side via the signaling channel.
+  pc.processSignalingMessage(msg);
+}
+
+var pc = new <b>PeerConnection</b>('STUN example.com:8000', onSignalingMsg);
+
+pc.onaddstream = function(e) {
+  remoteVideo.src = window.URL.createObjectURL(e.stream);
+};
+
+pc.onremovestream = function(e) {
+  remoteVideo.src = '';
+};
+
+navigator.getUserMedia('video,audio', function(localStream) {
+  localVideo.src = window.URL.createObjectURL(stream);
+  pc.addStream(localStream); // Start sending video.
+}, function(e) { ... });
+</pre>
+    <!--<p class="centered">
+      <a href="http://localhost:8080/webrtc_demo.html" class="demo" target="_blank">Demo</a>
+    </p>-->
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Build the future...</h3>
+    <style>
+    #robot-img {
+      float: right;
+      height: 80%;
+      opacity: 0;
+      -webkit-transition: all 0.6s ease-in-out;
+    }
+    #robot-img.on {
+      opacity: 1;
+    }
+    </style>
+    <img src="../images/robot.png" id="robot-img" alt="Robot" title="Robot">
+    <ul class="build fade">
+      <li>Break the "dial" paradigm</li>
+      <li>Build really social networks</li>
+      <li>Build interactive commerce</li>
+      <li>Build amazing online learning experiences</li>
+      <li>Online gaming</li>
+      <li>Build cool baby monitors</li>
+      <li><a href="javascript:document.querySelector('#robot-img').classList.toggle('on');">Robots!!</a></li>
+    </ul>
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Community effort</h3>
+    <ul>
+      <li><a href="http://www.webrtc.org/" target="_blank">webrtc.org</a></li>
+      <li><a href="http://code.webrtc.org/" target="_blank">code.webrtc.org</a> - open-source, royalty free BSD license</li>
+      <li>Mozilla, Opera, Google, and others supporting the effort</li>
+    </ul>
+  </article>
+
+  <article class="fill" style="background-image: url(images/audiocables.jpg)">
+    <h2 class="white shadow topright">Web Audio API</h2>
+    <div class='source black'>
+      <a href="http://www.flickr.com/photos/spazzo_1493/4832550443/sizes/l/in/photostream/">http://www.flickr.com/photos/spazzo_1493/4832550443/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+
+  <article>
+    <h3>In the olden days...</h3>
+    <div class="build">
+    <pre class="centered">
+&lt;bgsound="xfiles.mid" controls="console" loop="5"&gt;
+</pre>
+    <pre>
+&lt;!-- Autostart! Yay! --&gt;
+&lt;embed src="hamsterdance.wav" autostart="true"
+       loop="true" hidden="true"&gt;
+&lt;noembed&gt;
+  &lt;bgsound src="hamsterdance.wav"&gt;
+&lt;/noembed&gt;
+</pre>
+    <div>
+    .... and of course embedded flash
+    </div>
+  </article>
+
+  <article>
+    <h3>Now web have HTML5 &lt;audio&gt;...what gives?</h3>
+    <ul class="build fade">
+      <li>Yes :)...but &lt;audio&gt; can only take us so far</li>
+      <li>Codec support issues</li>
+      <li>Simple low-latency, glitch-free, audio playback and scheduling</li>
+      <li>Real-time processing and analysis</li>
+      <li>Low-level audio manipulation</li>
+      <li>Effects: spatial panning, low/high pass filters, convolution, gain, ...</li>
+    </ul>
+  </article>
+
+  <article>
+    <h3>Comparison to Mozilla's Audio Data API</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Mozilla <a href="https://wiki.mozilla.org/Audio_Data_API" target="_new">Audio Data API</a> spec</li>
+          <li><a href="http://chromium.googlecode.com/svn/trunk/samples/audio/specification/specification.html" target="_new">Web Audio API</a> spec</li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build">
+      <li>Similarities:
+        <ul>
+          <li>Extends the &lt;audio&gt; element</li>
+          <li>Generate audio</li>
+          <li>Load + manipulate sound files</li>
+        </ul>
+      </li>
+      <li>Differences:
+        <ul>
+          <li>FF intensive audio processing operations must be done in JS (slow).
+          Web Audio API exposes calls for <a href="http://chromium.googlecode.com/svn/trunk/samples/audio/index.html" target="_blank">common effects/operations</a> under the covers.</li>
+          <li>Nodes are created + hooked up to produce overall audio system.</li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+
+  <article class="smaller">
+    <h3>Scheduled playback</h3>
+    <aside class="note">
+      <section class="centered">
+        <p>Prefixed in WebKit as <code>window.webkitAudioContext()</code></p>
+        <p><img src="../images/audio-routing.png" style="height:200px"></p>
+      </section>
+    </aside>
+    <section>
+      <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+
+function playSound(arrayBuffer) { // Obtain arrayBuffer from XHR2.
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.loop = false;
+    src.connect(ctx.destination);
+    src.noteOn(0); // Play immediately.
+  }, function(e) {
+    console.log(e);
+  });
+}
+</pre>
+    </section>
+    <p>
+      Shoot: <button onclick="shootGun()">Now</button>
+      <button onclick="shootGun(2)">2s delay</button>
+      <button onclick="shootGun(-1)">Loopy</button>
+      <button onclick="stopGun()">Stop</button>
+      <input type="number" id="currentTime" readonly value="0" title="currentTime">
+    </p>
+  </article>
+  <script>
+  (function() {
+   var currentTime = document.getElementById('currentTime');
+
+   if (window.webkitAudioContext) {
+     var ctx = new webkitAudioContext();
+     var sample = null;
+     var src = null;
+     var reqAnimFrame = null;
+
+     window.shootGun = function(opt_delay) {
+       stopGun();
+
+       src = ctx.createBufferSource();
+       src.buffer = sample;
+       src.connect(ctx.destination);
+
+       (function callback(time) {
+         currentTime.value = ctx.currentTime;
+         reqAnimFrame = window.requestAnimationFrame(callback, src);
+       })();
+
+       if (opt_delay && opt_delay == -1) {
+         src.loop = true;
+         src.noteGrainOn(opt_delay, 0.1, 0.3);
+       } else if (opt_delay) {
+         src.noteOn(opt_delay + ctx.currentTime);
+       } else {
+         src.noteOn(0); // play immediately.
+       }
+     };
+
+     window.stopGun = function() {
+       if (src) {
+         src.noteOff(0);
+         window.cancelRequestAnimationFrame(reqAnimFrame);
+       }
+     };
+
+     var request = new XMLHttpRequest();
+     request.open('GET', '../sounds/boing.ogg', true);
+     request.responseType = 'arraybuffer';
+     request.onload = function() {
+       ctx.decodeAudioData(request.response, function(buffer) {
+         sample = buffer;
+       }, function(e) {
+         console.log(e);
+       });
+     };
+     request.send();
+   }
+  })();
+  </script>
+
+<article class="smaller">
+  <h3>Sample-accurate scheduling</h3>
+  <pre>
+function playSound(buffer, time) {
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.noteOn(time);
+}
+
+// Play the bass (kick) drum on beats 1, 5
+playSound(kick, time);
+playSound(kick, time + 4 * eighthNoteTime);
+
+// Play the snare drum on beats 3, 7
+playSound(snare, time + 2 * eighthNoteTime);
+playSound(snare, time + 6 * eighthNoteTime);
+
+// Play the hi-hat every eighth note.
+for (var i = 0; i &lt; 8; ++i) {
+  playSound(hihat, time + i * eighthNoteTime);
+}
+</pre>
+    <p class="centered">
+      <img src="../images/rhythm.png" style="vertical-align:middle;margin-top:-20px">
+      <button onclick="playRhythm();">Play</button>
+    </p>
+  </article>
+<script>
+(function() {
+var ctx = new webkitAudioContext();
+var BUFFERS = {}
+var BUFFERS_TO_LOAD = {
+  kick: '../sounds/kick.wav',
+  snare: '../sounds/snare.wav',
+  hihat: '../sounds/hihat.wav'
+};
+
+function loadBuffers() {
+  // Array-ify
+  var names = [];
+  var paths = [];
+  for (var name in BUFFERS_TO_LOAD) {
+    var path = BUFFERS_TO_LOAD[name];
+    names.push(name);
+    paths.push(path);
+  }
+  bufferLoader = new BufferLoader(ctx, paths, function(bufferList) {
+    for (var i = 0; i < bufferList.length; i++) {
+      var buffer = bufferList[i];
+      var name = names[i];
+      BUFFERS[name] = buffer;
+    }
+  });
+  bufferLoader.load();
+}
+
+var RhythmSample = {};
+
+function playSound(buffer, time) {
+  var source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(ctx.destination);
+  source.noteOn(time);
+}
+
+window.playRhythm = function() {
+  var kick = BUFFERS.kick;
+  var snare = BUFFERS.snare;
+  var hihat = BUFFERS.hihat;
+
+  // We'll start playing the rhythm 100 milliseconds from "now"
+  var startTime = ctx.currentTime + 0.100;
+  var tempo = 100; // BPM (beats per minute)
+  var eighthNoteTime = (60 / tempo) / 2;
+
+  // Play 2 bars of the following:
+  for (var bar = 0; bar < 2; bar++) {
+    var time = startTime + bar * 8 * eighthNoteTime;
+    // Play the bass (kick) drum on beats 1, 5
+    playSound(kick, time);
+    playSound(kick, time + 4 * eighthNoteTime);
+
+    // Play the snare drum on beats 3, 7
+    playSound(snare, time + 2 * eighthNoteTime);
+    playSound(snare, time + 6 * eighthNoteTime);
+
+    // Play the hi-hat every eighthh note.
+    for (var i = 0; i < 8; ++i) {
+      playSound(hihat, time + i * eighthNoteTime);
+    }
+  }
+};
+
+loadBuffers();
+})();
+</script>
+
+  <article>
+    <section class="vflex middle center" style="height:95%">
+      <p class="centered">
+        <h3>Bohemian Rhapsichord</h3>
+        <a href="http://static.echonest.com/BohemianRhapsichord/index.html" class="demo" target="_blank">Demo</a>
+      </p>
+    </section>
+  </article>
+
+  <article>
+    <h3>Gain Control - Cross Fade</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing-crossfade.png"></p>
+      </section>
+    </aside>
+    <pre>
+var source = context.createBufferSource();
+var gainNode = context.createGainNode();
+source.buffer = buffer;
+source.connect(gainNode);
+gainNode.connect(context.destination);
+</pre>
+  <p><button onclick="crosstoggle();">Play/Pause</button>
+  Drums <input type="range" min="0" max="100" value="100" onchange="setcrossfade(this);" /> Organ</p>
+  </article>
+
+<script>
+(function() {
+var ctl1, ctl2;
+var playing = false;
+
+var ctx = new webkitAudioContext();
+var BUFFERS = {}
+var BUFFERS_TO_LOAD = {
+  drums: '../sounds/drums.wav',
+  organ: '../sounds/organ.wav',
+};
+function loadBuffers() {
+  // Array-ify
+  var names = [];
+  var paths = [];
+  for (var name in BUFFERS_TO_LOAD) {
+    var path = BUFFERS_TO_LOAD[name];
+    names.push(name);
+    paths.push(path);
+  }
+  bufferLoader = new BufferLoader(ctx, paths, function(bufferList) {
+    for (var i = 0; i < bufferList.length; i++) {
+      var buffer = bufferList[i];
+      var name = names[i];
+      BUFFERS[name] = buffer;
+    }
+  });
+  bufferLoader.load();
+}
+
+cross_play = function() {
+  // Create two sources.
+  ctl1 = createSource(BUFFERS.drums);
+  ctl2 = createSource(BUFFERS.organ);
+  // Mute the second source.
+  ctl1.gainNode.gain.value = 0;
+  // Start playback in a loop
+  ctl1.source.noteOn(0);
+  ctl2.source.noteOn(0);
+  // Set the initial crossfade to be just source 1.
+  setcrossfade(0);
+
+  function createSource(buffer) {
+    var source = ctx.createBufferSource();
+    var gainNode = ctx.createGainNode();
+    source.buffer = buffer;
+    // Turn on looping
+    source.loop = true;
+    // Connect source to gain.
+    source.connect(gainNode);
+    // Connect gain to destination.
+    gainNode.connect(ctx.destination);
+
+    return {
+      source: source,
+      gainNode: gainNode
+    };
+  }
+};
+
+cross_stop = function() {
+  ctl1.source.noteOff(0);
+  ctl2.source.noteOff(0);
+};
+
+// Fades between 0 (all source 1) and 1 (all source 2)
+window.setcrossfade = function(element) {
+  var x = parseInt(element.value) / parseInt(element.max);
+  // Use an equal-power crossfading curve:
+  var gain1 = 0.5 * (1.0 + Math.cos(x * Math.PI));
+  var gain2 = 0.5 * (1.0 + Math.cos((1.0 - x) * Math.PI));
+  ctl1.gainNode.gain.value = gain1;
+  ctl2.gainNode.gain.value = gain2;
+};
+
+window.crosstoggle = function() {
+  playing ? cross_stop() : cross_play();
+  playing = !playing;
+};
+
+loadBuffers();
+})();
+</script>
+
+  <article class="smaller">
+    <h3>Generating sound</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing.png" style="height:200px"></p>
+      </section>
+    </aside>
+      <pre>
+var sine = new Oscillator(DSP.SINE, 440, 1.0, 2048, 44100).generate(); // dsp.js
+
+var src = ctx.createBufferSource();
+src.buffer = <b>ctx.createBuffer</b>(1 /*channels*/, 2048, 44100);
+<b>src.buffer.getChannelData(0)</b>.set(sine);
+<b>src.loop = true;</b>
+
+src.connect(ctx.destination);
+src.noteOn(0);
+</pre>
+    <iframe style="border:none;width:800px;height:250px;" src="http://www.htmlfivewow.com/demos/waveform-generator/index.html"></iframe>
+  </article>
+
+  <article>
+    <section class="vflex middle center" style="height:95%">
+      <p class="centered">
+        <h3>Sound Toy</h3>
+        <a href="http://www.iquilezles.org/apps/soundtoy/index.html" class="demo" target="_blank">Demo</a>
+      </p>
+    </section>
+  </article>
+
+  <article class="smaller">
+    <h3>Realtime Audio processing</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing-analysis.png" style="width:530px"></p>
+      </section>
+    </aside>
+    <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+var analyser = <b>ctx.createAnalyser</b>();
+
+function initAudio(arrayBuffer) {
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    <b>src.connect(analyser);</b> // src -> analyser -> destination
+    <b>analyser.connect(ctx.destination);</b>
+    render(src);
+  }, function(e) {
+    console.log('Error decoding audio file', e);
+  });
+}
+
+function render(src) {
+  (function callback(timeStamp) {
+    <b>var byteData = new Uint8Array(analyser.frequencyBinCount);</b>
+    <b>analyser.getByteFrequencyData(byteData);</b>
+
+    // draw byteData to &lt;canvas&gt; visualization...
+
+    window.requestAnimationFrame(callback, src);
+  })();
+}
+</pre>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="http://www.htmlfivewow.com/demos/hal/index.html" target="_blank">GAL 9000</a></li>
+      <li><a href="http://www.htmlfivewow.com/demos/audio-visualizer/index.html" target="_blank">HTML5Wow Visualizer</a></li>
+      <li><a href="http://airtightinteractive.com/demos/js/reactive/" target="_blank">3D Audio Visualizer</a></li>
+      <li><a href="http://alteredqualia.com/three/examples/webgl_city.html" target="_blank">WebGL City</a></li>
+      <li><a href="http://labs.dinahmoe.com/plink/" target="_blank">Plink</a></li>
+    </ul>
+  </article>
+
+  <article class="smaller">
+    <h3>Pre-processing ("offline") mode</h3>
+    <p>Normal use of the API is to process audio in real-time. Instead, we can
+    pre-process the audio through the entire system and get result:</p>
+    <pre>
+var sampleRate = 44100.0;
+var length = 20; // seconds
+<b>var ctx = new <em>webkit</em><b>AudioContext</b>(2, sampleRate * length, sampleRate);</b>
+<b>ctx.oncomplete = function(e) {
+  <b>var resultAudioBuffer = e.renderedBuffer;</b>
+  ...
+};</b>
+
+function convolveAudio(audioBuffer, audioBuffer2) {
+  var source = ctx.createBufferSource();
+  var convolver = ctx.createConvolver();
+  source.buffer = audioBuffer;
+  convolver.buffer = audioBuffer2;
+
+  // source -> convolver -> destination.
+  source.connect(convolver);
+  convolver.connect(ctx.destination);
+
+  source.noteOn(0);
+  <b>ctx.startRendering();</b>
+}
+</pre>
+    <!--<p class="centered"><a href="../demos/offline-wapi.html" class="demo" target="_blank">Demo</a></p>-->
+  </article>
+
+  <article >
+    <hgroup>
+      <h3>Integration with <code>&lt;audio&gt;</code>/<code>&lt;video&gt;</code></h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://crbug.com/79949" target="_blank" class="bug" title="Bug link"></a>
+        <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AudioElementIntegration-section" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Using a <code>HTMLMediaElement</code> as the source, one can "stream" audio to the API:</p>
+    <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+var audioElement = new Audio();
+audioElement.src = 'sounds/dope_beats.mp3';
+audioElement.controls = true;
+audioElement.autoplay = true;
+
+<b>var source = ctx.createMediaElementSource(audioElement);</b>
+var analyser = ctx.createAnalyser();
+
+source.connect(analyser);
+analyser.connect(ctx.destination);
+</pre>
+    <p><b>Note</b>: There's no <code>source.noteOn(0)</code>. Play/pause is controlled by the <code>&lt;audio&gt;</code> element.</p>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+      <div id="chrome-heart" class="spin"></div>
+      <h1 style="display:inline"><div class="jitter"></div> HTML5</h1>
+      <p style="margin-top:1em"><h3>Thanks! Questions?</h3></p>
+    </div>
+  </article>
+
+</section>
+
+<script> 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script> 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

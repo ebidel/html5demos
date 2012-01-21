@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2011 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>Offline-mode of Web Audio API</title>
+<style>
+canvas {
+  /*border: 1px solid #eee;*/
+  /*width: 100%;*/
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(50%, transparent), to(white));
+}
+#output a {
+  margin-right: 5px;
+}
+section:nth-of-type(1) {
+  margin: 2em 0;
+  background: -webkit-linear-gradient(#eee, rgba(255, 255, 255, 0), #eee);
+  display: -webkit-box;
+  -webkit-box-pack: center;
+}
+section:nth-of-type(2) {
+  margin-top: 5em;
+}
+</style>
+</head>
+<body>
+
+<section>
+   <canvas id="waveform" width="1024" height="155"></canvas><br>
+</section>
+<section>
+  <input type="file" multiple>
+  <div>
+    Freq domain?: <input type="checkbox" id="freq-spectrum" checked><br>
+    Room echo?: <input type="checkbox" id="echo"> Filter?: <input type="checkbox" id="filter">
+    <!--Gain: <input type="range" id="gain" min="0" max="1" value="1" step="0.1">-->
+  </div>
+  <p id="output"><em>Processing</em></p>
+</section>
+
+<!--
+<audio src="sounds/UFO_Sychosis_ReRub.wav" controls type="audio/wav"></audio>
+<audio src="sounds/Whats_A_Girl_Gotta_Do.mp3" controls type="audio/mp3"></audio>
+-->
+
+<script src="dsp.js"></script>
+<script>
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+
+const FILES = [
+  //'sounds/beat.wav',
+  //'sounds/bassloop2.wav',
+  'UFO_Sychosis_ReRub.wav',
+  'Whats_A_Girl_Gotta_Do.wav',
+  //'superceiling.wav'
+];
+
+var canvas = document.querySelector('#waveform');
+var ctx = canvas.getContext('2d');
+const CANVAS_HEIGHT = canvas.height;
+canvas.width = document.body.clientWidth;
+const CANVAS_WIDTH = canvas.width;
+
+var freqSpectrum = document.querySelector('#freq-spectrum');
+var output = document.querySelector('#output');
+var echo = document.querySelector('#echo');
+var filter = document.querySelector('#filter');
+//var gain = document.querySelector('#gain');
+
+var bufferLoader;
+
+var context;
+var playContext;
+var audioBuffer; // processed sound.
+var sampleRate = 44100.0;
+var lengthInSeconds = 20;
+
+function onChange(e) {
+  init();
+}
+
+echo.addEventListener('change', onChange, false);
+filter.addEventListener('change', onChange, false);
+
+document.querySelector('[type="file"]').addEventListener('change', function(e) {
+  init(this.files);
+}, false);
+
+function BufferLoader(context, urlList, callback) {
+  this.context = context;
+  this.urlList = urlList;
+  this.onload = callback;
+  this.bufferList = [];
+  this.loadCount = 0;
+}
+
+BufferLoader.prototype.loadBuffer = function(url, index) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url, true);
+  xhr.responseType = 'arraybuffer';
+
+  var self = this;
+
+  xhr.onload = function(e) {
+    self.context.decodeAudioData(this.response, function(audioBuffer) {
+      self.bufferList[index] = audioBuffer;
+      if (++self.loadCount == self.urlList.length) {
+        self.onload(self.bufferList);
+      }
+    }, function(e) {
+      alert('Error: BufferLoader - decoding file data');
+      console.log(e);
+    });
+  };
+
+  xhr.onerror = function(e) {
+    alert('Error: BufferLoader - XHR error');
+    console.log(e);
+  };
+
+  xhr.send();
+}
+
+BufferLoader.prototype.load = function() {
+  for (var i = 0; i < this.urlList.length; ++i) {
+    this.loadBuffer(this.urlList[i], i);
+  }
+};
+
+BufferLoader.prototype.loadFiles = function(files) {
+  //this.bufferList = [];
+  this.loadCount = 0;
+
+  var self = this;
+
+  [].forEach.call(files, function(file, i) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      self.context.decodeAudioData(this.result, function(audioBuffer) {
+        self.bufferList[i] = audioBuffer;
+        if (++self.loadCount == files.length) {
+          self.onload(self.bufferList);
+        }
+      }, function(e) {
+        alert('Error: BufferLoader - decoding file data');
+        console.log(e);
+      });
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+};
+
+
+DataView.prototype.setString = function(offset, str, opt_littleEndian) {
+  var littleEndian = opt_littleEndian || false;
+  for (var i = 0; i < str.length; ++i) {
+    this.setUint8(offset + i, str.charCodeAt(i), littleEndian);
+  }
+};
+
+function writeAudioBuffer(audioBuffer, a, offset) {
+  var bufferL = audioBuffer.getChannelData(0);
+  var bufferR = audioBuffer.getChannelData(1);
+
+  var dv = new DataView(a.buffer);
+
+  var len = audioBuffer.length;
+  for (var i = 0; i < len; ++i) {
+    // Write left and right
+    var sampleL = bufferL[i] * 32768.0;
+    var sampleR = bufferR[i] * 32768.0;
+
+    // Clip left and right samples to the limitations of 16-bit.
+    // If we don't do this then we'll get nasty wrap-around distortion.
+    if (sampleL < -32768)
+        sampleL = -32768;
+    if (sampleL > 32767)
+        sampleL = 32767;
+    if (sampleR < -32768)
+        sampleR = -32768;
+    if (sampleR > 32767)
+        sampleR = 32767;
+
+    dv.setInt16(offset, sampleL, true);
+    dv.setInt16(offset + 2, sampleR, true);
+
+    offset += 4;
+  }
+}
+
+// .WAV format: https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
+function makeWave(audioBuffer) {
+  var numChannels = audioBuffer.numberOfChannels;
+  var sampleRate = audioBuffer.sampleRate;
+  var bitsPerSample = 16;
+  var byteRate = sampleRate * numChannels * bitsPerSample/8;
+
+  var blockAlign = numChannels * bitsPerSample/8;
+  var wavDataByteLength = audioBuffer.length * numChannels * 2; // 16-bit audio
+  var headerByteLength = 44;
+  var totalLength = headerByteLength + wavDataByteLength;
+
+  var subChunk1Size = 16; // linear PCM
+  var subChunk2Size = wavDataByteLength;
+  var chunkSize = 4 + (8 + subChunk1Size) + (8 + subChunk2Size);
+
+  // Contruct header part of the .wav file.
+  var header = new Uint8Array(44);
+  var dv = new DataView(header.buffer);
+  dv.setString(0, 'RIFF', true);        // ChunkID (4)
+  dv.setInt32(4, chunkSize, true);      // ChunkSize (4)
+  dv.setString(8, 'WAVE', true);        // Format (4)
+  dv.setString(12, 'fmt ', true);       // SubChunk1ID (4)
+  dv.setInt32(16, subChunk1Size, true); // SubChunk1Size (4)
+  dv.setInt16(20, 1, true);             // AudioFormat (2)
+  dv.setInt16(22, numChannels, true);   // NumChannels (2)
+  dv.setInt32(24, sampleRate, true);    // SampleRate (4)
+  dv.setInt32(28, byteRate, true);      // ByteRate (4)
+  dv.setInt16(32, blockAlign, true);    // BlockAlign (2)
+  dv.setInt16(34, bitsPerSample, true); // BitsPerSample (4)
+  dv.setString(36, 'data', true);       // SubChunk2ID (4)
+  dv.setInt32(40, subChunk2Size, true); // SubChunk2Size (4)
+
+  var waveFileData = new Uint8Array(totalLength);
+  writeAudioBuffer(audioBuffer, waveFileData, 44);
+
+  var bb = new BlobBuilder();
+  bb.append(header.buffer);
+  bb.append(waveFileData.buffer);
+
+  return [bb.getBlob('audio/wav'), waveFileData];
+}
+
+function processAudioOffline(bufferList) {
+  console.timeEnd('loading+decoding audio files');
+
+  // Create two sources and play them at the same time.
+  var source1 = context.createBufferSource();
+  //var source2 = context.createBufferSource();
+  source1.buffer = bufferList[0];
+  //source1.gain.value = 0.1;
+  //source1.loop = true;
+  //source2.buffer = bufferList[1];
+  //source2.loop = true;
+
+  //source2.playbackRate.value = 1;
+
+/*  var gainNode = context.createGainNode();
+  gainNode.value = gain.valueAsNumber;*/
+
+  if (echo.checked) {
+    var convolver = context.createConvolver();
+    convolver.buffer = bufferList[1];
+  }
+
+  if (filter.checked) {
+    var biquadFilter = context.createBiquadFilter();
+    //biquadFilter.frequency.value = 440;
+    biquadFilter.type = biquadFilter.LOWPASS;
+    //biquadFilter.Q.value = 12;
+  }
+
+  if (echo.checked && filter.checked) {
+    source1.connect(convolver);
+    //source2.connect(convolver);
+    convolver.connect(biquadFilter);
+    biquadFilter.connect(context.destination);
+  } else if (echo.checked && !filter.checked) {
+    source1.connect(convolver);
+    //source2.connect(convolver);
+    convolver.connect(context.destination);
+  } else if (filter.checked && !echo.checked) {
+    source1.connect(biquadFilter);
+    //source2.connect(biquadFilter);
+    biquadFilter.connect(context.destination);
+  } else {
+    source1.connect(context.destination);
+    //source2.connect(context.destination);
+  }
+
+  source1.noteOn(0);
+  //source2.noteOn(0);
+
+  context.oncomplete = playProcessedAudio;
+
+  console.time('offline processing');
+  context.startRendering();
+};
+
+function init(opt_files) {
+  var files = opt_files || null;
+
+  reset();
+
+  if (window.source) {
+    window.source.noteOff(0);
+  }
+
+  // Create offline audio context.
+  context = new AudioContext(2, sampleRate * lengthInSeconds, sampleRate);
+  playContext = new AudioContext();
+
+  console.time('loading+decoding audio files');
+  if (files) {
+    bufferLoader.loadFiles(files);
+  } else {
+    bufferLoader = new BufferLoader(context, FILES, processAudioOffline);
+    bufferLoader.load();
+  }
+}
+
+function playProcessedAudio(e) {
+  console.timeEnd('offline processing');
+
+  audioBuffer = e.renderedBuffer;
+
+  console.time('generating .wav');
+  var data = makeWave(audioBuffer);
+  console.timeEnd('generating .wav');
+
+  var blob = data[0];
+  var audioData = data[1];
+  var url = window.webkitURL.createObjectURL(blob);
+
+  var html = ['<a href="javascript:play();">Play</a>', 
+              '<a href="' + url + '" target="_blank">Open</a>',
+              '<a href="' + url + '" download="MyAudioFile">Download</a>'];
+  output.innerHTML = html.join('');
+
+/*
+var bufferSize = 2048*4;
+var fft = new FFT(bufferSize, audioBuffer.sampleRate);
+fft.forward(audioData.subarray(bufferSize*6, bufferSize*7));
+var spectrum = fft.spectrum;
+console.log(spectrum)
+*/
+
+/*
+  console.time('rendering to canvas took');
+  var audioData = data[1];
+  var len = audioData.length;
+
+  var a = new Array(len);
+  var max = 0;
+  var min = 0;
+  for (var i = 0; i < len; ++i) {
+    a[i] = audioData[i];
+    if (a[i] > max) {
+      max = a[i];
+    }
+    if (a[i] < min) {
+      min = a[i]
+    }
+  }
+
+  a = a.filter(function(x) {
+    return x > 0 && x < 255;
+  });
+
+  var j = 0;
+  for (var i = 0; i < len; ++i) {
+    var val = a[i];
+    if (val > 0) {
+      j++;
+    }
+
+    ctx.fillStyle = 'navy'; // blue
+
+    if (j) {
+      ctx.fillRect(j * 1, CANVAS_HEIGHT, 1, -val / 2);
+    }
+  }
+  console.timeEnd('rendering to canvas took');
+*/
+}
+
+function reset() {
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  output.innerHTML = '<em>Processing</em>';
+}
+
+function play() {
+  window.source = playContext.createBufferSource();
+  source.buffer = audioBuffer;
+
+  var analyser = playContext.createAnalyser();
+  //analyser.fftSize = 2048 * 2;
+
+  source.connect(analyser);
+  analyser.connect(playContext.destination);
+
+  source.noteOn(0);
+
+  canvas.width = analyser.frequencyBinCount;
+
+  var freqByteData = new Uint8Array(analyser.frequencyBinCount);
+  (function callback(time) {
+    if (freqSpectrum.checked) {
+      analyser.getByteFrequencyData(freqByteData);
+    } else {
+      analyser.getByteTimeDomainData(freqByteData);
+    }
+
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'navy';
+
+    for (var i = 0, len = freqByteData.length - 1; i < len; i += 1) {
+      ctx.lineTo(i, canvas.height + 50 - freqByteData[i]);
+    }
+    ctx.stroke();
+    ctx.closePath();
+
+    var reqId = window.webkitRequestAnimationFrame(callback, canvas);
+  })();
+}
+
+init();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

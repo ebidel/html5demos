@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+  <title>The Edge of HTML5</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="icon" type="image/png" href="../images/chrome-logo-tiny2.png">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Orbitron|Kameron|Muli|Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono&v2">
+  <script src='../slides.js'></script>
+</head>
+<body style="display: none">
+
+<section class='slides layout-regular'>
+
+<!--
+  <article id="title" class="fill" style="background-image: url('images/edge2.jpg')">
+    <section class="vflex middle left" style="height: 100%;text-shadow: 1px 1px 3px #555;">
+      <h1 class="white">The Edge of HTML5</h1>
+      <p>
+        <a href="http://ericbidelman.com" target="_blank">Eric Bidelman</a>
+        <br>
+        Chrome Developer Relations Hack Week
+        <br>
+        <time pubdate datetime="2012-01-09">Jan 9, 2012</time>
+      </p>
+      <div style="font-size:12pt;position:absolute;bottom:1.5em;">( View this presentation in a Chrome Canary, FF, or WebKit nightly.
+        Also, some of this presentation <em>does</em> require Chrome 17+ dev. )</div>
+    </section>
+  </article>
+-->
+
+  <article class="fill">
+    <img src='images/edge2.jpg'>
+    <h2 class="white shadow" style="bottom:60px;text-shadow: 1px 1px 3px #555;">
+    The Edge of HTML5<br>
+    <span style="font-size:70%"><a href="http://ericbidelman.com" target="_blank" style="color:inherit">Eric Bidelman</a> &middot; <time pubdate datetime="2012-01-09">Jan 9, 2012</time></span>
+    </h2>
+  </article>
+
+  <article id="legend-slide">
+    <aside class="note">
+      <section>
+        <h3>See!</h3>
+      </section>
+    </aside>
+    <div class="vflex left" style="height:90%">
+      <h3>Legend:</h3>
+      <div><img src="../images/icons/radar.svg"> Not quite ready. Keep it on your radar.</div>
+      <div><img src="../images/icons/bug.png"> Relevant Chrome/WebKit bug.</div>
+      <div><img src="../images/icons/bug_closed.png"> Bug has been fixed/resolved.</div>
+      <div><img src="../images/icons/gears.svg"> Specification link</div>
+    </div>
+    <div style="text-align:center;font-size:12pt;">
+       ( Press 'n' for additional notes on some slides. Most of this presentation requires Chrome Canary 18+. )
+    </div>
+  </article>
+
+  <article>
+    <h3>Agenda</h3>
+    <ul class="build">
+      <li>CSS &amp; Beyond</li>
+      <li>JavaScript APIs
+        <ul>
+          <li>for <label class="underline">Apps</label> and <label class="underline">Games</label></li>
+        </ul>
+      </li>
+      <li>Multimedia APIs
+        <ul>
+          <li>Media Capture</li>
+          <li>Web RTC</li>
+          <li>Web Audio API ( the undocumented parts )</li>
+          <li>Multimedia Helpers</li>
+        </ul>
+      </li>
+    </ul>
+    <p class="build center" style="margin-top:2em;"><span>For 2011: <a href="http://html5-demos.appspot.com/static/html5-whats-new/template/index.html#1" target="_blank">The Latest in HTML5</a></span></p>
+  </article>
+
+  <article class="smaller">
+    <h3>Stuff you probably missed:</h3>
+    <ul class="build fade">
+      <li>AppCache mimetype removed from HTML spec</li>
+      <li><code>cancelRequestAnimationFrame</code> renamed to <code>cancelAnimationFrame</code>.
+      Prefixed in Canary/WebKit/FF nightly</li>
+      <li>Chrome: input[date] M20, input[color] M18, datalist M20</li>
+      <li><a href="http://wiki.whatwg.org/wiki/Meta_referrer" target="_blank">Control</a> referrer info on outgoing requests: <code>&lt;meta name="referrer" content="never"&gt;</code></li>
+      <li><code>a[download]</code> attribute. <a href="http://html5-demos.appspot.com/static/a.download.html" target="_blank">Demo</a>
+      <li>Chrome landed <code>canvas.toDataURL('image/webp')</code></li>
+      <li><code>xhr.responseType = 'arraybuffer';</code> can no longer be set with sync. requests</li>
+      <li>Workers are in-process as of Chrome 15. Means less memory footprint and faster message passing. Impact on devs is 0.</li>
+      <li>Safari starting to land Web Notifications API</li>
+      <li>Mozilla unprefixing WebSockets in FF11</li>
+      <li>FF11 supports saving <code>Blob</code>/<code>File</code> in IndexedDB</li>
+      <li>IE to auto update!</li>
+    </ul>
+  </article>
+
+  <article class="fill">
+    <img src="images/swissarmy2.jpg">
+    <h2 class="white shadow">Typed Arrays</h2>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/toniphotos/101498780/sizes/l/in/photostream/">http://www.flickr.com/photos/toniphotos/101498780/sizes/l/in/photostream/</a>
+    </div>
+  </article>
+
+  <article>
+   <h3>Learn them! The building blocks of new HTML5 hotness.</h3>
+    <ul class="build">
+      <li>XHR2 <code>xhr.responseType = 'arraybuffer'</code></li>
+      <li>File APIs <code>reader.readAsArrayBuffer(file)</code></li>
+      <li>WebGL ( textures )</li>
+      <li>Binary Websockets <code>ws.binaryType = 'arraybuffer'</code></li>
+      <li>&lt;canvas&gt; <code>ctx.getImageData().data == Uint8ClampedArray</code></li>
+      <li>Transferable Objects <code>webkitPostMessage()</code></li>
+      <li>Media Source API  <code>video.webkitSourceAppend(new Uint8Array(...))</code></li>
+      <li>Web Audio API</li>
+    </ul>
+  </article>
+
+  <article class="fill">
+    <h2 class="megabottom">CSS &amp; Beyond</h2>
+    <img src="images/paint.jpg" style="opacity:0.75">
+  </article>
+
+  <article>
+    <h3>2012 is the year for CSS!</h3>
+    <ul>
+      <li><a href="http://dev.w3.org/csswg/css3-regions/" target="_blank">CSS Regions Module Level 3</a></li>
+      <li>New <a href="http://dev.w3.org/csswg/css3-flexbox/" target="_blank">CSS Flexible Box Layout Module</a></li>
+      <li><a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html" target="_blank">CSS Filter Effects 1.0</a></li>
+      <li><a href="http://dev.w3.org/csswg/css3-grid-align/" target="_blank">CSS Grid Layout</a></li>
+    </ul>
+    <p style="margin-top:2em;">More: "<a href="http://coding.smashingmagazine.com/2011/12/15/six-css-layout-features-to-look-forward-to/" target="_blank">Six CSS Layout Features To Look Forward To</a>"</p>
+  </article>
+
+<!--
+ <article>
+    <h3>Little Guys</h3>
+    <pre>
+a:-webkit-any(.spec, .bug, .radar) {
+  color: red;
+}
+:-webkit-any(.bug, .spec):hover {
+  opacity: 0.5;
+}
+</pre>
+  </article>
+-->
+
+  <article class="smaller">
+    <hgroup>
+      <h3>Scoped styles</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://webk.it/49142" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#attr-style-scoped" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Style elements mid-document, confined to immediate parent:</p>
+    <pre>
+&lt;article>
+  &lt;p>This p will have inherited color.&lt;/p>
+  &lt;section>
+    &lt;style <b>scoped</b>>
+      p { color: red; }
+    &lt;/style>
+    &lt;p>This p will be red.&lt;/p>
+  &lt;/section>
+&lt;/article>
+</pre>
+    <ul class="build fade">
+      <li>Add one-off CSS styles.</li>
+      <li>Add user-defined styles to wiki or CMS content.</li>
+      <li>Keep related content together (e.g. this slide deck code and demos).</li>
+      <li>See <a href="http://html5doctor.com/the-scoped-attribute/" target="_blank">HTML5Doctor article</a> for more info.</li>
+    </ul>
+    <p class="centered build"><a href="http://jsbin.com/ozerih/3/edit#html,live" class="demo" target="_blank">Demo</a><span><br><br><small>( Doesn't work anywhere )</small></span></p>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>New CSS functions</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://webk.it/16662" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://www.w3.org/TR/css3-values/#calc" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Almost in WebKit. Prefixed as <code>-webkit-calc()</code>.</li>
+          <li>Support: IE10+. Prefixed in FF: <code>-moz-calc()</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>calc()</p>
+    <pre>
+width: <b>-webkit-calc</b>(200px - 100);
+width: <b>-webkit-calc</b>(2 * 50%);
+width: <b>-webkit-calc</b>(200px / 2);
+color: hsl(<b>-webkit-calc</b>(120), <b>-webkit-calc</b>(75%), 0.5);
+background-position: <b>-webkit-calc</b>(50% + 5px)</b> center;
+</pre>
+    <p>min()</p>
+    <pre>
+width: <b>-webkit-min</b>(150px, 100px, 200px);
+width: <b>-webkit-min</b>(90px + 50px, 100px);
+width: <b>-webkit-min</b>(100px, 100%);  /* where 100% is 200px; */
+</pre>
+<p>max()</p>
+    <pre>
+width: <b>-webkit-max</b>(150px, 100px, 200px);
+width: <b>-webkit-max</b>(200px - 50px, 100px);
+width: <b>-webkit-max</b>(100px, 100%);  /* where 100% is 200px; */
+</pre>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>CSS functions ( cont. )</h3>
+      <span>
+        <a href="http://webk.it/52162" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-images/#cross-fade-function" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>cross-fade()</p>
+    <pre>
+background-image: <b>-webkit-cross-fade</b>(url(first.png),
+                                       url(second.png), 50%);
+@-webkit-keyframes fading {
+  0% { background-image: <b>-webkit-cross-fade</b>(
+                         url(first.png), url(second.png), 0%); }
+  100% { background-image: <b>-webkit-cross-fade</b>(
+                           url(first.png), url(second.png), 100%); }
+}
+</pre>
+    <p class="centered"><a href="http://peter.sh/files/examples/cross-fading.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>CSS Regions</h3>
+      <span>
+        <a href="http://webk.it/57309" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-regions/Overview.src.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <img src="../images/regions-intro.svg" style="width: 100%;">
+        <ul>
+          <li>Partial support: Chrome 18, IE 10+</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Flow content into specified regions:</p>
+    <pre>
+&lt;style&gt;
+#content {
+  <b>-webkit-flow-into: bodytext;</b>
+}
+.region {
+  width: 200px;
+  height: 200px;
+  <b>-webkit-flow-from: bodytext;</b>
+  <b>-webkit-region-overflow: break;</b>
+}
+@region #region1 { /* webk.it/71487 */
+  p { color: navy; }
+}
+&lt;/style>
+&lt;div id="region1" class="region">&lt;/div>
+&lt;div id="region2" class="region">&lt;/div>
+&lt;div id="content">
+  &lt;p>Lorem ipsum dolor ... or a nunc.&lt;/p>
+  &lt;div>&lt;img src="...">Lorem ipsum dolor ... or a nunc.&lt;/div>
+&lt;/div>
+</pre>
+    <p class="centered"><a href="http://jsbin.com/elupos/6" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>CSS Regions ( JS API )</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://webk.it/66643" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://www.w3.org/TR/css3-regions/#the-namedflow-interface" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Access to the <code>Document</code>'s named flows:</p>
+    <pre>
+var namedFlow = <b>document.getFlowByName</b>('body_text');
+namedFlow.overflow // true if flow doesn't fit in all its regions.
+
+// Ordered NodeList of elements that constitute the named flow.
+var els = namedFlow.contentNodes;
+
+// NodeList of regions that contain (part of) the target node. 
+var regions = namedFlow.getRegionsByContentNode(targetNode);
+</pre>
+    <p>Determine if content fits in a region:</p>
+    <pre>
+Element.regionOverflow // 'overflow', 'fit', 'empty', 'undefined'
+
+// Array of Ranges for the content that is positioned in the region.
+var ranges = Element.getRegionFlowRanges();
+</pre>
+    <ul>
+      <li>Prefixed method (<code>document.webkitGetFlowByName()</code>) available in WebKit but implementation isn't complete.</li>
+    </ul>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>CSS Exclusions</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://webk.it/57311" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-exclusions/" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <img src="../images/exclusions_padding_margin.png" style="width: 100%;">
+        <ul>
+          <li>Support: IE 10+</li>
+        </ul>
+      </section>
+    </aside>
+    <pre>
+&lt;style&gt;
+.exclusion {
+  <b>-webkit-wrap-flow: both;</b>
+  <b>-webkit-wrap-margin: 10px;</b>
+  <b>-webkit-padding-margin: 10px;</b>
+  <b>-webkit-shape-outside: circle(50%, 50%, 50%);</b>
+  position: absolute;
+}
+&lt;/style>
+&lt;div> 
+  &lt;div class="region">Donec metus messa, mollis...&lt;/div>
+  Lorem ipsum dolor sit amet... 
+&lt;/div>
+</pre>
+    <p class="centered">Demo: <a href="http://labs.adobe.com/technologies/cssregions/" target="_blank">Adobe Prototype Build</a></p>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>New Flexbox</h3>
+      <span>
+        <a href="http://webk.it/62048" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-flexbox/" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="http://dev.w3.org/csswg/css3-flexbox/" target="_blank">CSS Flexible Box Layout Module</a> W3C spec</li>
+          <li>CSS properties are prefxied in WebKit (e.g. <code>display: -webkit-flexbox;</code></li>
+        </ul>
+      </section>
+    </aside>
+    <ul>
+      <li>Replacing old flex box: <code>display: -webkit-box</code>.</li>
+    </ul>
+    <p>Vertically center content:</p>
+    <pre>
+section {
+  display: -webkit-flexbox;
+  -webkit-flex-pack: center;
+  -webkit-flex-flow: row no-wrap; /* both default values */
+}
+section > div { -webkit-flex-item-align: center; }
+section > div:first-child {
+  width: -webkit-flex(2 0 0); /* first div will be 2x wider */
+}
+</pre>
+    <p>See <a href="http://fronteers.nl/blog/2011/12/learn-you-a-flexbox-for-great-good" target="_blank">Fronteers article</a> for more info.</p>
+    <p class="centered"><a href="http://jsbin.com/emedub/11/edit" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>CSS Filters</h3>
+      <span>
+        <a href="http://webk.it/68469" target="_blank" class="bug" title="Bug link"></a>
+        <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed in WebKit nightly/Chrome Canary: <code>-webkit-filter</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Apply filter effects to any DOM element:</p>
+    <pre>
+video, img {
+  <b>-webkit-filter</b>: grayscale(0.5) blur(10px);
+}
+</pre>
+     <ul>
+       <li>Chrome needs <code>--enable-accelerated</code> flag for hardware accelerated content.</li>
+       <li>Good <a href="http://drublic.de/blog/effects-for-the-web/" target="_blank">blog post</a>.</li>
+     </ul>
+     <p class="centered"><a href="http://html5-demos.appspot.com/static/css/filters/index.html" class="demo" target="_blank">Demo</a> <a href="http://lab.simurai.com/css/stars/" class="demo" target="_blank">Demo2</a></p>     
+  </article>
+
+  <article class="fill">
+    <img src="images/tools.jpg">
+    <h2 class="topright white">JavaScript</h2>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>navigator.connection</h3>
+      <span>
+        <a href="http://webk.it/73528" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/2009/dap/netinfo/" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <pre>
+// unknown, ethernet, wifi, 2g, 3g, 4g, none
+navigator.connection.type
+</pre>
+    <ul>
+      <li><code>navigator.connection</code> and <code>navigator.onLine</code> implemented in Android 2.2+</li>
+    </ul>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>Mutation Observers</h3>
+      <span>
+        <a href="http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#mutation-observers" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="http://lists.w3.org/Archives/Public/public-webapps/2011JulSep/1622.html" target="_blank">public-webapps proposal</a> and <a href="http://lists.w3.org/Archives/Public/public-webapps/2011JulSep/0779.html" target="_blank">summary</a></li>
+          <li>Prefxied in Chrome Canary: <code>WebKitMutationObserver()</code></li>
+        </ul>
+      </section>
+    </aside>
+    <ul>
+      <li>Defined in DOM4 ( Yep. We're on DOM4! )</li>
+      <li>Replacing <code>MutationEvent</code>s because they were:
+        <ul>
+          <li>Verbose (fire too often)</li>
+          <li>Slow (b/c of event propagation -- and because they prevent certain UA run-time optimizations)</li>
+          <li>"Crashy" (scripts screw with DOM as operation is underway).</li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+
+  <article class="smaller">
+    <h3>Example</h3>
+    <pre>
+&lt;ol contenteditable>
+  &lt;li>Press enter&lt;/li>
+&lt;/ol>
+&lt;script>
+  var ol = document.querySelector('ol');
+
+  var observer = new <em>WebKit</em><b>MutationObserver</b>(function(mutations, observer) {
+    console.log(mutations, observer);
+  });
+
+  observer.observe(ol, {
+    subtree: true,       // observe the subtree rooted at ol
+    childList: true,     // include childNode insertion/removals
+    characterData: true, // include textContent changes
+    attribute: true      // include changes to attributes within the subtree
+  });
+
+  // observer.disconnect() // Cease observations
+&lt;/script>
+</pre>
+    <p class="centered"><a href="http://jsbin.com/ivamoh/edit#html,live" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article class="smaller">
+    <h3>Transferable Objects</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Support: only Chrome 17</li>
+        </ul>
+        <img src="http://updates.html5rocks.com/images/AMIfv959PwANd2tlxUM1XsZQo8xh9gwf2sZ1HXlNSXpT_8b8n4rkQbMBOui6om36pCbWf8fi1HY8xN4jRekXj_9z6luyPhL8qTH0oYSRjrI8vYZLgU0TnBPL5B1ZUcwOgAs7bucEQbIG6esq0xJU5amkWfcgCWbr8Q">
+      </section>
+    </aside>
+    <ul class="build fade">
+      <li>~50x faster than structured cloning (Chrome 13/FF).</li>
+      <li>Transfer of ownership (zero-copy) of <code>ArrayBuffer</code> to new context (worker or window).</li>
+      <li>Original buffer becomes unavailable.</li>
+      <li>Prefixed under new <code>postMessage()</code> because of semantic changes:
+        <pre>
+worker.webkitPostMessage(arrayBuff, [arrayBuff]); // 2nd arg: list of transferables.
+window.webkitPostMessage(arrayBuff, targetOrigin, [arrayBuff]);
+</pre>
+      </li>
+      <li>Pass multiple buffers at once and/or additional data:
+    <pre>
+worker.webkitPostMessage({
+  view1: uInt8Array,
+  buffer2: anotherBuffer,
+  username: 'johndoe'
+}, [uInt8Array.buffer, anotherBuffer]);
+</pre>
+       </li>
+     </ul>
+    <p>See <a href="http://updates.html5rocks.com/2011/12/Transferable-Objects-Lightning-Fast" target="_blank">HTML5Rocks Update</a> for more info.</p>
+    <p class="centered"><a href="http://html5-demos.appspot.com/static/workers/transferables/index.html" class="demo" target="_blank">Demo</a></p> 
+  </article>
+
+  <article>
+    <h3>Transferable Objects: feature detection</h3>
+    <ul>
+      <li>Feature detecting is a PITA b/c of false positives.</li>
+      <li>If transferred, buffer's <code>.byteLength</code> goes to zero.</li>
+    </ul>
+    <pre>
+var ab = new ArrayBuffer(1);
+worker.webkitPostMessage(ab, [ab]);
+if (ab.byteLength) {
+  alert('Transferables are not supported in your browser!');
+} else {
+  // Transferables are supported.
+}
+</pre>
+  </article>
+
+  <article>
+    <h3>Binary WebSockets</h3>
+    <p>Stream a <code>File</code>, <code>Blob</code>, or <code>ArrayBuffer</code>:</p>
+    <pre>
+window.URL = window.webkitURL || window.URL;
+window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+var ws = new WebSocket('ws://example.com/sock', ['dumby-protocol']);
+<b>ws.binaryType = 'blob';</b> // or 'arraybuffer'
+
+ws.onopen = function(e) {
+  console.log('Connection OPEN');
+};
+
+ws.onmessage = function(e) {
+  // e.data.__proto__ === Blob.prototype
+  document.querySelector('img').src = URL.createObjectURL(e.data);
+};
+</pre>
+    <p>See <a href="http://updates.html5rocks.com/tag/websockets" target="_blank">HTML5Rocks Updates</a> for more info on changes.</p>
+  </article>
+
+<!--
+  <article>
+    <section class="vflex middle center" style="height:95%">
+      <p class="centered">
+        <h3>Audio Streamer</h3>
+        <a href="http://localhost:3000/" target="_blank" class="demo">Demo</a>
+      </p>
+    </section>
+  </article>
+-->
+
+  <article class="fill" onslideleave="playGameSound('../sounds/smb_pipe.wav');">
+    <img src="images/joystick.jpg">
+    <h2 class="topright white shadow" style="font-family: Orbitron;">Games</h2>
+  </article>
+
+  <article onslideleave="playGameSound('../sounds/smb_jump-super.wav');">
+   <hgroup>
+      <h3>Mouse Lock API / Pointer Lock</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://crbug.com/72754" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dvcs.w3.org/hg/webevents/raw-file/default/mouse-lock.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en/API/Mouse_Lock_API" target="_blank">MDN Documentation</a></li>
+          <li>Prefixed in WebKit: <code>navigator.webkitPointer</code></li>
+          <li>For Chrome, enabled in <code>about:flags</code> or run with <code>--enable-pointer-lock</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build fade">
+      <li>Eliminates boundaries of the browser window/screen.</li>
+      <li>Locks mouse events to a single element. <code>mousemove</code>, <code>mousedown</code>, ... ) continue to fire, but only on the target.</li>
+      <li>Removes cursor from view.</li>
+      <li>Events that require the concept of a mouse cursor (<code>mouseover</code>, <code>mouseout</code>) are not fired.</li>
+      <li><code>MouseEvent</code> contains new <code>e.movementX</code> / <code>e.movementY</code>, which
+      are the deltas in movement.</li>
+      <li>Ideal for first-person shooters and 3D modeling apps.</li>
+      <li>Browsers will likely throw up a permission prompt.</li>
+      <li>Targeting Chrome 18, FF 11 or 12.</li>
+    </ul>
+  </article>
+
+  <article class="smaller" onslideleave="playGameSound('../sounds/smb_jump-super.wav');">
+    <h3>Example</h3>
+    <pre>
+// Note: webkit and moz vendor prefixes are not shown.
+
+document.body.addEventListener('click', function(e) {
+  if (!document.isFullScreen) { // Chrome requires fullscreen to succeed.
+    document.body.requestFullScreen();
+  } else if (<b>navigator.pointer.isLocked()</b>) {
+    <b>navigator.pointer.unlock();</b>
+  } else {
+    document.cancelFullScreen();
+  }
+}, false);
+
+document.addEventListener('fullscreenchange', function(e) {
+  if (document.isFullScreen) {
+    <b>navigator.pointer.lock</b>(document.body, function(e) {
+      console.log(e);
+    }, function(e) {
+      console.log('Mouse lock unsuccessful', e);
+    });
+  }
+}, false);
+
+document.body.addEventListener(<b>'mouselocklost'</b>, function(e) { ... }, false);
+</pre>
+    <p class="centered">
+      <a href="http://humphd.github.com/mozilla-central/mouselock/" class="demo" target="_blank">Demos</a> 
+      <a href="../demos/mouselock.html" class="demo" target="_blank">Chrome/FF demo</a><br><br>( second will eventually work in both )<br><br>
+      <small></small>
+    </p>
+  </article>
+
+  <article class="smaller" onslideleave="playGameSound('../sounds/smb_jump-super.wav');">
+    <hgroup>
+      <h3>Gamepad API <img src="../images/icons/gamecontroller.svg" style="vertical-align:middle;height:23px"></h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://crbug.com/79050" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dvcs.w3.org/hg/webevents/raw-file/default/gamepad.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="http://dvcs.w3.org/hg/webevents/raw-file/default/gamepad.html" target="_blank">Gamepad</a> W3C spec</li>
+          <li><a href="https://wiki.mozilla.org/GamepadAPI" target="_blank">MDN Documentation</a> (  out of date! )</li>
+          <li>For Chrome 18, enabled in <code>about:flags</code> or run with <code>--enable-gamepad</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <pre>
+navigator.gamepads = navigator.webkitGamepads || navigator.MozGamepads;
+
+var requestAnimationFrame = window.webkitRequestAnimationFrame ||
+                            window.mozRequestAnimationFrame;
+var cancelAnimationFrame = window.webkitCancelAnimationFrame ||
+                           window.MozCancelAnimationFrame;
+
+var controllers = {}; // Stash connected controllers.
+var reqId = null;
+
+function onConnected(e) {
+  controllers[e.gamepad.index] = e.gamepad;
+  runAnimation();
+}
+
+function onDisconnected(e) {
+  delete controllers[e.gamepad.index];
+  cancelAnimationFrame(reqId);
+}
+
+window.addEventListener('webkitgamepadconnected', onConnected, false);
+window.addEventListener('webkitgamepaddisconnected', onDisconnected, false);
+
+window.addEventListener('MozGamepadDisconnected', onDisconnected, false);
+window.addEventListener('MozGamepadConnected', onConnected, false);
+</pre>
+  </article>
+
+  <article class="" onslideleave="playGameSound('../sounds/smb_stage_clear.wav');">
+    <h3>Gamepad API <img src="../images/icons/gamecontroller.svg" style="vertical-align:middle;height:23px"></h3>
+    <pre>
+function runAnimation() {
+  reqId = requestAnimationFrame(runAnimation);
+
+  for (var i in controllers) {
+    var pad = navigator.gamepads[i];
+    //pad.id // string for brand/style of connected device.
+    //pad.index // index of the gamepad in navigator.gamepads.
+    //pad.timestamp // last time data for the gamepad was updated.
+    //pad.axes // array of all axes values [-1..1, -1..1].
+    //pad.buttons // array of all button values [0..1, 0..1, 0..1].
+  }
+}
+</pre>
+    <p class="centered">
+      <a href="https://bug604039.bugzilla.mozilla.org/attachment.cgi?id=565617" class="demo" target="_blank">Demo</a><br><br>
+      <small>( Special FF build )</small>
+    </p>
+  </article>
+
+  <article class="fill">
+    <img src="images/camera.jpg">
+    <h2 class="white megabottom">Multimedia</h2>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/morgacito/349891898/sizes/z/in/photostream/">http://www.flickr.com/photos/morgacito/349891898/sizes/z/in/photostream/</a>
+    </div>
+  </article>
+
+
+<!--
+  <article>
+    <hgroup>
+      <h3>Camera &amp; microphone access</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://dev.w3.org/2011/webrtc/editor/getusermedia.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed as <code>navigator.webkitGetUserMedia()</code> in WebKit</li>
+          <li><code>window.URL</code> is prefixed as <code>window.webkitURL</code> in WebKit</li>
+          <li>Needs <code>--enable-media-stream</code> flag in Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Plugin-free acess to camera/microphone.</p>
+    <pre class="centered">
+&lt;video autoplay controls&gt;&lt;/video&gt;
+</pre>
+    <pre>
+<b>navigator.getUserMedia</b>({audio: true, video: true}, function(s) {
+  var video = document.querySelector('video');
+  video.src = <b>window.URL.createObjectURL(s)</b>;
+}, function(e) {
+  console.log(e);
+});
+</pre>
+<p class="centered" style="margin-top:2em;"><a href="http://html5-demos.appspot.com/static/getusermedia/photobooth.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article>
+    <h3>Recording content</h3>
+    <pre>
+&lt;input type="button" value="⚫" onclick="record(this)">
+&lt;input type="button" value="◼" onclick="stop(this)">
+</pre>
+    <pre>
+var localMediaStream, recorder;
+
+var record = function(button) {
+  recorder = localMediaStream.record();
+};
+
+var stop = function(button) {
+  localMediaStream.stop();
+  recorder.getRecordedData(function(blob) {
+    // Upload blob using XHR2.
+  });
+};
+</pre>
+  </article>
+
+  <article id="fullscreen-slide">
+    <h3>Fullscreen content</h3>
+    <pre class="centered">
+&lt;video width="300" src="movie.webm" controls&gt;&lt;/video&gt;
+&lt;button onclick="enterFullscreen()">Get Huge!&lt;/button&gt;
+</pre>
+  <pre>
+function enterFullscreen() {
+  var elem = document.querySelector('body');
+  elem.onwebkitfullscreenchange = function(e) {
+    console.log("Entered fullscreen!");
+    elem.onwebkitfullscreenchange = onFullscreenExit;
+  };
+  elem.<b>webkitRequestFullScreen</b>(Element.ALLOW_KEYBOARD_INPUT);
+}
+</pre>
+    <p class="centered" style="margin-top:2em;"><a href="http://html5-demos.appspot.com/static/fullscreen.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+   <article>
+    <h3>Fullscreen API ( JS )</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Support: Chrome 16 (<code>webkitRequestFullScreen</code>), FF 10 (<code>mozRequestFullScreen</code>)</li>
+          <li>Docs: <a href="https://developer.mozilla.org/en/DOM/Using_full-screen_mode" target="_blank">https://developer.mozilla.org/en/DOM/Using_full-screen_mode</a></li>
+        </ul>
+      </section>
+    </aside>
+    <p>Control of the entire document and elements:</p>
+    <pre>
+document.webkitIsFullScreen ( bool )
+document.webkitCurrentFullScreenElement ( DOMElement )
+document.webkitFullScreenKeyboardInputAllowed ( bool )
+document.webkitCancelFullScreen();
+</pre>
+    <pre>
+Element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+</pre>
+  </article>
+
+  <article>
+    <h3>Fullscreen API ( non-standard )</h3>
+    <p>WebKit has extra stuff for media elements:</p>
+    <pre>
+HTMLMediaElement.webkitSupportsFullscreen ( bool )
+HTMLMediaElement.webkitDisplayingFullscreen ( bool )
+HTMLMediaElement.webkitEnterFullScreen()
+HTMLMediaElement.webkitExitFullScreen()
+</pre>
+  </article>
+
+  <article>
+    <h3>Fullscreen API</h3>
+    <p>New CSS pseudo-classes:</p>
+    <ul>
+      <li><code>:-webkit-full-screen</code></li>
+      <li><code>:-webkit-full-screen-document</code></li>
+      <li><code>:-webkit-full-screen-root-with-target</code></li>
+    </ul>
+    <p>iframed content needs special treatment by the parent page:</p>
+    <pre>
+&lt;iframe src="..." <b>webkitallowfullscreen</b>&gt;&lt;/iframe>
+</pre>
+  </article>
+
+  <article class="fill">
+    <h2 class="megabottom">Web RTC</h2>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/">http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/</a>
+    </div>
+    <img src="images/phonebank.jpg">
+  </article>
+
+  <article id="webrtc-images" class="webrtc-slide">
+    <h3>What's the problem?</h3>
+    <style>
+    /*#webrtc-images > section > div {
+      -webkit-perspective: 1000;
+    }*/
+    #webrtc-images > section {
+      -webkit-perspective: 1000;
+      height: 70%;
+      cursor: pointer;
+    }
+    #webrtc-images > section > div {
+      -webkit-transform-style: preserve-3d;
+      -webkit-transform: translateX(125px) translateY(15px) rotateY(30deg);
+      height: 90%;
+    }
+    #webrtc-images > section > div figure {
+      position: absolute;
+      -webkit-user-select: none;
+      -webkit-transform-style: preserve-3d;
+      -webkit-backface-visibility: hidden;
+      -webkit-transition: -webkit-transform 0.35s ease-in, opacity 0.25s ease-out;
+      -webkit-transform: rotateX(-91deg);
+      -webkit-transform-origin: 50% 0;
+      visibility: hidden;
+      bottom: 0;
+      margin: 0;
+    }
+    #webrtc-images figure figcaption {
+      text-align: center;
+      font-size: 60%;
+    }
+    #webrtc-images figure img {
+      width: 500px;
+      height: 300px;
+      box-shadow: 0 0 15px #ccc;
+    }
+    </style>
+    <p>The demand for RTC is real!</p>
+    <section>
+      <div>
+        <figure><img src="../images/gmailchat.png"><figcaption>GMail Video Chat</figcaption></figure>
+        <figure><img src="../images/hangout.png"><figcaption>Google Plus Hangout</figcaption></figure>
+        <figure><img src="../images/facebook-skype.png"><figcaption>Facebook Video Chat</figcaption></figure>
+        <figure><img src="../images/tokbox.png"><figcaption>Tokbox</figcaption></figure>
+      </div>
+    </section>
+    <div class="build"><p>...all browser based. All requiring a special download or Flash</p></div>
+  </article>
+  <script>
+  var container = document.querySelector('#webrtc-images > section > div');
+  var imgs = container.children;
+  var index = 0;
+  container.addEventListener('click', function(e) {
+    if (index == imgs.length) {
+      return;
+    }
+
+    imgs[index].style.visibility = 'visible';
+    imgs[index].style.webkitTransform = 'rotateX(0deg)';
+
+    if (index > 0) {
+      imgs[index - 1].style.webkitTransform = 'rotateX(125deg)';
+      imgs[index - 1].style.opacity = '0';
+    }
+
+    //index = (index + 1) % imgs.length;
+    index++;
+
+    /*imgs[index].addEventListener('webkitTransitionEnd', function(e) {
+      //console.log(e, this.style.webkitTransform);
+      for (var i = 0; i < index; ++i) {
+        imgs[i].style.visibility = 'hidden';
+      }
+    }, false);*/
+  }, false);
+  </script>
+
+  <article class="webrtc-slide">
+    <h3>What is WebRTC?</h3>
+    <p class="centered"><em><label class="underline">Plugin-free</label> high quality real-time voice/video communication in the browser</em></p>
+    <br>
+    <ul class="build fade">
+      <li>Browser engine:
+        <ul>
+          <li>Echo cancellation, noise reduction, automatic gain control</li>
+          <li>Network jitter management</li>
+        </ul>
+      </li>
+      <li>Web APIs:
+        <ul>
+          <li>Audio/video capture and playback</li>
+          <li>Device management</li>
+          <li><a href="http://dev.w3.org/2011/webrtc/editor/webrtc.html" target="_blank">WebRTC 1.0: Real-time Communication Between Browsers spec</a></li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Architecture</h3>
+    <p class="centered"><img src="../images/webrtc-arch.jpg" class="centered rounded reflect"></p>
+  </article>
+
+  <article class="webrtc-slide smaller">
+  <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed as <code>window.webkitPeerConnection()</code> in WebKit.</li>
+          <li>Needs <code>--enable-media-stream</code> flag in Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <h3>Example</h3>
+      <pre>
+function onSignalingMsg(msg, source) {
+  // send message to the other side via the signaling channel.
+  pc.processSignalingMessage(msg);
+}
+
+var pc = new <b>PeerConnection</b>('STUN example.com:8000', onSignalingMsg);
+
+pc.onaddstream = function(e) {
+  remoteVideo.src = window.URL.createObjectURL(e.stream);
+};
+
+pc.onremovestream = function(e) {
+  remoteVideo.src = '';
+};
+
+navigator.getUserMedia('video,audio', function(localStream) {
+  localVideo.src = window.URL.createObjectURL(stream);
+  pc.addStream(localStream); // Start sending video.
+}, function(e) { ... });
+</pre>
+    <p class="centered">
+      <a href="http://localhost:8080/webrtc_demo.html" class="demo" target="_blank">Demo</a>
+    </p>
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Build the future...</h3>
+    <style>
+    #robot-img {
+      float: right;
+      height: 80%;
+      opacity: 0;
+      -webkit-transition: all 0.6s ease-in-out;
+    }
+    #robot-img.on {
+      opacity: 1;
+    }
+    </style>
+    <img src="../images/robot.png" id="robot-img" alt="Robot" title="Robot">
+    <ul class="build fade">
+      <li>Break the "dial" paradigm</li>
+      <li>Build really social networks</li>
+      <li>Build interactive commerce</li>
+      <li>Build amazing online learning experiences</li>
+      <li>Online gaming</li>
+      <li>Build cool baby monitors</li>
+      <li><a href="javascript:document.querySelector('#robot-img').classList.toggle('on');">Robots!!</a></li>
+    </ul>
+  </article>
+
+  <article class="webrtc-slide">
+    <h3>Community effort</h3>
+    <ul>
+      <li><a href="http://www.webrtc.org/" target="_blank">webrtc.org</a></li>
+      <li><a href="http://code.webrtc.org/" target="_blank">code.webrtc.org</a> - open-source, royalty free BSD license</li>
+      <li>Mozilla, Opera, Google, and others supporting the effort</li>
+    </ul>
+  </article>
+-->
+
+  <!--<article>
+    <h2 class="blue">Subtopic</h2>
+  </article>
+
+  <article>
+    <h2 class="yellow">Blah</h2>
+  </article>
+
+  <article>
+    <h2 class="green">Capabilities</h2>
+  </article>-->
+
+<!--
+  <article class="fill">
+    <h2 class="white shadow topright" style="text-align:right;">Web Audio API<br><span style="font-size:57%">( the undocumented parts )</span></h2>
+    <div class='source black'>
+      <a href="http://www.flickr.com/photos/spazzo_1493/4832550443/sizes/l/in/photostream/">http://www.flickr.com/photos/spazzo_1493/4832550443/sizes/l/in/photostream/</a>
+    </div>
+    <img src="images/audiocables.jpg">
+  </article>
+
+  <article class="smaller">
+    <h3>Pre-processing ("offline") mode</h3>
+    <p>Normal use of the API is to process audio in real-time. Instead, we can
+    pre-process the audio through the entire system and get result:</p>
+    <pre>
+var sampleRate = 44100.0;
+var length = 20; // seconds
+<b>var ctx = new <em>webkit</em><b>AudioContext</b>(2, sampleRate * length, sampleRate);</b>
+<b>ctx.oncomplete = function(e) {
+  <b>var resultAudioBuffer = e.renderedBuffer;</b>
+  ...
+};</b>
+
+function convolveAudio(audioBuffer, audioBuffer2) {
+  var source = ctx.createBufferSource();
+  var convolver = ctx.createConvolver();
+  source.buffer = audioBuffer;
+  convolver.buffer = audioBuffer2;
+
+  // source -> convolver -> destination.
+  source.connect(convolver);
+  convolver.connect(ctx.destination);
+
+  source.noteOn(0);
+  <b>ctx.startRendering();</b>
+}
+</pre>
+    <p class="centered"><a href="../demos/offline-wapi.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+
+  <article >
+    <hgroup>
+      <h3>Integration with <code>&lt;audio&gt;</code>/<code>&lt;video&gt;</code></h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://crbug.com/79949" target="_blank" class="bug" title="Bug link"></a>
+        <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AudioElementIntegration-section" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Using a <code>HTMLMediaElement</code> as the source, one can "stream" audio to the API:</p>
+    <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+var audioElement = new Audio();
+audioElement.src = 'sounds/dope_beats.mp3';
+audioElement.controls = true;
+audioElement.autoplay = true;
+
+<b>var source = ctx.createMediaElementSource(audioElement);</b>
+var analyser = ctx.createAnalyser();
+
+source.connect(analyser);
+analyser.connect(ctx.destination);
+</pre>
+    <p><b>Note</b>: There's no <code>source.noteOn(0)</code>. Play/pause is controlled by the <code>&lt;audio&gt;</code> element.</p>
+  </article>
+
+  <article>
+    <h2 class="red">Multimedia Helpers</h2>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>Media Fragment URIs</h3>
+      <span>
+        <a href="http://www.w3.org/TR/media-frags/#naming-time" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <ul>
+      <li>Specify the portion of the &lt;audio&gt; or &lt;video &gt; to play.</li>
+      <li>Supposedly implemented in FF and <a href="http://trac.webkit.org/changeset/104197" target="_blank">WebKit nightlies</a>.</li>
+    </ul>
+    <pre>
+&lt;!-- Play the range 10 seconds through 20 seconds. --&gt;
+&lt;video src="http://foo.com/video.ogg#t=10,20"&gt;&lt;/video&gt;
+
+&lt;!-- Play from the beginning through 10.5 seconds. --&gt;
+&lt;video src="http://foo.com/video.ogg#t=,10.5"&gt;&lt;/video&gt;
+
+&lt;!-- Play from the beginning through two hours. --&gt;
+&lt;video src="http://foo.com/video.ogg#t=,02:00:00"&gt;&lt;/video&gt;
+
+&lt;!-- Start playing at 60s, through to end. --&gt;
+&lt;video src="http://foo.com/video.ogg#t=60,"&gt;&lt;/video&gt;
+</pre>
+    <p style="margin-top:2em;">See <a href="https://developer.mozilla.org/en/Using_HTML5_audio_and_video#Specifying_playback_range<" target="_blank">MDN Documentation</a> for more info.</p>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>Video subtitles using &lt;track&gt;</h3>
+      <span>
+        <a href="http://webk.it/43668" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#the-track-element" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Needs <code>--enable-video-track</code> flag set in Chrome Canary. Also enable in <code>about:flags</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Subtitles are created in the <a href="http://dev.w3.org/html5/webvtt/" target="_blank">WebVTT</a> format.</p>
+    <pre>
+&lt;video width="390" id="clip" controls&gt;
+  &lt;source src="movie.webm" type='video/webm; codecs="vp8, vorbis"' />
+  &lt;<b>track</b> kind="subtitles" src="<em>subtitles-en.vtt</em>" srclang="en" 
+         label="English subtitles" default />
+  &lt;<b>track</b> kind="captions" src="brave.en.vtt" srclang="en"
+         label="English for the Hard of Hearing">
+&lt;/video>
+</pre>
+    <div id="video-column">
+      <video width="390" id="track-clip" controls>
+        <source src="../demos/Google_Developer_Stories.webm" type='video/webm; codecs="vp8, vorbis"'>
+        <track label="English subtitles" kind="subtitles" srclang="en" src="../demos/video-subtitles-en.vtt" default>
+        Your browser does not support the video tag
+      </video>
+    </div>
+    <div id="track-column">
+      <textarea readonly></textarea>
+    </div>
+  </article>
+  <script>
+    (function() {
+      var track = document.querySelector('#track-clip track');
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', track.src, true);
+      xhr.onload = function(e) {
+        document.querySelector('#track-column textarea').textContent = e.target.response;
+      };
+      xhr.send();
+    })();
+  </script>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>&lt;track&gt; ( JS API )</h3>
+      <span>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#text-track-api" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Information on each <code>TextTrack</code>:</p>
+    <pre>
+var track = video.textTracks[0];
+track.mode = TextTrack.HIDDEN; // Hide, show (SHOWING), or disable (DISABLE) track.
+track.oncuechange = function(e) {
+  ...
+};
+</pre>
+    <p>Information on each <code>TextTrackCue</code>:</p>
+    <pre>
+var allCues = track.cues; (TextTrackCueList)
+var activeCue = track.activeCues[0]; (TextTrackCue)
+activeCue.id (DOMString)
+activeCue.startTime (bool)
+activeCue.endTime (bool)
+activeCue.pauseOnExit (bool)
+activeCue.getCueAsSource(); (DOMString)
+activeCue.getCueAsHTML(); (DocumentFrament)
+
+activeCue.onenter = function(e) { ... };
+activeCue.onexit = function(e) {  ... };
+</pre>
+    <p class="centered">
+      <a href="http://html5-demos.appspot.com/static/video/track/index.html" class="demo" target="_blank">Demo</a>
+    </p>
+  </article>
+
+  <article>
+    <h3>Not just for video</h3>
+    <p>Play scheduled portions of a given audio file:</p>
+    <pre>
+var sfx = new Audio('sfx.wav');
+var track = a.addTextTrack('metadata');
+
+// Add cues for sounds we care about.
+track.addCue(
+  new TextTrackCue('dog bark', 12.783, 13.612, '', '', '', true));
+track.addCue(
+  new TextTrackCue('kitten mew', 13.612, 15.091, '', '', '', true));
+
+function playSound(id) {
+  sfx.currentTime = track.getCueById(id).startTime;
+  sfx.play();
+}
+
+playSound('dog bark');
+playSound('kitten mew');
+</pre>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>Media Source API</h3>
+      <span>
+        <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>For Chrome (17+), enabled in <code>about:flags</code> or run with <code>--enable-media-source</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Extends <code>HTMLMediaElement</code> by allowing JavaScript to append media for playback.</p>
+    <ul class="build">
+      <li><code>video.src = video.webkitMediaSourceURL;</code> opens the stream.</li>
+      <li><code>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</code> appends data.</li>
+      </li>
+      <li><code>video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR)</code> signals end of stream (no errors).</li>
+      <li><code>video.webkitSourceState</code> status indicates state of stream (<code>HTMLMediaElement.SOURCE_CLOSED=0</code>, <code>HTMLMediaElement.SOURCE_OPEN=1</code>, <code>HTMLMediaElement.SOURCE_ENDED=2</code>).</li>
+      <li><code>webkitsourceopen</code> and <code>webkitsourceended</code> events
+      fire on start and end of stream.</li>
+      <li>Only <code>.webm</code> container is supported for now.</li>
+    </ul>
+    <p style="margin-top:2em;">See <a href="http://updates.html5rocks.com/2011/11/Stream-video-using-the-MediaSource-API" target="_blank">HTML5Rocks Update</a> for more info.<br>
+    Or <a href="http://www.ioncannon.net/utilities/1515/segmenting-webm-video-and-the-mediasource-api/" target="_blank">Segmenting WebM Video and the MediaSource API</a></p>
+  </article>
+
+  <article>
+    <h3>Example</h3>
+    <pre>
+var video = document.querySelector('video');
+<b>video.src = video.webkitMediaSourceURL;</b>
+
+video.addEventListener(<b>'webkitsourceopen'</b>, function(e) {
+  while(!isLastChunk) {
+    <b>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</b>
+    ...
+  }
+  <b>video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);</b>
+}, false);
+
+video.addEventListener(<b>'webkitsourceended'</b>, function(e) {
+  console.log(<b>video.webkitSourceState</b> ==
+              <b>HTMLMediaElement.SOURCE_CLOSED</b>);
+}, false);
+</pre>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="http://html5-demos.appspot.com/static/media-source.html" target="_blank">Demo1</a> - Break <code>File</code> into chunks and append each.</li>
+      <li><a href="http://d28nuaxr58rcpu.cloudfront.net/MediaSourceAPIDemo/demo.html" target="_blank">Demo</a> - Stream video chunks using XHR.</li>
+    </ul>
+  </article>
+-->
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+      Check out <a href="/static/whats-new-with-html5-media/template/index.html" target="_blank">this amazing deck!</a>
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+      <div id="chrome-heart" class="spin"></div>
+      <h1 style="display:inline"><div class="jitter"></div> HTML5</h1>
+    </div>
+  </article>
+
+  <!--<article class="biglogo"></article>-->
+
+</section>
+
+<script> 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script> 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
