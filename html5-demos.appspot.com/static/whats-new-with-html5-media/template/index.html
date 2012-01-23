@@ -400,8 +400,8 @@ activeCue.id (DOMString)
 activeCue.startTime (bool)
 activeCue.endTime (bool)
 activeCue.pauseOnExit (bool)
-activeCue.getCueAsSource(); (DOMString)
-activeCue.getCueAsHTML(); (DocumentFrament)
+activeCue.text (DOMString)
+activeCue.getCueAsHTML(); (DocumentFragment)
 
 activeCue.onenter = function(e) { ... };
 activeCue.onexit = function(e) {  ... };
@@ -416,7 +416,7 @@ activeCue.onexit = function(e) {  ... };
     <p>Play scheduled portions of a given audio file:</p>
     <pre>
 var sfx = new Audio('sfx.wav');
-var track = a.addTextTrack('metadata');
+var track = sfx.addTextTrack('metadata');
 
 // Add cues for sounds we care about.
 track.addCue(
