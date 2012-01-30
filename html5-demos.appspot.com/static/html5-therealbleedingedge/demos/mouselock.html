@@ -36,7 +36,7 @@ var ele = document.getElementById('div');
 var infoText = document.getElementById('info');
 
 var pointer = navigator.pointer || navigator.webkitPointer;
-pointer.isLocked = pointer.isLocked || pointer.islocked; // isLocked() is the W3C. FF is out of date.
+pointer.isLocked = pointer.isLocked || pointer.islocked; // isLocked is the W3C. FF is out of date.
 
 document.cancelFullScreen = document.webkitCancelFullScreen || document.mozCancelFullScreen;
 
@@ -72,25 +72,23 @@ function onFullScreenChange(e) {
   console.log("=== Full Screen mode changed ===");
   if (document.webkitIsFullScreen || document.mozFullScreen) {
 
-    pointer.lock(ele, function(e) {
-      console.log(e);
+    pointer.lock(ele, function() {
+      console.log("=== Pointer lock enabled! ===");
     }, function(e) {
       console.log('Error', e);
     });
-
-    if (pointer.isLocked) {
-      console.log("=== Mouse lock enabled! ===");
-    }
   }
+}
+
+function onPointerLockLost(e) {
+  console.log('=== Pointer lock lost! ===');
 }
 
 document.addEventListener('webkitfullscreenchange', onFullScreenChange, false);
 document.addEventListener('mozfullscreenchange', onFullScreenChange, false);
 
-ele.addEventListener('mouselocklost', function() {
-  console.log('=== Mouse lock lost! ===');
-}, false);
-
+ele.addEventListener('webkitpointerlocklost', onPointerLockLost, false);
+ele.addEventListener('mozpointerlocklost', onPointerLockLost, false);
 </script>
 <script>
 function Logger(id) {
