@@ -639,7 +639,7 @@ document.body.addEventListener('click', function(e) {
 
 document.addEventListener('fullscreenchange', function(e) {
   if (document.isFullScreen) {
-    <b>navigator.pointer.lock</b>(document.body, function(e) {
+    <b>navigator.pointer.lock</b>(document.body, function() {
       console.log(e.movementX, e.movementY);
     }, function(e) {
       console.log('Mouse lock unsuccessful', e);
@@ -647,7 +647,7 @@ document.addEventListener('fullscreenchange', function(e) {
   }
 }, false);
 
-document.body.addEventListener(<b>'mouselocklost'</b>, function(e) { ... }, false);
+document.body.addEventListener(<b>'pointerlocklost'</b>, function(e) { ... }, false);
 </pre>
     <p class="centered">
       <!--<a href="http://humphd.github.com/mozilla-central/mouselock/" class="demo" target="_blank">Demos</a>-->
