@@ -604,7 +604,7 @@ ws.onmessage = function(e) {
       <section>
         <ul>
           <li><a href="https://developer.mozilla.org/en/API/Mouse_Lock_API" target="_blank">MDN Documentation</a></li>
-          <li>Prefixed in WebKit: <code>navigator.webkitPointer</code></li>
+          <li>Prefixed in WebKit: <code>navigator.webkitPointer</code>, <code>e.webkitMovementX</code>, <code>e.webkitMovementY</code></li>
           <li>For Chrome, enabled in <code>about:flags</code> or run with <code>--enable-pointer-lock</code>.</li>
         </ul>
       </section>
@@ -630,7 +630,7 @@ ws.onmessage = function(e) {
 document.body.addEventListener('click', function(e) {
   if (!document.isFullScreen) { // Chrome requires fullscreen to succeed.
     document.body.requestFullScreen();
-  } else if (<b>navigator.pointer.isLocked()</b>) {
+  } else if (<b>navigator.pointer.isLocked</b>) {
     <b>navigator.pointer.unlock();</b>
   } else {
     document.cancelFullScreen();
@@ -640,7 +640,7 @@ document.body.addEventListener('click', function(e) {
 document.addEventListener('fullscreenchange', function(e) {
   if (document.isFullScreen) {
     <b>navigator.pointer.lock</b>(document.body, function(e) {
-      console.log(e);
+      console.log(e.movementX, e.movementY);
     }, function(e) {
       console.log('Mouse lock unsuccessful', e);
     });
