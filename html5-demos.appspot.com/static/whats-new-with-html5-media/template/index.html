@@ -619,9 +619,9 @@ function enterFullscreen() {
     </aside>
     <p>Control of the entire document and elements:</p>
     <pre>
-document.webkitIsFullScreen ( bool )
-document.webkitCurrentFullScreenElement ( DOMElement )
-document.webkitFullScreenKeyboardInputAllowed ( bool )
+bool document.webkitIsFullScreen;
+DOMElement document.webkitCurrentFullScreenElement;
+bool document.webkitFullScreenKeyboardInputAllowed;
 document.webkitCancelFullScreen();
 </pre>
     <pre>
@@ -633,8 +633,8 @@ Element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
     <h3>Fullscreen API ( non-standard )</h3>
     <p>WebKit has extra stuff for media elements:</p>
     <pre>
-HTMLMediaElement.webkitSupportsFullscreen ( bool )
-HTMLMediaElement.webkitDisplayingFullscreen ( bool )
+bool HTMLMediaElement.webkitSupportsFullscreen
+bool HTMLMediaElement.webkitDisplayingFullscreen
 HTMLMediaElement.webkitEnterFullScreen()
 HTMLMediaElement.webkitExitFullScreen()
 </pre>
