@@ -78,34 +78,6 @@ article {
   left: -20px;
   margin-top: 5px;
 }
-/*
-#connection div {
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  background: red;
-  position: absolute;
-  left: -20px;
-  margin-top: 5px;
-  display: inline-block;
-  background-color: red;
-  -webkit-animation-name: glowRed;
-  -webkit-animation-duration: 2.5s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-}*/
-/*
-#gallery {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-#gallery img {
-  float: left;
-  height: 75px;
-}
-*/
 #gallery img {
   position: absolute;
   z-index: -1;
@@ -164,16 +136,15 @@ h1 {
   <div>
     <p>Example of the <a href="http://dev.w3.org/2011/webrtc/editor/getusermedia.html" target="_blank" title="Spec link" alt="Spec link"><code>navigator.getUserMedia()</code></a>
     API for capturing audio and video, sans plugin. This demo also shows the video being rendered
-    to canvas while <a href="/static/css/filters/index.html">CSS filters</a> are applied in realtime.</p>
+    to while <a href="/static/css/filters/index.html">CSS filters</a> are applied in realtime (click the video).</p>
     <p><b>Support:</b> Chrome 18.0.1009.0 (currently Canary) with the <code>--enable-media-stream</code> flag set.</p>
   </div>
 </details>
 
 <article>
- <h1>Photobooth</h1>
+ <h1>CSS Filters Photobooth</h1>
  <section id="app" hidden>
-  <div class="container" style="display:none;"><video id="monitor" autoplay></video> <canvas id="photo" style="display:none"></canvas></div>
-  <div class="container"><!--<div id="connection"><div></div></div>--><span id="live">LIVE</span><img id="effect" onclick="changeFilter()" title="Click to see different filters"></div>
+  <div class="container"><span id="live">LIVE</span><video id="monitor" autoplay onclick="changeFilter(this)" title="Click me to see different filters"></video></div>
   <p>Click the video to see different CSS filters</p>
  </section>
  <p><button onclick="init(this)">Capture</button></p>
@@ -182,10 +153,9 @@ h1 {
  </div>
  <div id="gallery"></div>
 </article>
+<canvas id="photo" style="display:none"></canvas>
 <script>
 navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 window.URL = window.URL || window.webkitURL;
 
 var app = document.getElementById('app');
@@ -194,10 +164,7 @@ var canvas = document.getElementById('photo');
 var effect = document.getElementById('effect');
 var gallery = document.getElementById('gallery');
 var ctx = canvas.getContext('2d');
-
-var SAMPLE_RATE = (1 / 60) * 1000; // 60Hz. Used for setInterval.
 var intervalId = null;
-
 var idx = 0;
 var filters = [
   'grayscale',
@@ -208,47 +175,16 @@ var filters = [
   'hue-rotate', 'hue-rotate2', 'hue-rotate3',
   'saturate',
   'invert',
-  '',
+  ''
 ];
 
-function changeFilter() {
-  effect.className = '';
-  effect.classList.add(filters[idx++ % filters.length]);
-}
-
-/*function getIdealCoords() {
-  var left = 0;
-  var top = 0;
-  var maxLeft = document.body.clientWidth;
-  var maxTop = document.body.clientHeight;
-
-  var bounds = app.getBoundingClientRect();
-
-  while(1) {
-    left = Math.floor(Math.random() * maxLeft);
-
-    if (!(bounds.left <= left && left <= bounds.left + bounds.width)) {
-      break;
-    }
+function changeFilter(el) {
+  el.className = '';
+  var effect = filters[idx++ % filters.length];
+  if (effect) {
+    el.classList.add(effect);
   }
-
-  while(1) {
-     top = Math.floor(Math.random() * maxTop);
-
-     if (!(bounds.top <= top && top <= bounds.top + bounds.height)) {
-       break;
-     }
-   }
-
-  return {top: top, left: left};
-}*/
-
-// Until Chrome supports CSS filters on hwd accelerated content (e.g. <video>),
-// we're stuck with a hack of rendering to canvas and setting an image with the filter applied.
-function render(time) { //setInterval(function() {
-  snapshot();
-  window.requestAnimationFrame(render, effect); // RAF slooows framerate with the CSS filters.
-} //}, SAMPLE_RATE);
+}
 
 function gotStream(stream) {
   if (window.URL) {
@@ -263,12 +199,10 @@ function gotStream(stream) {
 
   stream.onended = noStream;
 
-  /*video.onloadedmetadata = function(e) { // Not firing in Chrome
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+  video.onloadedmetadata = function(e) { // Not firing in Chrome. See crbug.com/110938.
     document.getElementById('splash').hidden = true;
     document.getElementById('app').hidden = false;
-  };*/
+  };
 
   // Since video.onloadedmetadata isn't firing for getUserMedia video, we have
   // to fake it.
@@ -277,8 +211,6 @@ function gotStream(stream) {
     canvas.height = video.videoHeight;
     document.getElementById('splash').hidden = true;
     document.getElementById('app').hidden = false;
-
-    render();
   }, 50);
 }
 
@@ -296,7 +228,7 @@ function capture() {
   intervalId = setInterval(function() {
     ctx.drawImage(video, 0, 0);
     var img = document.createElement('img');
-    img.src = canvas.toDataURL();
+    img.src = canvas.toDataURL('image/webp');
 
     var angle = Math.floor(Math.random() * 36);
     var sign = Math.floor(Math.random() * 2) ? 1 : -1;
@@ -310,11 +242,6 @@ function capture() {
 
     gallery.appendChild(img);
   }, 150);
-}
-
-function snapshot() {
-  ctx.drawImage(video, 0, 0);
-  effect.src = canvas.toDataURL();
 }
 
 function init(el) {
