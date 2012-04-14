@@ -43,7 +43,7 @@ article > section {
   width: 100%;
 }
 .cols > span > span {
-  width: -webkit-flex(35%);
+  width: 35%;
   display: inline-block;
   white-space: nowrap;
 }
@@ -136,9 +136,10 @@ article > section > div {
     specifically the <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html#FilterFunction" target="_blank">filter functions</a>,
     which are being implemented in Webkit.</p>
     <p>In Webkit, filters can be applied to hw accelerated content ( e.g. <code>img { -webkit-transform: translateZ(0); }</code> ).
-    In Chrome, filters on hw accelerated content are still a work in progress (use the <code>--enable-accelerated-filters</code> flag).
+    In Chrome, filters on hw accelerated content are still a work in progress (use the <code>--enable-accelerated-filters</code> flag)
+    or enable the feature in <code>about:flags</code>.
     This includes <code>&lt;video&gt;</code>, which is accelerated by default.</p>
-    <p><b>Support:</b> Chrome 18.0.976.0 (currently canary), Webkit nightly</p>
+    <p><b>Support:</b> Chrome 18.0.976.0, Webkit nightly</p>
   </div>
 </details>
 
@@ -284,7 +285,7 @@ _gaq.push(['_trackPageview']);
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script>
-<script src="http://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=ocean"></script>
+<script src="http://api.flickr.com/services/feeds/photos_public.gne?format=json&tags=golden+gate+bridge"></script>
 <!--[if IE]>
 <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
 <script>CFInstall.check({mode: 'overlay'});</script>
