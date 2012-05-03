@@ -52,8 +52,8 @@ article {
 }
 #monitor {
   /*-webkit-transform: scaleX(-1);*/
-  height: 400px;
-  -webkit-box-reflect: below 20px -webkit-linear-gradient(top, transparent, transparent 80%, rgba(255,255,255,0.2));
+  height: 300px;
+  /*-webkit-box-reflect: below 20px -webkit-linear-gradient(top, transparent, transparent 80%, rgba(255,255,255,0.2));*/
 }
 #live {
   position: absolute;
@@ -136,7 +136,8 @@ h1 {
     <p>Example of the <a href="http://dev.w3.org/2011/webrtc/editor/getusermedia.html" target="_blank" title="Spec link" alt="Spec link"><code>navigator.getUserMedia()</code></a>
     API for capturing audio and video, sans plugin. This demo also shows the video being rendered
     to while <a href="/static/css/filters/index.html">CSS filters</a> are applied in realtime (click the video).</p>
-    <p><b>Support:</b> Chrome 18.0.1009.0 (currently Canary) with the <code>--enable-media-stream</code> flag set.</p>
+    <p><b>Support:</b> Chrome 18.0.1009.0 with the <code>--enable-media-stream</code> flag set. Chrome 20.0.1125.0 changed
+      the method signature to the updated spec: <code>getUserMedia({video: true})</code></p>
   </div>
 </details>
 
@@ -214,7 +215,11 @@ function gotStream(stream) {
 }
 
 function noStream(e) {
-  document.getElementById('errorMessage').textContent = 'No camera available.';
+  var msg = 'No camera available.';
+  if (e.code == 1) {
+    msg = 'User denied access to use camera.';
+  }
+  document.getElementById('errorMessage').textContent = msg;
 }
 
 function capture() {
@@ -250,7 +255,7 @@ function init(el) {
   }
   el.onclick = capture;
   el.textContent = 'Snapshot';
-  navigator.getUserMedia('video', gotStream, noStream);
+  navigator.getUserMedia({video: true}, gotStream, noStream);
 }
 
 window.addEventListener('keydown', function(e) {
