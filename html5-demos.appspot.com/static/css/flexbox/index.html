@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<title>CSS Flexbox Layout</title>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Muli&v2">
+<!--<link href="../../common.css" rel="stylesheet" type="text/css">-->
+<style>
+html, body {
+  height: 100%;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Muli', 'Open Sans', Arial, sans-serif;
+  height: 100%;
+  box-sizing: border-box;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  -webkit-flex-pack: center;
+  margin: 0 2em;
+  -webkit-transition: all 500ms ease-in-out;
+}
+#main {
+  display: -webkit-flex;
+  -webkit-flex: 1;
+  max-height: 500px;
+}
+#main > * {
+  border: 1px solid #ccc;
+  padding: 0.25em;
+  border-radius: 10px;
+}
+#main > article {
+  -webkit-flex: 1 0 0;
+  -webkit-flex-order: 2;
+  margin: 0 10px;
+  display: -webkit-flex;
+  -webkit-flex-align: center;
+  -webkit-flex-pack: center;
+}
+nav {
+  display: -webkit-flex;
+  -webkit-flex-pack: distribute;
+  margin-bottom: 10px;
+}
+nav > a {
+  padding: 15px;
+  background: -webkit-linear-gradient(top, navy 50%, black) no-repeat 50% 100%, navy;
+  color: white;
+  display: -webkit-inline-flex;
+  -webkit-flex: 1;
+  -webkit-flex-pack: center;
+  -webkit-flex-align: center;
+  margin: auto 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  -webkit-transition: background-size 100ms ease-in-out,
+                      font-size 100ms ease-in-out 500ms;
+  background-size: 100% 0;
+}
+nav > a:first-child {
+  margin-left: 0;
+}
+nav > a:last-child {
+  margin-right: 0;
+}
+nav > a:hover {
+  background-size: 100% 100%;
+}
+#main > section {
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  background: #eee;
+  width: 200px;
+  -webkit-flex-order: 1;
+}
+#main > section > div {
+  border: 1px solid rgb(204, 204, 204);
+  -webkit-flex: 1;
+  padding: 0.25em;
+  margin: 0.25em;
+  background: white;
+  display: -webkit-flex;
+  -webkit-flex-align: center;
+  -webkit-flex-pack: center;
+  -webkit-transition: -webkit-flex 500ms cubic-bezier(.17,.67,0,1.45);
+}
+#main > section > div:hover {
+  -webkit-flex: 4;
+}
+#main > section > div:first-child,
+#main > aside > div:first-child {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+#main > section > div:last-child,
+#main > aside > div:last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+#main > aside {
+  display: -webkit-flex;
+  -webkit-flex-order: 3;
+  -webkit-flex-direction: column;
+  background: black;
+  width: 30px;
+  -webkit-flex-align: center;
+}
+#main > aside > div {
+  -webkit-writing-mode: vertical-lr;
+  -webkit-flex: 1;
+  padding: 0.25em;
+  margin: 0.25em;
+  background: white;
+  display: -webkit-flex;
+  -webkit-flex-pack: center;
+  -webkit-flex-align: center;
+}
+#main > aside > div:nth-of-type(even) {
+  -webkit-flex: 2;
+}
+header, footer {
+  display: -webkit-flex;
+  -webkit-flex-align: center;
+  -webkit-flex-pack: start;
+  background: #eee;
+  padding: 1em;
+  margin: 10px 0;
+  border-radius: 10px;
+  color: rgba(0,0,0,0.6);
+  text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+}
+footer {
+  -webkit-flex-pack: end;
+}
+@media all and (max-width: 600px) {
+  body {
+    margin: 0 10px;
+    -webkit-flex-pack: start;
+  }
+  /* Too narrow to support three columns */
+  #main {
+    -webkit-flex-flow: column;
+  }
+  #main > article,
+  #main > aside,
+  #main > section,
+  nav {
+    /* Return them to document order */
+    -webkit-flex-order: 0;
+    width: auto;
+  }
+  nav {
+    font-size: 60%;
+  }
+  #main > aside {
+    -webkit-flex: 1;
+    -webkit-flex-align: stretch;
+  }
+  #main > aside > div {
+    -webkit-writing-mode: horizontal-tb;
+    border-radius: 0 !important;
+  }
+  #main > article {
+    margin: 0;
+  }
+  #main > section {
+    margin: 10px auto;
+  }
+  #main > section > div {
+    -webkit-flex: 1 0 auto;
+  }
+}
+</style>
+</head>
+<body>
+  
+<!--
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>Demo showing CSS <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html" target="_blank">Filter Effects 1.0</a>,
+    specifically the <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html#FilterFunction" target="_blank">filter functions</a>,
+    which are being implemented in Webkit.</p>
+    <p>In Webkit, filters can be applied to hw accelerated content ( e.g. <code>img { -webkit-transform: translateZ(0); }</code> ).
+    In Chrome, filters on hw accelerated content are still a work in progress (use the <code>--enable-accelerated-filters</code> flag)
+    or enable the feature in <code>about:flags</code>.
+    This includes <code>&lt;video&gt;</code>, which is accelerated by default.</p>
+    <p><b>Support:</b> Chrome 18.0.976.0, Webkit nightly</p>
+  </div>
+</details>
+-->
+
+<header>header</header>
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Contact</a>
+  <a href="#">About</a>
+  <a href="#" onclick="return addButton()">Add another button &rarr;</a>
+</nav>
+<div id="main">
+  <article>article</article>
+  <section>
+    <div>One</div>
+    <div>Two</div>
+    <div>Three</div>
+    <div>Four</div>
+  </section>
+  <aside>
+    <div>Awesome</div>
+    <div>Sidebar</div>
+    <div>Bro!</div>
+  </aside>
+</div>
+<footer>footer</footer>
+<script>
+var count = 0;
+function addButton() {
+  var a = document.createElement('a');
+  a.textContent = 'New' + (++count);
+  a.href = '#';
+  a.setAttribute('onclick', 'addButton()');
+  document.querySelector('nav').appendChild(a);
+  return false;
+}
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
