@@ -73,6 +73,7 @@ details > div {
 }
 details > summary {
   cursor: pointer;
+  white-space: nowrap;
 }
 button {
   display: inline-block;
