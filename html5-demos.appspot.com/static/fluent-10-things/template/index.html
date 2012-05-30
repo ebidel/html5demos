@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+  <title>10 Things You Didn't Know HTML5 Could Do!</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="icon" type="image/png" href="../images/chrome-logo-tiny2.png">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Orbitron|Muli|Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono|Sarina&v2">
+  <script src="../demos/buffer-loader.js"></script>
+  <script src='../slides.js'></script>
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+</head>
+<body style="display: none">
+
+<section class='slides layout-regular'>
+
+  <article class="title-slide">
+    <div>
+      <div data-config-logo class="spin"></div>
+      <h1>10 Things You Didn't Know HTML5 Could Do!</h1>
+      <p class="info">
+        <span><a href="http://ericbidelman.com">Eric Bidelman</a></span><br>
+        <span>Fluent Conf</span> - <span data-config-location>San Francisco, CA</span><br>
+        <time datetime="2012-05-30" data-config-date>5/30/2012</time>
+      </p>
+      <img data-config-map class="rounded" title="Of course we're using Geolocation!" alt="Of course we're using Geolocation!">
+    </div>
+  </article>
+
+  <article id="who">
+    <h3>Who?</h3>
+    <p>
+      <img class="avatar rounded" src="http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAB_g/7HEywOGyz5A/photo.jpg?sz=200">
+    </p>
+    <p>Senior Developer Programs Engineer</p>
+    <p>Google Chrome Team</p><br>
+    <p>
+      <a rel="author" href="http://plus.ericbidelman.com" target="_blank">
+        <img src="http://www.google.com/images/icons/ui/gprofile_button-44.png" width="44" height="44"></a> +<a rel="author" href="http://plus.ericbidelman.com" target="_blank">Eric Bidelman</a>
+    </p>
+    <p>
+      <a rel="author" href="http://twitter.com/ebidel" target="_blank" style="margin-left:-8px;">
+        <img src="../images/twitter_newbird_blue.png" width="58" height="58"></a> @ <a rel="author" href="http://twitter.com/ebidel" target="_blank" style="margin-left:-5px;">ebidel</a>
+    </p>
+    <p>
+      <a href="http://ericbidelman.com" target="_blank">ericbidelman.com</a>
+    </p>
+  </article>
+
+  <article id="legend-slide">
+    <aside class="note">
+      <section>
+        <h3>See!</h3>
+      </section>
+    </aside>
+    <div class="vflex left" style="height:90%">
+      <h3>Legend:</h3>
+      <div><img src="../images/icons/radar.svg"> Not quite ready. Keep it on your radar.</div>
+      <div><img src="../images/icons/bug.png"> Relevant Chrome/WebKit bug.</div>
+      <div><img src="../images/icons/bug_closed.png"> Bug has been fixed/resolved.</div>
+      <div><img src="../images/icons/gears.svg"> Specification link</div>
+    </div>
+    <div style="text-align:center;font-size:12pt;">
+       ( Press 'n' for additional notes on some slides. Most of this presentation requires Chrome 18+. )
+    </div>
+  </article>
+
+  <article>
+    <h3>Agenda</h3>
+    <ul class="build fade">
+      <li>There's no agenda!</li>
+      <li>Talk about cool new stuff in the platform</li>
+    </ul>
+  </article>
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>CSS for layout<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+<!--
+  <article class="fill">
+    <h2 class="megabottom white shadow">Layout &amp; Design</h2>
+    <img src="images/paint.jpg" style="opacity:0.75">
+  </article>
+-->
+
+  <article>
+    <hgroup>
+      <h3>Floats, tables, &amp; positioning...OH MY!</h3>
+    </hgroup>
+    <ul>
+      <li>Floats stack horizontally to allow simple placement.</li>
+      <li>Tables lack repeatability and semantic meaning.</li>
+      <li>Using absolute positioning is difficult. Makes adaptive display hard.</li>
+      <li>CSS3 specifications address layout cases with regions, exclusions, grid and flexible box.</li>
+    </ul>
+  </article>
+
+  <article>
+    <h3>2012: the rise of CSS for layout &amp; design</h3>
+    <ul>
+      <li><a href="http://dev.w3.org/csswg/css3-regions/">CSS Regions Module Level 3</a></li>
+      <li><a href="http://dev.w3.org/csswg/css3-flexbox/">CSS Flexible Box Layout Module</a> ( da new one )</li>
+      <li><a href="http://dev.w3.org/csswg/css3-grid-align/">CSS Grid Layout</a></li>
+      <li><a href="http://dev.w3.org/csswg/css3-hierarchies/">CSS Hierarchies</a></li>
+      <li><a href="http://dev.w3.org/csswg/css-variables/">CSS Variables Module Level 1</a></li>
+      <li><a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html">CSS Filter Effects 1.0</a></li>
+      <li><a href="http://dl.dropbox.com/u/11894343/web-animations/web-animations.html">Web Animations 1.0</a></li>
+    </ul>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>CSS Flexible Box Module</h3>
+      <span>
+        <a href="http://webk.it/62048" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-flexbox/" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="http://dev.w3.org/csswg/css3-flexbox/">CSS Flexible Box Layout Module</a> W3C spec</li>
+          <li>CSS properties are prefixed in WebKit (e.g. <code>display: -webkit-flex;</code></li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build fade">
+      <li>Box model optimized for user interface design</li>
+      <li>Children can "flex" their sizes: fill unused space / shrink to avoid overflow</li>
+      <li>Source-ordering independence: children can be laid out in any direction</li>
+      <li>Enabled by <code>display: flex</code> and <code>display: inline-flex</code></li>
+      <li>Note: Replacing old flex box <code>display: box</code></li>
+    </ul>
+    <p class="toppadding build"><span>So that's great...</span></p>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <h3 style="font-size:55px;">What does this all meannnn?</h3>
+    </div>
+  </article>
+
+  <article>
+    <h3>Vertically centered content is easy peasy!</h3>
+       <pre>
+div {
+  display: flex;
+  flex-pack: center;
+  flex-align: center;
+  flex: 1 0 0;
+}
+div > div:nth-child(2) {
+  flex: 2 0 0; /* 2nd div will be 2x wider */
+}
+</pre> 
+    <style>
+      #flex-example {
+        display: -webkit-flex;
+        -webkit-flex-pack: center;
+        -webkit-flex-align: center; 
+        padding: 1em;
+        border-radius: 10px;
+        border: 3px solid red;
+        height: 150px;
+      }
+      #flex-example div {
+        border: 2px solid black;
+        margin: 10px;
+        padding: 5px;
+        text-align: center;
+        -webkit-flex: 1 0 0;
+      }
+      #flex-example div:nth-child(2) {
+        -webkit-flex: 2 0 0; /* 2nd div will be 2x wider */
+        text-align: center;
+      }
+    </style>
+    <div id="flex-example">
+      <div>Woot!</div>
+      <div>Centered</div>
+      <div>Woot!</div>
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+       <p>CSS Flexbox Layout</p>
+       <p><a href="http://html5-demos.appspot.com/static/css/flexbox/index.html" class="demo">Launch</a>
+       </p> 
+    </div>
+  </article>
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>Dynamic CSS<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>calc()</h3>
+    </hgroup>
+    <section style="-webkit-columns: 2;" id="flexbox-circle">
+    <pre>
+.circle {
+  width: 300px;
+  height: 300px;
+}
+
+div {
+  display: flex;
+  width: calc(100% - 4em);
+  height: calc(100% - 4em);
+  border: 1em solid red;
+  border-radius: 50%;
+  flex-align: center;
+  flex-pack: center;
+}
+
+div:hover {
+  border-radius: 0;
+}
+</pre>
+    <div class="circle">
+      <div>
+        <div></div>
+      </div>
+    </div>
+    </section>
+  </article>
+
+<!--
+  <article class="smaller">
+    <hgroup>
+      <h3>Scoped styles</h3>
+      <span>
+        <a href="http://webk.it/49142" class="bug" title="Bug link"></a>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#attr-style-scoped" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Style elements mid-document, confined to immediate parent:</p>
+    <pre>
+&lt;article>
+  &lt;p>This p will have inherited color.&lt;/p>
+  &lt;section>
+    &lt;style <b>scoped</b>>
+      p { color: red; }
+    &lt;/style>
+    &lt;p>This p will be red.&lt;/p>
+  &lt;/section>
+&lt;/article>
+</pre>
+    <ul class="build fade">
+      <li>Add one-off CSS styles.</li>
+      <li>Add user-defined styles to wiki or CMS content.</li>
+      <li>Keep related content together (e.g. this slide deck code and demos).</li>
+      <li>See <a href="http://updates.html5rocks.com/2012/03/A-New-Experimental-Feature-style-scoped">HTML5Rocks Post</a> for more info.</li>
+    </ul>
+    <p class="centered build"><a href="http://jsbin.com/ozerih/55/edit#html,live" class="demo">Demo</a></p>
+  </article>
+
+<article class="smaller">
+    <hgroup>
+      <h3>New CSS functions</h3>
+      <span>
+        <a href="http://webk.it/16662" class="bug" title="Bug link"></a>
+        <a href="http://www.w3.org/TR/css3-values/#calc" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Almost in WebKit. Prefixed as <code>-webkit-calc()</code>.</li>
+          <li>Support: IE10+. Prefixed in FF: <code>-moz-calc()</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>calc()</p>
+    <pre>
+width: <b>-webkit-calc</b>(200px - 100);
+width: <b>-webkit-calc</b>(2 * 50%);
+width: <b>-webkit-calc</b>(200px / 2);
+color: hsl(<b>-webkit-calc</b>(120), <b>-webkit-calc</b>(75%), 0.5);
+background-position: <b>-webkit-calc</b>(50% + 5px)</b> center;
+</pre>
+    <p>min()</p>
+    <pre>
+width: <b>-webkit-min</b>(150px, 100px, 200px);
+width: <b>-webkit-min</b>(90px + 50px, 100px);
+width: <b>-webkit-min</b>(100px, 100%);  /* where 100% is 200px; */
+</pre>
+<p>max()</p>
+    <pre>
+width: <b>-webkit-max</b>(150px, 100px, 200px);
+width: <b>-webkit-max</b>(200px - 50px, 100px);
+width: <b>-webkit-max</b>(100px, 100%);  /* where 100% is 200px; */
+</pre>
+    <p class="centered"><a href="http://jsbin.com/ufudiy/edit#html,live" class="demo">Demo</a></p>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>CSS Filters</h3>
+      <span>
+        <a href="http://webk.it/68469" class="bug" title="Bug link"></a>
+        <a href="https://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed in WebKit nightly/Chrome Canary: <code>-webkit-filter</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Apply filter effects to any DOM element:</p>
+    <pre>
+video, img {
+  <b>-webkit-filter</b>: grayscale(0.5) blur(10px);
+}
+</pre>
+     <ul>
+       <li>Chrome needs <code>--enable-accelerated</code> flag for hardware accelerated content.</li>
+       <li>Good <a href="http://drublic.de/blog/effects-for-the-web/">blog post</a>.</li>
+     </ul>
+     <p class="centered"><a href="http://html5-demos.appspot.com/static/css/filters/index.html" class="demo">Demo</a> <a href="http://lab.simurai.com/stars/" class="demo">Demo2</a></p>     
+  </article>
+-->
+
+<!--
+  <article class="smaller">
+    <hgroup>
+      <h3>Content Layout - CSS Regions</h3>
+      <span>
+        <a href="http://webk.it/57309" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/csswg/css3-regions/Overview.src.html" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <img src="../images/regions-intro.svg" style="width: 100%;">
+        <ul>
+          <li>Partial support: Chrome 18, IE 10+</li>
+        </ul>
+      </section>
+    </aside>
+    <p><label class="underline">Problem</label>: Newspapers are dead, but the web blows at rich layouts</p>
+    <div class="build toppadding">
+      <p><label class="underline">Soln</label>: create CSS primitives for applications</p>
+    <pre>
+&lt;style&gt;
+/* Flow content into specified regions */
+#content {
+  <b>-webkit-flow-into: bodytext;</b>
+}
+.region {
+  width: 200px;
+  height: 200px;
+  <b>-webkit-flow-from: bodytext;</b>
+  <b>-webkit-region-overflow: break;</b>
+}
+@region #region1 { /* webk.it/71487 */
+  p { color: navy; }
+}
+&lt;/style>
+&lt;div id="region1" class="region">&lt;/div>
+&lt;div id="region2" class="region">&lt;/div>
+&lt;div id="content">
+  &lt;p>Lorem ipsum dolor ... or a nunc.&lt;/p>
+  &lt;div>&lt;img src="...">Lorem ipsum dolor ... or a nunc.&lt;/div>
+&lt;/div>
+</pre>
+    <p class="centered"><a href="http://jsbin.com/elupos/6" class="demo">Demo</a></p>
+    </div>
+  </article>
+-->
+
+<!--
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <h1 class="blue"> <img src="../images/HTML5_Badge_256.png" style="height:70px;vertical-align:middle;margin-bottom:10px;"> Fun.</h1>
+    </div>
+  </article>
+-->
+
+<!--
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>Markup for apps<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <h3><label class="underline">Problem</label>: Making users remember hex ( colors )</h3>
+    <div class="vflex middle center" style="height:80%">
+      <div class="build toppadding">
+        <pre>
+&lt;input type="color" value="#ffcc00"&gt;
+</pre>
+        <p class="centered"><input type="color" style="height:200px;width:250px;" value="#ffcc00"></p>
+      </div>
+    </div>
+  </article>
+
+  <article>
+    <h3>&lt;details&gt; / &lt;summary&gt;</h3>
+    <pre class="drop-shadow curved curved-hz-2">
+&lt;details open&gt;
+  &lt;summary&gt;Information&lt;/summary&gt;
+  &lt;p&gt;If your browser supports this element, it should allow
+  you to expand and collapse these details.&lt;/p&gt;
+&lt;/details&gt;
+</pre>
+    <section class="build">
+       <details open>
+         <summary>Information</summary>
+         <p>If your browser supports this element, it should allow
+         you to expand and collapse these details.</p>
+       </details>
+     </section>
+  </article>
+
+  <article id="details-slide">
+    <h3>Example</h3>
+    <style>
+      #details-example { margin-top: 1em; }
+      #details-example details {border: 1px solid #E1E1E1; border-radius: 5px; box-shadow: 0 1px 4px rgba(0, 0, 0, .4); color: #363636; margin: 0 0 .4em; padding: 1%;}
+      #details-example details[open] {background: #E1E1E1;}
+      #details-example summary {background: -webkit-linear-gradient(top, #FAFAFA 50%, #E1E1E1 50%); border-radius: 5px; cursor: pointer; font-size: .8em; font-weight: bold; margin: -1%; padding: 8px 0; position: relative; width: 102%;}
+      #details-example summary:hover,
+      #details-example details[open] summary {background: #E1E1E1;}
+      #details-example summary::-webkit-details-marker {display: none}
+      #details-example summary:before{border-radius: 5px; content: "+"; color: #363636; display: block; float: left; font-size: 1.5em; font-weight: bold; margin: -2px 10px 0 10px; padding: 0; text-align: center; width: 20px;}
+      #details-example details[open] summary:before {content: "-"; margin-top: -4px;}
+      #details-example p { font-size: 14px; }
+    </style>
+    <div id="details-example">
+      <details>
+        <summary>Question 1</summary>
+        <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+      </details>
+      <details>
+          <summary>Question 2</summary>
+          <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+      </details>
+    </div>
+  </article>
+
+  <article>
+    <h3>&lt;output&gt;</h3>
+    <style>
+      #output-example input {
+        width: 125px;
+      }
+    </style>
+    <section>
+  <pre class="drop-shadow curved curved-hz-2" style="font-size:65%">
+&lt;form oninput="result.value=a.<b>valueAsNumber</b> + b.<b>valueAsNumber</b>"&gt;
+0&lt;input type=&quot;range&quot; name=&quot;b&quot;&gt;100 +&lt;input type=&quot;number&quot; name=&quot;a&quot;&gt; =
+&lt;output name=&quot;result&quot;&gt;&lt;/output&gt;
+&lt;/form&gt;
+</pre>
+    </section>
+    <section>
+      <form id="output-example" oninput="result.value=a.valueAsNumber + b.valueAsNumber">
+        0<input name="a" type="range" min="0" max="100" value="25">100 +
+        <input name="b" type="number" value="1"> =
+        <output name="result"></output>
+      </form>
+    </section>
+  </article>
+-->
+
+<!--
+  <article>
+    <h3>&lt;mark&gt;</h3>
+    <style>
+      #mark-example {
+        line-height: 2;
+      }
+      #mark-example mark {
+        border-radius: 5px;
+        padding: 5px;
+        color: white;
+        text-shadow: none;
+      }
+      #mark-example mark:nth-of-type(1) {
+        background-color: navy;
+      }
+      #mark-example mark:nth-of-type(2) {
+        background-color: red;
+      }
+      #mark-example mark:nth-of-type(3) {
+        background-color: #ffcc00;
+      }
+      #mark-example mark:nth-of-type(4) {
+        background-color: green;
+      }
+      #mark-example mark:nth-of-type(5) {
+        color: black;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+      }
+    </style>
+    <p>Semantically highlight parts of your text:</p>
+    <section>
+      <pre>Lorem ipsum dolor, <b>&lt;mark&gt;</b>consectetur<b>&lt;/mark&gt;</b> adipiscing...</pre>
+    </section>
+    <section>
+      <p id="mark-example">Lorem ipsum dolor, <mark>consectetur</mark> adipiscing elit. Maecenas egestas
+      facilisis <mark>lectus</mark> a sagittis. <mark>Integer</mark> imperdiet nisl non tortor blandit
+      lobortis at eu <mark>justo</mark>. Etiam viverra nunc id dolor <mark>hendrerit</mark> vestibulum lobortis tellus ornare.</p>
+    </section>
+  </article>
+-->
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>Data binding<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <h3>Old hat for JS frameworks</h3>
+      <section class="build toppadding">
+      <div>
+        <p>Angular ( <a href="http://angularjs.org">angularjs.org</a> ) example:</p>
+        <pre>
+&lt;div <b>ng-app</b> ng-init="val=25">
+  Volume: &lt;input type="range" min="0" max="100" <b>ng-model="val"</b>>
+  <b>{{val}}</b>/100
+&lt;/div>
+</pre>
+    </div>
+    <div ng-app ng-cloak ng-init="val=25">
+      Volume: <input type="range" min="0" max="100" ng-model="val"> {{val}}/100
+    </div>
+    </section>
+  </article>
+
+  <article>
+    <h3>One-way data binding: <code>data-*</code> attributes</h3>
+    <p>"Poor man's data binding"</p>
+    <ol>
+      <li>data attribute is your model</li>
+      <li>Use <code>attr()</code> to get the value(s)</li>
+      <li><code>:before</code>/<code>:after</code> pseudo elements to render generated content</li>
+      <li>Hook listeners that watch for changes.</li>
+    </ol>
+  </article>
+
+  <article id="data-binding-example">
+    <h3>"Poor man's data binding"</h3>
+    <pre>
+&lt;style>
+input::after {
+  content: attr(data-value) '/' attr(max);
+  position: relative;
+  left: 135px; top: -20px;
+}
+&lt;/style>
+&lt;input type="range" min="0" max="100" value="25"&gt;
+&lt;script>
+var input = document.querySelector('input');
+input.dataset.value = input.value; // Set an initial value.
+
+input.addEventListener('change', function(e) {
+  this.dataset.value = this.value;
+});
+&lt;/script>
+</pre>
+    <div>
+      Volume: <input type="range" min="0" max="100" value="25">
+    </div>
+  </article>
+  <script>
+  (function() {
+    var input = document.querySelector('#data-binding-example input');
+    input.dataset.value = input.value;
+
+    input.addEventListener('change', function(e) {
+      this.dataset.value = this.valueAsNumber;
+    });
+  })();
+  </script>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <p>Data binding + <a href="http://www.html5rocks.com/en/tutorials/speed/animations/">requestAnimationFrame</a></p>
+      <p><a href="http://jsbin.com/ayeres/3/edit#html,live" class="demo">Launch</a>
+      </p> 
+    </div>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>One-way data binding: &lt;datalist&gt;</h3>
+      <span>
+        <a href="http://webk.it/27247" class="bug" title="Bug link"></a>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-button-element.html#the-datalist-element" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <pre>
+Browsers: &lt;input <b>list="browsers"</b>>
+&lt;<b>datalist</b> id="browsers">
+  &lt;option value="Chrome">
+  &lt;option value="Firefox">
+  &lt;option value="Internet Explorer">
+  &lt;option value="Opera">
+  &lt;option value="Safari">
+&lt;/datalist>
+</pre>
+    <ul>
+      <li>Specifies a list of pre-defined options for an &lt;input&gt; element.</li>
+      <li><code>list</code> attribute "binds" data list to an &lt;input&gt;</li>
+      <li>Useful for "autocomplete" on &lt;input&gt; elements.</li>
+    </ul>
+      <p>Browsers: <input list="browsers">
+        <datalist id="browsers">
+          <option value="Chrome">
+          <option value="Internet Explorer">
+          <option value="Firefox">
+          <option value="Opera">
+          <option value="Safari">
+        </datalist>
+      </p>
+    </div>
+  </article>
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size: 230%;">Access a filesystem<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <hgroup style="display:inline-block;">
+      <h3 class="build">I got so excited...<span>I wrote a book :)</span></h3>
+    </hgroup>
+    <div class="vflex middle center build" style="height:90%">
+      <a href="http://www.amazon.com/Using-HTML5-Filesystem-Eric-Bidelman/dp/1449309453" style="border:none;"><img src="http://akamaicovers.oreilly.com/images/0636920021360/lrg.jpg" alt="Using the HTML5 Filesystem API" title="Using the HTML5 Filesystem API" style="height:500px;"></a>
+    </div>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>HTML5 Filesystem API - persist data to files/folders</h3>
+      <span>
+        <a href="http://dev.w3.org/2009/dap/file-system/file-dir-sys.html" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Opening a filesystem:</p>
+      <pre>
+window.<b><i>webkit</i>RequestFileSystem</b>(
+  TEMPORARY,        // persistent vs. temporary storage
+  1024 * 1024,      // size (bytes) of needed space
+  initFs,           // success callback
+  opt_errorHandler  // opt. error callback, denial of access
+);
+</pre>
+    <ul class="build">
+      <li>Security: per origin sandboxed filesystem</li>
+      <li>Temporary or persistent quota. Persistent is 0 by default.</li>
+      <li>Dynamically cache and manage assets</li>
+    </ul>
+  </article>
+
+  <article class="smaller">
+    <h3>Example: download and save files</h3>
+      <pre>
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/path/to/image.png', true);
+<b>xhr.responseType = 'arraybuffer';</b>
+
+xhr.onload = function(e) {
+
+  window.<b><i>webkit</i>RequestFileSystem</b>(TEMPORARY, 1024 * 1024, function(fs) {
+    fs.root.getFile('image.png', {create: true}, function(fileEntry) {
+      fileEntry.createWriter(function(writer) {
+
+        writer.onwriteend = function(e) { ... };
+        writer.onerror = function(e) { ... };
+        <b>writer.write(new Blob([xhr.response], {type: 'image/png'})));</b>
+
+      }, onError);
+    }, onError);
+  }, onError);
+};
+
+xhr.send();
+
+function onError(e) {
+  console.log('Error', e);
+}
+</pre>
+  </article>
+
+  <article>
+    <div class="vflex middle center build" style="height:100%">
+      <q class="build" style="margin: 0 0 0 20px;">Callback spaghetti is hard, <span>let's go shopping!</span></q>
+      <div class="author">me</div>
+    </div>
+  </article>
+
+  <article class="smaller">
+    <h3>filer.js</h3>
+    <p>Wrapper lib that implements common UNIX cmds (ls, cp, mv)</p>
+    <pre>
+<b>var filer = new Filer();</b>
+
+filer.<b>init</b>({persistent: false, size: 1024 * 1024}, function(fs) {
+  // filer.isOpen == true
+}, onError);
+
+filer.<b>ls</b>('path/to/some/dir/', function(entries) { ... }, onError);
+
+filer.<b>cp</b>('file.txt', '/path/to/folder', 'newname.txt', function(entry) {
+  // entry.fullPath == '/path/to/folder/newname.txt'
+}, onError);
+
+var blob = new Blob(['body { color: red; }'], {type: 'text/css'});
+filer.<b>write</b>('styles.css', {data: blob, type: blob.type},
+  function(entry, writer) {
+    ...
+  }, onError
+);
+</pre>
+    <p class="centered"><a href="https://github.com/ebidel/filer.js">github.com/ebidel/filer.js</a></p>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+       <p>Filesystem Playground</p>
+       <p><a href="http://html5-demos.appspot.com/static/filesystem/filer.js/demos/index.html" class="demo">Launch</a>
+       </p> 
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <h3 style="font-size:60px;">Only in Chrome you say?</h3>
+    </div>
+  </article>
+
+  <article>
+    <h3>idb.filesystem.js</h3>
+    <p class="centered"><a href="https://github.com/ebidel/idb.filesystem.js">github.com/ebidel/idb.filesystem.js</a></p>
+    <ul class="build">
+      <li>HTML5 Filesystem API polyfill using IndexedDB</li>
+      <li>Means browsers that support IDB also support the Filesystem API!</li>
+    </ul>
+    <p class="centered build"><a href="http://html5-demos.appspot.com/static/filesystem/idb.filesystem.js/demos/playground/index.html" class="demo">Launch me in FF</a>
+  </article>
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size: 230%;">Serverless downloads<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>Client-side downloads?</h3>
+      <span>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#downloading-resources" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <div class="build toppadding">
+      <p>Yes please!</p>
+      <div>
+        <pre>
+Content-Disposition: attachment; filename="MyLogo.png";
+</pre>
+      </div>
+      <div>
+        <p>Use <code>download</code> attr to download resources rather than navigate to them:</p>
+        <pre>
+&lt;a href="path/to/logo.png" download="MyLogo.png">download&lt;/a>
+</pre>
+      </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+       <p>Novel Generator</p>
+       <p><a href="http://html5-demos.appspot.com/static/a.download.html" class="demo">Launch</a>
+       </p> 
+    </div>
+  </article>
+
+<!--
+  <article>
+    <h3>Example</h3>
+      <pre>
+var downloadLink = function(name, content, mimetype) {
+  // Blob ctor in Chrome 20, FF 13. Otherwise, use BlobBuilder.
+  var blob = new Blob([content], {type: mimetype});
+
+  var a = document.createElement('a');
+  a.href = window.<i>webkit</i>URL.createObjectURL(blob);
+  <b>a.download</b> = name;
+  a.textContent = 'Download ready';
+
+  document.body.appendChild(a);
+};
+
+downloadLink('MyNovel.txt', 'hello world', 'text/plain');
+</pre>
+  </article>
+-->
+
+<!--
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>Complex data<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+   <h3>TypedArrays: building blocks of new HTML5 hotness</h3>
+    <ul class="build">
+      <li>XHR2 <code>xhr.responseType = 'arraybuffer'</code></li>
+      <li>File APIs <code>FileReader.readAsArrayBuffer(file)</code></li>
+      <li>WebGL ( textures )</li>
+      <li>Binary Websockets <code>ws.binaryType = 'arraybuffer'</code></li>
+      <li>&lt;canvas&gt; <code>ctx.getImageData().data == Uint8ClampedArray</code></li>
+      <li>Transferable Objects <code>webkitPostMessage()</code></li>
+      <li>Media Source API  <code>video.webkitSourceAppend(new Uint8Array(...))</code></li>
+      <li>Web Audio API</li>
+    </ul>
+  </article>
+-->
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size:230%;">Efficiently share data<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <h3 style="font-size:55px;">Evolution of <code>postMessage()</code></h3>
+    </div>
+  </article>
+
+  <article>
+    <hgroup>
+      <h3>Evolution of <code>postMessage()</code></h3>
+       <span>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/web-messaging.html#web-messaging" class="spec" title="window.postMessage() spec link"></a>
+        <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#dedicatedworkerglobalscope" class="spec" title="worker.postMessage() spec link"></a>
+      </span>
+    </hgroup>
+    <section class="build toppadding">
+    <div>
+      <p>1. Basic strings</p>
+    <pre class="prettyprint" data-lang="js">
+worker.postMessage(<b>'Hello World'</b>);
+window.postMessage(<b>JSON.stringify({msg: 'Hello World'})</b>, '*');
+</pre>
+    </div>
+    <div>
+      <p>2. JSON</p>
+<pre class="prettyprint" data-lang="js">
+worker.postMessage(<b>{msg: 'Look ma, no strings!'}</b>);
+</pre>
+    </div>
+    </section>
+  </article>
+
+  <article>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Structured cloning support: Chrome 13, FF 5</li>
+        </ul>
+      </section>
+    </aside>
+    <hgroup>
+      <h3>Evolution of <code>postMessage()</code></h3>
+    </hgroup>
+      <p>3. Complex types (<code>File</code>, <code>Blob</code>, <code>ArrayBuffer</code>) via structured cloning</p>
+      <pre class="prettyprint" data-lang="js">
+var data = [1, 2, 3, 4];
+
+// Blob ctor in Chrome 20, FF 13
+worker.postMessage(<b>new Blob(data.toString(), {type: 'text/plain'})</b>);
+
+var uint8Array = new Uint8Array(data);
+worker.postMessage(<b>uint8Array</b>);
+worker.postMessage(<b>uint8Array.buffer</b>);
+</pre>
+      <ul class="build">
+        <li>All of these methods are copies => not efficient</li>
+        <li>We can do better...</li>
+      </ul>
+  </article>
+
+  <article>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Support: Chrome 17</li>
+        </ul>
+        <img src="http://updates.html5rocks.com/images/AMIfv959PwANd2tlxUM1XsZQo8xh9gwf2sZ1HXlNSXpT_8b8n4rkQbMBOui6om36pCbWf8fi1HY8xN4jRekXj_9z6luyPhL8qTH0oYSRjrI8vYZLgU0TnBPL5B1ZUcwOgAs7bucEQbIG6esq0xJU5amkWfcgCWbr8Q">
+      </section>
+    </aside>
+    <hgroup>
+      <h3>Transferable Objects</h3>
+    </hgroup>
+      <p>a.k.a. workers that "don't suck"</p>
+      <p>Same old friend, different semantics:</p>
+      <pre class="prettyprint" data-lang="js">
+worker.<b>webkitPostMessage</b>(arrayBuffer, [arrayBuffer]);
+window.<b>webkitPostMessage</b>(arrayBuffer, targetOrigin, [arrayBuffer]);
+</pre>
+      <ul class="build">
+        <li>Zero-copy
+          <ul>
+            <li>Ownership of data (<code>ArrayBuffer</code>) is transferred to new context (e.g. worker/window).</li>
+            <li>Source buffer becomes unavailable.</li>
+            <li>~50x faster than structured cloning (Chrome 13/FF).</li>
+          </ul>
+        </li>
+        <li>2nd argument is list of what to transfer.</li>
+        <li>Prefixed because of semantic changes.</li>
+      </ul>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+       <p>Transferable Object Demo</p>
+       <p class="centered"><a href="http://html5-demos.appspot.com/static/workers/transferables/index.html" class="demo" target="_blank">Launch</a></p> 
+    </div>
+  </article>
+
+<!--
+  <article>
+    <h3>Real examples</h3>
+      <p>Send user-selected files to another window:</p>
+      <pre>
+var input = document.querySelector('input[type="file"]');
+input.addEventListener('change', function(e) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var arrayBuffer = e.target.result;
+    window.<b>webkitPostMessage</b>(arrayBuffer, '*', [arrayBuffer]);
+  };
+  reader.readAsArrayBuffer(this.files[0]);
+});
+</pre>
+      <p>Pass multiple buffers at once and/or additional data:</p>
+      <pre>
+worker.<b>webkitPostMessage</b>({
+  view1: uInt8Array,
+  buffer2: anotherBuffer,
+  username: 'johndoe'
+}, [uInt8Array.buffer, anotherBuffer]);
+</pre>
+  </article>
+
+  <article>
+    <h3>Feature Detection</h3>
+    <ul>
+      <li>PITA due to false positives.</li>
+      <li>If transferred, buffer's <code>.byteLength</code> goes to zero.</li>
+    </ul>
+    <pre class="prettyprint" data-lang="js">
+var ab = new ArrayBuffer(1);
+worker.webkitPostMessage(ab, [ab]);
+if (ab.byteLength) {
+  alert('Transferables are not supported in your browser!');
+} else {
+  // Transferables are supported.
+}
+</pre>
+  </article>
+-->
+
+<!--
+  <article class="fill">
+    <div class="vflex middle center" style="height:100%">
+      <h1 class="red centered"><strong data-blowup>HOTNESS!</strong></h1>
+    </div>
+  </article>
+  <script>
+  (function() {
+    var el = document.querySelector('[data-blowup]');
+    el.addEventListener('click', function(e) {
+      this.classList.toggle('blowup');
+      this.parentNode.parentNode.parentNode.classList.toggle('blowup-shadow');
+    }, false);
+  })();
+  </script>
+-->
+
+<!--
+  <article class="fill" onslideleave="playGameSound('../sounds/smb_pipe.wav');">
+    <img src="images/joystick.jpg">
+    <h2 class="topright white shadow" style="font-family: Orbitron;">Games</h2>
+  </article>
+
+<!--
+  <article onslideleave="playGameSound('../sounds/smb_jump-super.wav');">
+   <hgroup>
+      <h3>Mouse Lock API / Pointer Lock</h3>
+      <span>
+        <img src="../images/icons/radar.svg" class="radar" title="Coming soon...keep it on your radar!">
+        <a href="http://crbug.com/72754" class="bug" title="Bug link"></a>
+        <a href="http://dvcs.w3.org/hg/webevents/raw-file/default/mouse-lock.html" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en/API/Mouse_Lock_API">MDN Documentation</a></li>
+          <li>Prefixed in WebKit: <code>navigator.webkitPointer</code></li>
+          <li>For Chrome, enabled in <code>about:flags</code> or run with <code>--enable-pointer-lock</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build fade">
+      <li>Removes cursor from view.</li>
+      <li>Eliminates boundaries of the browser window/screen.</li>
+      <li>Locks mouse events to a single element (<code>mousemove</code>, <code>mousedown</code>).</li>
+      <li>Others events that require a mouse cursor are not fired (<code>mouseover</code>, <code>mouseout</code>).</li>
+      <li><code>MouseEvent</code> contains new <code>e.movementX</code> / <code>e.movementY</code>, which
+      are the deltas in movement.</li>
+      <li>Ideal for first-person shooters and 3D modeling apps.</li>
+      <li>Browsers will likely throw up a permission prompt.</li>
+      <li>Targeting Chrome 19, FF 11 or 12.</li>
+    </ul>
+  </article>
+
+  <article class="smaller" onslideleave="playGameSound('../sounds/smb_jump-super.wav');">
+    <h3>Mouse Lock API / Pointer Lock</h3>
+    <p><label class="underline">Problem</label>: The web needs 3D first-person shooters</p>
+    <div class="build toppadding">
+    <pre>
+// Note: webkit and moz vendor prefixes are not shown.
+
+document.body.addEventListener('click', function(e) {
+  if (!document.isFullScreen) { // Chrome requires fullscreen to succeed.
+    document.body.requestFullScreen();
+  } else if (<b>navigator.pointer.isLocked</b>) {
+    <b>navigator.pointer.unlock();</b>
+  } else {
+    document.cancelFullScreen();
+  }
+}, false);
+
+document.addEventListener('fullscreenchange', function(e) {
+  if (document.isFullScreen) {
+    <b>navigator.pointer.lock</b>(document.body, function() { // LOCK IT UP! },
+    function(e) {
+      console.log('Mouse lock unsuccessful', e);
+    });
+  }
+}, false);
+
+document.body.addEventListener(<b>'mouselocklost'</b>, function(e) { ... }, false);
+</pre>
+    <p class="centered">
+      <a href="../demos/mouselock.html" class="demo">Demo</a> <a href="http://humphd.github.com/mozilla-central/mouselock/" class="demo">Demos</a> 
+    </p>
+  </article>
+
+  <article class="" onslideleave="playGameSound('../sounds/smb_stage_clear.wav');">
+    <h3>Gamepad API <img src="../images/icons/gamecontroller.svg" style="vertical-align:middle;height:23px"></h3>
+    <pre>
+function runAnimation() {
+  reqId = window.webkitRequestAnimationFrame(runAnimation);
+
+  for (var i in controllers) {
+    var pad = navigator.webkitGamepads[i];
+    //pad.id // string for brand/style of connected device.
+    //pad.index // index of the gamepad in navigator.gamepads.
+    //pad.timestamp // last time data for the gamepad was updated.
+    //pad.axes // array of all axes values [-1..1, -1..1].
+    //pad.buttons // array of all button values [0..1, 0..1, 0..1].
+  }
+}
+</pre>
+    <p class="centered">
+      <a href="/demos/pacman/pacman.html" class="demo">Demo</a>
+    </p>
+  </article>
+-->
+
+<!--
+ <article>
+    <hgroup>
+      <h3>Video subtitles using &lt;track&gt;</h3>
+      <span>
+        <a href="http://webk.it/43668" target="_blank" class="bug" title="Bug link"></a>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#the-track-element" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Needs <code>--enable-video-track</code> flag set in Chrome Canary. Also enable in <code>about:flags</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Subtitles are created in the <a href="http://dev.w3.org/html5/webvtt/" target="_blank">WebVTT</a> format.</p>
+    <pre>
+&lt;video width="390" id="clip" controls&gt;
+  &lt;source src="movie.webm" type='video/webm; codecs="vp8, vorbis"' />
+  &lt;<b>track</b> kind="subtitles" src="<em>subtitles-en.vtt</em>" srclang="en" 
+         label="English subtitles" default />
+&lt;/video>
+</pre>
+    <div id="video-column">
+      <video width="390" id="track-clip" controls>
+        <source src="../demos/Google_Developer_Stories.webm2" type='video/webm; codecs="vp8, vorbis"'>
+        <track label="English subtitles" kind="subtitles" srclang="en" src="../demos/video-subtitles-en.vtt" default>
+        Your browser does not support the video tag
+      </video>
+    </div>
+    <div id="track-column">
+      <textarea readonly></textarea>
+    </div>
+    <p><a href="http://html5-demos.appspot.com/static/video/track/index.html" class="demo" target="_blank">Demo</a></p>
+  </article>
+  <script>
+    (function() {
+      var track = document.querySelector('#track-clip track');
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', track.src, true);
+      xhr.onload = function(e) {
+        document.querySelector('#track-column textarea').textContent = e.target.response;
+      };
+      xhr.send();
+    })();
+  </script>
+
+  <article class="smaller">
+    <hgroup>
+      <h3>&lt;track&gt; ( JS API )</h3>
+      <span>
+        <a href="http://dev.w3.org/html5/spec/Overview.html#text-track-api" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Information on each <code>TextTrack</code>:</p>
+    <pre>
+var track = video.textTracks[0];
+track.mode = TextTrack.HIDDEN; // Hide, show (SHOWING), or disable (DISABLE) track.
+track.oncuechange = function(e) {
+  ...
+};
+</pre>
+    <p>Information on each <code>TextTrackCue</code>:</p>
+    <pre>
+var allCues = track.cues; (TextTrackCueList)
+var activeCue = track.activeCues[0]; (TextTrackCue)
+activeCue.id (DOMString)
+activeCue.startTime (bool)
+activeCue.endTime (bool)
+activeCue.pauseOnExit (bool)
+activeCue.getCueAsHTML(); (DocumentFrament)
+
+activeCue.onenter = function(e) { ... };
+activeCue.onexit = function(e) {  ... };
+</pre>
+    <p class="centered">
+      <a href="http://html5-demos.appspot.com/static/video/track/index.html" class="demo" target="_blank">Demo</a>
+    </p>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+       <p>Map Track</p>
+       <p><a href="http://samdutton.net/mapTrack/index.html" class="demo" target="_blank">Demo</a>
+       </p> 
+    </div>
+  </article>
+
+  <article>
+    <h3>Not just for video</h3>
+    <p>Play scheduled portions of a given audio file:</p>
+    <pre>
+var sfx = new Audio('sfx.wav');
+var track = a.addTextTrack('metadata');
+
+// Add cues for sounds we care about.
+track.addCue(
+  new TextTrackCue('dog bark', 12.783, 13.612, '', '', '', true));
+track.addCue(
+  new TextTrackCue('kitten mew', 13.612, 15.091, '', '', '', true));
+
+function playSound(id) {
+  sfx.currentTime = track.getCueById(id).startTime;
+  sfx.play();
+}
+
+playSound('dog bark');
+playSound('kitten mew');
+</pre>
+  </article>
+-->
+
+  <!--<article class="fill">
+    <h2 class="megabottom">Web RTC</h2>
+    <div class='source'>
+      <a href="http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/">http://www.flickr.com/photos/ironrodart/4155664186/sizes/l/in/photostream/</a>
+    </div>
+    <img src="images/phonebank.jpg">
+  </article>-->
+
+  <article class="can" style="background: none !important;" data-body-class="tools">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size:230%;">Access Native Hardware<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+   <h3>"Device APIs"</h3>
+    <ul class="build">
+      <li>Geolocation API</li>
+      <li>Device Orientation API ( accelerometer )</li>
+      <li>WebGL ( GPU )</li>
+      <li>HTML5 Filesystem API ( sandboxed filesystem )</li>
+      <li><code>navigator.onLine</code> ( network connectivity )</li>
+      <li><code>navigator.connection</code> ( network status/speeds )</li>
+      <li>Gamepad API</li>
+      <li>WebRTC ( voice & video input )</li>
+      <li>Web Audio API (core audio)</li>
+    </ul>
+  </article>
+
+  <article>
+    <h3>First step to speech enabled apps!</h3>
+    <div class="vflex middle center" style="height:80%">
+      <input id="speech-input-textbox" type="text" x-webkit-speech style="width:400px;height:50px;font-size:135%;">
+           <pre>
+&lt;input type="text" <b>x-webkit-speech</b>&gt; 
+</pre>
+    </div>
+  </article>
+
+  <article>
+    <h3>Camera &amp; microphone access</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Prefixed as <code>navigator.webkitGetUserMedia()</code> in WebKit</li>
+          <li><code>window.URL</code> is prefixed as <code>window.webkitURL</code> in WebKit</li>
+          <li>Needs <code>--enable-media-stream</code> flag in Chrome.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Plugin-free acess to camera/microphone.</p>
+    <pre class="centered">
+&lt;video autoplay controls&gt;&lt;/video&gt;
+</pre>
+    <pre>
+window.URL = window.webkitURL || window.URL;
+navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia;
+
+<b>navigator.getUserMedia</b>({audio: true, video: true}, function(s) {
+  var video = document.querySelector('video');
+  video.src = <b>window.URL.createObjectURL(s)</b>;
+}, function(e) {
+  console.log(e);
+});
+</pre>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="http://html5-demos.appspot.com/static/getusermedia/photobooth.html">Photo booth</a></li>
+      <li><a href="http://neave.com/webcam/html5/">Live Effects</a></li>
+      <li><a href="http://www.html5rocks.com/en/tutorials/webgl/jsartoolkit_webrtc/">Augmented Reality</a></li>
+      <li><a href="http://learningthreejs.com/data/live-video-in-webgl/">WebGL Live TV</a></li>
+      <li><a href="http://people.opera.com/danield/webapps/instant-camera/">Instant Camera</a></li>
+      <li><a href="http://people.opera.com/danield/html5/explode/">Explode Video</a></li>
+    </ul>
+  </article>
+
+<!--
+  <article>
+    <h3>Recording content</h3>
+    <pre>
+&lt;input type="button" value="⚫" onclick="record(this)">
+&lt;input type="button" value="◼" onclick="stop(this)">
+</pre>
+    <pre>
+var localMediaStream, recorder;
+
+var record = function(button) {
+  recorder = localMediaStream.record();
+};
+
+var stop = function(button) {
+  localMediaStream.stop();
+  recorder.getRecordedData(function(blob) {
+    // Upload blob using XHR2.
+  });
+};
+</pre>
+  </article>
+-->
+
+<!--
+  <article class="can" style="background: none !important;" data-body-class="audio">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size:220%;">Realtime Audio Processing<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <h3>In the olden days...</h3>
+    <div class="build">
+    <pre class="centered">
+&lt;bgsound="xfiles.mid" controls="console" loop="5"&gt;
+</pre>
+    <pre>
+&lt;!-- Autostart! Yay! --&gt;
+&lt;embed src="hamsterdance.wav" autostart="true"
+       loop="true" hidden="true"&gt;
+&lt;noembed&gt;
+  &lt;bgsound src="hamsterdance.wav"&gt;
+&lt;/noembed&gt;
+</pre>
+    <div>
+    .... and of course embedded Flash
+    </div>
+  </article>
+
+  <article>
+    <h3>Now web have HTML5 &lt;audio&gt;...what gives?</h3>
+    <ul class="build fade">
+      <li>Yes :)...but &lt;audio&gt; can only take us so far</li>
+      <li>Codec support issues</li>
+      <li>Simple low-latency, glitch-free, audio playback and scheduling</li>
+      <li>Real-time processing and analysis</li>
+      <li>Low-level audio manipulation</li>
+      <li>Effects: spatial panning, low/high pass filters, convolution, gain, ...</li>
+    </ul>
+  </article>
+-->
+
+<!--
+  <article>
+    <h3>Comparison to Mozilla's Audio Data API</h3>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>Mozilla <a href="https://wiki.mozilla.org/Audio_Data_API" target="_new">Audio Data API</a> spec</li>
+          <li><a href="http://chromium.googlecode.com/svn/trunk/samples/audio/specification/specification.html" target="_new">Web Audio API</a> spec</li>
+        </ul>
+      </section>
+    </aside>
+    <ul class="build">
+      <li>Similarities:
+        <ul>
+          <li>Extends the &lt;audio&gt; element</li>
+          <li>Generate audio</li>
+          <li>Load + manipulate sound files</li>
+        </ul>
+      </li>
+      <li>Differences:
+        <ul>
+          <li>FF intensive audio processing operations must be done in JS (slow).
+          Web Audio API exposes calls for <a href="http://chromium.googlecode.com/svn/trunk/samples/audio/index.html" target="_blank">common effects/operations</a> under the covers.</li>
+          <li>Nodes are created + hooked up to produce overall audio system.</li>
+        </ul>
+      </li>
+    </ul>
+  </article>
+-->
+
+<!--
+  <article class="smaller">
+    <h3>Scheduled playback</h3>
+    <aside class="note">
+      <section class="centered">
+        <p>Prefixed in WebKit as <code>window.webkitAudioContext()</code></p>
+        <p><img src="../images/audio-routing.png" style="height:200px"></p>
+      </section>
+    </aside>
+    <section>
+      <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+
+function playSound(arrayBuffer) { // Obtain arrayBuffer from XHR2.
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.loop = false;
+    src.connect(ctx.destination);
+    src.noteOn(0); // Play immediately.
+  }, function(e) {
+    console.log(e);
+  });
+}
+</pre>
+    </section>
+    <p>
+      Shoot: <button onclick="shootGun()">Now</button>
+      <button onclick="shootGun(2)">2s delay</button>
+      <button onclick="shootGun(-1)">Loopy</button>
+      <button onclick="stopGun()">Stop</button>
+      <input type="number" id="currentTime" readonly value="0" title="currentTime">
+    </p>
+  </article>
+  <script>
+  (function() {
+   var currentTime = document.getElementById('currentTime');
+
+   if (window.webkitAudioContext) {
+     var ctx = new webkitAudioContext();
+     var sample = null;
+     var src = null;
+     var reqAnimFrame = null;
+
+     window.shootGun = function(opt_delay) {
+       stopGun();
+
+       src = ctx.createBufferSource();
+       src.buffer = sample;
+       src.connect(ctx.destination);
+
+       (function callback(time) {
+         currentTime.value = ctx.currentTime;
+         reqAnimFrame = window.requestAnimationFrame(callback);
+       })();
+
+       if (opt_delay && opt_delay == -1) {
+         src.loop = true;
+         src.noteGrainOn(0, 0.1, 0.3);
+       } else if (opt_delay) {
+         src.noteOn(opt_delay + ctx.currentTime);
+       } else {
+         src.noteOn(0); // play immediately.
+       }
+     };
+
+     window.stopGun = function() {
+       if (src) {
+         src.noteOff(0);
+         window.cancelRequestAnimationFrame(reqAnimFrame);
+       }
+     };
+
+     var request = new XMLHttpRequest();
+     request.open('GET', '../sounds/boing.ogg', true);
+     request.responseType = 'arraybuffer';
+     request.onload = function() {
+       ctx.decodeAudioData(request.response, function(buffer) {
+         sample = buffer;
+       }, function(e) {
+         console.log(e);
+       });
+     };
+     request.send();
+   }
+  })();
+  </script>
+
+<article class="smaller">
+  <h3>Sample-accurate scheduling</h3>
+  <pre>
+function playSound(buffer, time) {
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.noteOn(time);
+}
+
+// Play the bass (kick) drum on beats 1, 5
+playSound(kick, time);
+playSound(kick, time + 4 * eighthNoteTime);
+
+// Play the snare drum on beats 3, 7
+playSound(snare, time + 2 * eighthNoteTime);
+playSound(snare, time + 6 * eighthNoteTime);
+
+// Play the hi-hat every eighth note.
+for (var i = 0; i &lt; 8; ++i) {
+  playSound(hihat, time + i * eighthNoteTime);
+}
+</pre>
+    <p class="centered">
+      <img src="../images/rhythm.png" style="vertical-align:middle;margin-top:-20px">
+      <button onclick="playRhythm();">Play</button>
+    </p>
+  </article>
+<script>
+(function() {
+var ctx = new webkitAudioContext();
+var BUFFERS = {}
+var BUFFERS_TO_LOAD = {
+  kick: '../sounds/kick.wav',
+  snare: '../sounds/snare.wav',
+  hihat: '../sounds/hihat.wav'
+};
+
+function loadBuffers() {
+  // Array-ify
+  var names = [];
+  var paths = [];
+  for (var name in BUFFERS_TO_LOAD) {
+    var path = BUFFERS_TO_LOAD[name];
+    names.push(name);
+    paths.push(path);
+  }
+  bufferLoader = new BufferLoader(ctx, paths, function(bufferList) {
+    for (var i = 0; i < bufferList.length; i++) {
+      var buffer = bufferList[i];
+      var name = names[i];
+      BUFFERS[name] = buffer;
+    }
+  });
+  bufferLoader.load();
+}
+
+var RhythmSample = {};
+
+function playSound(buffer, time) {
+  var source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(ctx.destination);
+  source.noteOn(time);
+}
+
+window.playRhythm = function() {
+  var kick = BUFFERS.kick;
+  var snare = BUFFERS.snare;
+  var hihat = BUFFERS.hihat;
+
+  // We'll start playing the rhythm 100 milliseconds from "now"
+  var startTime = ctx.currentTime + 0.100;
+  var tempo = 100; // BPM (beats per minute)
+  var eighthNoteTime = (60 / tempo) / 2;
+
+  // Play 2 bars of the following:
+  for (var bar = 0; bar < 2; bar++) {
+    var time = startTime + bar * 8 * eighthNoteTime;
+    // Play the bass (kick) drum on beats 1, 5
+    playSound(kick, time);
+    playSound(kick, time + 4 * eighthNoteTime);
+
+    // Play the snare drum on beats 3, 7
+    playSound(snare, time + 2 * eighthNoteTime);
+    playSound(snare, time + 6 * eighthNoteTime);
+
+    // Play the hi-hat every eighthh note.
+    for (var i = 0; i < 8; ++i) {
+      playSound(hihat, time + i * eighthNoteTime);
+    }
+  }
+};
+
+loadBuffers();
+})();
+</script>
+
+  <article>
+    <section class="vflex middle center" style="height:95%">
+      <p class="centered">
+        <h3>Bohemian Rhapsichord</h3>
+        <a href="http://static.echonest.com/BohemianRhapsichord/index.html" class="demo" target="_blank">Demo</a>
+      </p>
+    </section>
+  </article>
+
+  <article>
+    <h3>Gain Control - cross fade</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing-crossfade.png"></p>
+      </section>
+    </aside>
+    <pre>
+var source = context.createBufferSource();
+var gainNode = context.createGainNode();
+source.buffer = buffer;
+source.connect(gainNode);
+gainNode.connect(context.destination);
+</pre>
+  <p><button onclick="crosstoggle();">Play/Pause</button>
+  Drums <input type="range" min="0" max="100" value="100" onchange="setcrossfade(this);" /> Organ</p>
+  </article>
+
+<script>
+(function() {
+var ctl1, ctl2;
+var playing = false;
+
+var ctx = new webkitAudioContext();
+var BUFFERS = {}
+var BUFFERS_TO_LOAD = {
+  drums: '../sounds/drums.wav',
+  organ: '../sounds/organ.wav',
+};
+function loadBuffers() {
+  // Array-ify
+  var names = [];
+  var paths = [];
+  for (var name in BUFFERS_TO_LOAD) {
+    var path = BUFFERS_TO_LOAD[name];
+    names.push(name);
+    paths.push(path);
+  }
+  bufferLoader = new BufferLoader(ctx, paths, function(bufferList) {
+    for (var i = 0; i < bufferList.length; i++) {
+      var buffer = bufferList[i];
+      var name = names[i];
+      BUFFERS[name] = buffer;
+    }
+  });
+  bufferLoader.load();
+}
+
+cross_play = function() {
+  // Create two sources.
+  ctl1 = createSource(BUFFERS.drums);
+  ctl2 = createSource(BUFFERS.organ);
+  // Mute the second source.
+  ctl1.gainNode.gain.value = 0;
+  // Start playback in a loop
+  ctl1.source.noteOn(0);
+  ctl2.source.noteOn(0);
+  // Set the initial crossfade to be just source 1.
+  setcrossfade(0);
+
+  function createSource(buffer) {
+    var source = ctx.createBufferSource();
+    var gainNode = ctx.createGainNode();
+    source.buffer = buffer;
+    // Turn on looping
+    source.loop = true;
+    // Connect source to gain.
+    source.connect(gainNode);
+    // Connect gain to destination.
+    gainNode.connect(ctx.destination);
+
+    return {
+      source: source,
+      gainNode: gainNode
+    };
+  }
+};
+
+cross_stop = function() {
+  ctl1.source.noteOff(0);
+  ctl2.source.noteOff(0);
+};
+
+// Fades between 0 (all source 1) and 1 (all source 2)
+window.setcrossfade = function(element) {
+  var x = parseInt(element.value) / parseInt(element.max);
+  // Use an equal-power crossfading curve:
+  var gain1 = 0.5 * (1.0 + Math.cos(x * Math.PI));
+  var gain2 = 0.5 * (1.0 + Math.cos((1.0 - x) * Math.PI));
+  ctl1.gainNode.gain.value = gain1;
+  ctl2.gainNode.gain.value = gain2;
+};
+
+window.crosstoggle = function() {
+  playing ? cross_stop() : cross_play();
+  playing = !playing;
+};
+
+loadBuffers();
+})();
+</script>
+
+  <article>
+    <section class="vflex middle center" style="height:95%">
+      <p class="centered">
+        <h3>Sound Toy - generating sound</h3>
+        <a href="http://www.iquilezles.org/apps/soundtoy/index.html" class="demo" target="_blank">Demo</a>
+      </p>
+    </section>
+  </article>
+
+  <article class="smaller">
+    <h3>Generating sound</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing.png" style="height:200px"></p>
+      </section>
+    </aside>
+      <pre>
+var sine = new Oscillator(DSP.SINE, 440, 1.0, 2048, 44100).generate(); // dsp.js
+
+var src = ctx.createBufferSource();
+src.buffer = <b>ctx.createBuffer</b>(1 /*channels*/, 2048, 44100);
+<b>src.buffer.getChannelData(0)</b>.set(sine);
+<b>src.loop = true;</b>
+
+src.connect(ctx.destination);
+src.noteOn(0);
+</pre>
+    <iframe style="border:none;width:800px;height:250px;" src="http://www.htmlfivewow.com/demos/waveform-generator/index.html"></iframe>
+  </article>
+-->
+
+  <article class="can" style="background: none !important;" data-body-class="audio">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size:230%;">Visualize HTML5 &lt;audio&gt;<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+       <p>Visualize HTML5 &lt;audio&gt;</p>
+       <p><a href="http://html5-demos.appspot.com/static/webaudio/createMediaSourceElement.html" class="demo">Launch</a>
+       </p> 
+    </div>
+  </article>
+
+  <article>
+    <hgroup>
+      <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing.png" style="height:200px"></p>
+      </section>
+    </aside>
+      <h3>Web Audio API integration with <code>&lt;audio&gt;</code>/<code>&lt;video&gt;</code></h3>
+      <span>
+        <a href="http://crbug.com/79949" target="_blank" class="bug" title="Bug link"></a>
+        <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html#AudioElementIntegration-section" target="_blank" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <p>Use an <code>HTMLMediaElement</code> as the source to the API:</p>
+    <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+var audioElement = new Audio();
+audioElement.src = 'sounds/dope_beats.mp3';
+audioElement.controls = true;
+audioElement.autoplay = true;
+
+<b>var source = ctx.createMediaElementSource(audioElement);</b>
+var analyser = ctx.createAnalyser();
+
+source.connect(analyser);
+analyser.connect(ctx.destination);
+</pre>
+    <p><b>Note</b>: There's no <code>source.noteOn(0)</code>. Play/pause is controlled by the <code>&lt;audio&gt;</code> element.</p>
+  </article>
+
+  <article>
+    <h3>Demos</h3>
+    <ul>
+      <li><a href="http://www.technitone.com/">Technitone</a></li>
+      <li><a href="http://labs.dinahmoe.com/plink/">Plink</a></li>
+      <li><a href="http://static.echonest.com/BohemianRhapsichord/index.html">Bohemian Rhapsichord</a></li>
+      <li><a href="http://airtightinteractive.com/demos/js/reactive/">3D Audio Visualizer</a></li>
+      <li><a href="http://www.htmlfivewow.com/demos/hal/index.html">GAL 9000</a></li>
+      <li><a href="http://www.htmlfivewow.com/demos/audio-visualizer/index.html">HTML5Wow Visualizer</a></li>
+      <li><a href="http://alteredqualia.com/three/examples/webgl_city.html">WebGL City</a></li>
+      <li><a href="http://www.iquilezles.org/apps/soundtoy/index.html">Sound Toy</a></li>
+    </ul>
+  </article>
+
+  <article class="smaller">
+    <h3>Realtime audio processing</h3>
+    <aside class="note">
+      <section class="centered">
+        <p><img src="../images/audio-routing-analysis.png" style="width:530px"></p>
+      </section>
+    </aside>
+    <pre>
+var ctx = new <em>webkit</em><b>AudioContext</b>();
+var analyser = <b>ctx.createAnalyser</b>();
+
+function initAudio(arrayBuffer) {
+  ctx.decodeAudioData(arrayBuffer, function(buffer) {
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    <b>src.connect(analyser);</b> // src -> analyser -> destination
+    <b>analyser.connect(ctx.destination);</b>
+    render(src);
+  }, function(e) {
+    console.log('Error decoding audio file', e);
+  });
+}
+
+function render(src) {
+  (function callback(timeStamp) {
+    <b>var byteData = new Uint8Array(analyser.frequencyBinCount);</b>
+    <b>analyser.getByteFrequencyData(byteData);</b>
+
+    // draw byteData to &lt;canvas&gt; visualization...
+
+    window.requestAnimationFrame(callback, src);
+  })();
+}
+</pre>
+  </article>
+
+  <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1 style="font-size:230%;">Stream multimedia<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article>
+    <h3>Binary WebSockets</h3>
+    <ul>
+      <li>WebSockets suffered the same limitations as Workers.</li>
+      <li>Stream <code>File</code>, <code>Blob</code>, <code>ArrayBuffer</code>.</li>
+    </ul>
+    <div class="build">
+      <p>New look, same great taste!</p>
+    <pre>
+window.URL = window.webkitURL || window.URL;
+
+var ws = new WebSocket('ws://example.com/sock', ['dumby-protocol']);
+<b>ws.binaryType = 'blob';</b> // or 'arraybuffer'
+
+ws.onopen = function(e) {
+  console.log('Connection OPEN');
+};
+
+ws.onmessage = function(e) {
+  // e.data.__proto__ === Blob.prototype
+  document.querySelector('img').src = URL.createObjectURL(e.data);
+};
+</pre>
+  </div>
+  </article>
+
+<!--
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <p>WebSocket Audio Streamer</p>
+      <p><a href="http://localhost:3000/" class="demo">Launch</a></p>
+    </div>
+  </article>
+-->
+
+<!--
+  <article class="smaller">
+    <hgroup>
+      <h3>Media Source API</h3>
+      <span>
+        <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" class="spec" title="Spec link"></a>
+      </span>
+    </hgroup>
+    <aside class="note">
+      <section>
+        <ul>
+          <li>For Chrome (17+), enabled in <code>about:flags</code> or run with <code>--enable-media-source</code>.</li>
+        </ul>
+      </section>
+    </aside>
+    <p>Allows you to append media to a <code>HTMLMediaElement</code></p>
+    <pre>
+var video = document.querySelector('video');
+<b>video.src = video.webkitMediaSourceURL;</b>
+
+video.addEventListener(<b>'webkitsourceopen'</b>, function(e) {
+  while(!isLastChunk) {
+    <b>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</b>
+    ...
+  }
+  <b>video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);</b>
+}, false);
+
+video.addEventListener(<b>'webkitsourceended'</b>, function(e) {
+  console.log(<b>video.webkitSourceState</b> == <b>HTMLMediaElement.SOURCE_CLOSED</b>);
+}, false);
+</pre>
+    <ul class="build">
+      <li><code>video.src = video.webkitMediaSourceURL;</code> opens the stream.</li>
+      <li><code>video.webkitSourceAppend(new Uint8Array(arrayBuffer));</code> appends data.</li>
+      <li>Only <code>.webm</code> container is supported for now.</li>
+    </ul>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+       <p>Adaptive Streaming</p>
+       <p class="centered"><a href="http://downloads.webmproject.org/adaptive-demo/adaptive/dash-player.html" class="demo" target="_blank">Demo</a></p> 
+    </div>
+  </article>
+-->
+
+    <article class="can" style="background: none !important;">
+    <div class="vflex middle center" style="height:90%">
+      <h1>No time for #10<img src="../images/HTML5_Badge_256.png"></h1>
+    </div>
+  </article>
+
+  <article id="wrapup">
+    <h3>Wrap up</h3>
+    <ol></ol> <!-- dynamically filled -->
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:90%">
+      <h1 class="blue"> <img src="../images/HTML5_Badge_256.png" style="height:70px;vertical-align:middle;margin-bottom:10px;"> Fin.</h1>
+    </div>
+  </article>
+
+  <article>
+    <div class="vflex middle center" style="height:100%">
+      <div id="chrome-heart" class="spin"></div>
+      <h1 style="display:inline"><div class="jitter"></div> <img src="../images/HTML5_Badge_256.png" style="height: 85px;margin-bottom: -12px;"></h1>
+      <p style="margin-top:1em"><h3>Thanks! Questions?</h3></p>
+    </div>
+  </article>
+
+  <!--<article class="biglogo"></article>-->
+
+</section>
+
+<script src="http://code.angularjs.org/1.0.0rc10/angular-1.0.0rc10.min.js" async></script>
+<script src="http://webintents.org/webintents.js" async></script>
+<!--<script src="http://html5-demos.appspot.com/static/gdd11-modern-web-apps/helpers/dnd-lib.js"></script>-->
+<script> 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script> 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

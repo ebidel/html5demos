@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>Simple Mouse Lock API demo</title>
+</head>
+<body>
+<pre id="log"></pre>
+<div>
+  <p>Click to enter mouselock, click again to unlock, click again to exit full screen. </p>
+</div>
+<div style="background-color:blue; width:500px; height:500px;" id="div">
+  <p style="color:White" id='info'>Demo page</p>
+</div>
+<script>
+var ele = document.getElementById('div');
+var infoText = document.getElementById('info');
+
+var pointer = navigator.pointer || navigator.webkitPointer || navigator.mozPointer;
+
+if (!pointer) {
+  alert('Mouse Lock API not available.')
+}
+
+pointer.isLocked = pointer.isLocked || pointer.islocked; // isLocked() is the W3C. FF is out of date.
+
+document.cancelFullScreen = document.webkitCancelFullScreen || document.mozCancelFullScreen;
+
+document.body.addEventListener('click', function(e) {
+
+  // Chrome requires fullscreen for mouse lock to succeed.
+  if (!(document.webkitIsFullScreen || document.mozFullScreen)) {
+    if (ele.webkitRequestFullScreen) {
+      ele.webkitRequestFullScreen();
+    } else {
+      ele.mozRequestFullScreen();
+    }
+  } else if (pointer.isLocked) {
+    pointer.unlock();
+  } else {
+    document.cancelFullScreen();
+  }
+}, false)
+
+// Mouse move event listener
+ele.addEventListener('mousemove', function(e) {
+  if (pointer.isLocked) {
+    infoText.innerHTML = 'Movement X: ' + e.webkitMovementX + ' Movement Y: '+ e.webkitMovementY + '  Client X: ' + e.clientX + '   Client Y: ' + e.clientY + ' Screen X: ' + e.screenX + ' Screen Y: ' + e.screenY;
+  }
+}, false);
+
+function onFullScreenChange(e) {
+  console.log("=== Full Screen mode changed ===");
+  if (document.webkitIsFullScreen || document.mozFullScreen) {
+
+    pointer.lock(ele, function(e) {
+      console.log(e);
+    }, function(e) {
+      console.log('Error', e);
+    });
+
+    if (pointer.isLocked) {
+      console.log("=== Mouse lock enabled! ===");
+    }
+  }
+}
+
+document.addEventListener('webkitfullscreenchange', onFullScreenChange, false);
+document.addEventListener('mozfullscreenchange', onFullScreenChange, false);
+
+ele.addEventListener('mouselocklost', function() {
+  console.log('=== Mouse lock lost! ===');
+}, false);
+</script>
+<script>
+function Logger(id) {
+  this.el = document.getElementById('log');
+}
+Logger.prototype.log = function(msg) {
+  var fragment = document.createDocumentFragment();
+  fragment.appendChild(document.createTextNode(msg));
+  fragment.appendChild(document.createElement('br'));
+  this.el.appendChild(fragment);
+};
+
+Logger.prototype.clear = function() {
+  this.el.textContent = '';
+};
+
+var logger = new Logger('log');
+</script>
+<script> 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+ 
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script> 
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
