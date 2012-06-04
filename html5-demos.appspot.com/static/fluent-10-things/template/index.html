@@ -165,19 +165,19 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
        <pre>
 div {
   display: flex;
-  flex-pack: center;
-  flex-align: center;
-  flex: 1 0 0;
+  justify-content: center
+  align-items: center;
+  flex: 1 0 0px;
 }
 div > div:nth-child(2) {
-  flex: 2 0 0; /* 2nd div will be 2x wider */
+  flex: 2 0 0px; /* 2nd div will be 2x wider */
 }
 </pre> 
     <style>
       #flex-example {
         display: -webkit-flex;
-        -webkit-flex-pack: center;
-        -webkit-flex-align: center; 
+        -webkit-justify-content;
+        -webkit-align-items: center;
         padding: 1em;
         border-radius: 10px;
         border: 3px solid red;
@@ -188,10 +188,10 @@ div > div:nth-child(2) {
         margin: 10px;
         padding: 5px;
         text-align: center;
-        -webkit-flex: 1 0 0;
+        -webkit-flex: 1 0 0px;
       }
       #flex-example div:nth-child(2) {
-        -webkit-flex: 2 0 0; /* 2nd div will be 2x wider */
+        -webkit-flex: 2 0 0px; /* 2nd div will be 2x wider */
         text-align: center;
       }
     </style>
@@ -233,8 +233,9 @@ div {
   height: calc(100% - 4em);
   border: 1em solid red;
   border-radius: 50%;
-  flex-align: center;
-  flex-pack: center;
+  justify-content: center
+  align-items: center;
+  flex: none;
 }
 
 div:hover {

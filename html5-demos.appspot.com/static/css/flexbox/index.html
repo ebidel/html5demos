@@ -32,7 +32,7 @@ body {
   box-sizing: border-box;
   display: -webkit-flex;
   -webkit-flex-direction: column;
-  -webkit-flex-pack: center;
+  -webkit-justify-content: center;
   margin: 0 2em;
   -webkit-transition: all 500ms ease-in-out;
 }
@@ -47,17 +47,20 @@ body {
   border-radius: 10px;
 }
 #main > article {
-  -webkit-flex: 1 0 0;
-  -webkit-flex-order: 2;
+  -webkit-flex: 1 0 0px;
+  -webkit-order: 2;
   margin: 0 10px;
   display: -webkit-flex;
-  -webkit-flex-align: center;
-  -webkit-flex-pack: center;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
+  text-align: center;
 }
 nav {
   display: -webkit-flex;
-  -webkit-flex-pack: distribute;
+  -webkit-justify-content: space-between;
   margin-bottom: 10px;
+  -webkit-align-items: center;
+  -webkit-flex: 0 0 auto;
 }
 nav > a {
   padding: 15px;
@@ -65,14 +68,16 @@ nav > a {
   color: white;
   display: -webkit-inline-flex;
   -webkit-flex: 1;
-  -webkit-flex-pack: center;
-  -webkit-flex-align: center;
   margin: auto 10px;
   border-radius: 5px;
   text-decoration: none;
   -webkit-transition: background-size 100ms ease-in-out,
                       font-size 100ms ease-in-out 500ms;
   background-size: 100% 0;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 nav > a:first-child {
   margin-left: 0;
@@ -88,7 +93,8 @@ nav > a:hover {
   -webkit-flex-direction: column;
   background: #eee;
   width: 200px;
-  -webkit-flex-order: 1;
+  -webkit-order: 1;
+  -webkit-flex: none;
 }
 #main > section > div {
   border: 1px solid rgb(204, 204, 204);
@@ -97,9 +103,10 @@ nav > a:hover {
   margin: 0.25em;
   background: white;
   display: -webkit-flex;
-  -webkit-flex-align: center;
-  -webkit-flex-pack: center;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
   -webkit-transition: -webkit-flex 500ms cubic-bezier(.17,.67,0,1.45);
+  text-align: center;
 }
 #main > section > div:hover {
   -webkit-flex: 4;
@@ -116,29 +123,28 @@ nav > a:hover {
 }
 #main > aside {
   display: -webkit-flex;
-  -webkit-flex-order: 3;
+  -webkit-order: 3;
   -webkit-flex-direction: column;
   background: black;
   width: 30px;
-  -webkit-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-flex: none;
 }
 #main > aside > div {
   -webkit-writing-mode: vertical-lr;
-  -webkit-flex: 1;
   padding: 0.25em;
   margin: 0.25em;
   background: white;
-  display: -webkit-flex;
-  -webkit-flex-pack: center;
-  -webkit-flex-align: center;
+  text-align: center;
 }
 #main > aside > div:nth-of-type(even) {
   -webkit-flex: 2;
 }
 header, footer {
   display: -webkit-flex;
-  -webkit-flex-align: center;
-  -webkit-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  -webkit-align-items: center;
+  -webkit-flex: 0 0 20px;
   background: #eee;
   padding: 1em;
   margin: 10px 0;
@@ -147,12 +153,12 @@ header, footer {
   text-shadow: 0 1px rgba(255, 255, 255, 0.75);
 }
 footer {
-  -webkit-flex-pack: end;
+  -webkit-justify-content: flex-end;
 }
 @media all and (max-width: 600px) {
   body {
     margin: 0 10px;
-    -webkit-flex-pack: start;
+    -webkit-justify-content: flex-start;
   }
   /* Too narrow to support three columns */
   #main {
@@ -163,7 +169,7 @@ footer {
   #main > section,
   nav {
     /* Return them to document order */
-    -webkit-flex-order: 0;
+    -webkit-order: 0;
     width: auto;
   }
   nav {
@@ -171,7 +177,7 @@ footer {
   }
   #main > aside {
     -webkit-flex: 1;
-    -webkit-flex-align: stretch;
+    -webkit-align-items: stretch;
   }
   #main > aside > div {
     -webkit-writing-mode: horizontal-tb;

@@ -376,7 +376,7 @@ var ranges = Element.getRegionFlowRanges();
       <section>
         <ul>
           <li><a href="http://dev.w3.org/csswg/css3-flexbox/" target="_blank">CSS Flexible Box Layout Module</a> W3C spec</li>
-          <li>CSS properties are prefxied in WebKit (e.g. <code>display: -webkit-flexbox;</code></li>
+          <li>CSS properties are prefxied in WebKit (e.g. <code>display: -webkit-flex;</code></li>
         </ul>
       </section>
     </aside>
@@ -386,13 +386,13 @@ var ranges = Element.getRegionFlowRanges();
     <p>Vertically center content:</p>
     <pre>
 section {
-  display: -webkit-flexbox;
-  -webkit-flex-pack: center;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
   -webkit-flex-flow: row no-wrap; /* both default values */
 }
-section > div { -webkit-flex-item-align: center; }
 section > div:first-child {
-  width: -webkit-flex(2 0 0); /* first div will be 2x wider */
+  -webkit-flex: 2 0 100px; /* first div will be 2x wider */
 }
 </pre>
     <p>See <a href="http://fronteers.nl/blog/2011/12/learn-you-a-flexbox-for-great-good" target="_blank">Fronteers article</a> for more info.</p>

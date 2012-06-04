@@ -1352,10 +1352,11 @@ article.can {
   height: -o-calc(100% - 4em);
   border: 1em solid blue;
   border-radius: 50%;
-  -webkit-flex-align: center;
-  -webkit-flex-pack: center;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
   box-shadow: 0 0 5px #ccc inset;
   margin: auto;
+  -webkit-flex: none;
 }
 #flexbox-circle > div {
   -webkit-transition: all 2000ms cubic-bezier(.17,.67,0,1.45);
