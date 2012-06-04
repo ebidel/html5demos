@@ -30,22 +30,23 @@ html, body {
   padding: 0;
 }
 body > section {
-  display: -webkit-flexbox;
   display: -webkit-flex;
-  -webkit-flex-flow: column;
-  -webkit-flex-pack: center;
+  -webkit-flex-direction: column;
+  -webkit-justify-content: center;
+  -webkit-align-content: center;
+  -webkit-align-items: center;
   box-sizing: border-box;
   height: 100%;
   -webkit-perspective: 800;
   -webkit-transform-style: preserve-3d;
 }
 section > * {
-  display: -webkit-flexbox;
   display: -webkit-flex;
+  -webkit-align-items: center;
 }
 .fft {
   position: absolute;
-  margin-top: -50px;
+  margin-top: -350px;
   -webkit-box-reflect: below 5px -webkit-linear-gradient(top, transparent, transparent 50%, rgba(255,255,255,0.2));
 }
 #fft {
@@ -53,9 +54,6 @@ section > * {
 }
 #fft2 {
   -webkit-transform: translateX(-530px) rotateX(-30deg) rotateY(-30deg);
-}
-body > section > * {
-  -webkit-flex-item-align: center;
 }
 aside {
   position: absolute;
@@ -118,8 +116,8 @@ label {
 </aside>
 
 <section>
-  <div style="margin-top: -10em;"><canvas id="playbutton" width="125" height="125"></canvas></div>
-  <div style="margin-top: 3em;">
+  <div><canvas id="playbutton" width="125" height="125"></canvas></div>
+  <div>
     <canvas id="fft" class="fft" width="512" height="200"></canvas>
     <canvas id="fft2" class="fft" width="512" height="200"></canvas>
   </div>

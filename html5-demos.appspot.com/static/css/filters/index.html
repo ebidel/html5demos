@@ -25,14 +25,11 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <link href="../../common.css" rel="stylesheet" type="text/css">
 <style>
 article {
-  display: -webkit-flexbox;
   display: -webkit-flex;
-  -webkit-flex-flow: column;
-  /*-webkit-flex-pack: center;
-  -webkit-flex-item-align: center;*/
+  -webkit-flex-direction: column;
+  -webkit-align-items: center;
 }
 article > section {
-  -webkit-flex-item-align: center;
   margin: 1em 0;
 }
 .cols {
@@ -59,9 +56,6 @@ output {
   display: block;
   font-size: 14pt;
   font-weight: 600;
-  display: -webkit-flexbox;
-  display: -webkit-flex;
-  -webkit-flex-pack: center;
 }
 @-webkit-keyframes sepia-anim {
   from { -webkit-filter: sepia(0); }
