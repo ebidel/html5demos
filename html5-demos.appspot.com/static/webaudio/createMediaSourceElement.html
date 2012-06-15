@@ -46,7 +46,6 @@ section > * {
 }
 .fft {
   position: absolute;
-  margin-top: -350px;
   -webkit-box-reflect: below 5px -webkit-linear-gradient(top, transparent, transparent 50%, rgba(255,255,255,0.2));
 }
 #fft {
@@ -116,7 +115,7 @@ label {
 </aside>
 
 <section>
-  <div><canvas id="playbutton" width="125" height="125"></canvas></div>
+  <div style="margin-top:-350px;"><canvas id="playbutton" width="125" height="125"></canvas></div>
   <div>
     <canvas id="fft" class="fft" width="512" height="200"></canvas>
     <canvas id="fft2" class="fft" width="512" height="200"></canvas>
