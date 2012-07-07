@@ -108,6 +108,39 @@ body > footer {
   -o-user-select: none;
   user-select: none;
 }
+footer a {
+  color: inherit;
+  text-shadow: inherit;
+}
+body ::-webkit-scrollbar {
+  height: 16px;
+  overflow: visible;
+  width: 16px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .1);
+  background-clip: padding-box;
+  border: solid transparent;
+  min-height: 28px;
+  padding: 100px 0 0;
+  box-shadow: inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+  border-width: 1px 1px 1px 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-button {
+  height: 0;
+  width: 0;
+}
+::-webkit-scrollbar-track {
+  background-clip: padding-box;
+  border: solid transparent;
+  border-width: 0 0 0 4px;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
 </style>
 </head>
 <body>
@@ -119,6 +152,9 @@ body > footer {
 <section>
 <h3>Demos</h3>
 <ul>
+  <li><a href="/static/css/flexbox/index.html">"Holy Grail" of Application Layout</a>
+    <footer>CSS Flexbox to achieve web app layout.</footer>
+  </li>
   <li><a href="/static/webaudio/createMediaSourceElement.html">Hooking up &lt;audio&gt; to the Web Audio API</a>
     <footer><code>createMediaSoureElement()</code> allows HTML5 audio to be the source to the Web Audio API.</footer>
   </li>
@@ -179,6 +215,9 @@ body > footer {
 <section>
 <h3>Presentations</h3>
 <ul>
+  <li><a href="http://htmlfivecan.com">The Web Can Do That!?</a>
+    <footer>Google I/O 2012, June 2012</footer>
+  </li>
   <li><a href="/static/html5-therealbleedingedge/template/index.html">The Edge of HTML5</a>
     <footer>Jan. 2012</footer>
   </li>
@@ -219,7 +258,7 @@ body > footer {
 </section>
 
 <footer>
-&copy; Eric Bidelman - 2011 - 2012
+&copy; <a href="http://www.ericbidelman.com">Eric Bidelman</a> - 2011 - 2012
 </footer>
 
 <script>
