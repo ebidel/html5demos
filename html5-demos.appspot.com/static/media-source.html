@@ -92,7 +92,7 @@ code {
     <span data-num-chunks></span> chunks using the File APIs. The entire movie
     is then 'streamed' to a <code>&lt;video&gt;</code> element by appending each 
     chunk using the
-    <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html" target="_blank">MediaSource API</a>.</p>
+    <a href="http://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html" target="_blank">MediaSource API</a>.</p>
     <p><b>Support:</b> Chrome Dev Channel 17+ and the <code>--enable-media-source</code> flag set. The feature can also be enabled via <code>about:flags</code>.</p>
   </div>
 </details>
@@ -112,11 +112,8 @@ video.addEventListener('webkitsourceopen', function(e) {
 
 <pre id="log"></pre>
 <script>
-window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder;
-Blob.prototype.slice = Blob.prototype.webkitSlice || Blob.prototype.mozSlice;
-
-const FILE = 'test.webm';
-const NUM_CHUNKS = 5;
+var FILE = 'test.webm';
+var NUM_CHUNKS = 5;
 var video = document.querySelector('video');
 
 if (!video.webkitMediaSourceURL) {
@@ -131,14 +128,12 @@ video.src = video.webkitMediaSourceURL;
 video.addEventListener('webkitsourceopen', function(e) {
   var video = this;
 
+  video.webkitSourceAddId('sourceId1', 'video/webm; codecs="vp8, vorbis"');
+
   logger.log('webkitSourceState: ' + getSourceStateName(video.webkitSourceState));
 
   GET(FILE, function(uInt8Array) {
-    var bb = new BlobBuilder();
-    bb.append(uInt8Array.buffer);
-
-    var file = bb.getBlob('video/webm');
-
+    var file = new Blob([uInt8Array], {type: 'video/webm'});
     var chunkSize = Math.ceil(file.size / NUM_CHUNKS);
 
     logger.log('num chunks:' + NUM_CHUNKS);
@@ -153,7 +148,7 @@ video.addEventListener('webkitsourceopen', function(e) {
       var reader = new FileReader();
       reader.onload = (function(idx) {
         return function(e) {
-          video.webkitSourceAppend(new Uint8Array(e.target.result));
+          video.webkitSourceAppend('sourceId1', new Uint8Array(e.target.result));
           logger.log('appending chunk:' + idx);
           if (idx == NUM_CHUNKS - 1) {
             if (video.paused) {
