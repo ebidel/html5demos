@@ -73,10 +73,10 @@ details blockquote {
   font-style: italic;
 }
 pre:not(#log) {
-  background: -moz-radial-gradient(farthest-side, rgba(0,0,0,0) 90%, rgba(0,0,0,0.2) 150%) #fff;
-  background: -webkit-gradient(radial, center center, 100, center center, 1500, from(transparent), to(rgba(0, 0, 0, 0.6))) white;
+  background: #eee;
   border-radius: 5px;
-  padding: 3px 17px;
+  padding: 3px 17px 20px 17px;
+  border: 1px solid #ccc;
 }
 code {
   font-weight: bold;
@@ -93,19 +93,23 @@ code {
     is then 'streamed' to a <code>&lt;video&gt;</code> element by appending each 
     chunk using the
     <a href="http://dvcs.w3.org/hg/html-media/raw-file/tip/media-source/media-source.html" target="_blank">MediaSource API</a>.</p>
-    <p><b>Support:</b> Chrome Dev Channel 17+ and the <code>--enable-media-source</code> flag set. The feature can also be enabled via <code>about:flags</code>.</p>
+    <p><b>Support:</b> Chrome Dev Channel 17+ and the <code>--enable-media-source</code> flag set. The feature can also be enabled via <code>about:flags</code>.
+    Chrome 23 updated its implementation to a newer version of the API.</p>
   </div>
 </details>
 
 <video controls autoplay></video>
 
 <pre><code>
-var video = document.querySelector('video');
-video.src = video.webkitMediaSourceURL;
+var ms = new MediaSource();
 
-video.addEventListener('webkitsourceopen', function(e) {
+var video = document.querySelector('video');
+video.src = window.URL.createObjectURL(ms);
+
+ms.addEventListener('webkitsourceopen', function(e) {
   ...
-  video.webkitSourceAppend(oneChunk);
+  var sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+  sourceBuffer.append(oneVideoWebMChunk);
   ....
 }, false);
 </code></pre>
@@ -115,22 +119,21 @@ video.addEventListener('webkitsourceopen', function(e) {
 var FILE = 'test.webm';
 var NUM_CHUNKS = 5;
 var video = document.querySelector('video');
+var mediaSource = new MediaSource();
 
-if (!video.webkitMediaSourceURL) {
-  alert('webkitMediaSourceURL is not available');
+if (!!!window.MediaSource) {
+  alert('MediaSource API is not available');
   return;
 }
 
 document.querySelector('[data-num-chunks]').textContent = NUM_CHUNKS;
 
-video.src = video.webkitMediaSourceURL;
+video.src = window.URL.createObjectURL(mediaSource);
 
-video.addEventListener('webkitsourceopen', function(e) {
-  var video = this;
+mediaSource.addEventListener('webkitsourceopen', function(e) {
+  var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
 
-  video.webkitSourceAddId('sourceId1', 'video/webm; codecs="vp8, vorbis"');
-
-  logger.log('webkitSourceState: ' + getSourceStateName(video.webkitSourceState));
+  logger.log('mediaSource readyState: ' + this.readyState);
 
   GET(FILE, function(uInt8Array) {
     var file = new Blob([uInt8Array], {type: 'video/webm'});
@@ -148,13 +151,13 @@ video.addEventListener('webkitsourceopen', function(e) {
       var reader = new FileReader();
       reader.onload = (function(idx) {
         return function(e) {
-          video.webkitSourceAppend('sourceId1', new Uint8Array(e.target.result));
+          sourceBuffer.append(new Uint8Array(e.target.result));
           logger.log('appending chunk:' + idx);
           if (idx == NUM_CHUNKS - 1) {
             if (video.paused) {
               video.play(); // insure video starts playing.
             }
-            video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
+            mediaSource.endOfStream();
           }
         };
       })(i);
@@ -165,27 +168,9 @@ video.addEventListener('webkitsourceopen', function(e) {
 
 }, false);
 
-video.addEventListener('webkitsourceended', function(e) {
-  logger.log('webkitSourceState: ' + getSourceStateName(this.webkitSourceState));
+mediaSource.addEventListener('webkitsourceended', function(e) {
+  logger.log('mediaSource readyState: ' + this.readyState);
 }, false);
-
-function getSourceStateName(state) {
-  var stateName = "UNKNOWN";
-  switch (state) {
-    case HTMLMediaElement.SOURCE_CLOSED:
-      stateName = "SOURCE_CLOSED";
-      break;
-    case HTMLMediaElement.SOURCE_OPEN:
-      stateName = "SOURCE_OPEN";
-      break;
-    case HTMLMediaElement.SOURCE_ENDED:
-      stateName = "SOURCE_ENDED";
-      break;
-    default:
-      // Noop
-  }
-  return stateName;
-}
 
 function GET(url, callback) {
   var xhr = new XMLHttpRequest();
