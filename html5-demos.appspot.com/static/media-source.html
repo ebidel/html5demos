@@ -155,30 +155,6 @@ mediaSource.addEventListener('webkitsourceopen', function(e) {
     logger.log('num chunks:' + NUM_CHUNKS);
     logger.log('chunkSize:' + chunkSize + ', totalSize:' + file.size);
 
-//     // Slice the video into NUM_CHUNKS and append each to the media element.
-//     for (var i = 0; i < NUM_CHUNKS; ++i) {
-//       var startByte = chunkSize * i;
-
-//       var chunk = file.slice(startByte, startByte + chunkSize);
-
-//       var reader = new FileReader();
-//       reader.onload = (function(idx) {
-// console.log(idx)
-//         return function(e) {
-//           sourceBuffer.append(new Uint8Array(e.target.result));
-//           logger.log('appending chunk:' + idx);
-//           if (idx == NUM_CHUNKS - 1) {
-//             if (video.paused) {
-//               video.play(); // insure video starts playing.
-//             }
-//             mediaSource.endOfStream();
-//           }
-//         };
-//       })(i);
-
-//       reader.readAsArrayBuffer(chunk);
-//     }
-
     // Slice the video into NUM_CHUNKS and append each to the media element.
     var i = 0;
 
