@@ -192,11 +192,11 @@ mediaSource.addEventListener('webkitsourceopen', function(e) {
         sourceBuffer.append(new Uint8Array(e.target.result));
         logger.log('appending chunk:' + i);
         if (i == NUM_CHUNKS - 1) {
-          if (video.paused) {
-            video.play(); // insure video starts playing.
-          }
           mediaSource.endOfStream();
         } else {
+          if (video.paused) {
+            video.play(); // Start playing after 1st chunk is appended.
+          }
           readChunk_(++i);
         }
       };
