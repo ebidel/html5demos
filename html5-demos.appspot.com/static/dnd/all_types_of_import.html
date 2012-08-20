@@ -32,8 +32,8 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
     <p>An image gallery app showing the different ways to import files and
       folder contents using drag and drop and <code>&lt;input type="file"&gt;</code>. Chrome 21 includes drag and drop support for dropping a folder. This is done with hooks into the <a href="http://www.html5rocks.com/en/tutorials/file/filesystem/" target="_blank">HTML5 FileSystem API</a>. For more info, see 
     <a href="http://wiki.whatwg.org/wiki/DragAndDropEntries" target="_blank">wiki.whatwg.org/wiki/DragAndDropEntries</a>.</p>
-    <p><b>Support:</b> Chrome 21 supports folder drop and
-    <code>input[type="file"].webkitEntries</code>.</p>
+    <p><b>Support:</b> Chrome 21 supports folder drop reading DataTransferItems as files (<code>.webkitGetAsEntry()</code>)
+      <code>input[type="file"].webkitEntries</code> support landed in Chrome 22.</p>
   </div>
 </details>
 
