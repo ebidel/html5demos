@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Eric Bidelman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>Record a getUserMedia() Session</title>
+<style>
+body {
+  font-family: "Arial";
+  box-sizing: border-box;
+  margin: 2em;
+}
+a {
+  color: navy;
+  text-decoration: none;
+}
+a:hover {
+  color: blue;
+  text-decoration: underline;
+}
+a[download] {
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: bold;
+}
+h4 {
+  padding: 15px;
+  background: black;
+  color: white;
+  margin: 10px 0 10px 0;
+  border-radius: 100px 0 100px 0;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+body > div {
+  text-align: center;
+  display: inline-block;
+  margin: 0 15px;
+  min-width: 400px;
+}
+#video-preview {
+  height: 300px;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:not(:disabled):hover,
+button:not(:disabled).active {
+  border-color: black;
+}
+button:not(:disabled):active,
+button:not(:disabled).active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+button.recording {
+  color: darkred;
+  border-color: red;
+}
+</style>
+</head>
+<body>
+
+<div style="float:left;">
+  <button id="camera-me">1. Turn on camera</button>
+  <h4><code>getUserMedia()</code> feed</h4>
+  <video autoplay></video>
+</div>
+<div id="video-preview">
+  <button id="record-me" disabled>2. Record<!--⚫--></button>
+  <button id="stop-me" disabled>◼</button>
+  <!--<button id="play-me" disabled>►</button>-->
+  <span id="elasped-time"></span>
+  <h4>.webm recording (no audio)</h4>
+</div>
+
+<!--<script src="libwebp-0.1.3.min.js"></script>-->
+<script src="whammy.min.js"></script>
+<script>
+(function(exports) {
+
+exports.URL = exports.URL || exports.webkitURL;
+
+exports.requestAnimationFrame = exports.requestAnimationFrame ||
+    exports.webkitRequestAnimationFrame || exports.mozRequestAnimationFrame ||
+    exports.msRequestAnimationFrame || exports.oRequestAnimationFrame;
+
+exports.cancelAnimationFrame = exports.cancelAnimationFrame ||
+    exports.webkitCancelAnimationFrame || exports.mozCancelAnimationFrame ||
+    exports.msCancelAnimationFrame || exports.oCancelAnimationFrame;
+
+navigator.getUserMedia = navigator.getUserMedia ||
+    navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia;
+
+var ORIGINAL_DOC_TITLE = document.title;
+var video = $('video');
+var canvas = document.createElement('canvas'); // offscreen canvas.
+var rafId = null;
+var startTime = null;
+var endTime = null;
+var frames = [];
+
+function $(selector) {
+  return document.querySelector(selector) || null;
+}
+
+function toggleActivateRecordButton() {
+  var b = $('#record-me');
+  b.textContent = b.disabled ? 'Record' : 'Recording...';
+  b.classList.toggle('recording');
+  b.disabled = !b.disabled;
+}
+
+function turnOnCamera(e) {
+  e.target.disabled = true;
+  $('#record-me').disabled = false;
+
+  video.controls = true;
+
+  var finishVideoSetup_ = function() {
+    // Note: video.onloadedmetadata doesn't fire in Chrome when using getUserMedia so
+    // we have to use setTimeout. See crbug.com/110938.
+    setTimeout(function() {
+      video.width = video.clientWidth;
+      video.height = video.clientHeight;
+      // Canvas is 1/2 for performance. Otherwise, getImageData() readback is
+      // awful 100ms+ as 640x480.
+      canvas.width = video.width / 2;
+      canvas.height = video.height / 2;
+    }, 1000);
+  };
+
+  navigator.getUserMedia({video: true, audio: true}, function(stream) {
+    video.src = 'Chrome_ImF.mp4'; // URL.createObjectURL(stream); TODO: remove. Just for testing.
+    finishVideoSetup_();
+  }, function(e) {
+    alert('Fine, you get a movie instead of your beautiful face ;)');
+
+    video.src = 'Chrome_ImF.mp4';
+    finishVideoSetup_();
+  });
+};
+
+function record() {
+  var elapsedTime = $('#elasped-time');
+  var ctx = canvas.getContext('2d');
+  var CANVAS_HEIGHT = canvas.height;
+  var CANVAS_WIDTH = canvas.width;
+
+  frames = []; // clear existing frames;
+  startTime = Date.now();
+
+  toggleActivateRecordButton();
+  $('#stop-me').disabled = false;
+
+  function drawVideoFrame_(time) {
+    rafId = requestAnimationFrame(drawVideoFrame_);
+
+    ctx.drawImage(video, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    document.title = 'Recording...' + Math.round((Date.now() - startTime) / 1000) + 's';
+
+    // Read back canvas as webp.
+    console.time('canvas.dataURL() took');
+    var url = canvas.toDataURL('image/webp', 1); // image/jpeg is way faster :(
+    console.timeEnd('canvas.dataURL() took');
+    frames.push(url);
+ 
+    // UInt8ClampedArray (for Worker).
+    //frames.push(ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT).data);
+
+    // ImageData
+    //frames.push(ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT));
+  };
+
+  rafId = requestAnimationFrame(drawVideoFrame_);
+};
+
+function stop() {
+  cancelAnimationFrame(rafId);
+  endTime = Date.now();
+  $('#stop-me').disabled = true;
+  document.title = ORIGINAL_DOC_TITLE;
+
+  toggleActivateRecordButton();
+
+  console.log('frames captured: ' + frames.length + ' => ' +
+              ((endTime - startTime) / 1000) + 's video');
+
+  embedVideoPreview();
+};
+
+function embedVideoPreview(opt_url) {
+  var url = opt_url || null;
+  var video = $('#video-preview video') || null;
+  var downloadLink = $('#video-preview a[download]') || null;
+
+  if (!video) {
+    video = document.createElement('video');
+    video.autoplay = true;
+    video.controls = true;
+    //video.style.position = 'absolute';
+    //video.style.top = '70px';
+    //video.style.left = '10px';
+    video.style.width = canvas.width + 'px';
+    video.style.height = canvas.height + 'px';
+    $('#video-preview').appendChild(video);
+    
+    downloadLink = document.createElement('a');
+    downloadLink.download = 'capture.webm';
+    downloadLink.textContent = '[ download video ]';
+    downloadLink.title = 'Download your .webm video';
+    var p = document.createElement('p');
+    p.appendChild(downloadLink);
+
+    $('#video-preview').appendChild(p);
+
+  } else {
+    window.URL.revokeObjectURL(video.src);
+  }
+
+  // https://github.com/antimatter15/whammy
+  // var encoder = new Whammy.Video(1000/60);
+  // frames.forEach(function(dataURL, i) {
+  //   encoder.add(dataURL);
+  // });
+  // var webmBlob = encoder.compile();
+
+  if (!url) {
+    var webmBlob = Whammy.fromImageArray(frames, 1000 / 60);
+    url = window.URL.createObjectURL(webmBlob);
+  }
+
+  video.src = url;
+  downloadLink.href = url;
+}
+
+function initEvents() {
+  $('#camera-me').addEventListener('click', turnOnCamera);
+  $('#record-me').addEventListener('click', record);
+  $('#stop-me').addEventListener('click', stop);
+}
+
+initEvents();
+
+exports.$ = $;
+
+})(window);
+
+</script>
+</body>
+</html>
