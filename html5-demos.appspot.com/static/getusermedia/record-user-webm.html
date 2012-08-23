@@ -172,7 +172,7 @@ function turnOnCamera(e) {
   };
 
   navigator.getUserMedia({video: true, audio: true}, function(stream) {
-    video.src = window.URL.createObjectURL(stream); TODO: remove. Just for testing.
+    video.src = window.URL.createObjectURL(stream);
     finishVideoSetup_();
   }, function(e) {
     alert('Fine, you get a movie instead of your beautiful face ;)');
