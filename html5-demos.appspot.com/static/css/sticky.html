@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<link href="../common.css" rel="stylesheet" type="text/css" media="all">
+<title>position: sticky</title>
+<style>
+html, body {
+  overflow: initial;
+  background: none;
+}
+body {
+  box-sizing: border-box;
+  margin: 0 150px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.sticky {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -o-sticky;
+  position: -ms-sticky;
+  position: sticky;
+  top: 10px;
+  z-index: 1;
+}
+[data-lorem] {
+  margin-top: 2em;
+  line-height: 1.5;
+  text-align: justify;
+  background: #eee;
+  border-radius: 5px;
+  padding: 15px;
+}
+[data-lorem] .sticky {
+  background: #3A5E8C;
+  padding: 15px 10px;
+  color: white;
+  border-radius: 5px;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+}
+[data-lorem] h2 {
+  float: left;
+  margin: 0;
+}
+[data-lorem] img {
+  float: right;
+  margin-top: 5px;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>An example of <code>position: sticky</code> as proposed on <a href="http://lists.w3.org/Archives/Public/www-style/2012Jun/0627.html" target="_blank">www-style</a>.</p>
+    <p>Watch as the blue title bars remain in the viewport at <code>top: 10px</code> until their parent no longer fits.
+     All thanks to <code>position: sticky</code>. There are no <code>scroll</code> handlers on this page.</p>
+    <p><b>Support:</b> Chromium 23.0.1247.0 and WebKit nightly.</p>
+  </div>
+</details>
+
+<p style="text-align:center;font-weight: bold;">Scroll this page.</p>
+
+<div data-lorem="p">
+  <span class="sticky"><h2>No</h2><img src="http://www.html5rocks.com/static/images/share.png" title="Just an example"></span>
+</div>
+
+<script src="lorem.js"></script>
+<script>
+var MSGS = [
+  'JavaScript',
+  'scroll events',
+  'control',
+  'this',
+  'positioning!'
+];
+
+function init() {
+  var content = document.querySelector('[data-lorem]');
+
+  var lorem = new Lorem();
+  lorem.type = Lorem.TEXT;
+  lorem.query = '3p';
+  lorem.createLorem(content);
+
+  MSGS.forEach(function(msg, i) {
+    var clone = content.cloneNode(true);
+    clone.querySelector('h2').textContent = msg;
+    document.body.appendChild(clone);
+  });
+}
+
+init();
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
