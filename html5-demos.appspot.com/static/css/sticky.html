@@ -67,6 +67,12 @@ body {
   float: right;
   margin-top: 5px;
 }
+.nosupport {
+  color: darkred;
+  font-weight: bold;
+  display: none;
+  text-align: center;
+}
 </style>
 </head>
 <body>
@@ -82,6 +88,7 @@ body {
 </details>
 
 <p style="text-align:center;font-weight: bold;">Scroll this page.</p>
+<p class="nosupport">Your browser does not support <code>position: sticky</code>!!</p>
 
 <div data-lorem="p">
   <span class="sticky"><h2>No</h2><img src="http://www.html5rocks.com/static/images/share.png" title="Just an example"></span>
@@ -89,6 +96,10 @@ body {
 
 <script src="lorem.js"></script>
 <script>
+if (!window.getComputedStyle(document.querySelector('.sticky')).position.match('sticky')) {
+  document.querySelector('.nosupport').style.display = 'block';
+}
+
 var MSGS = [
   'JavaScript',
   'scroll events',
