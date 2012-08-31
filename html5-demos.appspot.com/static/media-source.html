@@ -115,6 +115,8 @@ section {
 </section>
 
 <pre><code>
+window.MediaSource = window.MediaSource || window.WebKitMediaSource;
+
 var ms = new MediaSource();
 
 var video = document.querySelector('video');
@@ -132,12 +134,13 @@ ms.addEventListener('webkitsourceopen', function(e) {
 var FILE = 'test.webm';
 var NUM_CHUNKS = 5;
 var video = document.querySelector('video');
-var mediaSource = new MediaSource();
 
+window.MediaSource = window.MediaSource || window.WebKitMediaSource;
 if (!!!window.MediaSource) {
   alert('MediaSource API is not available');
-  return;
 }
+
+var mediaSource = new MediaSource();
 
 document.querySelector('[data-num-chunks]').textContent = NUM_CHUNKS;
 
