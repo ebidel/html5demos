@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Eric Bidelman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@gmail.com)
+-->
+<html>
+<head>
+  <title>Binary WebSocket Tab Sharing</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Orbitron|Kameron|Muli|Open+Sans:regular,semibold,italic,italicsemibold|Droid+Sans+Mono&v2">
+<style>
+body {
+  font-family: 'Open Sans';
+}
+iframe, #screenshot0, #screenshot1 {
+  width: 100%;
+  height: 500px;
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+
+<h3>Screenshot from host:</h3>
+<iframe id="screenshot0" hidden></iframe>
+<iframe id="screenshot1" hidden></iframe>
+
+<div id="frames-container"></div>
+
+<script src="screencapture.js"></script>
+<script src="app.js"></script>
+<script>
+var framesContainer = document.querySelector('#frames-container');
+var currentFrameIdx = 0;
+var playbackIntervalId = null;
+var ws = connect();
+
+ws.onmessage = function(e) {
+  // Shouldn't have to create a new blob, but e.data isn't preserving type.
+  var blob = new Blob([e.data], {type: 'text/html'});
+
+  var iframe = document.createElement('iframe');
+  iframe.src = window.URL.createObjectURL(blob);
+  iframe.hidden = true;
+  iframe.onload = renderFrame;
+
+  // Force the iframe content to load by appending to the DOM.
+  framesContainer.appendChild(iframe);
+};
+
+function renderFrame() {
+  if (framesContainer.children.length) {
+    var frame = framesContainer.children[currentFrameIdx];
+
+    if(!frame) {
+      return;
+    }
+
+    if (currentFrameIdx > 0) {
+      var prevFrame = frame.previousElementSibling;
+      prevFrame.hidden = true;
+      window.URL.revokeObjectURL(prevFrame.src);
+    }
+
+    frame.hidden = false;
+
+    currentFrameIdx++;
+  }
+}
+
+function playback(interval) {
+  clearInterval(playbackIntervalId);
+
+  if (!framesContainer.children.length) {
+    return;
+  }
+
+  var i = 0;
+  playbackIntervalId = setInterval(function() {
+    var iframe = framesContainer.children[i];
+    if (i > 0) {
+      framesContainer.children[i - 1].hidden = true;
+    } else if (i == 0) {
+      framesContainer.children[framesContainer.children.length - 1].hidden = true;
+    }
+    iframe.hidden = false;
+
+    i++;
+    i %= framesContainer.children.length;
+  }, interval);
+}
+
+//setInterval(renderFrame, 1000);
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
