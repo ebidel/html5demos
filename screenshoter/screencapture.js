@@ -37,13 +37,19 @@ function urlsToAbsolute(nodeList) {
     if (absURL) {
       return el;
     } else {
-      if (attr.indexOf('/') != 0) { // src="images/test.jpg"
-        el.setAttribute(attrName, document.location.origin + document.location.pathname + attr);
-      } else if (attr.match(/^\/\//)) { // src="//static.server/test.jpg"
-        el.setAttribute(attrName, document.location.protocol + attr);
-      } else {
-        el.setAttribute(attrName, document.location.origin + attr);
-      }
+      // Set the src/href attribute to an absolute version. 
+      // if (attr.indexOf('/') != 0) { // src="images/test.jpg"
+      //        el.setAttribute(attrName, document.location.origin + document.location.pathname + attr);
+      //      } else if (attr.match(/^\/\//)) { // src="//static.server/test.jpg"
+      //        el.setAttribute(attrName, document.location.protocol + attr);
+      //      } else {
+      //        el.setAttribute(attrName, document.location.origin + attr);
+      //      }
+
+      // Set the src/href attribute to an absolute version. Accessing
+      // el['src']/el['href], the browser will stringify an absolute URL, but
+      // we still need to explicitly set the attribute on the duplicate.
+      el.setAttribute(attrName, el[attrName]);
       return el;
     }
   });
@@ -60,7 +66,13 @@ function screenshotPage() {
 
   // 2. Duplicate entire document.
   var screenshot = document.documentElement.cloneNode(true);
-  
+
+  // Use <base> to make anchors and other relative links absolute.
+  var b = document.createElement('base');
+  b.href = document.location.protocol + '//' + location.host;
+  var head = screenshot.querySelector('head');
+  head.insertBefore(b, head.firstChild);
+
   // 3. Screenshot should be readyonly, no scrolling, and no selections.
   screenshot.style.pointerEvents = 'none';
   screenshot.style.overflow = 'hidden';
@@ -101,3 +113,6 @@ function addOnPageLoad_() {
 exports.screenshotPage = screenshotPage;
 
 })(window);
+
+//window.URL = window.URL || window.webkitURL;
+//window.open(window.URL.createObjectURL(screenshotPage()));
