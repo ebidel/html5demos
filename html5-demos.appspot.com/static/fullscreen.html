@@ -223,9 +223,9 @@ lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictum
 malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
 
 <script>
-document.cancelFullScreen = document.webkitCancelFullScreen || document.mozCancelFullScreen;
+document.cancelFullScreen = document.webkitExitFullscreen || document.mozCancelFullScreen || document.exitFullscreen;
 
-var elem = document.querySelector(document.webkitCancelFullScreen ? "#fs" : "#fs-container");
+var elem = document.querySelector(document.webkitExitFullscreen ? "#fs" : "#fs-container");
 
 document.addEventListener('keydown', function(e) {
   switch (e.keyCode) {
@@ -243,7 +243,11 @@ function toggleFS(el) {
   if (el.webkitEnterFullScreen) {
     el.webkitEnterFullScreen();
   } else {
-    el.mozRequestFullScreen();
+    if (el.mozRequestFullScreen) {
+      el.mozRequestFullScreen();
+    } else {
+      el.requestFullscreen();
+    }
   }
 
   el.ondblclick = exitFullscreen;
@@ -265,10 +269,15 @@ function enterFullscreen() {
   console.log("enterFullscreen()");
   elem.onwebkitfullscreenchange = onFullScreenEnter;
   elem.onmozfullscreenchange = onFullScreenEnter;
-  if (elem.webkitRequestFullScreen) {
-    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+  elem.onfullscreenchange = onFullScreenEnter;
+  if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
   } else {
-    elem.mozRequestFullScreen();
+    if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else {
+      elem.requestFullscreen();
+    }
   }
   document.getElementById('enter-exit-fs').onclick = exitFullscreen;
 }
