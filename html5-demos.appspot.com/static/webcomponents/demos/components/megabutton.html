@@ -1,0 +1,23 @@
+<script src="web_components_polyfill/src/components-polyfill.js"></script>
+<link rel="components" href="x-megabutton.html"/>
+
+<style>
+/*@-webkit-keyframes anim {
+  0% {
+    -webkit-filter: custom(url(tile-shuffle.vs) mix(url(tile-shuffle.fs) normal source-atop), 100 100 border-box detached, matrix perspective(1000) scale(1) rotateX(14deg) rotateY(0deg) rotateZ(-22deg), amount 0, t 0.45);
+  }
+  100% {
+    -webkit-filter: custom(url(tile-shuffle.vs) mix(url(tile-shuffle.fs) normal source-atop), 100 100 border-box detached, matrix perspective(1000) scale(1) rotateX(14deg) rotateY(0deg) rotateZ(-22deg), amount 500, t 0.17);
+  }
+}*/
+
+button[is="x-megabutton"] {
+/*  width: 300px !important;
+  height: 300px !important;*/
+}
+</style>
+<!--
+Note: <x-megabutton>Better buttonz</x-megabutton> is what the current
+webapp mailing list is agreeing on, but the polyfill uses [is="x-megabutton"]
+-->
+<button is="x-megabutton">Mega button</button>

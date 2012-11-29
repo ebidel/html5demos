@@ -1,0 +1,32 @@
+#container {
+  font-family: 'Open Sans';
+  -webkit-font-smoothing: antialiased;
+  background: -webkit-linear-gradient(rgb(230, 230, 230), rgb(200, 200, 200));
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+.tab-strip {
+/*  display: -webkit-flexbox;
+  -webkit-flex-pack: justify;*/
+  padding: 0 5px;
+  -webkit-user-select: none;
+}
+.tab-wrapper {
+  display: -webkit-flex;
+  height: 30px;
+}
+.contents {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+  background: white;
+  border-radius: 3px;
+  padding: 20px;
+  height: 250px;
+  overflow: auto;
+}
+aside {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #bbb;
+}

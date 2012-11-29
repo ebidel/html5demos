@@ -1,0 +1,24 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+
+h2 {
+  font: 400 16px/22px 'Open Sans';
+  padding: 5px 15px;
+  margin: 0 5px 0 0;
+  text-align: center;
+  width: 100px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: rgb(242, 242, 242);
+  color: rgb(64, 64, 64);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3), 0 -2px 4px rgba(0, 0, 0, 0.3) inset;
+}
+
+h2.active {
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+}

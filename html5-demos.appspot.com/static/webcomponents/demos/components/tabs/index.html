@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>Web Components Tabs</title>
+<link rel="stylesheet" href="css/tabs-shared.css"/>
+<link rel="stylesheet" href="css/tabs.css"/>
+<link rel="components" href="components/x-tabs.html"/>
+<style>
+[is="tabs"],
+[ng-app="tabs"],
+#ember-tabs {
+  margin: 1em;
+  width: 500px;
+  display: inline-block;
+  vertical-align: top;
+}
+</style>
+</head>
+<body>
+
+<!-- Web Component -->
+<!-- Technically, we could extend the fake element <tabs> instead. -->
+<article is="tabs">
+  <h2>One</h2>
+  <section>
+    Code to instantiate this component:
+    <pre></pre>
+  </section>
+  <h2>Two is bigger than three</h2>
+  <section>
+    Second panel hotness
+  </section>
+</article>
+
+<!-- AngularJS Component -->
+<tabs ng-app="tabs">
+  <pane title="One">
+    Code to instantiate this component:
+    <pre></pre>
+  </pane>
+  <pane title="Two is bigger than three">
+    Second panel hotness.
+  </pane>
+</tabs>
+
+<!-- EmberJS Component -->
+<div id="ember-tabs">
+<script type="text/x-handlebars">
+<div id="container">
+  <div class="tab-strip">
+    <aside>Ember</aside>
+    <div class="tab-wrapper">
+      <h2 {{action "showFirst" target="Tabs.contentStateManager"}}>One</h2>
+      <h2 {{action "showSecond" target="Tabs.contentStateManager"}}>Two is bigger than three</h2>
+    </div>
+  </div>
+  <div class="contents"></div>
+</div>
+</script>
+<script type="text/x-handlebars" data-template-name="first">
+  Code to instantiate this component:
+  <pre>
+  &lt;div id=&quot;ember-tabs&quot;&gt;
+  &lt;script type=&quot;text/x-handlebars&quot;&gt;
+  &lt;div id=&quot;container&quot;&gt;
+    &lt;div class=&quot;tab-strip&quot;&gt;
+      &lt;aside&gt;Ember&lt;/aside&gt;
+      &lt;div class=&quot;tab-wrapper&quot;&gt;
+        &lt;h2 &#x007B;&#x007B;action &quot;showFirst&quot; target=&quot;Tabs.contentStateManager&quot;}}&gt;One&lt;/h2&gt;
+        &lt;h2 &#x007B;&#x007B;action &quot;showSecond&quot; target=&quot;Tabs.contentStateManager&quot;}}&gt;Two is bigger than three&lt;/h2&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;contents&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;/script&gt;
+  &lt;script type=&quot;text/x-handlebars&quot; data-template-name=&quot;first&quot;&gt;
+    Code to instantiate this component:
+    &lt;pre&gt;&lt;/pre&gt;
+  &lt;/script&gt;
+  &lt;script type=&quot;text/x-handlebars&quot; data-template-name=&quot;second&quot;&gt;
+    second
+  &lt;/script&gt;
+  &lt;/div&gt;
+</pre>
+</script>
+<script type="text/x-handlebars" data-template-name="second">
+  second
+</script>
+</div>
+
+<script src="../web_components_polyfill/src/components-polyfill.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="js/libs/ember-0.9.7.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+<script src="js/ember-app.js"></script>
+<script src="js/angular-app.js"></script>
+<script>
+var wcTabs = document.querySelector('[is="tabs"]');
+wcTabs.querySelector('pre').textContent = wcTabs.outerHTML;
+
+var angularTabs = document.querySelector('[ng-app="tabs"]');
+angularTabs.querySelector('pre').textContent = angularTabs.outerHTML;
+
+// var emberTabs = document.querySelector('#ember-tabs');
+// emberTabs.querySelector('pre').textContent = emberTabs.outerHTML;
+</script>
+</body>
+</html>

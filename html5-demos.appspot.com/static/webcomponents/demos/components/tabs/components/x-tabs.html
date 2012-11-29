@@ -1,0 +1,58 @@
+<element name="tabs" extends="article" constructor="TabsController">
+  <template>
+    <style> <!-- NOTE: this is not scoped because :host selector isn't implemented yet -->
+      @import url(css/tabs-shared.css);
+    </style>
+    <style>
+      @import url(css/tabs.css);
+    </style>
+    <div id="container">
+      <div class="tab-strip">
+        <aside>Web Component</aside>
+        <div class="tab-wrapper">
+          <content select="h2"></content>
+        </div>
+      </div>
+      <div class="contents">
+        <content class="current" select="section:nth-of-type(1)"></content>
+      </div>
+    </div>
+  </template>
+  <script>
+    if (this !== window) {
+      var root = null;
+
+      TabsController.prototype = {
+        indexOf: function(el) {
+          return [].slice.call(root.host.querySelectorAll(el.nodeName.toLowerCase())).indexOf(el);
+        },
+        onClickTab: function(e) {
+          if (e.target.nodeName == 'H2') {
+            var index = this.indexOf(e.target) + 1;
+            root.querySelector('content.current').select = 'section:nth-of-type(' + index + ')';
+
+            var els = root.host.querySelectorAll(e.target.nodeName.toLowerCase());
+            [].slice.call(els).forEach(function(el, i) {
+              el.classList.remove('active');
+            });
+            e.target.classList.add('active');
+          }
+        }
+      };
+
+      this.lifecycle({
+        created: function(shadowRoot) {
+          root = shadowRoot;
+          root.host.addEventListener('click', this.onClickTab.bind(this));
+          root.host.querySelector('h2').click(); // Select first tab 
+        },
+        inserted: function(root) {
+
+        },
+        removed: function() {
+
+        }
+      });
+    }
+  </script>
+</element>
