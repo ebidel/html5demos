@@ -199,6 +199,8 @@ malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convalli
 <p><button>Read more...</button></p>
 
 <script>
+Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
+
 var shadow = document.querySelector('#host').createShadowRoot();
 //shadow.resetStyleInheritance = true;
 shadow.applyAuthorStyles = true;

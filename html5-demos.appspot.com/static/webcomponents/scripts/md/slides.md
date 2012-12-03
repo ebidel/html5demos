@@ -14,11 +14,13 @@ title: To view the demos in this presentation
 
 <script>
 (function() {
+Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
+
 var needShadow = document.querySelector('#need-shadow');
 var needObjectObserve = document.querySelector('#need-objectobserve');
 var needMo = document.querySelector('#need-mo');
 
-if (!!!('createShadowRoot' in document.createElement('div'))) {
+if (!!!('createShadowRoot' in document.body)) {
 	needShadow.classList.add('red');
 	needShadow.firstElementChild.classList.add('bad');
 	needShadow.lastElementChild.textContent = "You don't have Shadow DOM enabled";
@@ -400,11 +402,10 @@ spec_link: http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.ht
 
 <pre class="prettyprint" data-lang="js">
 var host = document.querySelector('#host');
-<b>var shadow = host.createShadowRoot();</b>
+<b>var shadow = host.<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();</b>
 <b>shadow.innerHTML = '&lt;h2>Yo, you got replaced!&lt;/h2>' +
                    '&lt;div>by my awesome content&lt;/div>';</b>
 </pre>
-<!-- <b>var shadow = new <a data-tooltip-property="ShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>ShadowRoot</a>(host);</b> -->
 
 <div class="host">
   <h1>My Title</h1>
@@ -440,7 +441,7 @@ title: Style encapsulation
 <code>&lt;style></code>s defined in `ShadowRoot` are scoped.
 
 <pre class="prettyprint" data-lang="js">
-var shadow = document.querySelector('#host').createShadowRoot();
+var shadow = document.querySelector('#host').<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();
 shadow.innerHTML = '<b>&lt;style>h2 { color: red; }&lt;/style></b>' + 
                    '&lt;h2>Yo, you got replaced!&lt;/h2>' + 
                    '&lt;div>by my awesome content&lt;/div>';
@@ -477,11 +478,9 @@ content_class: smaller
 Author's styles don't cross shadow boundary by default, but have full control.
 
 <pre class="prettyprint" data-lang="js">
-var shadow = document.querySelector('#host').createShadowRoot();
-shadow.innerHTML = '&lt;style>h2 { color: red; }&lt;/style>' + 
-                   '&lt;h2>Yo, you got replaced!&lt;/h2>' + 
+var shadow = document.querySelector('#host').<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();
+shadow.innerHTML = '&lt;style>h2 { color: red; }&lt;/style>&lt;h2>Yo, you got replaced!&lt;/h2>' +
                    '&lt;div>by my awesome content&lt;/div>';
-
 <b data-action-resetstyleinheritance title="click me">// shadow.resetStyleInheritance = true;</b> // click me
 <b data-action-applyauthorstyles title="click me">// shadow.applyAuthorStyles = true;</b> // click me
 </pre>
