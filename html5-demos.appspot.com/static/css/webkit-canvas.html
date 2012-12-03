@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 Eric Bidelman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>CSS -webkit-canvas()</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro' rel='stylesheet' type='text/css'>
+<link href="../libs/prettify/styles/sunburst.css" type="text/css" rel="stylesheet" />
+<link href="../common.css" rel="stylesheet" type="text/css">
+<style>
+#wrapper {
+	text-align: center;
+}
+#wrapper > div {
+	display: inline-block;
+	margin: 0 20px;
+	padding: 10px;
+	background-color: #eee;
+	border-radius: 10px;
+	font-weight: 600;
+}
+#container {
+  width: 300px;
+  height: 300px;
+  /*https://www.webkit.org/blog/176/css-canvas-drawing/*/
+  background: -webkit-canvas(animation) no-repeat 50% 50%;
+  background-size: 100%;
+  display: inline-block;
+  -webkit-transition: background 0.4s;
+}
+pre.prettyprint {
+	font-family: 'Source Code Pro', sans-serif;
+	width: auto;
+	display: inline-block;
+	text-align: initial;
+	margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>Drawing to <code>&lt;canvas></code> and using it as the CSS background of a DOM node. This allows programmatic animations for background images. Most people use hacks using <code>.toDataURL()</code> to achieve the same thing. The problem with <code>.toDataURL()</code> is that it adds ~33% overhead to the resulting image and involves touching the DOM in JS (<code>el.style.background = 'url("data:...")';</code>). Both are inefficient.</p>
+
+		<p>Instead of specifying a URL for the <code>background-image</code>, reference the same 
+		identifier/name in <code>-webkit-canvas()</code> as the one used in the call to <code>document.getCSSCanvasContext()</code>. Note: this is a special method that you need to create
+		the 2d context with.</p>
+		
+		<p>Once things are hooked up, <code>requestAniamtionFrame()</code> is used to drive the canvas animation.
+		The rest is taken care of by the browser when the association is made.</p>
+  </div>
+</details>
+
+<!--
+<p>
+There is only one CSS canvas for a given global identifier per document. When you obtain the drawing context you also specify the size. The canvas will not be cleared as long as you repeatedly request the same size. Specifying a new size is equivalent to the kind of behavior you'd expect if you resized a <code>&lt;canvas></code> element, and so the canvas buffer will be cleared.
+
+All objects that observe a CSS canvas of the same name are sharing that canvas. This means that (similar to how animated GIFs work), you can do animations and have them happen in lockstep on all the clients of the canvas. Drawing changes will be propagated to all clients automatically. 
+
+http://trac.webkit.org/browser/trunk/LayoutTests/fast/canvas/canvas-bg.html?format=raw
+-->
+
+<div id="wrapper">
+	<p>Drawing an animation to <code>&lt;canvas></code> and using it as the CSS <code>background-image</code> of a DOM node.<br>This allows backgrounds to be "live" and powered programmatically via canvas.</p> 
+<div>
+	<div id="container"></div>
+	<div>&lt;div class="canvas-bg"&gt;</div>
+</div>
+<div id="canvas-container">
+	<div>&lt;canvas&gt;</div>
+</div>
+<pre class="prettyprint">
+&lt;style&gt;
+  .canvas-bg {
+    background: -webkit-canvas(animation) no-repeat 50% 50%;
+  }
+&lt;/style&gt;
+&lt;script&gt;
+  var ctx = document.getCSSCanvasContext('2d', 'animation', 300, 300);
+&lt;/script&gt;
+</pre>
+</div>
+
+<script src="../libs/prettify/src/prettify.js" onload="prettyPrint()"></script>
+<script>
+window.requestAnimationFrame = window.requestAnimationFrame ||
+                               window.webkitRequestAnimationFrame;
+
+function correctPixelRatio(ctx, container) {
+	var canvas = ctx.canvas;
+	var ratio =  window.devicePixelRatio / ctx.webkitBackingStorePixelRatio;
+
+	var oldWidth = canvas.width;
+	var oldHeight = canvas.height;
+
+	canvas.width = oldWidth * ratio;
+	canvas.height = oldHeight * ratio;
+
+	canvas.style.width = oldWidth + 'px';
+	canvas.style.height = oldHeight + 'px';
+
+  //ctx.scale(ratio, ratio);
+
+	return ratio;
+}
+
+var computedStyle = window.getComputedStyle(document.querySelector('#container'));
+var WIDTH = parseInt(computedStyle.width);
+var HEIGHT = parseInt(computedStyle.height);
+
+var ctx = document.getCSSCanvasContext('2d', 'animation', WIDTH, HEIGHT);
+var canvas = ctx.canvas;
+
+var ratio = correctPixelRatio(ctx);
+
+WIDTH = ctx.canvas.width;
+HEIGHT = ctx.canvas.height;
+
+//var rotation = 1;
+function draw(time) {
+	ctx.clearRect(0, 0, WIDTH, HEIGHT);
+	
+	var center = [WIDTH / 2, HEIGHT / 2];
+	var PADDING = 0; // px
+	var R = Math.min(WIDTH, HEIGHT) / 2 - PADDING;
+
+	var data = [75, 68, 32, 95];
+	var colors = ["red", "black", "blue", "#ffcc00"];
+
+	var lastPosition = 0;
+	var total = data.reduce(function(previousValue, currentValue, index, array) {
+	  return previousValue + currentValue
+	});
+
+	for (var i = 0; i < data.length; ++i) {
+	  ctx.fillStyle = colors[i];
+	  ctx.beginPath();
+	  ctx.moveTo(center[0], center[1]);
+	  ctx.arc(center[0], center[1], R, lastPosition,
+	          lastPosition + (Math.PI * 2 * (data[i] / total)), false);
+	  ctx.lineTo(center[0], center[1]);
+	  ctx.fill();
+	  lastPosition += Math.PI * 2 * (data[i] / total);
+	}
+	
+	ctx.translate(center[0], center[1]);
+  //ctx.rotate(rotation / time);
+  ctx.rotate(0.05);
+  ctx.translate(-center[0], -center[1]);
+  //rotation++;
+
+  window.requestAnimationFrame(draw);
+}
+
+window.requestAnimationFrame(draw);
+
+var container = document.querySelector('#canvas-container');
+container.insertBefore(canvas, container.firstElementChild);
+</script>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
