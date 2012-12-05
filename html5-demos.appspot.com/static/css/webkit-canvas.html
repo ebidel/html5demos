@@ -49,8 +49,20 @@ pre.prettyprint {
 	font-family: 'Source Code Pro', sans-serif;
 	width: auto;
 	display: inline-block;
-	text-align: initial;
+	text-align: left;
 	margin-top: 30px;
+}
+#notsupport {
+  text-align: center;
+  font-weight: bold;
+  color: red;
+  padding: 10px;
+  border: 1px solid red;
+  background-color: rgba(255,0,0,0.1);
+  border-radius: 5px;
+  display: none;
+  position: relative;
+  z-index: 1000;
 }
 </style>
 </head>
@@ -59,7 +71,7 @@ pre.prettyprint {
 <details>
   <summary>What's this?</summary>
   <div>
-    <p>Drawing to <code>&lt;canvas></code> and using it as the CSS background of a DOM node. This allows programmatic animations for background images. Most people use hacks using <code>.toDataURL()</code> to achieve the same thing. The problem with <code>.toDataURL()</code> is that it adds ~33% overhead to the resulting image and involves touching the DOM in JS (<code>el.style.background = 'url("data:...")';</code>). Both are inefficient.</p>
+    <p>Drawing to <code>&lt;canvas></code> and using it as the CSS background of a DOM node. This allows programmatic animations for background images. Most people use hacks using <code>.toDataURL()</code> to do the same, but <code>.toDataURL()</code> adds a ~33% overhead to the resulting image and involves touching the DOM in JS (<code>el.style.background = 'url("data:...")';</code>). Both are inefficient.</p>
 
 		<p>Instead of specifying a URL for the <code>background-image</code>, reference the same 
 		identifier/name in <code>-webkit-canvas()</code> as the one used in the call to <code>document.getCSSCanvasContext()</code>. Note: this is a special method that you need to create
@@ -70,14 +82,7 @@ pre.prettyprint {
   </div>
 </details>
 
-<!--
-<p>
-There is only one CSS canvas for a given global identifier per document. When you obtain the drawing context you also specify the size. The canvas will not be cleared as long as you repeatedly request the same size. Specifying a new size is equivalent to the kind of behavior you'd expect if you resized a <code>&lt;canvas></code> element, and so the canvas buffer will be cleared.
-
-All objects that observe a CSS canvas of the same name are sharing that canvas. This means that (similar to how animated GIFs work), you can do animations and have them happen in lockstep on all the clients of the canvas. Drawing changes will be propagated to all clients automatically. 
-
-http://trac.webkit.org/browser/trunk/LayoutTests/fast/canvas/canvas-bg.html?format=raw
--->
+<div id="notsupport">Your browser doesn't support document.getCSSCanvasContext</div>
 
 <div id="wrapper">
 	<p>Drawing an animation to <code>&lt;canvas></code> and using it as the CSS <code>background-image</code> of a DOM node.<br>This allows backgrounds to be "live" and powered programmatically via canvas.</p> 
@@ -104,6 +109,12 @@ http://trac.webkit.org/browser/trunk/LayoutTests/fast/canvas/canvas-bg.html?form
 <script>
 window.requestAnimationFrame = window.requestAnimationFrame ||
                                window.webkitRequestAnimationFrame;
+var supported = true;
+
+if (!!!document.getCSSCanvasContext) {
+  document.querySelector('#notsupport').style.display = 'block';
+  supported = false;
+}
 
 function correctPixelRatio(ctx, container) {
 	var canvas = ctx.canvas;
@@ -127,9 +138,13 @@ var computedStyle = window.getComputedStyle(document.querySelector('#container')
 var WIDTH = parseInt(computedStyle.width);
 var HEIGHT = parseInt(computedStyle.height);
 
-var ctx = document.getCSSCanvasContext('2d', 'animation', WIDTH, HEIGHT);
-var canvas = ctx.canvas;
-
+if (supported) {
+  var ctx = document.getCSSCanvasContext('2d', 'animation', WIDTH, HEIGHT);
+  var canvas = ctx.canvas;
+} else {
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+}
 var ratio = correctPixelRatio(ctx);
 
 WIDTH = ctx.canvas.width;
