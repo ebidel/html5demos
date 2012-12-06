@@ -229,7 +229,7 @@ Examples: [handlebars.js](http://handlebarsjs.com/), John Resig's [micro-templat
 title: <img src="images/icons/clock.png" alt="Tomorrow" title="Tomorrow"> Templating of the near future
 subtitle:  <code>&lt;template&gt;</code>
 spec_link: http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html
-bug_link: https://bugs.webkit.org/show_bug.cgi?id=86031
+#bug_link: https://bugs.webkit.org/show_bug.cgi?id=86031
 
 Contains inert markup intended to be used later:
 
