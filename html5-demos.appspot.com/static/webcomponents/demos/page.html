@@ -103,7 +103,6 @@ button:active {
 </head>
 <body>
 
-<script type="html/template">
 <template>
 <style>
   @host {
@@ -151,7 +150,6 @@ button:active {
   <footer><button pseudo="x-comment-button">Comment</button></footer>
 </div>
 </template>
-</script>
 
 <h1>Main Title</h1>
 
@@ -204,7 +202,7 @@ Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
 var shadow = document.querySelector('#host').createShadowRoot();
 //shadow.resetStyleInheritance = true;
 shadow.applyAuthorStyles = true;
-shadow.innerHTML = document.querySelector('[type="html/template"]').innerHTML;
+shadow.innerHTML = document.querySelector('template').innerHTML;
 </script>
 </body>
 </html>
