@@ -405,6 +405,7 @@ var host = document.querySelector('#host');
 <b>var shadow = host.<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();</b>
 <b>shadow.innerHTML = '&lt;h2>Yo, you got replaced!&lt;/h2>' +
                    '&lt;div>by my awesome content&lt;/div>';</b>
+// <b>host.<a data-tooltip-property="shadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js data-tooltip-js-property>shadowRoot</a>;</b>
 </pre>
 
 <div class="host">

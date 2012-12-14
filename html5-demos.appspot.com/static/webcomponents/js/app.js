@@ -42,10 +42,13 @@ function addVendorPrefixes() {
         // Capitalized Properties should remain so, unless explicitly called out.
         if (property[0] == property[0].toUpperCase() &&
             !('tooltipLowercase' in tip.dataset)) {
-          var val = PREFIXES[prefix] + property + '(...)';
+          var val = PREFIXES[prefix] + property;
         } else {
           var upperCasedProperty = property[0].toUpperCase() + property.substring(1);
-          var val = prefix + upperCasedProperty + '(...);';
+          var val = prefix + upperCasedProperty;
+        }
+        if (!('tooltipJsProperty' in tip.dataset)) {
+	        val += '(...);';
         }
         str.push(val);
       });
