@@ -99,7 +99,7 @@ article > section > div {
   border-radius: 10px;
 }
 #pic {
-  height: 300px;
+  height: 200px;
   border-radius: 10px;
   /* hw accel filters */
   /*-webkit-transform: translateZ(0);*/
@@ -111,6 +111,7 @@ article > section > div {
   right: -4em;
   opacity: 0.2;
   -webkit-filter: grayscale(0.3) blur(8px);
+  z-index: -1;
 }
 .drop-shadow {
   padding: 1em 1em 0.8em 1em;
@@ -118,6 +119,59 @@ article > section > div {
   -ms-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
   -o-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
+}
+@media only screen and (max-width: 320px) {
+  html, body {
+    overflow: auto;
+  }
+  body {
+    font-size: 14px;
+  }
+  details {
+    max-width: 275px;
+    font-size: 10px;
+  }
+  hgroup {
+    margin-bottom: 0;
+  }
+  hgroup h2 {
+    margin-top: 1.5em;
+  }
+  #pic {
+    min-height: 175px;
+    max-width: 315px;
+    max-height: 175px;
+    height: auto;
+  }
+  .drop-shadow {
+    padding: 0.5em 0.5em 0.2em 0.5em;
+  }
+  .cols {
+    -webkit-columns: 2;
+    width: auto;
+  }
+  .cols > span {
+    margin: 0 0 5px 0;
+  }
+  output {
+    font-size: inherit;
+  }
+  article > section {
+    margin: 0.5em 0;
+  }
+  article > section button {
+    font-size: 12px;
+  }
+  article > section:nth-child(2) {
+    height: 20px;
+  }
+  article > section:last-of-type > span {
+    display: block; 
+    margin-bottom: 5px;
+  }
+  input[type="range"] {
+
+  }
 }
 </style>
 </head>
@@ -170,7 +224,7 @@ article > section > div {
     <span><button onclick="reset()" style="margin-top:10px;">reset</button></span>
   </section>
   <section>
-    Animations:
+    <span>Animations:</span>
     <button onclick="go(this, 'blur')">blur</button>
     <button onclick="go(this, 'grayscale')">grayscale</button>
     <button onclick="go(this, 'sepia')">sepia</button>
