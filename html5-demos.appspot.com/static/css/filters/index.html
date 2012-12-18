@@ -120,16 +120,16 @@ article > section > div {
   -o-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
 }
-@media only screen and (max-device-width: 420px) {
+@media screen and (max-width: 1000px) {
   html, body {
     overflow: auto;
   }
   body {
-    font-size: 14px;
+    font-size: 24px;
   }
   details {
     max-width: 275px;
-    font-size: 10px;
+    font-size: 24px;
   }
   hgroup {
     margin-bottom: 0;
@@ -151,26 +151,29 @@ article > section > div {
     width: auto;
   }
   .cols > span {
-    margin: 0 0 5px 0;
+    margin: 0 0 40px 0;
   }
   output {
-    font-size: inherit;
+    font-size: 24px !important;
   }
   article > section {
     margin: 0.5em 0;
   }
   article > section button {
-    font-size: 12px;
+    font-size: 48px;
+    margin: 0 40px 0 0
   }
   article > section:nth-child(2) {
-    height: 20px;
+    height: 89px;
   }
   article > section:last-of-type > span {
     display: block; 
     margin-bottom: 5px;
   }
   input[type="range"] {
-
+    display: block;
+    margin: 15px 0 0 0;
+    width: 300px;
   }
 }
 </style>
