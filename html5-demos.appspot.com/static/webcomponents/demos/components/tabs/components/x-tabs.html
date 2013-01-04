@@ -21,17 +21,19 @@
   <script>
     if (this !== window) {
       var root = null;
+      var container = null;
 
       TabsController.prototype = {
         indexOf: function(el) {
-          return [].slice.call(root.host.querySelectorAll(el.nodeName.toLowerCase())).indexOf(el);
+          return [].slice.call(container.querySelector('.tab-wrapper content').getDistributedNodes()).indexOf(el);
         },
         onClickTab: function(e) {
           if (e.target.nodeName == 'H2') {
             var index = this.indexOf(e.target) + 1;
             root.querySelector('content.current').select = 'section:nth-of-type(' + index + ')';
 
-            var els = root.host.querySelectorAll(e.target.nodeName.toLowerCase());
+            //var els = container.querySelectorAll(e.target.nodeName.toLowerCase());
+            var els = container.querySelector('.tab-wrapper content').getDistributedNodes();
             [].slice.call(els).forEach(function(el, i) {
               el.classList.remove('active');
             });
@@ -43,8 +45,10 @@
       this.lifecycle({
         created: function(shadowRoot) {
           root = shadowRoot;
-          root.host.addEventListener('click', this.onClickTab.bind(this));
-          root.host.querySelector('h2').click(); // Select first tab 
+          container = root.querySelector('#container');
+          container.querySelector('.tab-wrapper').addEventListener('click', this.onClickTab.bind(this));
+          // Probably not the best way to do this.
+          container.querySelector('.tab-wrapper content').getDistributedNodes()[0].click(); // Select first tab 
         },
         inserted: function(root) {
 

@@ -252,8 +252,8 @@ title: <img src="images/icons/clock.png"> Templating of the near future
 
 <pre class="prettyprint" data-lang="js">
 var t = document.querySelector('#mytemplate');
-t.querySelector('img').src = 'http://...';
-document.body.appendChild(<b>t.content.cloneNode()</b>);
+t.content.querySelector('img').src = 'http://...';
+document.body.appendChild(<b>t.content.cloneNode(true)</b>);
 </pre>
 
 <div class="build">
