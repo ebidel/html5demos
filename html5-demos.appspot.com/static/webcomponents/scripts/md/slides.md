@@ -1104,7 +1104,7 @@ Declared `constructor` goes on global scope:
 &lt;link rel="components" href="x-tabs.html"&gt;
 &lt;script&gt;
 <b>var tabs = new TabsController();</b>
-tabs.addEventListener('click', function(e) { <b>e.target.doSomething();</b>});
+tabs.addEventListener('click', function(e) { <b>e.target.doSomething();</b> });
 document.body.appendChild(tabs);
 &lt;/script&gt;
 </pre>

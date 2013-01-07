@@ -46,7 +46,7 @@
         created: function(shadowRoot) {
           root = shadowRoot;
           container = root.querySelector('#container');
-          container.querySelector('.tab-wrapper').addEventListener('click', this.onClickTab.bind(this));
+          this.addEventListener('click', this.onClickTab.bind(this));
           // Probably not the best way to do this.
           container.querySelector('.tab-wrapper content').getDistributedNodes()[0].click(); // Select first tab 
         },

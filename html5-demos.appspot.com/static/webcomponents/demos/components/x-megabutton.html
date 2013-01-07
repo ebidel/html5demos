@@ -56,7 +56,7 @@
     this.lifecycle({
       created: function(shadowRoot) {
         root = shadowRoot;
-        root.host.addEventListener('click', this.megaClick.bind(this));
+        this.addEventListener('click', this.megaClick.bind(this));
         audioController_.load('demos/components/moo.mp3', function() {
         }.bind(this));
       },
