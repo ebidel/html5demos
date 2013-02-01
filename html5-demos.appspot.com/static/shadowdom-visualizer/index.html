@@ -137,8 +137,11 @@ h2 {
 #actions button {
   padding: 5px;
 }*/
-#host, .hidden {
+#host {
   display: none;
+}
+.hidden {
+  display: none !important;
 }
 </style>
 </head>
@@ -154,11 +157,11 @@ h2 {
   </div>
 </details>
 
-
 <h2>ShadowDOM Visualizer</h2>
   
 <h3 id="compat" class="hidden">
-  Your browser does not support ShadowDOM or <code>&lt;template&gt;</code> native!
+  Oops! Your browser does not support ShadowDOM or <code>&lt;template&gt;</code> natively!<br>
+  Try Chrome Canary.
 </h3>
 
 <div id="container">
@@ -337,6 +340,8 @@ function goRender(host) {
 function init() {
   if (!isCompatible()) {
     document.querySelector('#compat').classList.remove('hidden');
+    document.querySelector('#container').classList.add('hidden');
+    return;
   }
 
   // On first run, setup and example.
