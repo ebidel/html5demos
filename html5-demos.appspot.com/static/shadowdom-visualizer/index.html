@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--
+Copyright 2013 Eric Bidelman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@)
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+<title>Shadow DOM Visualizer</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro' rel='stylesheet' type='text/css'>
+<link href="../common.css" rel="stylesheet" type="text/css">
+<style>
+h2 {
+  margin: 2em 0 1.5em 0;
+}
+#compat {
+  color: darkred;
+  margin-bottom: 3em;
+  text-align: center;
+  font-weight: 600;
+}
+
+.view {
+  position: relative;
+}
+
+.view:before {
+  position: absolute;
+  left: 0;
+  top: -30px;
+  font: 10pt 'Source Code Pro', sans-serif;
+  font-size: 11pt;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.markup {
+  width: 40%;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+}
+.markup > div {
+  -webkit-flex: 1 1 0;
+  display: -webkit-flex;
+  border-radius: 8px;
+}
+.markup textarea {
+  font: 10pt 'Source Code Pro', sans-serif;
+  outline: none;
+  resize: none;
+  background: black;
+  color: white;
+  -webkit-flex: 1 1 0;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+}
+#container {
+  display: -webkit-flex;
+}
+#host-markup {
+  border: 8px solid steelblue;
+  background: steelblue;
+}
+#host-markup:before {
+  content: "Host";
+}
+#shadow-markup {
+  margin-top: 2em;
+  padding-top: 0;
+  padding-left: 0;
+  border: 8px solid #FC0;
+  background: #FC0;
+}
+#shadow-markup:before {
+  content: "Shadow DOM";
+}
+
+.tree {
+  position: relative;
+  border-radius: 8px;
+  border: 5px solid #222;
+  margin-left: 2em;
+  background: #fff;
+  -webkit-user-select: none;
+}
+.tree:before {
+  content: 'Composed (rendered) tree';
+}
+.tree rect {
+  fill: none;
+}
+.tree .rendering rect {
+  stroke: #222;
+  stroke-dasharray: 3;
+}
+.tree .node {
+  font-size: 10px;
+}
+.tree .node circle {
+  fill: #ffcc00;
+  stroke: orange;
+  stroke-width: 1.5px;
+}
+.tree .node circle.inhost {
+  fill: steelblue;
+  stroke: #355E95;
+}
+.tree .node circle.insertionpoint {
+  fill: #ffcc00;
+  stroke: steelblue;
+  stroke-dasharray: 1.5;
+}
+.tree .link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+/*#actions {
+  margin-top: 1em;
+}
+#actions button {
+  padding: 5px;
+}*/
+#host, .hidden {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+    <p>This tools allows you to visualize how ShadowDOM renders in the browser.
+    The code is editable on the left side. Try changing the <code>&lt;content&gt;</code>
+    insertion points or adding new ones to see how the composited tree is affected.</p>
+    <p><b>Support:</b> Chrome 25 supports ShadowDOM natively. Chrome 26 supports <code>&lt;template&gt;</code>.</p>
+  </div>
+</details>
+
+
+<h2>ShadowDOM Visualizer</h2>
+  
+<h3 id="compat" class="hidden">
+  Your browser does not support ShadowDOM or <code>&lt;template&gt;</code> native!
+</h3>
+
+<div id="container">
+  <section class="markup">
+    <div id="host-markup" class="view"><textarea></textarea></div>
+    <div id="shadow-markup" class="view"><textarea></textarea></div>
+  </section>
+  <div id="chart" class="tree rendering view"></div>
+</div>
+
+<div id="host">
+  <h2>Eric</h2>
+  <h2>Bidelman</h2>
+  <div>
+    <span>Digital Jedi</span>
+  </div>
+  <h4>footer text</h4>
+</div>
+
+<template id="sdom">
+<header>
+  <content select="h2"></content>
+</header>
+<section>
+  <content select="div"></content>
+</section>
+<footer>
+  <content select="h4:first-of-type"></content>
+</footer>
+</template>
+
+<script src="d3.v3.min.js"></script>
+<script>
+function isCompatible() {
+  return HTMLElement.prototype.webkitCreateShadowRoot ||
+         HTMLElement.prototype.createShadowRoot ? true : false;
+}
+
+function RenderTree(host) {
+  this.host = host;
+  this.data = {
+    name: this.generateNodeName(host),
+    inHost: true,
+    children: []
+  };
+}
+
+RenderTree.prototype.isTextNode = function(node) {
+  return node.__proto__ == Text.prototype;
+};
+
+RenderTree.prototype.isContentElement = function(node) {
+  return node.__proto__ == HTMLContentElement.prototype;
+};
+
+RenderTree.prototype.generateNodeName = function(node) {
+  var attrs = this.getAttrs(node);
+  if (attrs.length) {
+    return this.normalizedTagName_(node) + '[' + attrs + ']';
+  } else {
+    return this.normalizedTagName_(node);
+  }
+};
+
+RenderTree.prototype.normalizedTagName_ = function(node) {
+  return node.tagName.toLowerCase();
+};
+
+RenderTree.prototype.getAttrs = function(node) {
+  var attrs = [];
+  [].forEach.call(node.attributes, function(attr, j) {
+    attrs.push([attr.name, attr.value].join('='));
+  });
+  return attrs.join(' ');
+};
+
+RenderTree.prototype.constructTree = function(inNode, subtree) {
+
+  var childNodes = inNode.getDistributedNodes ? inNode.getDistributedNodes() :
+                                                inNode.childNodes;
+
+  [].forEach.call(childNodes, function(node, i) {
+
+    if (!this.isTextNode(node)) {
+      var tagName = this.generateNodeName(node);
+
+      subtree.children.push({
+        name: tagName,
+        inHost: this.isContentElement(node) || this.host.contains(node),
+        children: []
+      });
+
+      this.constructTree(node,
+          subtree.children[subtree.children.length - 1]);
+    }
+  }.bind(this));
+};
+
+RenderTree.prototype.render = function(selector, w, h) {
+  var width = w;
+  var height = h;
+  var data = this.data;
+
+  var cluster = d3.layout.tree().size([height + 100, width / 2]);
+
+  var diagonal = d3.svg.diagonal()
+      .projection(function(d) { return [d.x, d.y]; });
+
+  var vis = d3.select(selector).html('').append("svg")
+     .attr("width", width)
+     .attr("height", height)
+     .append("g")
+     .attr("transform", "translate(0, 40)");
+
+  // vis.append("rect")
+  //    .attr("width", width - 50)
+  //    .attr("height", height - 125)
+  //    .attr("transform", "translate(25, 40)");
+
+  var nodes = cluster.nodes(data);
+
+  var link = vis.selectAll("path.link")
+     .data(cluster.links(nodes))
+     .enter().append("path")
+     .attr("class", "link")
+     .attr("d", diagonal);
+
+  var node = vis.selectAll("g.node")
+     .data(nodes)
+     .enter().append("g")
+     .attr("class", "node")
+     .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+
+  node.append("circle")
+     .attr("r", 10.5)
+     .attr("class", function(d) {
+       return [d.name.indexOf('content') == 0 ? 'insertionpoint' : '',
+               d.inHost ? 'inhost' : ''].join(' ');
+     })
+
+  node.append("text")
+     .attr("text-anchor", "middle")
+     //.attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
+     //.attr("dx", function(d) { return d.children ? -15 : 15; })
+     //.attr("dx", function(d) { return 0 })
+     .attr("dy", -15)
+     .text(function(d) { return d.name; });
+};
+
+function goRender(host) {
+  var hostMarkup = document.querySelector('#host-markup textarea');
+  var shadowMarkup = document.querySelector('#shadow-markup textarea');
+  var host = document.querySelector('#host');
+
+  host.innerHTML = '';
+
+  var div = document.createElement('div');
+  div.innerHTML = hostMarkup.value;
+
+  host.innerHTML = div.firstChild.innerHTML;
+
+  var root = host.webkitShadowRoot;
+  if (!root) {
+    root = host.webkitCreateShadowRoot();
+  }
+
+  root.innerHTML = shadowMarkup.value;
+
+  var renderTree = new RenderTree(host);
+  renderTree.constructTree(root, renderTree.data);
+  renderTree.render('#chart', 550, 400);
+
+  //prettyPrint();
+}
+
+function init() {
+  if (!isCompatible()) {
+    document.querySelector('#compat').classList.remove('hidden');
+  }
+
+  // On first run, setup and example.
+  var hostMarkup = document.querySelector('#host-markup textarea');
+  var shadowMarkup = document.querySelector('#shadow-markup textarea');
+  hostMarkup.value = host.outerHTML;
+  shadowMarkup.value = document.querySelector('#sdom').innerHTML.trim();
+
+  goRender();
+
+  // document.querySelector('#actions button').addEventListener('click', function(e) {
+  //   goRender();
+  // });
+
+  document.querySelector('.markup').addEventListener('keyup', function(e) {
+    //console.log(e.timeStamp)
+    try {
+      goRender();
+    } catch(e) {
+      //console.error(e);
+    }
+  });
+}
+
+init();
+</script>
+</body>
