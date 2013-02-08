@@ -6,11 +6,10 @@ license that can be found in the LICENSE file.
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="initial-scale=1.0">
   <title>Panels</title>
   <script src="../platform/platform.js"></script>
-  <link rel="components" href="../src/g-panels.html">
-  <link rel="stylesheet" href="../src/css/g-panels.css" />
+  <link rel="components" href="../components/g-panels.html">
+  <link rel="stylesheet" href="../components/css/g-panels.css" />
 	<style>
 		html, body {
 			height: 100%;
@@ -26,7 +25,7 @@ license that can be found in the LICENSE file.
 		.controls {
 			padding: 10px;
 		}
-		
+
 		g-panels {
       counter-reset: section;
 			-webkit-flex: 1;
@@ -36,46 +35,48 @@ license that can be found in the LICENSE file.
 			overflow: hidden;
 			font-size: 30px;
 		}
-    
+
 		g-panels > * {
 			padding: 10px;
       box-sizing: border-box;
     }
-    
+
     g-panels[transition="flow"] > * {
       width: 80%;
       -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.5);
     }
-    
+
     g-panels[transition="flow"] > *:nth-of-type(1) {
       width: 200px;
     }
-    
+
     g-panels[transition="flow"] > *:nth-of-type(2) {
       width: 240px;
     }
-    
+
     g-panels[transition="flow"] > *:nth-of-type(3) {
       width: 280px;
     }
-    
+
     g-panels[transition="flow"] > *:nth-of-type(4) {
       width: 100%;
     }
-    
+
     g-panels[transition="flow"] > *:nth-of-type(5) {
       width: 280px;
     }
-    
+
 	</style>
 </head>
-<body style="opacity: 0;">
+<body>
   <div class="controls">
 		<button onclick="previous();">&laquo;</button>
 		<button onclick="next();">&raquo;</button>
+    <button onclick="addPanel();">+</button>
 		<select onchange="changeTransition(event)">
 			<option  selected>fade</option>
-			<option value="keyframe">hslide</option>
+      <option value="none">none</option>
+      <option value="keyframe">hslide</option>
 			<option value="keyframe">vslide</option>
 			<option value="keyframe">hslideover</option>
 			<option value="keyframe">vslideover</option>
@@ -84,7 +85,8 @@ license that can be found in the LICENSE file.
       <option value="keyframe">fly-up-right</option>
       <option value="flow">flow</option>
 		</select>
-	</div>	
+    <label>enable transitions: <input type="checkbox" checked onchange="transitionableChange(event)"></label>
+	</div>
   <g-panels index="2" transition="keyframe" class="g-panels-fade">
 		<section name="foo" style="background: blue;">Panel 1</section>
 		<section name="zonk" style="background: red;">Panel 2</section>
@@ -101,6 +103,10 @@ license that can be found in the LICENSE file.
 		previous = function() {
 			panels.previous();
 		}
+    
+    transitionableChange = function(e) {
+      panels.enableTransitions(e.target.checked);
+    }
 
 		changeTransition = function(e) {
       panels.transition = e.target.value;
@@ -109,6 +115,15 @@ license that can be found in the LICENSE file.
       panels.className = 'g-panels-' + className;
       panels.focus();
 		}
+    
+    addPanel = function() {
+      var p = document.createElement('section');
+      p.style.background = 'hsla(' + Math.round(Math.random() * 360) + ', 60%, 30%, 1)';
+      p.textContent = 'Panel ' + ++panels.count;
+      panels.appendChild(p);
+      panels.panelAdded(p);
+      panels.index = panels.count;
+    }
 
     panels.focus();
 	});

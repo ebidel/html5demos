@@ -46,9 +46,13 @@ suite('g-menu', function() {
   
   test('click item', function(done) {
     addItems(4);
-    // simulate mouseup on item
-    var e = document.createEvent('MouseEvents');
-    e.initMouseEvent('mouseup', true);
+    // simulate pointerup on item
+    // TODO(sjmiles): Mozilla didn't like the initMouseEvent call, but it 
+    // accepted the new-fangled CustomEvent version
+    //var e = document.createEvent('MouseEvents');
+    //e.initMouseEvent('pointerup', true);
+    var e = new CustomEvent('pointerup', {bubbles: true});
+    //
     menu.items[2].dispatchEvent(e);
     async(function() {
       expect(menu.selected).to.be(2);

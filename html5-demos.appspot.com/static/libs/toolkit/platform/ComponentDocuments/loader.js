@@ -65,7 +65,7 @@ var loader = {
     return "..." + inUrl.split("/").slice(-2).join("/");
   },
   nodeUrl: function(inNode) {
-    return path.resolveNodeUrl(inNode, path.nodeUrl(inNode));
+    return path.nodeUrl(inNode);
   },
   loadFromNode: function(inNode, inNext) {
     var url = loader.nodeUrl(inNode);
@@ -158,11 +158,9 @@ var componentLoader = {
         }
       });
     });
-    if (inNode != document) {
-      $$(inNode, "link[rel=stylesheet],script[src]").forEach(function(n) {
-        loader.load(n, nop);
-      });
-    }
+    $$(inNode, "element link[rel=stylesheet],element script[src]").forEach(function(n) {
+      loader.load(n, nop);
+    });
     if (!loader.inflight) {
       loader.oncomplete();
     }
