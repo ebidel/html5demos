@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Author: Eric Bidelman (ebidel@)
+Author: Eric Bidelman (@ebidel)
 -->
 <html>
 <head>
@@ -25,7 +25,8 @@ Author: Eric Bidelman (ebidel@)
 <link href="../common.css" rel="stylesheet" type="text/css">
 <style>
 h2 {
-  margin: 2em 0 1.5em 0;
+  margin: 1em 0 2.5em 0;
+  text-align: center;
 }
 #compat {
   color: darkred;
@@ -33,11 +34,9 @@ h2 {
   text-align: center;
   font-weight: 600;
 }
-
 .view {
   position: relative;
 }
-
 .view:before {
   position: absolute;
   left: 0;
@@ -69,15 +68,24 @@ h2 {
   border: none;
   padding: 10px;
 }
+.markup .invalid textarea {
+  background: rgba(200,0, 0, 0.8);
+}
+
 #container {
   display: -webkit-flex;
+  -webkit-justify-content: center;
 }
 #host-markup {
   border: 8px solid steelblue;
   background: steelblue;
 }
 #host-markup:before {
-  content: "Host";
+  content: "Host node";
+}
+.invalid:before {
+  color: rgba(200,0, 0, 0.8);
+  content: "Host node (Oops. Need a single host node)" !important;
 }
 #shadow-markup {
   margin-top: 2em;
@@ -99,7 +107,7 @@ h2 {
   -webkit-user-select: none;
 }
 .tree:before {
-  content: 'Composed (rendered) tree';
+  content: 'Composed/rendered tree';
 }
 .tree rect {
   fill: none;
@@ -109,7 +117,8 @@ h2 {
   stroke-dasharray: 3;
 }
 .tree .node {
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: bold;
 }
 .tree .node circle {
   fill: #ffcc00;
@@ -130,13 +139,6 @@ h2 {
   stroke: #ccc;
   stroke-width: 1.5px;
 }
-
-/*#actions {
-  margin-top: 1em;
-}
-#actions button {
-  padding: 5px;
-}*/
 #host {
   display: none;
 }
@@ -175,9 +177,10 @@ h2 {
 <div id="host">
   <h2>Eric</h2>
   <h2>Bidelman</h2>
-  <div>
-    <span>Digital Jedi</span>
+  <div class="desc">
+    Title: <span>Digital Jedi</span>
   </div>
+  <div>Not selected</div>
   <h4>footer text</h4>
 </div>
 
@@ -186,10 +189,10 @@ h2 {
   <content select="h2"></content>
 </header>
 <section>
-  <content select="div"></content>
+  <content select="div.desc"></content>
 </section>
 <footer>
-  <content select="h4:first-of-type"></content>
+  <content select="h4"></content>
 </footer>
 </template>
 
@@ -219,15 +222,38 @@ RenderTree.prototype.isContentElement = function(node) {
 
 RenderTree.prototype.generateNodeName = function(node) {
   var attrs = this.getAttrs(node);
+  var name = '';
   if (attrs.length) {
-    return this.normalizedTagName_(node) + '[' + attrs + ']';
+    name = this.normalizedTagName_(node) + '[' + attrs + ']';
   } else {
-    return this.normalizedTagName_(node);
+    name = this.normalizedTagName_(node);
   }
+  return name + this.getTextContent(node);
 };
 
 RenderTree.prototype.normalizedTagName_ = function(node) {
   return node.tagName.toLowerCase();
+};
+
+RenderTree.prototype.getTextContent = function(node) {
+  var label = '';
+
+  if (this.isContentElement(node)) {
+    return label;
+  }
+  
+  [].forEach.call(node.childNodes, function(n) {
+    if (this.isTextNode(n)) {
+      label += n.textContent.replace(/[\n\r\t]*/g, '').trim();
+    }
+  }.bind(this));
+
+  // Show #text if we have some.
+  if (label.length) {
+    label = ' #' + label;
+  }
+
+  return label;
 };
 
 RenderTree.prototype.getAttrs = function(node) {
@@ -293,7 +319,9 @@ RenderTree.prototype.render = function(selector, w, h) {
      .data(nodes)
      .enter().append("g")
      .attr("class", "node")
-     .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+     .attr("transform", function(d) {
+      return "translate(" + d.x + "," + d.y + ")";
+    });
 
   node.append("circle")
      .attr("r", 10.5)
@@ -311,16 +339,22 @@ RenderTree.prototype.render = function(selector, w, h) {
      .text(function(d) { return d.name; });
 };
 
-function goRender(host) {
-  var hostMarkup = document.querySelector('#host-markup textarea');
-  var shadowMarkup = document.querySelector('#shadow-markup textarea');
-  var host = document.querySelector('#host');
 
-  host.innerHTML = '';
+var hostMarkup = document.querySelector('#host-markup textarea');
+var shadowMarkup = document.querySelector('#shadow-markup textarea');
 
+function goRender() {
+  // Create dummy temp div to parse out DOM.
   var div = document.createElement('div');
   div.innerHTML = hostMarkup.value;
 
+  if (div.childElementCount != 1) {
+    hostMarkup.parentElement.classList.add('invalid');
+  } else {
+    hostMarkup.parentElement.classList.remove('invalid');
+  }
+
+  var host = div.firstElementChild;
   host.innerHTML = div.firstChild.innerHTML;
 
   var root = host.webkitShadowRoot;
@@ -333,8 +367,6 @@ function goRender(host) {
   var renderTree = new RenderTree(host);
   renderTree.constructTree(root, renderTree.data);
   renderTree.render('#chart', 550, 400);
-
-  //prettyPrint();
 }
 
 function init() {
@@ -345,16 +377,10 @@ function init() {
   }
 
   // On first run, setup and example.
-  var hostMarkup = document.querySelector('#host-markup textarea');
-  var shadowMarkup = document.querySelector('#shadow-markup textarea');
   hostMarkup.value = host.outerHTML;
   shadowMarkup.value = document.querySelector('#sdom').innerHTML.trim();
 
   goRender();
-
-  // document.querySelector('#actions button').addEventListener('click', function(e) {
-  //   goRender();
-  // });
 
   document.querySelector('.markup').addEventListener('keyup', function(e) {
     //console.log(e.timeStamp)
