@@ -247,7 +247,7 @@ build_lists: true
 - Style encapsulation
 - Knowledge into app's state
     - DOM changes: `MutationObserver`
-    - Model changes: `Object.observer()`
+    - Model changes: `Object.observe()`
 - CSS variables, `calc()`
 
 <p class="centered topmargin build">
