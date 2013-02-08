@@ -117,6 +117,7 @@ h2 {
   stroke-dasharray: 3;
 }
 .tree .node {
+  cursor: crosshair;
   font-size: 11px;
   font-weight: bold;
 }
@@ -208,6 +209,7 @@ function RenderTree(host) {
   this.data = {
     name: this.generateNodeName(host),
     inHost: true,
+    markup: host.outerHTML,
     children: []
   };
 }
@@ -276,6 +278,7 @@ RenderTree.prototype.constructTree = function(inNode, subtree) {
 
       subtree.children.push({
         name: tagName,
+        markup: node.outerHTML,
         inHost: this.isContentElement(node) || this.host.contains(node),
         children: []
       });
@@ -319,6 +322,12 @@ RenderTree.prototype.render = function(selector, w, h) {
      .data(nodes)
      .enter().append("g")
      .attr("class", "node")
+     .attr("data-markup", function(d) {
+       return d.markup;
+     })
+     .attr("data-inhost", function(d) {
+       return d.inHost && d.name.indexOf('content') != 0 ? 'true' : 'false';
+     })
      .attr("transform", function(d) {
       return "translate(" + d.x + "," + d.y + ")";
     });
@@ -391,6 +400,22 @@ function init() {
     }
   });
 }
+
+document.querySelector('#chart').addEventListener('mousemove', function(e) {
+  hostMarkup.selectionEnd = 0;
+  shadowMarkup.selectionEnd = 0;
+
+  var parent = e.target.parentElement;
+
+  if (parent.classList.contains('node')) {
+    var inHost = JSON.parse(parent.dataset.inhost);
+    var node = inHost ? hostMarkup : shadowMarkup;
+    var markup = parent.dataset.markup;
+    var startIdx = node.value.search(markup);
+    node.selectionStart = startIdx;
+    node.selectionEnd = startIdx + markup.length;
+  }
+});
 
 init();
 </script>
