@@ -146,6 +146,13 @@ h2 {
 .hidden {
   display: none !important;
 }
+#explanation {
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+}
+#explanation p {
+  width: 80%;
+}
 </style>
 </head>
 <body>
@@ -172,8 +179,10 @@ h2 {
   <div id="chart" class="tree rendering view"></div>
 </div>
 
+<div id="explanation">
 <p>This tools allows you to visualize how Shadow DOM renders in the browser.
 Both code blocks on the left are editable. Try changing the <code>&lt;content&gt;</code> insertion points, removing, or adding new ones to see how the composited tree is affected. You can also move over the nodes on the right to highlight the relevant markup on the left.</p>
+</div>
 
 <div id="host">
   <h2>Eric</h2>
