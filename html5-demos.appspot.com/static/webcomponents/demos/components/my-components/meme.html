@@ -1,0 +1,90 @@
+<!--
+Questions:
+- "scoped" being applied by default to <style> even though omitted.
+
+Used:
+- css variables, web fonts, css filters, css flexbox, <datalist>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Memgen on Web Components</title>
+<script src="/static/libs/toolkit/platform/platform.js"></script>
+<link rel="components" href="x-meme.html">
+<link href='http://fonts.googleapis.com/css?family=Montserrat+Alternates' rel='stylesheet' type='text/css'>
+<style>
+hgroup {
+  font-family: 'Montserrat Alternates', sans-serif;
+  line-height: 0;
+  background: rgba(0,0,0,0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  margin-bottom: 10px;
+}
+hgroup > * {
+  margin-left: 15px;
+}
+hgroup h2 {
+  font-size: 15px;
+}
+hgroup input {
+  padding: 5px;
+}
+#main {
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-flex-direction: column;
+  -webkit-align-items: center;
+}
+[contenteditable] {
+  outline: none;
+}
+x-meme {
+  margin-top: 15px;
+}
+</style>
+</head>
+<body>
+<div id="main">
+
+<hgroup>
+  <h1>Memgen</h1>
+  <h2>Web Componentized</h2>
+  <div>
+    <input type="text" list="backgrounds" placeholder="URL to an image">
+    <datalist id="backgrounds">
+      <option value="images/fuji.jpg"></option>
+      <option value="images/beaches.jpg"></option>
+      <option value="images/gg_bridge.jpg"></option>
+      <option value="images/nyc.jpg"></option>
+    </datalist>
+  </div>
+</hgroup>
+
+<x-meme id="meme" src="images/beaches.jpg">
+  <h1 contenteditable>Stay classy</h1>
+  <h2 contenteditable>Web!</h2>
+</x-meme>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('WebComponentsReady', function(e) {
+    console.log(e);
+  });
+  
+  //var m = document.createElement('x-meme');
+
+  var meme = document.querySelector('x-meme');
+
+  document.querySelector('input').addEventListener('change', function(e) {
+    meme.src = e.target.value;//meme.srcAttributeChanged();
+  });
+})();
+</script>
+</body>
+</html>

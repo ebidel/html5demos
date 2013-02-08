@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gangnam style on Web Components</title>
+<!-- <script src="../toolkit/platform/platform.js" shadow="webkit"></script> -->
+<script src="/static/libs/toolkit/platform/platform.js"></script>
+<link rel="components" href="x-gangnam-style.html">
+<style>
+#main {
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-flex-direction: column;
+  -webkit-align-items: center;
+}
+/*Need to define these globally. Don't work in the component.
+See https://bugs.webkit.org/show_bug.cgi?id=72462 */
+@-webkit-keyframes psydroid-dance {
+  0% { top: 0; }
+  20% { top: 4px; }
+  30% { top: 0; }
+  50% { top: 4px; }
+  60% { top: 0; }
+  80% { top: 4px; }
+  90% { top: 0; }
+  100% { top: 0; }
+}
+@-webkit-keyframes psydroid-leg-l {
+  0% { top: 116px; }
+  10% { top: 116px; }
+  15% { top: 116px; }
+  25% { top: 116px; }
+  30% { top: 110px; }
+  40% { top: 116px; }
+  45% { top: 120px; }
+  55% { top: 116px; }
+  60% { top: 120px; }
+  70% { top: 116px; }
+  75% { top: 110px; }
+  85% { top: 116px; }
+  100% { top: 116px; }
+}
+@-webkit-keyframes psydroid-leg-r {
+  0% { top: 116px; }
+  10% { top: 120px; }
+  15% { top: 110px; }
+  25% { top: 116px; }
+  30% { top: 120px; }
+  40% { top: 116px; }
+  45% { top: 110px; }
+  55% { top: 116px; }
+  60% { top: 110px; }
+  70% { top: 116px; }
+  75% { top: 120px; }
+  85% { top: 116px; }
+  100% { top: 116px; }
+}
+@-webkit-keyframes psydroid-arm-l {
+  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  10% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+  20% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+  25% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+  40% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-75deg); transform: rotate(-75deg); }
+  50% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+  55% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-80deg); transform: rotate(-80deg); }
+  65% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+  80% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+}
+@-webkit-keyframes psydroid-arm-r {
+  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  10% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+  20% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+  25% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+  40% { -moz-transform: rotate(65deg); -webkit-transform: rotate(75deg); transform: rotate(75deg); }
+  50% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+  55% { -moz-transform: rotate(65deg); -webkit-transform: rotate(80deg); transform: rotate(80deg); }
+  65% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+  80% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+}
+</style>
+</head>
+<body>
+<div id="main">
+
+<x-gangnam-style></x-gangnam-style>
+
+</div>
+
+<script>
+(function () {
+  document.addEventListener('WebComponentsReady', function(e) {
+    console.log(e);
+  });
+  
+  //var m = document.createElement('x-gangnam-style');
+})();
+</script>
+</body>
+</html>

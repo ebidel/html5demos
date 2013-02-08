@@ -1,8 +1,8 @@
 var SLIDE_CONFIG = {
   // Slide settings
   settings: {
-    title: 'Web Components',
-    subtitle: 'and future of web development',
+    title: '&lt;web>components&lt;/web>',
+    //subtitle: 'and future of web development',
     useBuilds: true, // Default: true. False will turn off slide animation builds.
     usePrettify: true, // Default: true
     enableSlideAreas: true, // Default: true. False turns off the click areas on either slide of the slides.
@@ -20,7 +20,7 @@ var SLIDE_CONFIG = {
   // Author information
   presenters: [{
     name: 'Eric Bidelman',
-    company: 'Staff Developer Programs Engineer<br>Google Chrome Team',
+    company: 'Staff Developer Programs Engineer : Google Chrome Team',
     gplus: 'http://plus.ericbidelman.com',
     twitter: '@ebidel',
     www: 'http://www.ericbidelman.com',

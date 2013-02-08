@@ -1,15 +1,13 @@
 <!--
+Author: Eric Bidelman <ebidel@gmail.com>
+
 Google IO 2012 HTML5 Slide Template
-
-Authors: Eric Bidelman <ebidel@gmail.com>
-         Luke Mahe <lukem@google.com>
-
-URL: https://code.google.com/p/io-2012-slides
+https://code.google.com/p/io-2012-slides
 -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Google IO 2012</title>
+  <title>Web Components!</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
@@ -21,8 +19,15 @@ URL: https://code.google.com/p/io-2012-slides
   <link rel="stylesheet" media="all" href="theme/css/app.css">
   <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
   <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <!--<script src="demos/components/web_components_polyfill/src/components-polyfill.js"></script>-->
+  <script src="/static/libs/toolkit/platform/platform.js"></script>
+  <link rel="components" href="demos/components/my-components/x-gangnam-style.html"/>
+  <link rel="components" href="demos/components/my-components/x-meme.html"/>
+  <link rel="components" href="demos/components/my-components/mega-button/x-megabutton.html"/>
+  <script>
+    Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
+  </script>
   <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
-  <script src="demos/components/web_components_polyfill/src/components-polyfill.js"></script>
 </head>
 <body style="opacity: 0">
 
@@ -34,14 +39,20 @@ URL: https://code.google.com/p/io-2012-slides
   </article>
 </slide> -->
 
+<slide id="first-slide" class="nobackground">
+</slide>
+
 <slide class="title-slide segue nobackground">
-  <aside class="gdbar"><img src="images/logos/webcomponents.png"></aside>
+  <!-- <aside class="gdbar"><img src="images/logos/webcomponents.png"></aside> -->
   <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
-  <hgroup class="auto-fadein">
-    <h1 data-config-title><!-- populated from slide_config.json --></h1>
-    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
-    <p data-config-presenter><!-- populated from slide_config.json --></p>
-  </hgroup>
+  <article class="auto-fadein">
+    <img src="images/logos/webcomponents.png">
+    <hgroup>
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </article>
 </slide>
 
 {% for slide in slides %}
@@ -72,13 +83,20 @@ URL: https://code.google.com/p/io-2012-slides
 </slide>
 {% endfor %}
 
-<slide class="thank-you-slide segue nobackground">
+<!-- <slide class="thank-you-slide segue nobackground">
   <aside class="gdbar right"><img src="images/google_developers_icon_128.png"></aside>
   <article class="flexbox vleft auto-fadein">
     <h2>&lt;Thank You!&gt;</h2>
-    <!-- <p>PRESENTATION LINK</p> -->
   </article>
   <p class="auto-fadein" data-config-contact></p>
+</slide> -->
+
+
+<slide class="thank-you-slide segue nobackground">
+  <article class="flexbox vcenter auto-fadein">
+    <h2>Fine.</h2>
+    <!-- <p>PRESENTATION LINK</p> -->
+  </article>
 </slide>
 
 <!-- <slide class="logoslide dark nobackground">

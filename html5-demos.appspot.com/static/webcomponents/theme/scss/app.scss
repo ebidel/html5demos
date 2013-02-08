@@ -156,33 +156,76 @@ aside.gdbar {
 
 
 slides > slide {
+  padding: 60px;
 
   &:not(.nobackground) {
     &:before, &:after {
-      box-sizing: border-box;
-      width: 100%;
+      // box-sizing: border-box;
+      // width: 100%;
     }
     &:before {
-      background: url(../../images/logos/twitter_newbird_blue.png) no-repeat $slide-left-right-padding 50%;
-      @include background-size(contain);
-      padding-left: $slide-left-right-padding + $brand-small-icon-size;
-      left: 0;
-      content: '@ebidel';
-      @include filter(grayscale(1));
+      display: none;
     }
     &:after {
-      background: url(../../images/logos/google_logo.png) no-repeat 50% 50%;
-      @include background-size(contain);
-      padding-right: $slide-left-right-padding;
+      bottom: 3px;
+      padding: 3px 10px 0 0;
       right: 0;
-      text-align: right;
-      z-index: -1;
     }
   }
 
   &.backdrop {
     @include box-shadow(5px 5px 30px $gray-2);
+
+    &:before, &:after {
+      content: '';
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      background: url(../../images/logos/chrome_logo.svg) no-repeat;
+      @include background-size(150%);
+      @include filter(grayscale(0.8));
+      height: 35px;
+      z-index: -1000;
+      @include transition(all 600ms ease-in-out);
+    }
+    &:before {
+      background-position: 50% 65%;
+      left: 0;
+      bottom: 0;
+    }
+    &:after {
+      right: 0;
+      top: 0;
+      background-position: 50% 35%;
+    }
   }
+
+  // &:not(.nobackground) {
+  //   &:before, &:after {
+  //     box-sizing: border-box;
+  //     width: 100%;
+  //   }
+  //   &:before {
+  //     background: url(../../images/logos/twitter_newbird_blue.png) no-repeat $slide-left-right-padding 50%;
+  //     @include background-size(contain);
+  //     padding-left: $slide-left-right-padding + $brand-small-icon-size;
+  //     left: 0;
+  //     content: '@ebidel';
+  //     @include filter(grayscale(1));
+  //   }
+  //   &:after {
+  //     background: url(../../images/logos/google_logo.png) no-repeat 50% 50%;
+  //     @include background-size(contain);
+  //     padding-right: $slide-left-right-padding;
+  //     right: 0;
+  //     text-align: right;
+  //     z-index: -1;
+  //   }
+  // }
+
+  // &.backdrop {
+  //   @include box-shadow(5px 5px 30px $gray-2);
+  // }
 
   hgroup, h2, h3 {
     @include text-shadow(#fff 0px 1px 0px,rgba(0,0,0,0.2) 0 2px 5px);
@@ -487,14 +530,46 @@ slide#b2tf.current {
   }
 }
 
+// slide.title-slide {
+//   .gdbar {
+//     @include background(linear-gradient(left, $gray-1, $gray-1) no-repeat);
+//     @include background-size(0% 100%);
+//     img {
+//       margin: 10px;
+//       width: initial;
+//       height: 75px;
+//     }
+//   }
+// }
+
 slide.title-slide {
-  .gdbar {
-    @include background(linear-gradient(left, $gray-1, $gray-1) no-repeat);
-    @include background-size(0% 100%);
-    img {
-      margin: 10px;
-      width: initial;
-      height: 75px;
+  padding: 0;
+
+  .auto-fadein {
+    @include transition(opacity 300ms ease-in-out 1s);
+  }
+
+  article {
+    @include display-flex;
+    @include align-items(center);
+    @include justify-content(center)
+  }
+  img {
+    height: 125px;
+  }
+
+  hgroup {
+    bottom: initial;
+    position: relative;
+    margin-left: 1em;
+    text-align: left;
+
+    h1 {
+      font-size: 60px;
+    }
+
+    p {
+      margin: 0;
     }
   }
 }
@@ -726,6 +801,61 @@ body.with-notes {
   }
   pre {
     min-height: 330px;
+  }
+}
+
+#first-slide.current {
+  & ~ .backdrop {
+    &:before, &:after {
+      @include background-size(125%);
+      @include filter(grayscale(0));
+      height: 50%;
+    }
+    &:before {
+      background-position: 50% 66%;;
+    }
+    &:after {
+      background-position: 50% 32%;
+    }
+  }
+}
+
+.title-slide.current {
+  & ~ .backdrop {
+
+    &:before, &:after {
+      @include background-size(150%);
+      @include filter(grayscale(0.8));
+    }
+    &:before {
+      background-position: 50% 65%;
+      height: 34%;
+    }
+    &:after {
+      background-position: 50% 35%;
+      height: 37%;
+    }
+  }
+}
+
+#first-slide,
+slide.thank-you-slide {
+  background: initial !important;
+
+  &.current {
+    & ~ .backdrop {
+      &:before, &:after {
+        @include background-size(125%);
+        @include filter(grayscale(0));
+        height: 50%;
+      }
+      &:before {
+        background-position: 50% 66%;
+      }
+      &:after {
+        background-position: 50% 32%;
+      }
+    }
   }
 }
 

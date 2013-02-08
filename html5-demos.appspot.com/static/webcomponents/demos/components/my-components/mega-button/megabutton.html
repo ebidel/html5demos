@@ -1,4 +1,4 @@
-<script src="web_components_polyfill/src/components-polyfill.js"></script>
+<script src="/static/libs/toolkit/platform/platform.js"></script>
 <link rel="components" href="x-megabutton.html"/>
 
 <style>
@@ -11,13 +11,10 @@
   }
 }*/
 
-button[is="x-megabutton"] {
+x-megabutton {
 /*  width: 300px !important;
   height: 300px !important;*/
 }
 </style>
-<!--
-Note: <x-megabutton>Better buttonz</x-megabutton> is what the current
-webapp mailing list is agreeing on, but the polyfill uses [is="x-megabutton"]
--->
-<button is="x-megabutton">Mega button</button>
+
+<x-megabutton>Better buttonz</x-megabutton>

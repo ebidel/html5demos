@@ -1,70 +1,67 @@
 <element name="x-megabutton" extends="button" constructor="MegaButton">
+  <link rel="components" href="/static/libs/toolkit/src/g-component.html">
   <template>
-    <style>
-      @host {
-        button:hover {
-          font-family: Courier, san-serif;
-          font-size: 60px;
-          font-weight: bold;
-          line-height: 1;
-          text-transform: uppercase;
-          border-radius: 50%;
-          border: 10px solid black;
-          width: 300px; /* default width and height */
-          height: 300px;
-          color: #222;
-          text-shadow: 0px 2px 3px #555;
-          background-color: #444;
-          /*-webkit-transition: border 600ms ease-in-out, background-color 200ms ease-in-out,
-                              color 200ms ease-in-out;*/
-          -webkit-transition-property: border, background, font-size, color;
-          -webkit-transition-duration: 400ms;
-          -webkit-transition-timing-function: ease-in-out;
-          cursor: pointer;
-          background-image: -webkit-radial-gradient(50% 50%, circle closest-side, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
-          -webkit-filter: drop-shadow(8px 10px 10px rgba(0,0,0,0.5));
-          white-space: initial;
-  
-          border: 25px solid black;
-          -webkit-transform: rotateZ(-15deg);
-          background-color: red;
-          color: white;
-        }
-        button:hover:after {
-          content: '?';
-        }
-        button:active {
-          position: relative;
-          top: 5px;
-          left: 5px;
-        }
+    <style scoped>
+      button:hover {
+        font-family: Courier, san-serif;
+        font-size: 60px;
+        font-weight: bold;
+        line-height: 1;
+        text-transform: uppercase;
+        border-radius: 50%;
+        border: 10px solid black;
+        width: 300px; /* default width and height */
+        height: 300px;
+        color: #222;
+        text-shadow: 0px 2px 3px #555;
+        background-color: #444;
+        /*-webkit-transition: border 600ms ease-in-out, background-color 200ms ease-in-out,
+                            color 200ms ease-in-out;*/
+        -webkit-transition-property: border, background, font-size, color;
+        -webkit-transition-duration: 400ms;
+        -webkit-transition-timing-function: ease-in-out;
+        cursor: pointer;
+        background-image: -webkit-radial-gradient(50% 50%, circle closest-side, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+        -webkit-filter: drop-shadow(8px 10px 10px rgba(0,0,0,0.5));
+        white-space: initial;
+
+        border: 25px solid black;
+        -webkit-transform: rotateZ(-15deg);
+        background-color: red;
+        color: white;
+      }
+      button:hover:after {
+        content: '?';
+      }
+      button:active {
+        position: relative;
+        top: 5px;
+        left: 5px;
+      }
     </style>
-    <content></content>
+    <button><content></content></button>
   </template>
   <script>
     var root = null;
     var audioController_ = new AudioController();
 
     //function MegaButton() {}
-    MegaButton.prototype = {
-      megaClick: function(e) {
-        audioController_.stop();
-        audioController_.play();
-      }
-    };
 
-    this.lifecycle({
-      created: function(shadowRoot) {
-        root = shadowRoot;
-        this.addEventListener('click', this.megaClick.bind(this));
-        audioController_.load('demos/components/moo.mp3', function() {
+    this.component({
+      ready: function() {
+        root = this.node.shadow;
+        this.node.addEventListener('click', this.megaClick.bind(this));
+        audioController_.load('/static/webcomponents/demos/components/my-components/mega-button/moo.mp3', function() {
         }.bind(this));
       },
-      inserted: function(root) {
+      inserted: function() {
 
       },
-      removed: function() {
-
+      publish: {
+        megaClick: function(e) {
+          audioController_.stop();
+          audioController_.play();
+        }
       }
     });
 

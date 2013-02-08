@@ -1,5 +1,5 @@
 id: feature-detect
-title: To view the demos in this presentation
+title: To view the demos in this presentation...
 
 1. Use Chrome Canary
 2. Enable yourself:
@@ -14,8 +14,6 @@ title: To view the demos in this presentation
 
 <script>
 (function() {
-Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
-
 var needShadow = document.querySelector('#need-shadow');
 var needObjectObserve = document.querySelector('#need-objectobserve');
 var needMo = document.querySelector('#need-mo');
@@ -87,6 +85,102 @@ O'Reilly book - "[Using the HTML5 Filesystem API](http://www.amazon.com/Using-HT
 content_class: flexbox vcenter centered
 
 <h2 class="auto-fadein">Web components?</h2>
+
+---
+
+title: Demo
+
+<p class="centered">
+  <code class="prettyprint">&lt;x-gangnam-style>&lt;/x-gangnam-style></code>
+</p>
+
+<style>
+/*Need to define these globally. Don't work in the component.
+See https://bugs.webkit.org/show_bug.cgi?id=72462 */
+@-webkit-keyframes psydroid-dance {
+  0% { top: 0; }
+  20% { top: 4px; }
+  30% { top: 0; }
+  50% { top: 4px; }
+  60% { top: 0; }
+  80% { top: 4px; }
+  90% { top: 0; }
+  100% { top: 0; }
+}
+@-webkit-keyframes psydroid-leg-l {
+  0% { top: 116px; }
+  10% { top: 116px; }
+  15% { top: 116px; }
+  25% { top: 116px; }
+  30% { top: 110px; }
+  40% { top: 116px; }
+  45% { top: 120px; }
+  55% { top: 116px; }
+  60% { top: 120px; }
+  70% { top: 116px; }
+  75% { top: 110px; }
+  85% { top: 116px; }
+  100% { top: 116px; }
+}
+@-webkit-keyframes psydroid-leg-r {
+  0% { top: 116px; }
+  10% { top: 120px; }
+  15% { top: 110px; }
+  25% { top: 116px; }
+  30% { top: 120px; }
+  40% { top: 116px; }
+  45% { top: 110px; }
+  55% { top: 116px; }
+  60% { top: 110px; }
+  70% { top: 116px; }
+  75% { top: 120px; }
+  85% { top: 116px; }
+  100% { top: 116px; }
+}
+@-webkit-keyframes psydroid-arm-l {
+  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  10% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+  20% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+  25% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+  40% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-75deg); transform: rotate(-75deg); }
+  50% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+  55% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-80deg); transform: rotate(-80deg); }
+  65% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+  80% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+}
+@-webkit-keyframes psydroid-arm-r {
+  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  10% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+  20% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+  25% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+  40% { -moz-transform: rotate(65deg); -webkit-transform: rotate(75deg); transform: rotate(75deg); }
+  50% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+  55% { -moz-transform: rotate(65deg); -webkit-transform: rotate(80deg); transform: rotate(80deg); }
+  65% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+  80% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+}
+</style>
+
+<p class="centered topmargin">
+  <x-gangnam-style></x-gangnam-style>
+  <p style="font-size: small;text-align:center;padding-top: 1em;">( hover over the bar )</p>
+</p>
+
+---
+
+title: Demo
+
+<p class="centered">
+  <code class="prettyprint">&lt;x-megabutton>Mega button&lt;/x-megabutton></code>
+</p>
+
+<p class="centered topmargin">
+  <x-megabutton>Butter buttonz</x-megabutton>
+</p>
 
 ---
 
@@ -1122,7 +1216,7 @@ title: Or, extend existing [custom] elements
   &lt;script>
     MegaButton.prototype = {
       megaClick: function(e) {
-        alert('BOOM!');
+        play('moo.mp3');
       }
     };
   &lt;/script>
@@ -1140,21 +1234,28 @@ Use it:
 
 title: Demo: Mega Button
 
-<link rel="components" href="demos/components/x-megabutton.html"/>
-
 <p class="centered">
   <code class="prettyprint">&lt;x-megabutton>Mega button&lt;/x-megabutton></code>
 </p>
 
 <p class="centered topmargin">
-<!--
-Note: <x-megabutton>Better buttonz</x-megabutton> is what the current
-webapp mailing list is agreeing on, but the polyfill uses [is="x-megabutton"]
--->
-<button is="x-megabutton">Mega button</button>
+<x-megabutton>Better buttonz</x-megabutton> 
 </p>
 
-<footer class="source">[ <a href="view-source:http://html5-demos.appspot.com/demos/components/x-megabutton.html">view source</a> ]</footer>
+---
+
+title: Demo: Meme Generator
+
+<pre class="prettyprint" data-lang="html">
+&lt;x-meme src="images/beaches.jpg">
+  &lt;h1 contenteditable>Stay classy&lt;/h1>
+  &lt;h2 contenteditable>Web!&lt;/h2>
+&lt;/x-meme>
+</pre>
+
+<p class="centered topmargin">
+<a href="/static/webcomponents/demos/components/my-components/meme.html" class="demo">DEMO</a>
+</p>
 
 ---
 
@@ -1243,14 +1344,13 @@ content_class: smaller
 
 Web Components / Custom Elements
 
-- [Web Components Explainer](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html) explainer doc
-- [Custom Elements spec](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
+- [Web Components Explainer](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html) explainer doc, [Custom Elements spec](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html)
 - Follow +[Web Components](https://plus.google.com/103330502635338602217/) ★ [@dglazkov](https://twitter.com/dglazkov) ★ +[Dimitri Glazkov](https://plus.google.com/111648463906387632236/)
 - [Public WebApps mailing list](http://lists.w3.org/Archives/Public/public-webapps/)
 
 Shadow DOM
 
-- [What the Heck is Shadow DOM?](http://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/)
+- [What the Heck is Shadow DOM?](http://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/), [Shadow DOM 101](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/)
 - [Shadow DOM spec](http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html)
 - Conformance test - [demo.unipro.ru/shadow/](http://demo.unipro.ru/shadow/)
 
