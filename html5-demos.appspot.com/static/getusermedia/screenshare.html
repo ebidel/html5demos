@@ -119,6 +119,10 @@ var container = document.querySelector('#container');
 if (!location.protocol.match('https')) {
   showErrorMsg('You may need to run this app from https.');
 }
+if (!(navigator.userAgent.match('Chrome') &&
+      parseInt(navigator.userAgent.match(/Chrome\/(.*) /)[1]) >= 26)) {
+  showErrorMsg('You need Chrome 26+ to run this demo properly.');
+}
 
 function showErrorMsg(msg) {
   var error = document.querySelector('.error');
