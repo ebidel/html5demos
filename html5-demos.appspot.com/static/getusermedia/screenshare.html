@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--
+Copyright 2013 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ebidel@)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<link href="../common.css" rel="stylesheet" type="text/css">
+<title>Screensharing with getUserMedia</title>
+<style>
+html, body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+}
+.flexcenter {
+  display: -webkit-flex;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  display: -moz-flex;
+  -moz-align-items: center;
+  -moz-justify-content: center;
+  display: -o-flex;
+  -o-align-items: center;
+  -o-justify-content: center;
+  display: -ms-flex;
+  -ms-align-items: center;
+  -ms-justify-content: center;
+  box-sizing: border-box;
+}
+article section {
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -o-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: 1em;
+}
+.error {
+  color: red;
+  display: none;
+  font-weight: bold;
+  margin-top: 3em;
+}
+.error.show {
+  display: block;
+}
+h2 {
+  text-align: center;
+}
+button {
+  text-transform: uppercase;
+}
+video {
+  height: 480px;
+  /*position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1000;*/
+  padding: 7px;
+  background: rgba(255, 0, 0, 1);
+  transition: all 1s ease-in-out;
+}
+.fade {
+  -webkit-filter: grayscale(0.8);
+  -moz-filter: grayscale(0.8);
+  -o-filter: grayscale(0.8);
+  -ms-filter: grayscale(0.8);
+  background: rgba(0, 0, 0, 1);
+}
+</style>
+</head>
+<body class="flexcenter">
+
+<details>
+  <summary>What's this?</summary>
+  <div>
+   <p>Example of using the <a href="http://www.html5rocks.com/tutorials/getusermedia/intro/" target="_blank"><code>navigator.getUserMedia()</code></a> API extensions to do screen capturing. Note, this is true screen sharing (e.g. more
+    than just the browser tab) and not tab content sharing. If you're interested in tab sharing,
+    Chrome has an experimental defined <a href="http://www.chromium.org/developers/design-documents/extensions/proposed-changes/apis-under-development/webrtc-tab-content-capture">here</a>.</p>
+    <p><b>Support:</b> Chrome 26 (currently Canary) with "Enable screen capture support in getUserMedia()" turned
+    on in about:flags or <code>--enable-usermedia-screen-capturin</code> flag set.</code></p>
+  </div>
+</details>
+
+<article>
+  <h2>Screenshare with getUserMedia()</h2>
+  <section class="flexcenter">
+    <div id="container"></div>
+    <button>Share your screen</button>
+    <div class="error"></div>
+  </section>
+</article>
+<script>
+(function() {
+navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+var stream = null;
+var button = document.querySelector('button');
+var container = document.querySelector('#container');
+
+if (!location.protocol.match('https')) {
+  showErrorMsg('You may need to run this app from https.');
+}
+
+function showErrorMsg(msg) {
+  var error = document.querySelector('.error');
+  error.textContent = msg;
+  error.classList.add('show');
+}
+
+function start(e) {
+  // Seems to only work over SSL.
+  navigator.getUserMedia({
+    video: {
+      mandatory: {
+        chromeMediaSource: 'screen'
+        // maxWidth: 640,
+        // maxHeight: 480
+      }
+    }
+  }, function(s) {
+    stream = s;
+
+    button.textContent = 'Stop';
+    button.removeEventListener('click', start);
+    button.addEventListener('click', stop);
+
+    var video = document.createElement('video');
+    video.src = window.URL.createObjectURL(stream);
+    video.autoplay = true;
+
+    // var style = document.createElement('style');
+    // style.textContent = document.querySelector('#embedstyles').textContent;
+    // document.head.appendChild(style);
+
+    stream.onended = function(e) {
+      video.classList.add('fade');
+    };
+
+    //document.body.appendChild(video);
+    container.innerHTML = '';
+    container.appendChild(video);
+  }, function(e) {
+    if (e.code == e.PERMISSION_DENIED) {
+      showErrorMsg('PERMISSION_DENIED. Are you no SSL?');
+    }
+  });
+}
+
+function stop() {
+  stream.stop();
+  button.addEventListener('click', start);
+  button.textContent = 'Share your screen';
+}
+
+button.addEventListener('click', start);
+
+})();
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+<script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
