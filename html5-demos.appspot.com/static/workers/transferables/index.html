@@ -37,7 +37,6 @@ button {
   background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
   background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
   border: 1px solid #999;
-  -webkit-border-radius: 3px;
   border-radius: 3px;
   padding: 5px 8px;
   outline: none;
@@ -83,14 +82,14 @@ section {
     to the new context. For example, when transferring an <code>ArrayBuffer</code> from main app to Worker, the
     original <code>ArrayBuffer</code> from the main thread is cleared and no longer usable.
     This vastly improves performance of sending data to a Worker. </p>
-    <p>This demo sends a 32MB <code>ArrayBuffer</code> to a worker and back using a prefixed version of <code>postMessage()</code>
-    that supports transferable objects: <code><a href="http://dev.w3.org/html5/workers/#dedicated-workers-and-the-dedicatedworkerglobalscope-interface" target="_blank">webkitPostMessage()</a></code>.
+    <p>This demo sends a 32MB <code>ArrayBuffer</code> to a worker and back using a different signature of <code>postMessage()</code>
+    that supports transferable objects: <code><a href="http://dev.w3.org/html5/workers/#dedicated-workers-and-the-dedicatedworkerglobalscope-interface" target="_blank">postMessage()</a></code>.
     If your browser doesn't support transferables, the sample falls back to old-skool structured cloning.</p>
     <p><b>Support:</b> Chrome Dev Channel 17+</p>
   </div>
 </details>
 <section>
-  <p><a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">Transferable Objects</a> are lightning fast! The prefixed <code>[window|worker].webkitPostMessage()</code>
+  <p><a href="http://dev.w3.org/html5/spec/common-dom-interfaces.html#transferable-objects" target="_blank">Transferable Objects</a> are lightning fast! The prefixed <code>[window|worker].postMessage()</code>
   now supports sending an <code>ArrayBuffer</code> as a transferable.</p>
   <button onclick="test();">Run test</button>
   <!--<input type="checkbox" id="enable-transferable" checked> Enable transferable?-->
@@ -119,9 +118,6 @@ function log(str) {
 
 function init() {
   worker = new Worker('transferrable.js');
-
-  // Take care of vendor prefixes.
-  worker.postMessage = worker.webkitPostMessage || worker.postMessage;
 
   worker.onmessage = function(e) {
     console.timeEnd('actual postMessage round trip was');
@@ -176,8 +172,8 @@ function test() {
     // Note: clears the uInt8View and it's underlying ArrayBuffer, transfering it
     // out of this view, to the worker.
     // Passing multiple transferables:
-    //   worker.webkitPostMessage({view1: int8View, buffer2: anotherBuffer}, [int8View.buffer, anotherBuffer]);
-    //   window.webkitPostMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
+    //   worker.postMessage({view1: int8View, buffer2: anotherBuffer}, [int8View.buffer, anotherBuffer]);
+    //   window.postMessage(arrayBuffer, targetOrigin, [arrayBuffer]);
     worker.postMessage(uInt8View.buffer, [uInt8View.buffer]);
   } else {
     worker.postMessage(uInt8View.buffer);

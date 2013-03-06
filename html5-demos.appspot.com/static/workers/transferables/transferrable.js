@@ -1,8 +1,5 @@
 importScripts('shared.js');
 
-// Take care of vendor prefixes.
-self.postMessage = self.webkitPostMessage || self.postMessage;
-
 var ready = false;
 
 self.onmessage = function(e) {
