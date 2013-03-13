@@ -321,8 +321,6 @@ var cleanUp = function(a) {
 
 var downloadFile = function() {
   window.URL = window.webkitURL || window.URL;
-  window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder ||
-                       window.MozBlobBuilder;
 
   var prevLink = output.querySelector('a');
   if (prevLink) {
@@ -330,12 +328,12 @@ var downloadFile = function() {
     output.innerHTML = '';
   }
 
-  var bb = new BlobBuilder();
-  bb.append(typer.textContent);
+  var bb = new Blob([typer.textContent]);
+
 
   var a = document.createElement('a');
   a.download = container.querySelector('input[type="text"]').value;
-  a.href = window.URL.createObjectURL(bb.getBlob(MIME_TYPE));
+  a.href = window.URL.createObjectURL(bb);
   a.textContent = 'Download ready';
 
   a.dataset.downloadurl = [MIME_TYPE, a.download, a.href].join(':');
