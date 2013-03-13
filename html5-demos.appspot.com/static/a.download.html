@@ -328,8 +328,7 @@ var downloadFile = function() {
     output.innerHTML = '';
   }
 
-  var bb = new Blob([typer.textContent]);
-
+  var bb = new Blob([typer.textContent], {type: MIME_TYPE});
 
   var a = document.createElement('a');
   a.download = container.querySelector('input[type="text"]').value;
