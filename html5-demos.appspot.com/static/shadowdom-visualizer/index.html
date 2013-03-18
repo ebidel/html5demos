@@ -49,11 +49,15 @@ h2 {
 .markup {
   width: 40%;
   display: -webkit-flex;
+  display: flex;
   -webkit-flex-direction: column;
+  flex-direction: column;
 }
 .markup > div {
   -webkit-flex: 1 1 0;
+  flex: 1 1 0;
   display: -webkit-flex;
+  display: flex;
   border-radius: 8px;
 }
 .markup textarea {
@@ -63,12 +67,14 @@ h2 {
   background: black;
   color: white;
   -webkit-flex: 1 1 0;
+  flex: 1 1 0;
   border-radius: 8px;
   border: none;
   padding: 10px;
   width: 100%;
   height: 175px;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 .markup .invalid textarea {
   background: rgba(200,0, 0, 0.8);
@@ -76,7 +82,9 @@ h2 {
 
 #container {
   display: -webkit-flex;
+  display: flex;
   -webkit-justify-content: center;
+  justify-content: center;
 }
 #host-markup {
   border: 8px solid steelblue;
@@ -107,6 +115,7 @@ h2 {
   margin-left: 2em;
   background: #fff;
   -webkit-user-select: none;
+  -moz-user-select: none;
 }
 .tree:before {
   content: 'Composed/rendered tree';
@@ -150,7 +159,9 @@ h2 {
 }
 #explanation {
   display: -webkit-flex;
+  display: flex;
   -webkit-justify-content: center;
+  justify-content: center;
 }
 #explanation p {
   width: 80%;
@@ -211,8 +222,8 @@ Both code blocks on the left are editable. Try changing the <code>&lt;content&gt
 <script src="d3.v3.min.js"></script>
 <script>
 function isCompatible() {
-  return HTMLElement.prototype.webkitCreateShadowRoot ||
-         HTMLElement.prototype.createShadowRoot ? true : false;
+  var div = document.createElement('div');
+  return !!(div.createShadowRoot || div.webkitCreateShadowRoot);
 }
 
 function RenderTree(host) {
@@ -226,11 +237,11 @@ function RenderTree(host) {
 }
 
 RenderTree.prototype.isTextNode = function(node) {
-  return node.__proto__ == Text.prototype;
+  return node.nodeType === Node.TEXT_NODE;
 };
 
 RenderTree.prototype.isContentElement = function(node) {
-  return node.__proto__ == HTMLContentElement.prototype;
+  return node.tagName === 'CONTENT';
 };
 
 RenderTree.prototype.generateNodeName = function(node) {
@@ -377,9 +388,10 @@ function goRender() {
   var host = div.firstElementChild;
   host.innerHTML = div.firstChild.innerHTML;
 
-  var root = host.webkitShadowRoot;
+  var root = host.shadowRoot || host.webkitShadowRoot;
   if (!root) {
-    root = host.webkitCreateShadowRoot();
+    root = host.createShadowRoot ?
+        host.createShadowRoot() : host.webkitCreateShadowRoot()
   }
 
   root.innerHTML = shadowMarkup.value;
