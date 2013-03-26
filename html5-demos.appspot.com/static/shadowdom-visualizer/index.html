@@ -174,6 +174,7 @@ h2 {
   <summary>What's this?</summary>
   <div>
     <p><b>Support:</b> Chrome 25 supports ShadowDOM natively. Chrome 26 supports <code>&lt;template&gt;</code>.</p>
+    <p>A <a href="https://github.com/toolkitchen/ShadowDOM">Shadow DOM polyfill</a> is used for browsers that do not support it natively.</p>
   </div>
 </details>
 
@@ -219,6 +220,7 @@ Both code blocks on the left are editable. Try changing the <code>&lt;content&gt
 </footer>
 </template>
 
+<script src="ShadowDOM/shadowdom.js"></script>
 <script src="d3.v3.min.js"></script>
 <script>
 function isCompatible() {
