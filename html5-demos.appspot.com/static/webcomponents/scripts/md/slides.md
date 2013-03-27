@@ -1164,7 +1164,7 @@ Define a *declarative* "API" using insertion points:
 Include and use it:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link <b>rel="components"</b> href="x-tabs.html"&gt;
+&lt;link <b>rel="component"</b> href="x-tabs.html"&gt;
 &lt;x-tabs>
   &lt;hgroup>
     &lt;h2>Title&lt;/h2>
@@ -1195,7 +1195,7 @@ Define an *imperative* API:
 Declared `constructor` goes on global scope:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link rel="components" href="x-tabs.html"&gt;
+&lt;link rel="component" href="x-tabs.html"&gt;
 &lt;script&gt;
 <b>var tabs = new TabsController();</b>
 tabs.addEventListener('click', function(e) { <b>e.target.doSomething();</b> });
@@ -1226,7 +1226,7 @@ title: Or, extend existing [custom] elements
 Use it:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link rel="components" href="x-megabutton.html">
+&lt;link rel="component" href="x-megabutton.html">
 &lt;x-megabutton>Mega button&lt;/x-megabutton>
 </pre>
 
