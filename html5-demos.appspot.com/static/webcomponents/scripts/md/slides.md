@@ -91,7 +91,7 @@ content_class: flexbox vcenter centered
 title: Demo
 
 <p class="centered">
-  <code class="prettyprint">&lt;x-gangnam-style>&lt;/x-gangnam-style></code>
+  <code class="prettyprint">&lt;gangnam-style>&lt;/gangnam-style></code>
 </p>
 
 <style>
@@ -175,7 +175,7 @@ See https://bugs.webkit.org/show_bug.cgi?id=72462 */
 title: Demo
 
 <p class="centered">
-  <code class="prettyprint">&lt;x-megabutton>Mega button&lt;/x-megabutton></code>
+  <code class="prettyprint">&lt;my-megabutton>Mega button&lt;/my-megabutton></code>
 </p>
 
 <p class="centered topmargin">
@@ -1152,8 +1152,8 @@ spec_link: http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.ht
 
 Define a *declarative* "API" using insertion points:
 
-<pre class="prettyprint" data-lang="x-tabs.html">
-<b>&lt;element name="x-tabs"></b>
+<pre class="prettyprint" data-lang="my-tabs.html">
+<b>&lt;element name="my-tabs"></b>
   &lt;template>
     &lt;style>...&lt;/style>
     &lt;content select="hgroup:first-child">&lt;/content>
@@ -1164,13 +1164,13 @@ Define a *declarative* "API" using insertion points:
 Include and use it:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link <b>rel="component"</b> href="x-tabs.html"&gt;
-&lt;x-tabs>
+&lt;link <b>rel="import"</b> href="my-tabs.html"&gt;
+&lt;my-tabs>
   &lt;hgroup>
     &lt;h2>Title&lt;/h2>
     ...
   &lt;/hgroup>
-&lt;/x-tabs>
+&lt;/my-tabs>
 </pre>
 
 ---
@@ -1181,8 +1181,8 @@ content_class: smaller
 
 Define an *imperative* API:
 
-<pre class="prettyprint" data-lang="x-tabs.html">
-&lt;element name="x-tabs" <b>constructor="TabsController"></b>
+<pre class="prettyprint" data-lang="my-tabs.html">
+&lt;element name="my-tabs" <b>constructor="TabsController"></b>
   &lt;template>...&lt;/template>
   <b>&lt;script&gt;
     TabsController.prototype = {
@@ -1195,7 +1195,7 @@ Define an *imperative* API:
 Declared `constructor` goes on global scope:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link rel="component" href="x-tabs.html"&gt;
+&lt;link rel="import" href="my-tabs.html"&gt;
 &lt;script&gt;
 <b>var tabs = new TabsController();</b>
 tabs.addEventListener('click', function(e) { <b>e.target.doSomething();</b> });
@@ -1208,8 +1208,8 @@ document.body.appendChild(tabs);
 title: Or, extend existing [custom] elements
 #content_class: smaller
 
-<pre class="prettyprint" data-lang="x-megabutton.html">
-&lt;element name="x-megabutton" <b>extends="button"</b> <b>constructor="MegaButton"</b>>
+<pre class="prettyprint" data-lang="my-megabutton.html">
+&lt;element name="my-megabutton" <b>extends="button"</b> <b>constructor="MegaButton"</b>>
   &lt;template>
     &lt;button>&lt;content>&lt;/content>&lt;/button>
   &lt;/template>
@@ -1226,8 +1226,8 @@ title: Or, extend existing [custom] elements
 Use it:
 
 <pre class="prettyprint" data-lang="yourapp.html">
-&lt;link rel="component" href="x-megabutton.html">
-&lt;x-megabutton>Mega button&lt;/x-megabutton>
+&lt;link rel="import" href="my-megabutton.html">
+&lt;my-megabutton>Mega button&lt;/my-megabutton>
 </pre>
 
 ---
@@ -1235,7 +1235,7 @@ Use it:
 title: Demo: Mega Button
 
 <p class="centered">
-  <code class="prettyprint">&lt;x-megabutton>Mega button&lt;/x-megabutton></code>
+  <code class="prettyprint">&lt;my-megabutton>Mega button&lt;/my-megabutton></code>
 </p>
 
 <p class="centered topmargin">
@@ -1247,10 +1247,10 @@ title: Demo: Mega Button
 title: Demo: Meme Generator
 
 <pre class="prettyprint" data-lang="html">
-&lt;x-meme src="images/beaches.jpg">
+&lt;my-meme src="images/beaches.jpg">
   &lt;h1 contenteditable>Stay classy&lt;/h1>
   &lt;h2 contenteditable>Web!&lt;/h2>
-&lt;/x-meme>
+&lt;/my-meme>
 </pre>
 
 <p class="centered topmargin">
@@ -1265,7 +1265,7 @@ title: Example: tab component
 <div class="columns-2">
 <h3>Web Components <img src="images/logos/webcomponents.png"></h3>
 <pre class="prettyprint" data-lang="html">
-&lt;x-tab&gt;
+&lt;my-tab&gt;
   &lt;h2&gt;One&lt;/h2&gt;
   &lt;section&gt;
     Code to instantiate this component:
@@ -1275,7 +1275,7 @@ title: Example: tab component
   &lt;section&gt;
     Second panel hotness
   &lt;/section&gt;
-&lt;/x-tab&gt;
+&lt;/my-tab&gt;
 </pre>
 
 <h3 style="-webkit-column-break-before: always;"><img src="images/logos/angular.png"> AngularJS</h3>
@@ -1334,7 +1334,7 @@ title: Don't forget to enable yourself
 
 Polyfills:
 
-- [Web-Components-Polyfill](http://github.com/dglazkov/Web-Components-Polyfill)
+- [Toolkitchen](http://toolkitchen.github.com/) polyfills
 - Mozilla's [x-tags Custom Elements Polyfill](https://github.com/mozilla/x-tag) (works on all browsers)
 - MDV - [code.google.com/p/mdv/](https://code.google.com/p/mdv/)
 
