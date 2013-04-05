@@ -19,11 +19,10 @@ https://code.google.com/p/io-2012-slides
   <link rel="stylesheet" media="all" href="theme/css/app.css">
   <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
   <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
-  <!--<script src="demos/components/web_components_polyfill/src/components-polyfill.js"></script>-->
   <script src="/static/libs/toolkit/platform/platform.js"></script>
-  <link rel="components" href="demos/components/my-components/x-gangnam-style.html"/>
-  <link rel="components" href="demos/components/my-components/x-meme.html"/>
-  <link rel="components" href="demos/components/my-components/mega-button/x-megabutton.html"/>
+  <script src="/static/libs/toolkit/toolkit.js"></script>
+  <link rel="import" href="demos/components/my-components/x-gangnam-style.html"/>
+  <link rel="import" href="demos/components/my-components/mega-button/x-megabutton.html"/>
   <script>
     Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
   </script>
@@ -278,7 +277,7 @@ See https://bugs.webkit.org/show_bug.cgi?id=72462 */
 </p>
 
 <p class="centered topmargin">
-  <x-megabutton>Butter buttonz</x-megabutton>
+  <x-megabutton>Mega button</x-megabutton>
 </p></article>
  
 </slide>
@@ -1764,7 +1763,7 @@ document.body.appendChild(tabs);
 </p>
 
 <p class="centered topmargin">
-<x-megabutton>Better buttonz</x-megabutton> 
+<x-megabutton>Mega button</x-megabutton>
 </p></article>
  
 </slide>

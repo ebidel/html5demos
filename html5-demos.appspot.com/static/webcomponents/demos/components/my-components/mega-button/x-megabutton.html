@@ -1,7 +1,6 @@
 <element name="x-megabutton" extends="button" constructor="MegaButton">
-  <link rel="components" href="/static/libs/toolkit/components/g-component.html">
   <template>
-    <style scoped>
+    <style>
       button:hover {
         font-family: Courier, san-serif;
         font-size: 60px;
@@ -41,30 +40,7 @@
     </style>
     <button><content></content></button>
   </template>
-  <script>
-    var root = null;
-    var audioController_ = new AudioController();
-
-    //function MegaButton() {}
-
-    this.component({
-      ready: function() {
-        root = this.node.shadow;
-        this.node.addEventListener('click', this.megaClick.bind(this));
-        audioController_.load('/static/webcomponents/demos/components/my-components/mega-button/moo.mp3', function() {
-        }.bind(this));
-      },
-      inserted: function() {
-
-      },
-      publish: {
-        megaClick: function(e) {
-          audioController_.stop();
-          audioController_.play();
-        }
-      }
-    });
-
+<script>
 /**
  * @constructor
  */
@@ -155,5 +131,21 @@ AudioController.prototype.stop = function() {
   }
 };
 
-  </script>
+var root = null;
+var audioController_ = new AudioController();
+
+Toolkit.register(this, {
+  ready: function() {
+    root = this.shadowRoot || this.webkitShadowRoot;
+    this.addEventListener('click', this.megaClick);
+    audioController_.load('/static/webcomponents/demos/components/my-components/mega-button/moo.mp3', function() {
+      // noop
+    });
+  },
+  megaClick: function(e) {
+    audioController_.stop();
+    audioController_.play();
+  }
+});
+</script>
 </element>

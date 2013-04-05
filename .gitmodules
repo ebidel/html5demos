@@ -7,3 +7,6 @@
 [submodule "html5-demos.appspot.com/static/shadowdom-visualizer/ShadowDOM"]
 	path = html5-demos.appspot.com/static/shadowdom-visualizer/ShadowDOM
 	url = git://github.com/toolkitchen/ShadowDOM.git
+[submodule "html5-demos.appspot.com/static/libs/toolkit"]
+	path = html5-demos.appspot.com/static/libs/toolkit
+	url = git://github.com/toolkitchen/toolkit.git

@@ -179,7 +179,7 @@ title: Demo
 </p>
 
 <p class="centered topmargin">
-  <x-megabutton>Butter buttonz</x-megabutton>
+  <x-megabutton>Mega button</x-megabutton>
 </p>
 
 ---
@@ -1239,7 +1239,7 @@ title: Demo: Mega Button
 </p>
 
 <p class="centered topmargin">
-<x-megabutton>Better buttonz</x-megabutton> 
+<x-megabutton>Mega button</x-megabutton>
 </p>
 
 ---

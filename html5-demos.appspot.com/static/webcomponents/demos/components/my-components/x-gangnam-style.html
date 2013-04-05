@@ -1,31 +1,10 @@
 <element name="x-gangnam-style">
-<link rel="components" href="/static/libs/toolkit/components/g-component.html">
 <template>
-<style scoped>
-@host {
-
-}
-@host:hover {
-
-}
-/*
-- Shim incorrectly handles @host. See https://github.com/toolkitchen/polyfills/issues/86.
-@host {
-  * {
-    opacity: 0.2;
-  }
-  *:hover {
-    opacity: 1;
-  }
-}*/
-
+<style>
 #maia-signature {
   position:relative;
- /*
- - Shim rewrites dataURLs - https://github.com/toolkitchen/polyfills/issues/85
  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAECAIAAADeXzCbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8%2BIDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGNzdGMTE3NDA3MjA2ODExODFEOUEyMzFBOERFQzcyQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQTlDNkVFOEVGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQTlDNkVFN0VGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NDZENjQwNjM2MzIwNjgxMTgwODM4RUVFOTdCQkFFREQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Rjc3RjExNzQwNzIwNjgxMTgxRDlBMjMxQThERUM3MkMiLz4gPC9yZGY6RGVzY3JpcHRpb24%2BIDwvcmRmOlJERj4gPC94OnhtcG1ldGE%2BIDw/eHBhY2tldCBlbmQ9InIiPz6z2rdVAAAAMElEQVR42mJkaP/OQHvwb7Y1A10AY%2B85Oln0OYwOtjAxjIJBDEajZzR6RgG5ACDAAGNHBgAfwwAlAAAAAElFTkSuQmCC") no-repeat right bottom;
-  */
-  background: url("bars.png") no-repeat right bottom;
+  /*background: url("bars.png") no-repeat right bottom;*/
   clear: both;
   margin: 120px auto 0;
   width: 138px;
@@ -229,21 +208,20 @@ a.src = '/static/webcomponents/demos/components/my-components/gangnamestyle2.ogg
 a.autoplay = false;
 a.loop = true;
 
-this.component({
+Toolkit.register(this, {
   ready: function() {
-    var node = ShadowDOM.shim ? this.node : this.node.shadow;
-
-    node.querySelector('.zg-sig').addEventListener('mouseover', function(e) {
+    var shadow = this.shadowRoot || this.webkitShadowRoot;
+    shadow.querySelector('.zg-sig').addEventListener('mouseover', function(e) {
       a.play();
     });
-    node.querySelector('.zg-sig').addEventListener('mouseout', function(e) {
+    shadow.querySelector('.zg-sig').addEventListener('mouseout', function(e) {
       a.pause();
     });
-    node.addEventListener('webkitTransitionEnd', function(e) {
-      if (e.propertyName == 'height' &&
-          parseInt(window.getComputedStyle(e.target).height) < 10) {
-        a.load();
-      }
+    shadow.addEventListener('webkitTransitionEnd', function(e) {
+     if (e.propertyName == 'height' &&
+         parseInt(window.getComputedStyle(e.target).height) < 10) {
+       a.load();
+     }
     });
   }
 });

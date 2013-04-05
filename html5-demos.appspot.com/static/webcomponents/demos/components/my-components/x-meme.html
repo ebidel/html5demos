@@ -1,13 +1,11 @@
 <element name="x-meme" attributes="src" on-dblclick="clickHandler" constructor="Meme">
-<link rel="components" href="/static/libs/toolkit/components/g-component.html">
 <template>
-<style scoped>
+<style>
   :root {
     -webkit-var-heading-size: 75px;
     -webkit-var-defaultItemPadding: 1em;
   }
-  /*::distributed() not impl yet. https://bugs.webkit.org/show_bug.cgi?id=82169
-  content::distributed(h1), content::distributed(h2), */
+  content::-webkit-distributed(h1), content::-webkit-distributed(h2),
   section :first-child,
   section :last-child {
     font: 75px/1 Impact;
@@ -19,7 +17,7 @@
     text-transform: uppercase;
     -webkit-filter: drop-shadow(1px 1px 5px black);
   }
-  /*content::distributed(h2),*/
+  content::-webkit-distributed(h2),
   section :last-child {
     font-size: 50px;
   }
@@ -36,14 +34,16 @@
     -webkit-filter: drop-shadow(0 0 15px black);
   }
   @host {
-    max-width: 700px;
-    min-width: 300px;
-    padding: 1em;
-    border-radius: 15px;
-    display: inline-block;
-    /*position: relative;*/
-    background: #eee;
-    box-sizing: border-box;
+    * {
+      max-width: 700px;
+      min-width: 300px;
+      padding: 1em;
+      border-radius: 15px;
+      display: inline-block;
+      /*position: relative;*/
+      background: #eee;
+      box-sizing: border-box;
+    }
   }
 </style>
 <section>
@@ -55,37 +55,17 @@
 <script>
 //function Meme() {}
 
-this.component({
-  // shadowRootCreated: function(shadowRoot) {
-  //   bg_ = ShadowDOM.localQuery(shadowRoot, '#bg');
-  // },
+Toolkit.register(this, {
+  src: 'images/seth_no_bg.png',
   ready: function() {
-console.log(this.node, this.webkitShadowRoot)
-    console.log('ready');
+    
   },
-  inserted: function() {
-    console.log('inserted');
-  },
-  // created: function() {
-  //   console.log('created')
-  //   this.srcChanged(this.src);
-  // },
   srcChanged: function(oldVal) {
     this.$.bg.style.background = 'url(' + this.src + ') no-repeat 50% 50%';
   },
-  publish: {
-    clickHandler: function(e) {
-      alert("Don't click me!");
-    }
+  clickHandler: function(e) {
+    alert("Don't click me!");
   }
-  // prototype: {
-  //   srcAttributeChanged: function(newVal, oldVal) {
-  //     bg_.style.background = 'url(' + newVal + ') no-repeat 50% 50%';
-  //   },
-  //   dblClickHandler: function(e) {
-  //     alert("Don't click me!");
-  //   }
-  // }
 });
 </script>
 </element>
