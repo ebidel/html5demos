@@ -1,0 +1,27 @@
+<element name="x-blink">
+
+<!-- CSS Animation defintions don't work in scoped styles. Need to define globally. -->
+<style toolkit-scope="global">
+  @-webkit-keyframes blink {
+    to { opacity: 0; }
+  }
+</style>
+
+<template>
+<style>
+@host {
+  * {
+    -webkit-animation-name: blink;  
+    -webkit-animation-iteration-count: infinite;  
+    -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
+    -webkit-animation-duration: 1s;
+    display: block;
+  }
+}
+</style>
+<content></content>
+</template>
+<script>
+  Toolkit.register(this);
+</script>
+</element>
