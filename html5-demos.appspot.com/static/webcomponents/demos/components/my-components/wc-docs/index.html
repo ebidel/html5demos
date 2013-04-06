@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Self Documenting Web Component</title>
+
+<!-- All polyfills -->
+<script src="/static/libs/toolkit/platform/platform.js"></script>
+
+<!-- Only custom elements -->
+<!-- <script src="../../toolkit-new/platform/WebComponents/web-components.js"></script>
+<script src="../../toolkit-new/platform/CustomElements/custom-elements.js"></script>
+ -->
+<!-- Tookit kernel -->
+<script src="/static/libs/toolkit/toolkit.js"></script>
+
+<link rel="import" href="wc-example-component.html">
+
+<style>
+wc-example-component {
+  background-color: red;
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 10px;
+  width: 300px;
+}
+</style>
+</head>
+<body>
+
+<wc-example-component>
+  <b>Hello there.</b>
+</wc-example-component>
+
+<script>
+document.addEventListener('WebComponentsReady', function(e) {
+  console.log(e.type);
+});
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-22014378-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!-- Load platform.js/toolkit.js first. -->
+<script src="wcdocs.js"></script> 
+
+<element name="wc-example-component">
+  <template>
+    <content></content>
+    <div>I'm web component that includes documentation. Click on my <code>&lt;link rel="import" href="<a href="wc-example-component.html">wc-example-component.html</a>"></code> to read about me.</div>
+  </template>
+  <script>
+  Toolkit.register(this, {
+    ready: function() {
+      console.log('ready');
+    },
+    foo: function() {
+      alert('Nothing to look at here');
+    },
+    bar_: function() {
+      alert('Nothing to look at here');
+    }
+  });
+  </script>
+</element>
+
+<wc-documentation name="wc-documentation" version="0.0.1"
+                  github="https://github.com/toolkitchen/toolkit" home="http://toolkitchen.github.com">
+  <summary>Template for documenting custom HTML elements.</summary>
+  <pre class="example">
+&lt;wc-documentation name="my-tag"&gt;
+  &lt;summary>My tag is the bees knees.&lt;/summary>
+&lt;/wc-documentation&gt;
+</pre>
+  <pre class="example">
+&lt;wc-documentation name="my-tag" version="0.0.1"
+                  github="https://github.com/toolkitchen/toolkit"
+                  home="http://toolkitchen.github.com"&gt;
+  &lt;summary>...&lt;/summary>
+  &lt;pre class="example">...&lt;/pre>
+&lt;/wc-documentation&gt;
+</pre>
+  <pre class="example">
+&lt;wc-documentation name="my-tag"&gt;
+  &lt;div class=&quot;api&quot;&gt;
+    &lt;p&gt;This element supports the following methods:&lt;/p&gt;
+    &lt;dl public&gt;
+      &lt;dt&gt;foo()&lt;/dt&gt;
+      &lt;dd&gt;Awesome method.&lt;/dd&gt;
+    &lt;/dl&gt;
+    &lt;dl private&gt;
+      &lt;dt&gt;bar_()&lt;/dt&gt;
+      &lt;dd&gt;Privacy is key.&lt;/dd&gt;
+    &lt;/dl&gt;
+  &lt;/div&gt;
+&lt;/wc-documentation&gt;
+</pre>
+  <table class="attributes">
+    <thead><td>Name</td><td>Description</td><td>Effect of setting</td></thead>
+    <tr><td required>name</td><td>The value of the <code>&lt;element></code>'s name attribute.</td><td></td></tr>
+    <tr><td>version</td><td>Current version of the element.</td><td>If set, a version number is displayed.</td></tr>
+    <tr><td>github</td><td>Github project page URL.</td><td>If set, displays an icon with a link to the repo.</td></tr>
+    <tr><td>home</td><td>Homepage URL.</td><td>If set, displays an icon with a link to the URL.</td></tr>
+  </table>
+  <div class="markup">
+    <p>This element supports the following markup options. Tags marked as an "x" means you can use any element, but some elements are suggested over others.</p>
+    <p><b>Note</b>: You can indicate an element is required by annotating it with a <code>required</code> attribute.</p>
+    <dl>
+      <dt required>&lt;summary required></dt>
+      <dd>A brief description of what the custom element does.</dd>
+      <dt>&lt;pre class="example"></dt>
+      <dd>One or more examples of basic usages of the element. This section is hidden if not provided.</dd>
+      <dt>&lt;x class="attributes"></dt>
+      <dd>Listing of attributes your element accepts. Suggested elements: <code>&lt;table&gt;</code>, <code>&lt;dl&gt;</code>, <code>&lt;li&gt;</code>. This section is hidden if not provided.</dd>
+      <dt>&lt;x class="markup"></dt>
+      <dd>Section describing <code>&lt;wc-documentation&gt;</code>'s supported
+        child elements (Light DOM that distributes across insertion points).
+        This section is hidden if not provided.</dd>
+      <dt>&lt;x class="styling"></dt>
+      <dd>Section describing the styling options (custom pseudo elements, CSS Variables) for the element.
+      This section is hidden if not provided.</dd>
+      <dt>&lt;x class="api"></dt>
+      <dd>Section describing the element's JS API. Children can be marked with
+        the <code>public</code> or <code>private</code> attribute
+        to show their visibility. This section is hidden if not provided.</dd>
+      <dt>&lt;x class="events"></dt>
+      <dd>Section describing the element's event model. This section is hidden if not provided.</dd>
+    </dl>
+  </div>
+  <div class="styling">
+    <p>None</p>
+  </div>
+  <div class="api">
+    <p>This element supports the following methods:</p>
+    <dl public>
+      <dt>foo()</dt>
+      <dd>TODO.</dd>
+    </dl>
+    <dl private>
+      <dt>bar_()</dt>
+      <dd>TODO.</dd>
+    </dl>
+  </div>
+</wc-documentation>

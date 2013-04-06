@@ -22,6 +22,10 @@
 <content></content>
 </template>
 <script>
-  Toolkit.register(this);
+  Toolkit.register(this, {
+    ready: function() {
+      console.log('ready');
+    }
+  });
 </script>
 </element>

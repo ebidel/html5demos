@@ -1,0 +1,189 @@
+/*@import url(http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro);*/
+
+@host {
+  * {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -os-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #eee;
+    line-height: 20px;
+    /*padding: 25px;*/
+
+    font-weight: 300;
+
+    margin: -10px;
+  }
+}
+/* Needed for unsupported browsers. */
+/*element {
+  display: none;
+}*/
+li,
+::-webkit-distributed(li) {
+  list-style: none;
+}
+h1, h2, h3 {
+  font-weight: 400;
+}
+code, pre,
+::-webkit-distributed(code),
+::-webkit-distributed(pre)  {
+  font-family: 'Source Code Pro', sans-serif;
+}
+pre,
+::-webkit-distributed(.example) {
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 5px;
+  /*width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: -ms-fit-content;
+  width: -o-fit-content;
+  width: fit-content;*/
+  /*color: white;
+  background-color: #444;*/
+}
+
+::-webkit-distributed(.attributes) {
+  font-weight: 300;
+}
+b, ::-webkit-distributed(.attributes thead),
+::-webkit-distributed(.attributes td:first-child),
+.required {
+  font-weight: 400;
+}
+::-webkit-distributed(td) {
+  padding: 5px;
+  vertical-align: top;
+  border-bottom: 1px solid #eee;
+}
+::-webkit-distributed(thead tr) {
+  background-color: #eee;
+}
+h1 {
+  font-size: 35px;
+  margin: 0;
+  color: black;
+}
+h1:before {
+  content: '<';
+}
+h1:after {
+  content: '>';
+}
+h2 {
+  margin-top: 30px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+header > div {
+  margin-bottom: 30px;
+}
+header {
+  color: #777;
+}
+.icon {
+  height: 20px;
+  width: 20px;
+  margin-left: 10px;
+}
+.github {
+  background: url(github_icon@2x.png) no-repeat 50% 50%;
+  background-size: contain;
+  height: 18px;
+  width: 18px;
+}
+.home {
+  background: url(link.svg) no-repeat 50% 50%;
+  background-size: contain;
+  opacity: 0.3;
+}
+.version {
+  color: #777;
+  margin-left: 20px;
+}
+.flex {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -os-flex;
+  display: flex;
+}
+.flex1 {
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  -o-flex: 1;
+  flex: 1;
+}
+.wrapper {
+  padding: 40px;
+  box-shadow: 0 0 35px #ccc;
+  /*border-radius: 5px;*/
+  background: url(http://toolkitchen.github.com/images/logos/webcomponents.png) no-repeat 106% 101%;
+  background-color: white;
+  background-size: 125px;
+  max-width: 700px;
+}
+
+summary,
+::-webkit-distributed(summary) {
+  font-size: 18px;
+}
+.version {
+  font-size: small;
+}
+::-webkit-distributed([required]:after) {
+  content: "*";
+  color: darkred;
+}
+.required {
+  color: darkred;
+  font-size: small;
+}
+dt,
+::-webkit-distributed(dt) {
+  margin-bottom: 15px;
+}
+dd,
+::-webkit-distributed(dd) {
+  margin-bottom: 1em;
+}
+
+/* <dt> are asummed to be code/markup headings */
+::-webkit-distributed(.markup dl > dt),
+::-webkit-distributed(.api dl > dt) {
+  font-family: 'Source Code Pro', sans-serif;
+}
+
+::-webkit-distributed(.api * > dt:after) {
+  font-size: small;
+  /*font-style: italic;*/
+  margin-left: 10px;
+  color: #999;
+  font-family: 'Open Sans', sans-serif;
+} 
+
+::-webkit-distributed(.api [private]) {
+  color: #999;
+}
+::-webkit-distributed(.api [private] > dt:after) {
+  content: 'private';
+} 
+::-webkit-distributed(.api [public] > dt:after) {
+  content: 'public';
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 10px;
+  }
+}

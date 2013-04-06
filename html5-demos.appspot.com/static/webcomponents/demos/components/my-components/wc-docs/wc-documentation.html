@@ -1,0 +1,143 @@
+<element name="wc-documentation" attributes="name version home github">
+
+<!-- TODO: @font-face doesn't work under <style scoped>. Have to bring in
+     outside of the <template> and us the magical toolkit-scope="global". -->
+<style toolkit-scope="global">
+@import url(http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro);
+</style>
+
+<!-- causes xhrs xd issue -->
+<!-- <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro" type="text/css"> -->
+
+<link rel="stylesheet" href="wcdocs.css" type="text/css">
+
+<template>
+<style>
+/* <link> outside of <template> would make XD XHR fail if hosted on another origin.
+So use @import instead.*/
+@import url(wcdocs.css);
+</style>
+
+<div class="wrapper">
+
+<header>
+  <div class="flex">
+    <h1 class="flex1">{{name}}</h1>
+    <a href="{{home}}" class="icon home" target="_blank"></a>
+    <a href="{{github}}" class="icon github" target="_blank"></a>
+    <span class="version">Version: {{version}}</span>
+  </div>
+  <content select="summary"></content>
+  <!-- <em>Dependencies / subcomponents:</em>
+  <ul>
+    <li><code>&lt;link rel="import" href="something.html"></code></li>
+  </ul> -->
+</header>
+
+<article>
+
+<section>
+<h2>Examples</h2>
+<content select=".example"></content>
+</section>
+
+<section>
+<h2>Attributes</h2>
+<content select=".attributes"></content>
+<p class="required">* required</p>
+<!-- <dl class="attributes">
+  <dt>name <label class="required">(required)</label></dt>
+  <dd>Lorem ipsum dolor sit amet.</dd>
+  <dt>version</dt>
+  <dd>Lorem ipsum dolor sit amet.</dd>
+  <dt>github</dt>
+  <dd>Lorem ipsum dolor sit amet.</dd>
+  <dt>home</dt>
+  <dd>Lorem ipsum dolor sit amet.</dd>
+</dl> -->
+</section>
+
+<section>
+<h2>Markup options</h2>
+<content select=".markup"></content>
+<p class="required">* required</p>
+</section>
+
+<section>
+<h2>Styling options</h2>
+<content select=".styling"></content>
+</section>
+
+<section>
+<h2>API</h2>
+<content select=".api"></content>
+</section>
+
+<section>
+<h2>Events</h2>
+<content select=".events"></content>
+</section>
+
+<!-- <section>
+<h2>Other information</h2>
+<content select="*"></content>
+</section> -->
+
+</article>
+
+</div>
+</template>
+<!-- <script src="prettify/prettify.js"></script> -->
+<script>
+var shadow = null;
+
+function removeSectionIfEmpty_(select) {
+  // TODO: ShadowDOM polyfill querySelector() doesn't work for complex selectors:
+  // https://github.com/toolkitchen/ShadowDOM/issues/67
+  var content = shadow.querySelector('content[select="' + select + '"]');
+  if (content && !content.getDistributedNodes().length) {
+    content.parentElement.remove();
+  }
+}
+
+// TODO: This is tied to the toolkit kernel. Decide if that's ok.
+Toolkit.register(this, {
+  ready: function() {
+    shadow = this.shadowRoot || this.webkitShadowRoot;
+
+    // Remove example section if one wasn't provided.
+    // TODO: attribute selectors don't work with polyfill
+    // https://github.com/toolkitchen/ShadowDOM/issues/67
+    removeSectionIfEmpty_('.example');
+    removeSectionIfEmpty_('.attributes');
+    removeSectionIfEmpty_('.markup');
+    removeSectionIfEmpty_('.styling');
+    removeSectionIfEmpty_('.api');
+    removeSectionIfEmpty_('.events');
+
+    // TODO: Remove "* required" labels if no elements in section [required].
+
+    this.versionChanged();
+    this.githubChanged();
+    this.homeChanged();
+  },
+  name: '???',
+  version: null,
+  github: '',
+  home: '',
+  versionChanged: function() {
+    shadow.querySelector('.version').hidden = this.version == null ? true : false;
+  },
+  githubChanged: function() {
+    shadow.querySelector('.github').hidden = !this.github ? true : false;
+  },
+  homeChanged: function() {
+    shadow.querySelector('.home').hidden = !this.home ? true : false;
+  }
+  // config: function(obj) {
+  //   this.version = obj.version;
+  //   this.versionChanged(this.version);
+  // }
+});
+</script>
+</element>
