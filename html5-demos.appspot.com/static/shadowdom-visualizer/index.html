@@ -166,11 +166,21 @@ h2 {
 #explanation p {
   width: 80%;
 }
+/* #body on the URL allows us to hide extra elements for iframe embedding purposes. */
+:target {
+  background: transparent;
+  -webkit-font-smoothing: initial;
+  padding: 2em 0;
+}
+:target [data-toggle-hide] {
+  display: none !important;
+}
 </style>
+<script src="ShadowDOM/shadowdom.js"></script>
 </head>
-<body>
+<body id="body">
 
-<details>
+<details data-toggle-hide>
   <summary>What's this?</summary>
   <div>
     <p><b>Support:</b> Chrome 25 supports ShadowDOM natively. Chrome 26 supports <code>&lt;template&gt;</code>.</p>
@@ -178,8 +188,8 @@ h2 {
   </div>
 </details>
 
-<h2>ShadowDOM Visualizer</h2>
-  
+<h2 data-toggle-hide>ShadowDOM Visualizer</h2>
+
 <h3 id="compat" class="hidden">
   Oops! Your browser does not support ShadowDOM or <code>&lt;template&gt;</code> natively!<br>
   Try Chrome Canary.
@@ -193,7 +203,7 @@ h2 {
   <div id="chart" class="tree rendering view"></div>
 </div>
 
-<div id="explanation">
+<div id="explanation" data-toggle-hide>
 <p>This tools allows you to visualize how Shadow DOM renders in the browser.
 Both code blocks on the left are editable. Try changing the <code>&lt;content&gt;</code> insertion points, removing, or adding new ones to see how the composited tree is affected. You can also move over the nodes on the right to highlight the relevant markup on the left.</p>
 </div>
@@ -209,18 +219,17 @@ Both code blocks on the left are editable. Try changing the <code>&lt;content&gt
 </div>
 
 <template id="sdom">
-<header>
-  <content select="h2"></content>
-</header>
-<section>
-  <content select="div.desc"></content>
-</section>
-<footer>
-  <content select="h4"></content>
-</footer>
+  <header>
+    <content select="h2"></content>
+  </header>
+  <section>
+    <content select="div.desc"></content>
+  </section>
+  <footer>
+    <content select="h4"></content>
+  </footer>
 </template>
 
-<script src="ShadowDOM/shadowdom.js"></script>
 <script src="d3.v3.min.js"></script>
 <script>
 function isCompatible() {
