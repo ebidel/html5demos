@@ -38,6 +38,10 @@ handlers:
 #  static_files: static/gddbr2010-keynote/\1
 #  upload: /gddbr2010/(.*)
 
+- url: /shadowdom-visualizer\/?
+  static_files: static/shadowdom-visualizer/index.html
+  upload: /shadowdom-visualizer\/?
+  
 - url: /
   static_files: static/index.html
   upload: /static/index.html
