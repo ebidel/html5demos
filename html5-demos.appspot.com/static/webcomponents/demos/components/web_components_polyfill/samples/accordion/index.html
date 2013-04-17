@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Accordion Component Example</title>
+	<link rel="components" href="accordion-component.html">
+	<script src="../../src/components-polyfill.js"></script>
+	<style>
+		/* These styles are based on the CSS accordion here:
+		 * http://www.hongkiat.com/blog/css-content-accordion/
+		 */
+		html {
+			overflow-y: scroll;
+		}
+		body {
+			font-family: sans-serif;
+			font-size: 13px;
+		}
+		.accordion {
+			width: 830px;
+			overflow: hidden;
+			margin: 10px auto;
+			padding: 10px;
+			color: #474747;
+			background: #414141;
+		}
+		.accordion section {
+			overflow: hidden;
+			margin-bottom: 6px;
+			padding: 10px;
+			color: #333;
+			background: white;
+		}
+		.accordion section:last-of-type {
+			margin-bottom: 0;
+		}
+		.accordion h2 {
+			margin: -10px;
+			padding: 8px 10px;
+			font-size: 16px;
+			font-weight: normal;
+			color: #eee;
+			background: #333;
+		}
+		.accordion h2:hover {
+			background: #444;
+		}
+		.accordion .selected h2 {
+			color: inherit;
+			background: none;
+		}
+		.contact label {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<h1>Accordion Component Example</h1>
+
+	<div is="accordion" class="accordion">
+		<section is="accordion-section">
+			<h2>About Us</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id lobortis massa. Nunc viverra velit leo, sit amet elementum mi. Fusce posuere nunc a mi tempus malesuada. Curabitur facilisis rhoncus eros eget placerat. Aliquam semper mauris sit amet justo tempor nec lacinia magna molestie. Etiam placerat congue dolor vitae adipiscing. Aliquam ac erat lorem, ut iaculis justo. Etiam mattis dignissim gravida. Aliquam nec justo ante, non semper mi. Nulla consectetur interdum massa, vel porta enim vulputate sed. Maecenas elit quam, egestas eget placerat non, fringilla vel eros. Nam vehicula elementum nulla sed consequat. Phasellus eu erat enim. Praesent at magna non massa dapibus scelerisque in eu lorem.</p>
+		</section>
+
+		<section is="accordion-section" class="selected">
+			<h2>Services</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id lobortis massa. Nunc viverra velit leo, sit amet elementum mi. Fusce posuere nunc a mi tempus malesuada. Curabitur facilisis rhoncus eros eget placerat.</p>
+			<p>Aliquam semper mauris sit amet justo tempor nec lacinia magna molestie. Etiam placerat congue dolor vitae adipiscing. Aliquam ac erat lorem, ut iaculis justo. Etiam mattis dignissim gravida. Aliquam nec justo ante, non semper mi. Nulla consectetur interdum massa, vel porta enim vulputate sed.</p>
+			<p>Maecenas elit quam, egestas eget placerat non, fringilla vel eros. Nam vehicula elementum nulla sed consequat. Phasellus eu erat enim. Praesent at magna non massa dapibus scelerisque in eu lorem.</p>
+		</section>
+
+		<section is="accordion-section">
+			<h2>Blog</h2>
+			<article>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id lobortis massa. Nunc viverra velit leo, sit amet elementum mi. Fusce posuere nunc a mi tempus malesuada. Curabitur facilisis rhoncus eros eget placerat.</p>
+			</article>
+			<article>
+				<p>Aliquam semper mauris sit amet justo tempor nec lacinia magna molestie. Etiam placerat congue dolor vitae adipiscing. Aliquam ac erat lorem, ut iaculis justo. Etiam mattis dignissim gravida. Aliquam nec justo ante, non semper mi. Nulla consectetur interdum massa, vel porta enim vulputate sed.</p>
+			</article>
+			<article>
+				<p>Maecenas elit quam, egestas eget placerat non, fringilla vel eros. Nam vehicula elementum nulla sed consequat. Phasellus eu erat enim. Praesent at magna non massa dapibus scelerisque in eu lorem.</p>
+			</article>
+		</section>
+
+		<section is="accordion-section">
+			<h2>Portfolio</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			<ul>
+				<li>Suspendisse id lobortis massa. Nunc viverra velit leo, sit amet elementum mi</li>
+				<li>Fusce posuere nunc a mi tempus malesuada. Curabitur facilisis rhoncus eros eget placerat</li>
+				<li>Aliquam semper mauris sit amet justo tempor nec lacinia magna molestie. Etiam placerat congue dolor vitae adipiscing</li>
+				<li>Aliquam ac erat lorem, ut iaculis justo. Etiam mattis dignissim gravida</li>
+				<li>Aliquam nec justo ante, non semper mi. Nulla consectetur interdum massa, vel porta enim vulputate sed</li>
+				<li>Maecenas elit quam, egestas eget placerat non, fringilla vel eros. Nam vehicula elementum nulla sed consequat</li>
+				<li>Phasellus eu erat enim. Praesent at magna non massa dapibus scelerisque in eu lorem.</li>
+			</ul>
+		</section>
+
+		<section is="accordion-section">
+			<h2>Contact</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id lobortis massa.</p>
+			<form class="contact">
+				<label>Lorem<input type="text" /></label>
+				<label>Ipsum<input type="password" /></label>
+				<label>Dolor<input type="radio" /></label>
+				<label>Sit<input type="checkbox" /></label>
+				<input type="submit" />
+			</form>
+		</section>
+	</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[submodule "third-party/qunit"]
+	path = third-party/qunit
+	url = https://github.com/jquery/qunit.git
+[submodule "site"]
+	path = site
+	url = git@github.com:dglazkov/Web-Components-Polyfill.git

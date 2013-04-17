@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News Component</title>
+    <link rel="stylesheet" type="text/css" href="../../src/debug.css">
+</head>
+<body>
+<element name="news" extends="ul">
+    <template>
+        <style scoped>
+            div.breaking {
+                color: Red;
+                font-size: 20px;
+                border: 1px dashed Purple;
+            }
+            div.other {
+                padding: 2px 0 0 0;
+                border: 1px solid Cyan;
+            }
+        </style>
+
+        <div class="breaking">
+            <h2>Breaking Stories</h2>
+            <ul>
+                <content select=".breaking"></content>
+            </ul>
+        </div>
+        <div class="other">
+            <h2>Other News</h2>
+            <ul>
+                <content></content>
+            </ul>
+        </div>
+    </template>
+</element>
+</body>
+</html>

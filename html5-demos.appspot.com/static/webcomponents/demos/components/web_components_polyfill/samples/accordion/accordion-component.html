@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Accordion Component</title>
+	<link rel="stylesheet" type="text/css" href="../../src/debug.css">
+</head>
+<body>
+	<element name="accordion" extends="div">
+		<template>
+			<content></content>
+		</template>
+		<script>
+			if (this !== window) {
+				this.lifecycle({
+					created: function(root) {
+						// Set instance properties
+						this._selectedSection = this.querySelector('.selected') || this.querySelector('section');
+
+						// Select default item if it has been upgraded to accordion-section by looking for a value of 'false' in the 'selected' property
+						if (this._selectedSection.selected === false) {
+							this._selectedSection.selected = true;
+						}
+						else {
+							this._selectedSection.addEventListener('upgrade', function() {
+								this.selected = true;
+							});
+						}
+
+						// Attach listeners
+						this.addEventListener('click', this._onClick);
+					}
+				});
+
+				// Set prototype
+				this.generatedConstructor.prototype = {
+					_onClick: function _onClick(event) {
+						var clickedSection = event.target.parentElement,
+							oldSelectedSection = this._selectedSection;
+
+						if (clickedSection.selected === false) {
+							oldSelectedSection.selected = false;
+							clickedSection.selected = true;
+							this._selectedSection = clickedSection;
+
+							// Fire 'change' event
+							this.dispatchEvent(new Event('change'));
+						}
+					}
+				};
+			}
+		</script>
+	</element>
+	<element name="accordion-section" extends="section">
+		<template>
+			<style>
+				header {
+					cursor: pointer;
+				}
+				div {
+					display: none;
+				}
+				div.selected {
+					display: block;
+				}
+			</style>
+			<header>
+				<content select="h2:first-of-type"></content>
+			</header>
+			<div>
+				<content></content>
+			</div>
+		</template>
+		<script>
+			if (this !== window) {
+				this.lifecycle({
+					created: function(root) {
+						// Set instance properties
+						this._content = root.querySelector('div');
+						Object.defineProperties(this, {
+							_selected: {
+								value: false,
+								writable: true
+							}
+						});
+
+						this.dispatchEvent(new CustomEvent('upgrade', {
+							bubbles: false,
+							cancelable: false
+						}));
+					}
+				});
+
+				// Set prototype
+				this.generatedConstructor.prototype = {
+					get selected() {
+						return this._selected;
+					},
+					set selected(selected) {
+						if (this._selected !== selected) {
+							if (selected === true) {
+								this.classList.add('selected');
+								this._content.classList.add('selected');
+							}
+							else {
+								this.classList.remove('selected');
+								this._content.classList.remove('selected');
+							}
+
+							this._selected = selected;
+						}
+					}
+				};
+			}
+		</script>
+	</element>
+</body>
+</html>

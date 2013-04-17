@@ -1,0 +1,41 @@
+element {
+    border: 30px solid #eaeaea;
+    display: block;
+    position: relative;
+}
+
+element::before {
+    content: '<element>';
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    padding: 5px 5px;
+}
+
+template {
+    border: 30px solid #ccc;
+    display: block;
+    position: relative;
+}
+
+template::before {
+    content: '<template>';
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    padding: 5px 5px;
+}
+
+content {
+    border: 30px solid #ccc;
+    display: block;
+    position: relative;
+}
+
+content::before {
+    content: '<content>';
+    position: absolute;
+    top: -30px;
+    left: -30px;
+    padding: 5px 5px;
+}
