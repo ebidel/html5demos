@@ -11,8 +11,7 @@ if (!!!window.Toolkit) { //if (this === window) {
   // }
 
   document.write(
-    '<script src="' + TOOLKITCHEN_PATH + '/platform/platform.js"></script>' +
-    '<script src="' + TOOLKITCHEN_PATH + '/toolkit.js"></script>' +
+    '<script src="' + TOOLKITCHEN_PATH + '/toolkit.min.js"></script>' +
     '<link rel="import" href="wc-documentation.html">');
 
   // document.addEventListener('WebComponentsReady', function(e) {
