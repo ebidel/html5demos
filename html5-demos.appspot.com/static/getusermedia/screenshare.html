@@ -21,6 +21,7 @@ Author: Eric Bidelman (ebidel@)
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 <link href="//fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<base href="static/getusermedia/"> <!-- Make relative map correctly for App Engine. -->
 <link href="../common.css" rel="stylesheet" type="text/css">
 <title>Screensharing with getUserMedia</title>
 <style>
@@ -85,9 +86,18 @@ video {
   -ms-filter: grayscale(0.8);
   background: rgba(0, 0, 0, 1);
 }
+/* #body on the URL allows us to hide extra elements for iframe embedding purposes. */
+:target {
+  background: transparent;
+  -webkit-font-smoothing: initial;
+}
+:target details,
+:target article h2 {
+  display: none !important;
+}
 </style>
 </head>
-<body class="flexcenter">
+<body id="body" class="flexcenter">
 
 <details>
   <summary>What's this?</summary>
