@@ -1,5 +1,5 @@
 <element name="x-gangnam-style">
-<style toolkit-scope="global">
+<style polymer-scope="global">
 /*Need to define these globally. Don't work in the component.
 See https://bugs.webkit.org/show_bug.cgi?id=72462 */
 @-webkit-keyframes psydroid-dance {
@@ -206,7 +206,7 @@ a.autoplay = false;
 a.loop = true;
 a.load();
 
-Toolkit.register(this, {
+Polymer.register(this, {
   ready: function() {
     var shadow = this.shadowRoot || this.webkitShadowRoot;
     shadow.querySelector('.zg-sig').addEventListener('mouseover', function(e) {

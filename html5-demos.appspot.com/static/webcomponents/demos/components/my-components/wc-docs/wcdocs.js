@@ -1,17 +1,17 @@
 // Show docs if we're not loaded directly as a component.
 // TODO: this === window no longer works with the polyfill. find better check
-// that doesn't rely on Toolkit.
-if (!!!window.Toolkit) { //if (this === window) {
-  var TOOLKITCHEN_PATH = '/static/libs/toolkit';
+// that doesn't rely on Polymer.
+if (!!!window.Polymer) { //if (this === window) {
+  var POLYMER_PATH = '/static/libs/polymer';
   // var CONFIG = {
   //   name: "wc-documentation",
   //   version: "0.0.1",
-  //   github: "github.com/toolkitchen/toolkit",
-  //   home: "toolkitchen.github.com"
+  //   github: "github.com/Polymer/polymer",
+  //   home: "polymer-project.org"
   // }
 
   document.write(
-    '<script src="' + TOOLKITCHEN_PATH + '/toolkit.min.js"></script>' +
+    '<script src="' + POLYMER_PATH + '/polymer.min.js"></script>' +
     '<link rel="import" href="wc-documentation.html">');
 
   // document.addEventListener('WebComponentsReady', function(e) {

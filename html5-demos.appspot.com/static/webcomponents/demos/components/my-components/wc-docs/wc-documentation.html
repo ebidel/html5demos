@@ -1,8 +1,8 @@
 <element name="wc-documentation" attributes="name version home github">
 
 <!-- TODO: @font-face doesn't work under <style scoped>. Have to bring in
-     outside of the <template> and us the magical toolkit-scope="global". -->
-<style toolkit-scope="global">
+     outside of the <template> and us the magical polymer-scope="global". -->
+<style polymer-scope="global">
 @import url(http://fonts.googleapis.com/css?family=Open+Sans|Source+Code+Pro);
 </style>
 
@@ -93,21 +93,21 @@ var shadow = null;
 
 function removeSectionIfEmpty_(select) {
   // TODO: ShadowDOM polyfill querySelector() doesn't work for complex selectors:
-  // https://github.com/toolkitchen/ShadowDOM/issues/67
+  // https://github.com/polymer/ShadowDOM/issues/67
   var content = shadow.querySelector('content[select="' + select + '"]');
   if (content && !content.getDistributedNodes().length) {
     content.parentElement.remove();
   }
 }
 
-// TODO: This is tied to the toolkit kernel. Decide if that's ok.
-Toolkit.register(this, {
+// TODO: This is tied to the polymer kernel. Decide if that's ok.
+Polymer.register(this, {
   ready: function() {
     shadow = this.shadowRoot || this.webkitShadowRoot;
 
     // Remove example section if one wasn't provided.
     // TODO: attribute selectors don't work with polyfill
-    // https://github.com/toolkitchen/ShadowDOM/issues/67
+    // https://github.com/polymer/ShadowDOM/issues/67
     removeSectionIfEmpty_('.example');
     removeSectionIfEmpty_('.attributes');
     removeSectionIfEmpty_('.markup');

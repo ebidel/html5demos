@@ -134,7 +134,7 @@ AudioController.prototype.stop = function() {
 var root = null;
 var audioController_ = new AudioController();
 
-Toolkit.register(this, {
+Polymer.register(this, {
   ready: function() {
     root = this.shadowRoot || this.webkitShadowRoot;
     this.addEventListener('click', this.megaClick);

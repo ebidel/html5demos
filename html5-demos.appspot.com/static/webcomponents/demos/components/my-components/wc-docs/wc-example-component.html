@@ -1,4 +1,4 @@
-<!-- Load toolkit.js first. -->
+<!-- Load polymer.js first. -->
 <script src="wcdocs.js"></script> 
 
 <element name="wc-example-component">
@@ -7,7 +7,7 @@
     <div>I'm web component that includes documentation. Click on my <code>&lt;link rel="import" href="<a href="wc-example-component.html">wc-example-component.html</a>"></code> to read about me.</div>
   </template>
   <script>
-  Toolkit.register(this, {
+  Polymer.register(this, {
     ready: function() {
       console.log('ready');
     },
@@ -22,7 +22,7 @@
 </element>
 
 <wc-documentation name="wc-documentation" version="0.0.1"
-                  github="https://github.com/toolkitchen/toolkit" home="http://toolkitchen.github.io">
+                  github="https://github.com/Polymer/polymer" home="http://polymer-project.org">
   <summary>Template for documenting custom HTML elements.</summary>
   <pre class="example">
 &lt;wc-documentation name="my-tag"&gt;
@@ -31,8 +31,8 @@
 </pre>
   <pre class="example">
 &lt;wc-documentation name="my-tag" version="0.0.1"
-                  github="https://github.com/toolkitchen/toolkit"
-                  home="http://toolkitchen.github.io"&gt;
+                  github="https://github.com/Polymer/polymer"
+                  home="http://polymer-project.org"&gt;
   &lt;summary>...&lt;/summary>
   &lt;pre class="example">...&lt;/pre>
 &lt;/wc-documentation&gt;
