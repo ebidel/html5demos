@@ -1,0 +1,109 @@
+@host {
+  photo-booth {
+    display: -webkit-flex;
+    width: -webkit-fit-content;
+    /*min-width: -webkit-fit-content;*/
+    /*max-width: 400px;*/
+    /*min-height: -webkit-fit-content;*/
+    min-width: 400px;
+    min-height: 400px;
+    padding: 1em;
+    line-height: 1;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
+    -webkit-flex-direction: column;
+    background: -webkit-linear-gradient(top, #111 50%, #222 50%, black 100%);
+    color: white;
+    /*-webkit-transition: all 2s ease-in-out;*/
+  }
+}
+
+p {
+  margin: 0 0 20px 0;
+}
+
+[hidden] {
+  display: none; /* This shouldn't be needed, but something wonky is going on. */
+}
+
+#monitor {
+  /*height: 300px;*/
+  -webkit-box-reflect: below 20px -webkit-linear-gradient(top, transparent, transparent 80%, rgba(255,255,255,0.2));
+}
+
+#live {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  font-weight: 600;
+  font-family: Arial;
+  font-size: 16pt;
+  right: 20px;
+  top: 20px;
+  text-shadow: 1px 1px red;
+  letter-spacing: 1px;
+}
+#live:before {
+  content: '';
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: red;
+  position: absolute;
+  left: -20px;
+  margin-top: 5px;
+}
+#gallery img {
+  position: absolute;
+  z-index: -1;
+  height: 75px;
+}
+#gallery img {
+  float: left;
+  height: 75px;
+}
+.monitor-container {
+  padding: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+}
+.blur {
+  -webkit-filter: blur(3px);
+}
+.brightness {
+  -webkit-filter: brightness(5);
+}
+.contrast {
+  -webkit-filter: contrast(8);
+}
+.hue-rotate {
+  -webkit-filter: hue-rotate(90deg);
+}
+.hue-rotate2 {
+  -webkit-filter: hue-rotate(180deg);
+}
+.hue-rotate3 {
+  -webkit-filter: hue-rotate(270deg);
+}
+.saturate {
+  -webkit-filter: saturate(10);
+}
+.grayscale {
+  -webkit-filter: grayscale(1);
+}
+.sepia {
+  -webkit-filter: sepia(1);
+}
+.invert {
+  -webkit-filter: invert(1)
+}
+#errorMessage {
+  font-weight: bold;
+}
+#app {
+  margin-bottom: 50px;
+}

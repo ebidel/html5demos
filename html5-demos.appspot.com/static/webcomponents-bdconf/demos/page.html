@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<!--
+Copyright 2013 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (ericbidelman@chromium.org)
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<title>Embedded comment component</title>
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300|Raleway:100" rel="stylesheet" type="text/css">
+<style>
+html, body {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 1em;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300; 
+  -webkit-columns: 2;
+  -webkit-column-gap: 2.5em;
+  -webkit-column-rule: 1px solid -webkit-var(borders-color);
+  -moz-columns: 2;
+  -moz-column-gap: 2.5em;
+  -moz-column-rule: 1px solid #eee;
+}
+h1, h2, h3 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: normal;
+  margin: 25px 0 10px 0;
+  color: #888;
+}
+h1 {
+  font-size: 60px;
+  margin-top: 0;
+}
+h2 {
+  font-size: 32px;
+}
+button {
+  display: inline-block;
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#F9F9F9), to(#E3E3E3));
+  background: -webkit-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -moz-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -ms-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: -o-linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  background: linear-gradient(#F9F9F9 40%, #E3E3E3 70%);
+  border: 1px solid #999;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+button:hover {
+  border-color: black;
+}
+button:active {
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from(#E3E3E3), to(#F9F9F9));
+  background: -webkit-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -moz-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -ms-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: -o-linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+  background: linear-gradient(#E3E3E3 40%, #F9F9F9 70%);
+}
+#host {
+  -webkit-var-line-color: #ccc;
+}
+::x-comment-button {
+  font-size: 10px;
+  opacity: 0.3;
+  -webkit-transition: opacity 200ms ease-in-out;
+}
+::x-comment-button:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<template>
+<style>
+  @host {
+    * {
+      background: #f8f8f8;
+      padding: 10px;
+      -webkit-transition: all 400ms ease-in-out;
+      box-sizing: border-box;
+      border-radius: 5px;
+    } 
+    *:hover {
+      background: #eee;
+    }
+  }
+  div {
+    position: relative;
+  }
+  header {
+    padding: 5px;
+    border-bottom: 1px solid -webkit-var(line-color);
+  }
+  h3 {
+    margin: 0 !important;
+  }
+  textarea {
+    font-family: inherit;
+    width: 100%;
+    height: 100px;
+    box-sizing: border-box;
+    border: 1px solid -webkit-var(line-color);
+  }
+  footer {
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+  }
+</style>
+<div>
+  <header>
+    <h3>Comment</h3>
+    <content select="h1"></content>
+  </header>
+  <content select="p:first-of-type"></content>
+  <textarea></textarea>
+  <footer><button pseudo="x-comment-button">Comment</button></footer>
+</div>
+</template>
+
+<h1>Main Title</h1>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec hendrerit mauris.
+Nulla pellentesque, tortor ac euismod elementum, erat risus pellentesque magna, feugiat
+posuere dui diam quis risus. Duis gravida sagittis viverra. Mauris a pretium diam. Mauris
+lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictumst. Fusce
+malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
+
+<div id="host">
+<p>Instructions go here</p>
+</div>
+
+<p>Donec volutpat est et augue consectetur ac auctor libero ultrices.
+Ut tellus nisi, convallis at gravida id, interdum sit amet augue. Nullam et lacus ac elit
+pellentesque ornare ac a urna. Sed vestibulum porta erat, vel vulputate nunc pellentesque a.
+Ut neque dui, vulputate quis pretium vitae, ornare ac turpis. Vivamus quam tellus, fringilla
+at rhoncus eget, placerat vitae nunc. Nam feugiat quam vel nisl dignissim bibendum. Cras dictum,
+sem et cursus rutrum, turpis magna dictum orci, lacinia sagittis elit elit sit amet elit.
+Cras feugiat erat sit amet elit sagittis ultrices. Nam rhoncus mollis massa, ut ultricies
+lectus dignissim nec.</p>
+
+<h2>Subtitle</h2>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec hendrerit mauris.
+Nulla pellentesque, tortor ac euismod elementum, erat risus pellentesque magna, feugiat
+posuere dui diam quis risus. Duis gravida sagittis viverra. Mauris a pretium diam. Mauris
+lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictumst. Fusce
+malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
+
+<p>Donec volutpat est et augue consectetur ac auctor libero ultrices.
+Ut tellus nisi, convallis at gravida id, interdum sit amet augue. Nullam et lacus ac elit
+pellentesque ornare ac a urna. Sed vestibulum porta erat, vel vulputate nunc pellentesque a.
+Ut neque dui, vulputate quis pretium vitae, ornare ac turpis. Vivamus quam tellus, fringilla
+at rhoncus eget, placerat vitae nunc.</p>
+
+<h2>Subtitle</h2>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec hendrerit mauris.
+Nulla pellentesque, tortor ac euismod elementum, erat risus pellentesque magna, feugiat
+posuere dui diam quis risus. Duis gravida sagittis viverra. Mauris a pretium diam. Mauris
+lacinia blandit pulvinar. Morbi a volutpat purus. In hac habitasse platea dictumst. Fusce
+malesuada tortor nisl, ut suscipit urna. Morbi nec justo ligula, ornare convallis mi.</p>
+
+<p><button>Read more...</button></p>
+
+<script>
+Element.prototype.createShadowRoot = Element.prototype.webkitCreateShadowRoot;
+
+var shadow = document.querySelector('#host').createShadowRoot();
+//shadow.resetStyleInheritance = true;
+shadow.applyAuthorStyles = true;
+shadow.innerHTML = document.querySelector('template').innerHTML;
+</script>
+</body>
+</html>

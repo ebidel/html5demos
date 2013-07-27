@@ -1,0 +1,14 @@
+<element name="x-foo" constructor="XFoo">
+  <section>I'm an x-foo!</section>
+  <script>
+    var section = this.querySelector('section');
+    this.register({
+      prototype: {
+        readyCallback: function() {
+          this.textContent = section.textContent; // this == <element>
+        },
+        foo: function() { alert('foo() called'); }
+      }
+    });
+  </script>
+</element>
