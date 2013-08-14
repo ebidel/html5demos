@@ -191,6 +191,7 @@ section {
 aside {
   position: absolute;
   top: 0;
+  left: 50%;
   padding: 3px 0;
   border-bottom-right-radius: 200px;
   border-bottom-left-radius: 200px;

@@ -62,8 +62,6 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <footer class="centerall"></footer>
 
 <script>
-// crbug.com/137775 - unprefix webkitURL.
-window.URL = window.URL || window.webkitURL;
 window.requestFileSystem = window.requestFileSystem ||
                            window.webkitRequestFileSystem;
 window.resolveLocalFileSystemURL = window.webkitResolveLocalFileSystemURL ||
@@ -315,14 +313,13 @@ function onDrop(e) {
   var items = e.dataTransfer.items;
   var files = e.dataTransfer.files;
 
-  for (var i = 0, item; item = items[i]; ++i) { 
-    var entry = item.webkitGetAsEntry();
-
+  for (var i = 0, item; item = items[i]; ++i) {
     // Skip this one if we didn't get a file.
     if (item.kind != 'file') {
       continue;
     }
 
+    var entry = item.webkitGetAsEntry();
     if (entry.isDirectory) {
       setLoadingTxt({
         txt: 'Importing directory: ' + entry.name,
@@ -354,6 +351,10 @@ function init() {
   var dropZone = document.querySelector('[dropzone]');
 
   dropZone.addEventListener('drop', onDrop);
+
+  dropZone.addEventListener('dragover', function(e) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  });
 
   dropZone.addEventListener('dragenter', function(e) {
     e.target.classList.add('active');
