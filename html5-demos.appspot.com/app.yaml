@@ -47,6 +47,10 @@ handlers:
   static_files: static/getusermedia/screenshare.html
   upload: /screenshare\/?
 
+- url: /hangouts\/?
+  static_files: static/webcomponents-bdconf/demos/components/hangouts/index.html
+  upload: /hangouts\/?
+
 - url: /
   static_files: static/index.html
   upload: /static/index.html
