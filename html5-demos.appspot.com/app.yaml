@@ -51,6 +51,10 @@ handlers:
   static_files: static/webcomponents-bdconf/demos/components/hangouts/index.html
   upload: /hangouts\/?
 
+- url: /gangnam\/?
+  static_files: static/webcomponents/demos/components/my-components/gangnam.html
+  upload: /gangnam\/?
+
 - url: /
   static_files: static/index.html
   upload: /static/index.html

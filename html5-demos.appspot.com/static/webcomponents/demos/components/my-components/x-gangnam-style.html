@@ -1,79 +1,80 @@
-<element name="x-gangnam-style">
-<style polymer-scope="global">
-/*Need to define these globally. Don't work in the component.
-See https://bugs.webkit.org/show_bug.cgi?id=72462 */
-@-webkit-keyframes psydroid-dance {
-  0% { top: 0; }
-  20% { top: 4px; }
-  30% { top: 0; }
-  50% { top: 4px; }
-  60% { top: 0; }
-  80% { top: 4px; }
-  90% { top: 0; }
-  100% { top: 0; }
-}
-@-webkit-keyframes psydroid-leg-l {
-  0% { top: 116px; }
-  10% { top: 116px; }
-  15% { top: 116px; }
-  25% { top: 116px; }
-  30% { top: 110px; }
-  40% { top: 116px; }
-  45% { top: 120px; }
-  55% { top: 116px; }
-  60% { top: 120px; }
-  70% { top: 116px; }
-  75% { top: 110px; }
-  85% { top: 116px; }
-  100% { top: 116px; }
-}
-@-webkit-keyframes psydroid-leg-r {
-  0% { top: 116px; }
-  10% { top: 120px; }
-  15% { top: 110px; }
-  25% { top: 116px; }
-  30% { top: 120px; }
-  40% { top: 116px; }
-  45% { top: 110px; }
-  55% { top: 116px; }
-  60% { top: 110px; }
-  70% { top: 116px; }
-  75% { top: 120px; }
-  85% { top: 116px; }
-  100% { top: 116px; }
-}
-@-webkit-keyframes psydroid-arm-l {
-  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  10% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
-  20% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
-  25% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
-  40% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-75deg); transform: rotate(-75deg); }
-  50% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
-  55% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-80deg); transform: rotate(-80deg); }
-  65% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
-  80% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
-  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-}
-@-webkit-keyframes psydroid-arm-r {
-  0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  10% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
-  20% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
-  25% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
-  40% { -moz-transform: rotate(65deg); -webkit-transform: rotate(75deg); transform: rotate(75deg); }
-  50% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
-  55% { -moz-transform: rotate(65deg); -webkit-transform: rotate(80deg); transform: rotate(80deg); }
-  65% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
-  80% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
-  90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-  100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
-}
-</style>
+<polymer-element name="x-gangnam-style">
 <template>
+<style polymer-scope="global">
+  /*Need to define these globally. Don't work in the component.
+  See https://bugs.webkit.org/show_bug.cgi?id=72462 */
+  @-webkit-keyframes psydroid-dance {
+    0% { top: 0; }
+    20% { top: 4px; }
+    30% { top: 0; }
+    50% { top: 4px; }
+    60% { top: 0; }
+    80% { top: 4px; }
+    90% { top: 0; }
+    100% { top: 0; }
+  }
+  @-webkit-keyframes psydroid-leg-l {
+    0% { top: 116px; }
+    10% { top: 116px; }
+    15% { top: 116px; }
+    25% { top: 116px; }
+    30% { top: 110px; }
+    40% { top: 116px; }
+    45% { top: 120px; }
+    55% { top: 116px; }
+    60% { top: 120px; }
+    70% { top: 116px; }
+    75% { top: 110px; }
+    85% { top: 116px; }
+    100% { top: 116px; }
+  }
+  @-webkit-keyframes psydroid-leg-r {
+    0% { top: 116px; }
+    10% { top: 120px; }
+    15% { top: 110px; }
+    25% { top: 116px; }
+    30% { top: 120px; }
+    40% { top: 116px; }
+    45% { top: 110px; }
+    55% { top: 116px; }
+    60% { top: 110px; }
+    70% { top: 116px; }
+    75% { top: 120px; }
+    85% { top: 116px; }
+    100% { top: 116px; }
+  }
+  @-webkit-keyframes psydroid-arm-l {
+    0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    10% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+    20% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+    25% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+    40% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-75deg); transform: rotate(-75deg); }
+    50% { -moz-transform: rotate(-60deg); -webkit-transform: rotate(-60deg); transform: rotate(-60deg); }
+    55% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-80deg); transform: rotate(-80deg); }
+    65% { -moz-transform: rotate(-55deg); -webkit-transform: rotate(-55deg); transform: rotate(-55deg); }
+    80% { -moz-transform: rotate(-65deg); -webkit-transform: rotate(-65deg); transform: rotate(-65deg); }
+    90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  }
+  @-webkit-keyframes psydroid-arm-r {
+    0% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    10% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+    20% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+    25% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+    40% { -moz-transform: rotate(65deg); -webkit-transform: rotate(75deg); transform: rotate(75deg); }
+    50% { -moz-transform: rotate(60deg); -webkit-transform: rotate(60deg); transform: rotate(60deg); }
+    55% { -moz-transform: rotate(65deg); -webkit-transform: rotate(80deg); transform: rotate(80deg); }
+    65% { -moz-transform: rotate(55deg); -webkit-transform: rotate(55deg); transform: rotate(55deg); }
+    80% { -moz-transform: rotate(65deg); -webkit-transform: rotate(65deg); transform: rotate(65deg); }
+    90% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    100% { -moz-transform: rotate(0deg); -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  }
+  </style>
+
 <style>
 #maia-signature {
   position:relative;
- background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAECAIAAADeXzCbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8%2BIDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGNzdGMTE3NDA3MjA2ODExODFEOUEyMzFBOERFQzcyQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQTlDNkVFOEVGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQTlDNkVFN0VGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NDZENjQwNjM2MzIwNjgxMTgwODM4RUVFOTdCQkFFREQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Rjc3RjExNzQwNzIwNjgxMTgxRDlBMjMxQThERUM3MkMiLz4gPC9yZGY6RGVzY3JpcHRpb24%2BIDwvcmRmOlJERj4gPC94OnhtcG1ldGE%2BIDw/eHBhY2tldCBlbmQ9InIiPz6z2rdVAAAAMElEQVR42mJkaP/OQHvwb7Y1A10AY%2B85Oln0OYwOtjAxjIJBDEajZzR6RgG5ACDAAGNHBgAfwwAlAAAAAElFTkSuQmCC") no-repeat right bottom;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIoAAAAECAIAAADeXzCbAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8%2BIDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGNzdGMTE3NDA3MjA2ODExODFEOUEyMzFBOERFQzcyQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQTlDNkVFOEVGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQTlDNkVFN0VGQzIxMUUxOUJDNkEyREUzQzEzOUJGNiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NDZENjQwNjM2MzIwNjgxMTgwODM4RUVFOTdCQkFFREQiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6Rjc3RjExNzQwNzIwNjgxMTgxRDlBMjMxQThERUM3MkMiLz4gPC9yZGY6RGVzY3JpcHRpb24%2BIDwvcmRmOlJERj4gPC94OnhtcG1ldGE%2BIDw/eHBhY2tldCBlbmQ9InIiPz6z2rdVAAAAMElEQVR42mJkaP/OQHvwb7Y1A10AY%2B85Oln0OYwOtjAxjIJBDEajZzR6RgG5ACDAAGNHBgAfwwAlAAAAAElFTkSuQmCC") no-repeat right bottom;
   /*background: url("bars.png") no-repeat right bottom;*/
   clear: both;
   margin: 120px auto 0;
@@ -84,106 +85,106 @@ See https://bugs.webkit.org/show_bug.cgi?id=72462 */
   display: inline-block;
   }
 
-.zg-sig {
-height:4px;
-overflow:hidden;
-position:absolute;
-right:0;
-top:0;
--webkit-transition:all .5s ease-in;
-transition:all .5s ease-in;
-width:138px;
-z-index:50;
-padding:0;
-}
+  .zg-sig {
+  height:4px;
+  overflow:hidden;
+  position:absolute;
+  right:0;
+  top:0;
+  -webkit-transition:all .5s ease-in;
+  transition:all .5s ease-in;
+  width:138px;
+  z-index:50;
+  padding:0;
+  }
 
-.zg-sig:hover {
-height:160px;
-top:-160px;
--webkit-transition:all .33s ease-in;
-transition:all .33s ease-in;
-}
+  .zg-sig:hover {
+  height:160px;
+  top:-160px;
+  -webkit-transition:all .33s ease-in;
+  transition:all .33s ease-in;
+  }
 
-.zg-psydroid,.zg-psydroid img {
--webkit-animation-delay:1.5s;
--webkit-animation-duration:2.5s;
--webkit-animation-iteration-count:infinite;
-animation-delay:1s;
-animation-duration:2.5s;
-animation-iteration-count:infinite;
-}
+  .zg-psydroid,.zg-psydroid img {
+  -webkit-animation-delay:1.5s;
+  -webkit-animation-duration:2.5s;
+  -webkit-animation-iteration-count:infinite;
+  animation-delay:1s;
+  animation-duration:2.5s;
+  animation-iteration-count:infinite;
+  }
 
-.zg-psydroid {
-position:relative;
-top:0;
-}
+  .zg-psydroid {
+  position:relative;
+  top:0;
+  }
 
-.zg-sig:hover .zg-psydroid {
--webkit-animation-name:psydroid-dance;
-animation-name:psydroid-dance;
-}
+  .zg-sig:hover .zg-psydroid {
+  -webkit-animation-name:psydroid-dance;
+  animation-name:psydroid-dance;
+  }
 
-.zg-psydroid img {
-position:absolute;
--webkit-transform-origin:50% 0;
-transform-origin:50% 0;
-}
+  .zg-psydroid img {
+  position:absolute;
+  -webkit-transform-origin:50% 0;
+  transform-origin:50% 0;
+  }
 
-.zg-psydroid .zg-psydroid-head {
-left:27px;
-top:6px;
-z-index:100;
-}
+  .zg-psydroid .zg-psydroid-head {
+  left:27px;
+  top:6px;
+  z-index:100;
+  }
 
-.zg-psydroid .zg-psydroid-body {
-left:27px;
-top:55px;
-z-index:100;
-}
+  .zg-psydroid .zg-psydroid-body {
+  left:27px;
+  top:55px;
+  z-index:100;
+  }
 
-.zg-psydroid .zg-psydroid-arm-l {
-left:6px;
-top:55px;
-z-index:120;
-}
+  .zg-psydroid .zg-psydroid-arm-l {
+  left:6px;
+  top:55px;
+  z-index:120;
+  }
 
-.zg-sig:hover .zg-psydroid-arm-l {
--webkit-animation-name:psydroid-arm-l;
-animation-name:psydroid-arm-l;
-}
+  .zg-sig:hover .zg-psydroid-arm-l {
+  -webkit-animation-name:psydroid-arm-l;
+  animation-name:psydroid-arm-l;
+  }
 
-.zg-psydroid .zg-psydroid-arm-r {
-right:7px;
-top:55px;
-z-index:120;
-}
+  .zg-psydroid .zg-psydroid-arm-r {
+  right:7px;
+  top:55px;
+  z-index:120;
+  }
 
-.zg-sig:hover .zg-psydroid-arm-r {
--webkit-animation-name:psydroid-arm-r;
-animation-name:psydroid-arm-r;
-}
+  .zg-sig:hover .zg-psydroid-arm-r {
+  -webkit-animation-name:psydroid-arm-r;
+  animation-name:psydroid-arm-r;
+  }
 
-.zg-psydroid .zg-psydroid-leg-l {
-left:43px;
-top:116px;
-z-index:80;
-}
+  .zg-psydroid .zg-psydroid-leg-l {
+  left:43px;
+  top:116px;
+  z-index:80;
+  }
 
-.zg-sig:hover .zg-psydroid-leg-l {
--webkit-animation-name:psydroid-leg-l;
-animation-name:psydroid-leg-l;
-}
+  .zg-sig:hover .zg-psydroid-leg-l {
+  -webkit-animation-name:psydroid-leg-l;
+  animation-name:psydroid-leg-l;
+  }
 
-.zg-psydroid .zg-psydroid-leg-r {
-right:44px;
-top:116px;
-z-index:80;
-}
+  .zg-psydroid .zg-psydroid-leg-r {
+  right:44px;
+  top:116px;
+  z-index:80;
+  }
 
-.zg-sig:hover .zg-psydroid-leg-r {
--webkit-animation-name:psydroid-leg-r;
-animation-name:psydroid-leg-r;
-}
+  .zg-sig:hover .zg-psydroid-leg-r {
+  -webkit-animation-name:psydroid-leg-r;
+  animation-name:psydroid-leg-r;
+  }
 </style>
 <div id="maia-signature">
 <div class="zg-sig">
@@ -199,6 +200,7 @@ animation-name:psydroid-leg-r;
 </div>
 </template>
 <script>
+(function() {
 var a = new Audio();
 //a.src = '/static/webcomponents/demos/components/my-components/gangnamestyle2.ogg';
 a.src = '/static/webcomponents/demos/components/my-components/gangnam-loop2.ogg';
@@ -206,16 +208,16 @@ a.autoplay = false;
 a.loop = true;
 a.load();
 
-Polymer.register(this, {
-  ready: function() {
-    var shadow = this.shadowRoot || this.webkitShadowRoot;
-    shadow.querySelector('.zg-sig').addEventListener('mouseover', function(e) {
+Polymer('x-gangnam-style', {
+  applyAuthorStyles: true,
+  created: function() {
+    this.shadowRoot.querySelector('.zg-sig').addEventListener('mouseover', function(e) {
       a.play();
     });
-    shadow.querySelector('.zg-sig').addEventListener('mouseout', function(e) {
+    this.shadowRoot.querySelector('.zg-sig').addEventListener('mouseout', function(e) {
       a.pause();
     });
-    shadow.addEventListener('webkitTransitionEnd', function(e) {
+    this.shadowRoot.addEventListener('webkitTransitionEnd', function(e) {
      if (e.propertyName == 'height' &&
          parseInt(window.getComputedStyle(e.target).height) < 10) {
        a.load();
@@ -223,5 +225,7 @@ Polymer.register(this, {
     });
   }
 });
+
+})();
 </script>
-</element>
+</polymer-element>
