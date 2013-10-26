@@ -1,0 +1,66 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+
+@import "variables";
+
+@mixin build-prefix-values($property, $value, $prefixes: $default-prefixes) {
+  @each $prefix in $prefixes {
+    //-#{$prefix}-#{$property}: #{$value};
+    #{$property}: -#{$prefix}-#{$value};
+  }
+  #{$property}: #{$value};
+} 
+
+
+[data-tooltip-property],
+[data-tooltip] {
+  position: relative;
+  cursor: inherit;
+  border-bottom: none;
+
+  &:hover {//[data-tooltip-active] { // ignore active state
+    cursor: pointer;
+    $z-index: 100;
+    &:before, &:after {
+      position: absolute;
+      z-index: $z-index;
+      font-size: 20px;
+      white-space: pre;
+    }
+    &:before {
+      border: solid transparent;
+      height: 0;
+      width: 0;
+      border-bottom-color: rgba(0, 0, 0, 0.85);
+      border-width: 10px;
+      content: ' ';
+      top: 15px;
+      left: 20px;
+      z-index: $z-index + 1;
+    }
+    &:after {
+      content: attr(data-tooltip);
+      background: rgba(0, 0, 0, 0.85);
+      padding: 10px 25px 10px 15px;
+      color: #fff;
+      @include border-radius(3px);
+      left: 0;
+      top: 34px;
+      //width: -webkit-min-content; //330px
+      @include build-prefix-values(width, max-content);
+      font-weight: normal;
+      @include box-shadow(3px 3px 10px $gray-4);
+      //white-space: nowrap;
+    }
+  }
+
+  .property {
+    border-bottom: 1px dotted $gray-4;
+    color: $gray-4;
+  }
+}
+
+[data-tooltip] {
+  cursor: pointer;
+  border-bottom: 1px dotted $gray-4;
+}

@@ -1,0 +1,72 @@
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+
+@mixin animation-name($val) {
+  -webkit-animation-name: $val;
+  -moz-animation-name: $val;
+  -ms-animation-name: $val;
+  -o-animation-name: $val;
+  animation-name: $val;
+}
+
+@-webkit-keyframes rotateRight {
+  from {
+    -webkit-transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes jitter {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  2% {
+    -webkit-transform: rotate(-7deg)  translateX(2px)  scale(1.1);
+  }
+  4% {
+    -webkit-transform: rotate(0deg);
+  }
+  6% {
+    -webkit-transform: rotate(7deg)  translateX(-2px);
+  }
+  8% {
+    -webkit-transform: rotate(0deg);
+  }
+  10% {
+    -webkit-transform: rotate(-7deg)  translateX(2px) scale(1.1);
+  }
+  12% {
+    -webkit-transform: rotate(0deg);
+  }
+  14% {
+    -webkit-transform: rotate(7deg)  translateX(-2px);
+  }
+  16% {
+    -webkit-transform: rotate(0deg);
+  }
+}
+
+.spin {
+  @include animation-name(rotateRight);
+  -webkit-animation-duration: 15s;
+  -webkit-animation-timing-function: linear;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-iteration-count: infinite;
+}
+
+.jitter {
+  -webkit-animation-name: jitter;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-iteration-count: infinite;
+}
+
+.pop {
+  @include transition(all 400ms cubic-bezier(.17,.67,0,1.33));
+  &.to-build, &.auto-fadein {
+    @include transform(scale(0.5));
+  }
+}

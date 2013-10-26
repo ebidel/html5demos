@@ -1,0 +1,20 @@
+<script>
+var proto = Object.create(HTMLElement.prototype);
+
+// 1. Setup (optional) lifecycle callbacks.
+proto.createdCallback = function() {
+  this.textContent = "I'm an x-foo!";
+
+  this.addEventListener('click', function(e) {
+    this.hello();
+  });
+};
+proto.enteredViewCallback = function() { };
+
+// 2. Add properties/methods API.
+proto.hello = function() { alert('Hiiii ' + this.name); };
+Object.defineProperty(proto, 'name', {value: 'Eric'});
+
+// 3. Register the element.
+var XFoo = document.register('x-foo', {prototype: proto});
+</script>

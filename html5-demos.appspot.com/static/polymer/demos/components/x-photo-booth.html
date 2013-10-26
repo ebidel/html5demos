@@ -1,0 +1,195 @@
+
+<polymer-element name="photo-booth" constructor="PhotoBooth">
+  <style polymer-scope="global">
+    /* Fonts and animations needs to be defined globally, outside of Shadow DOM. */
+    @import url(http://fonts.googleapis.com/css?family=Quicksand);
+
+    @-webkit-keyframes glowRed {
+      from {
+        box-shadow: rgba(255, 0, 0, 0) 0 0 0;
+      }
+      50% {
+        box-shadow: rgba(255, 0, 0, 1) 0 0 15px 1px;
+      }
+      to {
+        box-shadow: rgba(255, 0, 0, 0) 0 0 0;
+      }
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="photo-booth.css">
+  <template>
+    <div id="splash" hidden>
+      <p id="errorMessage"></p>
+    </div>
+    <section id="app" hidden>
+      <p>Click the video to see different CSS filters</p>
+      <div class="monitor-container">
+        <span id="live">LIVE</span>
+        <video id="monitor" autoplay on-click="{{onChangeFilter}}" title="Click me to see different filters"></video>
+      </div>
+    </section>
+    <div>
+      <button id="captureButton" on-click="{{onStartCaptureFunc}}">Start</button>
+      <button id="stopButton" on-click="{{onStop}}" hidden>Stop</button>
+    </div>
+    <div id="gallery"></div>
+    <canvas id="photo" style="display:none"></canvas> 
+  </template>
+  <script>
+    navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+    var shadowRoot_ = null;
+
+    var app_ = null;
+    var video_ = null;
+    var canvas_ = null;
+    var gallery_ = null;
+    var ctx_ = null;
+    var intervalId = null;
+    var idx = 0;
+    var stream_ = null;
+
+    function setErrorMsg(msg) {
+      shadowRoot_.querySelector('#splash').hidden = false;
+      shadowRoot_.querySelector('#errorMessage').textContent = msg;
+    }
+
+    function gotStream(stream) {
+      stream_ = stream;
+
+      video_.src = window.URL.createObjectURL(stream_);
+
+      video_.onerror = function(e) {
+        stream_.stop();
+      };
+
+      stream_.onended = noStream;
+
+      video_.onloadedmetadata = function(e) { // Not firing in Chrome. See crbug.com/110938.
+        shadowRoot_.querySelector('#splash').hidden = true;
+        shadowRoot_.querySelector('#app').hidden = false;
+      };
+
+      // Since video.onloadedmetadata isn't firing for getUserMedia video, we have to fake it.
+      setTimeout(function() {
+        canvas_.width = video_.videoWidth;
+        canvas_.height = video_.videoHeight;
+        shadowRoot_.querySelector('#splash').hidden = true;
+        shadowRoot_.querySelector('#app').hidden = false;
+
+        shadowRoot_.querySelector('#captureButton').textContent = 'Snapshot';
+        shadowRoot_.querySelector('#stopButton').hidden = false;
+      }, 50);
+    }
+
+    function noStream(e) {
+      setErrorMsg(e.code == 1 ? 'User denied access to use camera.' : '');
+    }
+
+    Polymer('photo-booth', {
+      supported: !!navigator.getUserMedia,
+      ready: function() {
+        shadowRoot_ = this.webkitShadowRoot;
+
+        //shadowRoot_.resetStyleInheritance = true;
+        shadowRoot_.applyAuthorStyles = true;
+
+        canvas_ = shadowRoot_.querySelector('#photo');
+        ctx_ = canvas_.getContext('2d');
+
+        video_ = this.$.monitor;
+        app_ = this.$.app;
+        gallery_ = this.$.gallery;
+
+        if (!this.supported) {
+          setErrorMsg('Sorry! Camera access is not available in your browser.');
+          this.$.captureButton.disabled = true;
+        }
+
+        this.onStartCaptureFunc = this.onStartCapture;
+      },
+      capture: function() {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+          return;
+        }
+
+        intervalId = setInterval(function() {
+          ctx_.drawImage(video_, 0, 0);
+          var img = document.createElement('img');
+          img.src = canvas_.toDataURL('image/jpg');
+
+          var angle = Math.floor(Math.random() * 36);
+          var sign = Math.floor(Math.random() * 2) ? 1 : -1;
+          img.style.webkitTransform = 'rotateZ(' + (sign * angle) + 'deg)';
+
+          var maxLeft = document.body.clientWidth;
+          var maxTop = document.body.clientHeight;
+
+          img.style.top = Math.floor(Math.random() * maxTop) + 'px';
+          img.style.left = Math.floor(Math.random() * maxLeft) + 'px';
+
+          gallery_.appendChild(img);
+        }, 150);
+
+      },
+      onStartCapture: function(e) {
+        if (!this.supported) {
+          return;
+        }
+
+        //this.$.captureButton.setAttribute('on-click', '{{capture}}');
+        this.onStartCaptureFunc = this.capture;
+
+        var constraints = {
+          video: {
+            mandatory: {
+              maxWidth: 360
+            }
+          }
+        };
+
+        navigator.getUserMedia(constraints, gotStream.bind(this), noStream);
+      },
+      onStop: function(e) {
+        stream_.stop();
+        this.$.stopButton.hidden = true;
+        shadowRoot_.querySelector('#splash').hidden = false;
+        shadowRoot_.querySelector('#app').hidden = true;
+        // this.$.captureButton.setAttribute('on-click', '{{onStartCapture}}');
+        this.onStartCaptureFunc = this.onStartCapture;
+
+        this.$.captureButton.textContent = 'Start';
+        this.$.gallery.innerHTML = '';
+
+        this.$.monitor.className = '';
+
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      },
+      onChangeFilter: function(e) {
+        var filters = [
+          'grayscale',
+          'sepia',
+          'blur',
+          'brightness',
+          'contrast',
+          'hue-rotate', 'hue-rotate2', 'hue-rotate3',
+          'saturate',
+          'invert',
+          ''
+        ];
+
+        e.target.className = '';
+        var effect = filters[idx++ % filters.length];
+        if (effect) {
+          e.target.classList.add(effect);
+        }
+      }
+    });
+  </script>
+</polymer-element>
+

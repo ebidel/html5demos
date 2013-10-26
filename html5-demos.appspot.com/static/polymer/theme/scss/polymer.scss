@@ -1,0 +1,419 @@
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/images";
+//@import "compass/css3/shared";
+@import "compass/css3/transform";
+@import "compass/css3/transition";
+
+@import "variables";
+@import "mixins";
+
+$polymer-elements-color: rgb(13, 168, 97);
+$polymer-platform-color: rgb(205, 55, 45);
+$polymer-core-color: rgb(255, 209, 77);
+$polymer-applications-color: rgb(35, 100, 215);
+
+/* Architecture stack */
+.core {
+  color: $polymer-core-color;
+}
+.core-bg {
+  background-color: rgba(255, 209, 77, 1);
+}
+.platform {
+  color: $polymer-platform-color;
+}
+.platform-bg {
+  background-color: rgba(244, 74, 63, 1);
+}
+.elements {
+  color: $polymer-elements-color;
+}
+.elements-bg {
+  background-color: rgba(13, 168, 97, 1);
+}
+.applications {
+  color: $polymer-applications-color;
+}
+.applications-bg {
+  background-color: rgba(67, 135, 253, 1);
+}
+// -----
+
+// Left sidebar architecture color bars
+.platform-bg {
+  .sidebar.platform {
+    width: 25px;
+    &::after {
+      content: '\f085 \00a0 platform';
+    }
+  }
+}
+.core-bg {
+  .sidebar.core {
+    width: 25px;
+    &::after {
+      content: '\f0c3 \00a0 core';
+    }
+  }
+}
+.elements-bg {
+  .sidebar.elements {
+    width: 25px;
+    &::after {
+      content: '\f12e \00a0 elements';
+    }
+  }
+}
+
+.sidebar {
+  overflow: hidden;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 35px;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  width: 0;
+  color: white;
+  @include transition(all 400ms ease-in-out);
+  // @include transition(all 400ms cubic-bezier(.17,1.67,0,1.33));
+
+  &::after {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    font-family: FontAwesome;
+    position: absolute;
+    bottom: -10px;
+    left: 5px;
+    @include transform(rotateZ(-90deg));
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+
+  &.left {
+    @include box-shadow(-3px 0 10px rgba(0, 0, 0, 0.3) inset);
+  }
+  &.right {
+    @include box-shadow(3px 0 10px rgba(0, 0, 0, 0.3) inset);
+    right: 0;
+    left: initial;
+    left: -moz-initial;
+
+    &::after {
+      @include transform(rotateZ(90deg));
+      -webkit-transform-origin: 0 50%;
+      -moz-transform-origin: 0 50%;
+      transform-origin: 0 50%;
+      bottom: initial;
+    }
+  }
+}
+
+body {
+  &.insane {
+    background: url('../../images/bgs/insanity_cars.jpg') no-repeat 50% 50%;
+    background-size: cover;
+  }
+  &.site {
+    background: url('../../images/polymer/homepage.png') no-repeat 0 50%;
+    background-size: cover;
+  }
+  &.readable {
+    background: url('../../images/screenshots/gmail.png') no-repeat 0 0;
+    background-size: cover;
+  }
+  &.howwebuildapps {
+    background: url('../../images/gifs/wtf.gif') no-repeat 50% 50%;
+    background-size: cover;
+  }
+}
+
+pre {
+  &[data-code-cycle] {
+    cursor: pointer;
+  }
+
+  &.corner {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 40px;
+
+    [data-tooltip]:hover {
+      &:after {
+        left: -150px;
+      }
+    }
+  }
+
+  [data-action] {
+    border-bottom: 1px dotted black;
+    display: inline-block;
+    cursor: pointer;
+    //@include user-select(none);
+    .inactive {
+      opacity: 0.5;
+    }
+  }
+}
+
+.architecture-diagram {
+  article {
+    @include transform(rotateY(180deg));
+    background: url(../../images/polymer/architecture-diagram.svg) no-repeat;
+    background-size: contain;
+    background-position: -290px 50%;
+    height: 100%;
+    margin-top: 0;
+    opacity: 0;
+    @include transition(opacity 1s ease-in-out);
+  }
+
+  .overlay {
+    background: rgba(255,255,255,0.8);
+    position: absolute;
+    z-index: 100;
+    height: 0;
+    width: 410px;
+    @include transition(height 1s ease-in-out 2s);
+
+    &.top {
+      top: 0;
+    }
+    &.bottom {
+      bottom: 0;
+    }
+  }
+
+  // hgroup {
+  //   z-index: 1;
+  // }
+}
+
+// Slide styles
+slides > slide {
+  @include border-radius(0);
+  border-bottom: 5px solid transparent;
+
+  $slide-left-right-padding: 40px;
+  padding: 0 40px;
+
+  &:not(.nobackground) {
+    //overflow: hidden;
+    &::before, &::after {
+      bottom: 0;
+      line-height: 1.9;
+    }
+    &::before {
+      width: 100%;
+      left: 0;
+    }
+    &::after {
+      //right: $slide-left-right-padding;
+      right: 10px;
+    }
+  }
+
+  &.segue {
+    &.elements, &.core, &.platform {
+      @extend .architecture-diagram;
+      padding-left: 40px;
+      padding-right: 40px;
+
+      footer {
+        display: none;
+      }
+
+    }
+
+    h3 {
+      font-size: 25px;
+      position: absolute;
+      .nounderline {
+        border: none;
+        color: $gray-2;
+      }
+    }
+  }
+
+  &.nobackground {
+    footer {
+      display: none;
+    }
+  }
+
+  &:not(.segue):not(.nobackground)  {
+    &.elements, &.platform, &.core {
+      &::before {
+        text-align: center;
+      }
+      footer {
+        line-height: 1.9;
+        font-size: 12pt;
+        position: absolute;
+        bottom: 0;
+        left: 10px;
+        [class*="icon-"]::after {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    &.elements {
+      border-color: $polymer-elements-color;
+      footer {
+        [class*="icon-"] {
+          &::after {
+            content: 'elements';
+          }
+        }
+      }
+    }
+    &.platform {
+      border-color: $polymer-platform-color;
+      footer {
+        [class*="icon-"] {
+          &::after {
+            content: 'platform';
+          }
+        }
+      }
+    }
+    &.core {
+      border-color: $polymer-core-color;
+      footer {
+        [class*="icon-"] {
+          &::after {
+            content: 'core';
+          }
+        }
+      }
+    }
+  }
+
+
+  &.elements, &.core, &.platform {
+    color: inherit;
+
+    &.current {
+      article {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.current {
+
+    &.elements {
+      .overlay {
+        &.top {
+          height: 0; 
+        }
+        &.bottom {
+          height: 281px;
+        }
+      }
+    }
+
+    &.core {
+      .overlay {
+        &.top {
+          height: 296px; 
+        }
+        &.bottom {
+          height: 245px;
+        }
+      }
+    }
+
+    &.platform {
+      .overlay {
+        &.top {
+          height: 331px; 
+        }
+        &.bottom {
+          height: 0;
+        }
+      }
+    }
+
+  }
+
+  article.flexbox {
+    margin: 0;
+  }
+
+}
+
+// Sample slides
+
+.component-demo {
+  overflow: auto;
+  height: 125px;
+  //@include experimental-value(height, fill-available);
+  output {
+    font-size: 16px;
+  }
+}
+
+#tab-examples {
+  img {
+    height: 550px;
+    position: absolute;
+    @include transform(scale(0.8));
+    @include transition(all 300ms ease-in-out);
+
+    &:nth-child(2) {
+      margin-left: 100px;
+    }
+    &:nth-child(3) {
+      margin-left: 200px;
+    }
+    &:nth-child(4) {
+      margin-left: 300px;
+    }
+    &:nth-child(5) {
+      margin-left: 400px;
+    }
+    &.build-current {
+      @include transform(none);
+    }
+  }
+}
+
+#polymer-flex-demo {
+  polymer-flex-layout {
+    height: 250px;
+    cursor: pointer;
+
+    > * {
+      font-weight: bold;
+      padding: 10px;
+      background-color: purple;
+      margin: 5px;
+      color: white;
+    }
+  }
+}
+
+#more-complex-elements,
+#published-properties {
+  textarea {
+    display: none;
+  }
+}
+
+#polymer-ui-elements {
+  div > div {
+    @include flex-direction(row);
+    img {
+      height: 200px;
+    }
+  }
+  img {
+    margin-bottom: 40px;
+    border: 1px solid $gray-1;
+  }
+}

@@ -1,0 +1,20 @@
+<element name="x-foo-shadow" constructor="XFooShadow">
+  <template>
+    <style>
+      @host {
+        * { display: block; padding: 10px; background-color: #ffcc00; }
+      }
+    </style>
+    <section>I'm an x-foo-shadow. Gots me some Shadow DOM!</section>
+  </template>
+  <script>
+    var template = this.querySelector('template');
+    this.register({ // this == <element>
+      prototype: {
+        readyCallback: function() {
+          this.webkitCreateShadowRoot().appendChild(template.content.cloneNode(true));
+        }
+      }
+    });
+  </script>
+</element>

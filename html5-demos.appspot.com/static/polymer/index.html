@@ -1,0 +1,2624 @@
+<!--
+Copyright Eric Bidelman <ebidel@gmail.com> 2013
+
+Adapted from Google IO 2012 HTML5 Slide Template
+https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Polymer!</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/app.css">
+  <link rel="stylesheet" media="all" href="theme/css/polymer.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script src="js/bower_components/polymer/polymer.min.js"></script>
+  <script async>Polymer.veiledElements = [];</script>
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body>
+
+<div class="sidebar left core core-bg"></div>
+<div class="sidebar right core core-bg"></div>
+
+<div class="sidebar right elements elements-bg"></div>
+<div class="sidebar left elements elements-bg"></div>
+
+<div class="sidebar left platform platform-bg"></div>
+<div class="sidebar right platform platform-bg"></div>
+
+
+<main role="main"> 
+
+<slides class="layout-widescreen">
+
+<!-- <slide class="logoslide nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo.png"></span>
+  </article>
+</slide> -->
+
+<!-- <slide id="first-slide" class="nobackground"></slide>
+ -->
+<slide class="title-slide segue nobackground">
+  <!-- <aside class="gdbar"><img src="images/logos/webcomponents.png"></aside> -->
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <article class="auto-fadein">
+    <div class="overlay top"></div>
+    <!-- <div class="overlay bottom"></div> -->
+    <!-- <img src="images/polymer/polymer-logo.svg"> -->
+    <hgroup>
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </article>
+</slide>
+
+
+<slide id="who"    >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>about:me</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p class="avatar rounded"></p>
+
+<p>Eric Bidelman</p>
+
+<p>Staff Developer Programs Engineer, <img src="images/logos/google_logo.png" style="height: 30px;margin: 0;"> <img src="images/logos/chrome_logo.png" style="height:27px;margin:0;vertical-align: top;"></p>
+
+<p class="topmargin"></p>
+
+<p><i class="icon icon-google-plus"></i>
+<a rel="author" href="http://google.com/+EricBidelman">google.com/+EricBidelman</a></p>
+<p><i class="icon icon-twitter"></i>
+<a rel="author" href="http://twitter.com/ebidel">@ebidel</a></p>
+<p><i class="icon icon-bookmark"></i> 
+<a rel="author" href="http://www.ericbidelman.com">ericbidelman.com</a></p>
+<p class="topmargin">
+<img src="images/logos/h5rlogo.png" style="width: 50px;"><a href="http://html5rocks.com">html5rocks.com</a>
+</p>
+
+<p>"<a href="http://www.amazon.com/Using-HTML5-Filesystem-Eric-Bidelman/dp/1449309453">Using the HTML5 Filesystem API</a>" - O'Reilly </p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="large"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein">Web Components?</h2></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><iframe data-src="http://html5-demos.appspot.com/static/webcomponents/demos/components/my-components/blink/blink.html" style="height:160px;border:none"></iframe>
+
+<p><span class="source"><s><a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=21712">Dead</a></s>?</span></p></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><p class="centered">
+  <code class="prettyprint custom-element-snippet">&lt;gangnam-style>&lt;/gangnam-style></code>
+</p>
+
+<iframe data-src="http://html5-demos.appspot.com/gangnam" style="height:170px;border:none"></iframe></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Meme Generator</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="html" data-run-demo="http://html5-demos.appspot.com/static/webcomponents/demos/components/my-components/meme.html">
+&lt;my-meme src="images/beaches.jpg">
+  &lt;h1 contenteditable>Stay classy&lt;/h1>
+  &lt;h2 contenteditable>Web!&lt;/h2>
+&lt;/my-meme>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><p class="centered">
+  <code class="prettyprint custom-element-snippet">&lt;photo-booth>&lt;/photo-booth></code>
+</p>
+
+<p><link rel="import" href="demos/components/x-photo-booth.html">
+<photo-booth class="rounded"></photo-booth></p></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><p class="centered">
+  <code class="prettyprint custom-element-snippet" style="font-size:35px">&lt;button is="mega-button">Mega button&lt;/button></code>
+</p>
+
+<iframe data-src="http://html5-demos.appspot.com/static/webcomponents/demos/components/my-components/mega-button/megabutton.html" style="height:380px;width:380px;border:none"></iframe></article>
+ 
+
+
+
+</slide>
+
+<slide id="tab-examples"    >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Building a tab component on the web...</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><div class="build flexbox vcenter centered">
+<img src="images/screenshots/tabs/jquery.png">
+<img src="images/screenshots/tabs/yui.png">
+<img src="images/screenshots/tabs/angular.png">
+<img src="images/screenshots/tabs/kendo.png">
+<img src="images/screenshots/tabs/sencha.png">
+<img src=""> <!-- intentional. holder to see all images together -->
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground highlight"  data-body-class="insane" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Insane!</h2>
+      <h3></h3>
+    </hgroup>
+    <article ></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground highlight"  data-body-class="readable" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Readable?</h2>
+      <h3></h3>
+    </hgroup>
+    <article ></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground highlight"  data-body-class="howwebuildapps" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>This is how we build web apps!</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><!-- <img src="images/gifs/wtf.gif" class="rounded" style="height:550px;"> --></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Markup can be meaningful again</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="html" data-run-demo="https://html5-demos.appspot.com/hangouts">
+&lt;hangout-module>
+  &lt;hangout-chat from="Paul, Addy" profile="118075919496626375791">
+    &lt;hangout-discussion>
+      &lt;hangout-message from="Paul" profile="profile.png" datetime="2013-07-17T12:02">
+        &lt;p>Feelin' this Web Components thing.&lt;/p>
+        &lt;p>Heard of it?&lt;/p>
+      &lt;/hangout-message>
+      &lt;hangout-message from="Addy" datetime="2013-07-17T12:12">...&lt;/hangout-message>
+      &lt;hangout-message>...&lt;/hangout-message>
+      ...
+    &lt;/hangout-discussion>
+  &lt;/hangout-chat>
+  &lt;hangout-chat>&lt;/hangout-chat>
+&lt;/hangout-module>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide  class="large"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 style="font-size:400px;"><i class="icon icon-thumbs-up green"></i></h2></article>
+ 
+
+
+
+</slide>
+
+<slide  class="large"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein">Need better tools...</h2></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/explainer/index.html" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+      </span>
+      <h2>Web Component building blocks</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html">Shadow DOM</a><ul class="build">
+<li>DOM &amp; style encapsulation</li>
+</ul>
+</li>
+<li><a href="http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html">HTML Templates</a><ul class="build">
+<li>inert chunks of DOM activated when needed</li>
+</ul>
+</li>
+<li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html">Custom Elements</a><ul class="build">
+<li><span class="bold">create</span> new HTML elements, <span class="bold">extend</span> existing DOM objects</li>
+</ul>
+</li>
+<li><a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html">HTML Imports</a><ul class="build">
+<li>bundle and distribute common HTML/CSS/JS (e.g. components)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul class="build">
+<li><a href="http://www.polymer-project.org/docs/polymer/databinding.html">Data-binding</a>  - pieces are spec'd (<code>Object.observe()</code>, <code>&lt;template&gt;</code>, Mutation Observers)</li>
+</ul>
+<p class="centered build" style="margin-top:1em;font-size:35px;font-style:italic;">
+  <span class="green"><b>A collection of new API primitives in the browser</b></span>
+</p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered animatedfull"><p><img src="images/gifs/macklemore-thrift-shop.jpg" class="rounded reflect"></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered animatedfull"><p><img src="images/gifs/hitinface.gif" class="rounded reflect"></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground yum"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein"><img src="images/polymer/polymer-p.png" style="height:90px;box-shadow:none;margin-right:10px;">Polymer</h2>
+
+<p><br>
+<h3 class="auto-fadein"><a href="http://polymer-project.org">polymer-project.org</a></h3></p></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter quote"><blockquote>
+  Polymer is a <span class="blue">new type of library</span> for the web, built on top of <span class="platform">Web Components</span>, and designed to leverage the <span class="core">evolving web platform</span> &#8230; on <b>modern browsers</b>.
+</blockquote></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>What is it?</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><span class="pull-right auto-fadein"><img src="images/polymer/architecture-diagram.png" style="height:400px"></span></p>
+<ul class="build">
+<li>New type of library for the evolving web (<strong>~48KB</strong>)<ul class="build">
+<li>goal: <a href="http://www.polymer-project.org/compatibility.html">support</a> latest version of modern browsers</li>
+</ul>
+</li>
+<li>Set of <span class="platform">polyfill libraries</span> for the specs<ul class="build">
+<li>Shadow DOM, Custom Elements, HTML Imports, Pointer Events...</li>
+</ul>
+</li>
+<li><span class="core">Sugaring layer</span><ul class="build">
+<li>expresses opinionated way to use web component concepts together</li>
+</ul>
+</li>
+<li>Comprehensive set of <span class="elements">UI Components</span> (in progress)</li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Philosophy / Goals</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><strong>Philosophy</strong></p>
+<ol class="build">
+<li>Utilize the modern web <b class="platform">platform</b>.</li>
+<li>Embrace DOM. Everything as an <b class="elements">element</b>.</li>
+<li><b class="core">Eliminate boilerplate</b>. Remove tediousness of building web apps.</li>
+</ol>
+<p><strong>Goals</strong></p>
+<ol class="build">
+<li>Provide <span class="blue bold">opinionated guidance</span> on building web component-based apps.</li>
+<li>Salt to taste - entire stack is designed to be <span class="blue bold">a la carte</span></li>
+<li><span class="blue bold">Evolve</span> with the web</li>
+<li>Constant <span class="blue bold">feedback loop</span> to web standards</li>
+</ol></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground segue elements"   >
+  
+    <aside class="gdbar"><img src="images/logos/chrome_logo.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Polymer <label class="elements">elements <i class="icon-puzzle-piece elements"></i></label></h2>
+      <h3><a href="http://www.polymer-project.org/docs/elements/" class="nounderline">polymer-project.org/docs/elements/</a></h3>
+    </hgroup>
+    
+    <article ><div class="overlay top"></div>
+
+<div class="overlay bottom"></div></article>
+    
+  
+
+
+  <footer><i class="icon-puzzle-piece elements"></i></footer>
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter quote"><blockquote class="large">Embrace DOM.<br>Everything as an element.</blockquote></article>
+ 
+
+
+
+</slide>
+
+<slide id="polymer-ajax-demo"   data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Everything is an element</h2>
+      <h3>perform AJAX...using DOM</h3>
+    </hgroup>
+    <article ><pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+&lt;link rel="import" href="<span alt="bower install polymer-elements" data-tooltip="bower install polymer-elements">polymer-ajax.html</span>">
+</pre>
+
+<pre class="prettyprint" style="font-size:25px;">
+<b>&lt;polymer-ajax url="http://gdata.youtube.com/feeds/api/videos/"
+              params='{"alt":"json"}'>&lt;/polymer-ajax></b>
+</pre>
+
+<pre class="prettyprint" data-lang="JS" data-run-demo>
+var ajax = document.querySelector('polymer-ajax');
+ajax.addEventListener(<b>'polymer-response'</b>, function(e) {
+  var response = JSON.parse(<b>this.response</b>);
+  console.log(response.feed.entry);
+});
+...
+<b>ajax.go();</b>
+</pre>
+
+<div class="component-demo">
+<link rel="import" href="polymer-all/polymer-elements/polymer-ajax/polymer-ajax.html">
+<output><div>Hit run...</div></output>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop"  data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Real-world examples of polymer-ajax</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 style="margin-top:-100px;"><a href="http://www.chromestatus.com/features">chromestatus.com/features</a></h2>
+
+<h2 style="margin-top:50px;"><a href="http://www.polymer-project.org/build/">polymer-project.org/build/</a></h2></article>
+ 
+
+
+
+</slide>
+
+<slide id="polymer-file-demo"   data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Everything is an element</h2>
+      <h3>read files...using DOM</h3>
+    </hgroup>
+    <article ><pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+&lt;link rel="import" href="<span alt="bower install polymer-elements" data-tooltip="bower install polymer-elements">polymer-file.html</span>">
+</pre>
+
+<pre class="prettyprint centered" style="font-size:25px;">
+&lt;polymer-file <b data-tooltip="'dataurl', 'arraybuffer', 'binarystring', 'text'">readas</b><b>="dataurl"</b>>&lt;/polymer-file>
+</pre>
+
+<pre class="prettyprint" data-lang="JS" data-run-demo>
+var pFile = document.querySelector('polymer-file');
+
+pFile.addEventListener(<b>'polymer-result'</b>, function(e) {
+  console.log(<b>this.result</b>);
+});
+
+<b>pFile.blob = new Blob(['abc'], {type: 'text/plain'});</b> // Set the file to read
+
+<b>pFile.read();</b>
+</pre>
+
+<div class="component-demo">
+<link rel="import" href="polymer-all/polymer-elements/polymer-file/polymer-file.html">
+<output><div>Hit run...</div></output>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide id="polymer-flex-demo"   data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Everything is an element</h2>
+      <h3>flexbox layout...using DOM</h3>
+    </hgroup>
+    <article ><pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+&lt;link rel="import" href="<span alt="bower install polymer-elements" data-tooltip="bower install polymer-elements">polymer-flex-layout.html</span>">
+</pre>
+
+<pre class="prettyprint" data-lang="HTML">
+&lt;polymer-flex-layout <b data-action="vertical">vertical</b> <b>iscontainer</b>>
+  &lt;div>Header&lt;/div>
+  &lt;div <b data-action="flex">flex</b>>Body&lt;/div>
+  &lt;div>Footer&lt;/div>
+&lt;/polymer-flex-layout>
+</pre>
+
+<div class="component-demo" style="height:100%">
+<link rel="import" href="polymer-all/polymer-elements/polymer-flex-layout/polymer-flex-layout.html">
+<output>
+  <polymer-flex-layout vertical iscontainer title="Click me to add children">
+    <div>Header</div>
+    <div flex>Body</div>
+    <div>Footer</div>
+  </polymer-flex-layout>
+</output>
+
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Polymer elements</h2>
+      <h3>non-visual utility elements</h3>
+    </hgroup>
+    <article class="columns-2"><p><span class="bold blue">Layout</span></p>
+<p><code>&lt;polymer-layout&gt;</code></p>
+<p><code>&lt;polymer-flex-layout&gt;</code></p>
+<p><code>&lt;polymer-grid-layout&gt;</code></p>
+<p><span class="bold blue">View</span></p>
+<p><code>&lt;polymer-media-query&gt;</code></p>
+<p><code>&lt;polymer-page&gt;</code></p>
+<p><span class="bold blue">Services / libs</span></p>
+<p><code>&lt;polymer-shared-lib&gt;</code></p>
+<p><code>&lt;polymer-google-jsapi&gt;</code></p>
+<p><span class="bold blue">Data</span></p>
+<p><code>&lt;polymer-localstorage&gt;</code></p>
+<p><code>&lt;polymer-xhr&gt;</code></p>
+<p><code>&lt;polymer-jsonp&gt;</code></p>
+<p><code>&lt;polymer-file&gt;</code></p>
+<p><code>&lt;polymer-meta&gt;</code> </p>
+<p><span class="bold blue">Behavior / interaction</span></p>
+<p><code>&lt;polymer-signals&gt;</code></p>
+<p><code>&lt;polymer-selector&gt;</code></p></article>
+ 
+
+
+
+</slide>
+
+<slide id="polymer-ui-elements"   data-body-class="elements-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Polymer UI elements</h2>
+      <h3>visual elements</h3>
+    </hgroup>
+    <article ><div class="pull-right flexbox vcenter" style="width: 40%;margin-top:-100px;">
+  <img src="images/polymer/uielements/polymer-ui-tabs.png" style="width:100%">
+  <div class="flexbox vcenter" style="height:auto;">
+  <img src="images/polymer/uielements/sidebarmenu.png">
+  <img src="images/polymer/uielements/polymer-ui-toggle-button.png" style="margin-left:20px;">
+  </div>
+  <img src="images/polymer/uielements/toolbar.png" style="width:100%">
+</div>
+
+<p><code>&lt;polymer-ui-accordion&gt;</code></p>
+<p><code>&lt;polymer-ui-animated-pages&gt;</code></p>
+<p><code>&lt;polymer-ui-overlay&gt;</code></p>
+<p><code>&lt;polymer-ui-card&gt;</code> <a href="http://www.polymer-project.org/polymer-all/polymer-ui-elements/polymer-ui-card/index.html">demo</a></p>
+<p><code>&lt;polymer-ui-sidebar-menu&gt;</code> <a href="http://www.polymer-project.org/polymer-all/polymer-ui-elements/polymer-ui-sidebar-menu/index.html">demo</a></p>
+<p><code>&lt;polymer-ui-tabs&gt;</code> <a href="http://www.polymer-project.org/polymer-all/polymer-ui-elements/polymer-ui-tabs/index.html">demo</a></p>
+<p><code>&lt;polymer-ui-toggle-button&gt;</code> <a href="http://www.polymer-project.org/polymer-all/polymer-ui-elements/polymer-ui-toggle-button/index.html">demo</a></p>
+<p><code>&lt;polymer-ui-theme-aware&gt;</code></p>
+<p>...</p>
+<div class="build centered bold"><span><b class="green">Reusablilty</b>...the non-visual polymer-elements are used to implement these!</span></div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground segue core"   >
+  
+    <aside class="gdbar"><img src="images/logos/chrome_logo.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Polymer <label class="core">core <i class="icon-beaker core"></i></label></h2>
+      <h3><a href="http://www.polymer-project.org/polymer.html" class="nounderline">polymer-project.org/polymer.html</a></h3>
+    </hgroup>
+    
+    <article ><div class="overlay top"></div>
+
+<div class="overlay bottom"></div></article>
+    
+  
+
+
+
+  <footer><i class="icon-beaker core"></i></footer>
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter quote"><blockquote class="large">Eliminate boilerplate.</blockquote></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Polymer's core sugaring features</h2>
+      <h3>declarative web components in seconds</h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Declarative element registration: <code>&lt;polymer-element&gt;</code></li>
+<li>Declarative inheritance: <code>&lt;polymer-element extends="..."&gt;</code></li>
+<li>Declarative two-way data-binding: <code>&lt;input id="input" value="{{foo}}"&gt;</code></li>
+<li>Declarative event handlers: <code>&lt;button on-click="{{handClick}}"&gt;</code></li>
+<li>Published properties: <code>xFoo.bar = 5 &lt;-&gt; &lt;x-foo bar="5"&gt;</code></li>
+<li>Property change watchers: <code>barChanged: function() {...}</code></li>
+<li>Automatic node finding: <code>this.$.input.value = 5</code></li>
+</ul>
+<div class="build centered bold topmargin blue">
+<span style="font-size:50px;">Be declarative. Write less code.</span>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Custom elements without Polymer :(</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre><code>&lt;template id="template"&gt;
+  &lt;style&gt;input { color: orange; }&lt;/style&gt;
+  &lt;input type="text"&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+var proto = Object.create(HTMLElement.prototype, {
+  createdCallback: {
+    value: function() {
+      var t = document.querySelector('#template');
+      this.createShadowRoot().appendChild(t.content.cloneNode(true));
+    }
+  }
+});
+
+var MyInput = document.register('my-input', {prototype: proto});
+&lt;/script&gt;
+</code></pre></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Custom elements with Polymer :)</h2>
+      <h3>declarative custom elements</h3>
+    </hgroup>
+    <article ><pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+</pre>
+
+<ol>
+<li>
+<p>Create an element definition</p>
+<p><pre class="prettyprint" data-lang="HTML">
+&lt;polymer-element <b>name="my-input"</b> <b>constructor="MyInput"</b> <b data-tooltip="Simple elements that don't call Polymer()">noscript</b>&gt;
+  &lt;!-- Note: Polymer creates Shadow DOM from the first &lt;template&gt;. --&gt;
+  <b>&lt;template&gt;
+    &lt;style&gt;input { color: orange; }&lt;/style&gt;
+    &lt;input type="text"&gt;
+  &lt;/template&gt;</b>
+&lt;/polymer-element&gt;
+</pre></p>
+</li>
+<li>
+<p>Instantiate - <strong>declare</strong> it, <strong>create DOM</strong>, or <strong>use <code>new</code></strong> in JS</p>
+<pre><code>&lt;my-input&gt;&lt;/my-input&gt;
+// var myInput = document.createElement('my-input');
+// var myInput = new MyInput();
+</code></pre>
+</li>
+</ol></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Default attributes</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+</pre>
+
+<p>User-defined attributes are included on each instance of the element:</p>
+<pre class="prettyprint" data-lang="HTML">
+&lt;polymer-element name="my-input" <b>customattr</b> <b>class="active"</b>>
+  &lt;template>...&lt;/template>
+&lt;/polymer-element>
+
+&lt;my-input>&lt;/my-input>
+</pre>
+
+<p>Instances include your attributes: </p>
+<pre class="prettyprint centered" style="font-size:25px">
+  &lt;my-input customattr class="active">&lt;/my-input>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide id="more-complex-elements"   data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Complex elements require more juice...</h2>
+      <h3>define an API</h3>
+    </hgroup>
+    <article ><pre data-code-cycle class="prettyprint" data-lang="HTML" style="font-size:25px;line-height: 1.4;">
+</pre>
+
+<p><textarea selected>
+<polymer-element name="my-input" noscript>
+  <template>
+    <style>input { color: orange; }</style>
+    <input type="text">
+  </template>
+</polymer-element>
+</textarea>
+<textarea>
+<polymer-element name="my-input">
+  <template>
+    <style>input { color: orange; }</style>
+    <input type="text">
+  </template>
+  <script>Polymer('my-input');</script>
+</polymer-element>
+</textarea>
+<textarea>
+<polymer-element name="my-input">
+  <template>
+    <style>input { color: orange; }</style>
+    <input type="text">
+  </template>
+  <script>
+    Polymer('my-input', {
+      type: 'text', 
+      color: 'orange', 
+      ready: function() {
+        ...
+      }
+    });
+  </script>
+</polymer-element>
+</textarea>
+<textarea>
+&lt;polymer-element name="my-input"&gt;
+  &lt;template&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+    &lt;input type="text"&gt;
+  &lt;/template&gt;
+  &lt;script src="path/to/elements/myinput.js"&gt;&lt;/script&gt;
+&lt;/polymer-element&gt;
+</textarea></p>
+<ul>
+<li>Properties/methods get added to <code>prototype</code></li>
+<li>Also can reference external scripts/stylesheets (e.g. CSP friendly)</li>
+</ul>
+<!-- <pre class="prettyprint" data-lang="HTML">
+&lt;polymer-element name="my-input" constructor="MyInput">
+  &lt;template>
+    <b>&lt;link rel="stylesheet" href="styles.css"></b>
+    &lt;input type="text">
+  &lt;/template>
+  <b>&lt;script src="path/to/elements/myinput.js">&lt;/script></b>
+&lt;/polymer-element>
+</pre> --></article>
+ 
+
+
+
+</slide>
+
+<slide id="published-properties"   data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Publishing properties & data-binding</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ol>
+<li>Users can initialization the property via an attribute</li>
+<li>Allows data-binding via the attribute</li>
+</ol>
+<pre data-code-cycle class="prettyprint" data-lang="HTML">
+</pre>
+
+<p><textarea selected>
+<polymer-element name="my-input">
+  <template>
+    <input type="text" style="color: orange;">
+  </template>
+  <script>
+    Polymer('my-input', {
+      type: 'text', 
+      color: 'orange'
+    });
+  </script>
+</polymer-element>
+</textarea>
+<textarea>
+<polymer-element name="my-input">
+  <template>
+    <input type="{{type}}" style="color: {{color}};">
+  </template>
+  <script>
+    Polymer('my-input', {
+      type: 'text', 
+      color: 'orange'
+    });
+  </script>
+</polymer-element>
+</textarea>
+<textarea>
+<polymer-element name="my-input" attributes="type color">
+  <template>
+    <input type="{{type}}" style="color: {{color}};">
+  </template>
+  <script>
+    Polymer('my-input', {
+      type: 'text', 
+      color: 'orange'
+    });
+  </script>
+</polymer-element>
+<my-input color="red"></my-input>
+</textarea>
+<textarea>
+<polymer-element name="my-input" attributes="type color">
+  <template>
+    <input type="{{type}}" style="color: {{color}};" value="{{val}}">
+    &lt;textarea value="{{val}}"&gt;&lt;/textarea&gt;
+  </template>
+  <script>
+    Polymer('my-input', {
+      type: 'text', 
+      color: 'orange'
+    });
+  </script>
+</polymer-element>
+<my-input color="red"></my-input>
+</textarea></p>
+<ul>
+<li>User overrides <code>color</code> but <code>type</code> remains its default ("text")</li>
+<li>Since <code>val</code> isn't published, can't use it as a bindable attribute.</li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Sugaring features in action</h2>
+      <h3>data binding / published properties</h3>
+    </hgroup>
+    <article class="smaller"><p>Using <code>&lt;polymer-ajax&gt;</code> in another element:</p>
+<pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+&lt;link rel="import" href="<span alt="bower install polymer-elements" data-tooltip="bower install polymer-elements">polymer-ajax.html</span>">
+</pre>
+
+<pre style="font-size:16px;" class="prettyprint" data-lang="html">
+&lt;polymer-element name="youtube-videos" attributes="query">
+  &lt;template>
+    &lt;polymer-ajax url="http://gdata.youtube.com/feeds/api/videos/" params="<b>{{params}}</b>"
+                  <b>handleAs="json"</b> <b>response="{{response}}"</b> <b>auto</b>>&lt;/polymer-ajax>
+    &lt;ul>
+      <b>&lt;template repeat="{{entry in response.feed.entry}}">
+        &lt;li>{{entry.title.$t}}&lt;/li>
+     &lt;/template></b>
+    &lt;/ul>
+  &lt;/template>
+  &lt;script>
+    Polymer('youtube-videos', {
+      ready: function() {
+        <b>this.params = {alt: 'json', q: this.query};</b>
+      }
+    });
+  &lt;/script>
+&lt;/polymer-element>
+
+&lt;youtube-videos query="cats">&lt;/youtube-videos>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Sugaring features in action</h2>
+      <h3>$ node finding / changed watchers / declarative event handlers</h3>
+    </hgroup>
+    <article class="smaller"><p>Using <code>&lt;polymer-file&gt;</code> in another element:</p>
+<pre class="corner prettyprint">
+&lt;script src="<span alt="bower install polymer" data-tooltip="bower install polymer">polymer.min.js</span>">&lt;/script>
+&lt;link rel="import" href="<span alt="bower install polymer-elements" data-tooltip="bower install polymer-elements">polymer-file.html</span>">
+</pre>
+
+<pre class="prettyprint" data-lang="html">
+&lt;polymer-element name="read-me" <b>on-click="{{onClick}}"</b>>
+  &lt;template>
+    &lt;polymer-file <b>id="file"</b> readas="arraybuffer" <b>result="{{result}}"</b>>&lt;/polymer-file>
+  &lt;/template>
+  &lt;script>
+    Polymer('read-me', {
+      <b>resultChanged: function() {
+       console.log(this.result);
+      }</b>,
+      <b>onClick: function(e, detail, sender) {
+       this.$.file.read();
+     }</b>
+    });
+  &lt;/script>
+&lt;/polymer-element>
+</pre>
+
+<pre class="prettyprint" data-lang="JS">
+var el = document.createElement('read-me');
+<b>el.blob = new Blob(['abc'], {type: 'text/plain'});</b>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Template bindings</h2>
+      <h3>brings special sauce to HTML <code>&lt;template></code></h3>
+    </hgroup>
+    <article ><p>Conditionals:</p>
+<pre><code>&lt;template if="{{ isActive }}"&gt;
+  Activates if isActive is truthy.
+&lt;/template&gt;
+
+&lt;template if="{{ isActive || alwaysShow }}"&gt;
+  Activates if isActive OR alwaysShow is truthy.
+&lt;/template&gt;
+</code></pre>
+<p>Iteration:</p>
+<pre><code>&lt;template repeat="{{ user in users }}"&gt;
+  &lt;template repeat="{{ file in user.files }}"&gt;
+    {{ user.name }} owners {{ file.name }}
+  &lt;/template&gt;
+&lt;/template&gt;
+</code></pre>
+<p><span class="source">Docs: <a href="http://www.polymer-project.org/platform/template.html">www.polymer-project.org/platform/template.html</a></span></p></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="core-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Expressions</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Expressions can go anywhere <code>{{}}</code> are used:</p>
+<pre><code>&lt;div&gt;Jill has {{ daughter.children.length + son.children.length }} grandchildren&lt;/div&gt;
+</code></pre>
+<p>Labeled statements:</p>
+<pre><code>&lt;div class="{{ active: user.selected; big: user.type == 'super' }}"&gt; 
+&lt;!-- &lt;div class="active big"&gt; --&gt;
+</code></pre>
+<p>Conditional attributes:</p>
+<pre><code>&lt;input type="checkbox" checked?="{{activate}}"&gt;
+</code></pre>
+<p><span class="source">Docs: <a href="http://www.polymer-project.org/docs/polymer/expressions.html">www.polymer-project.org/docs/polymer/expressions.html</a></span></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2>Polymer Sandbox</h2>
+
+<h3 style="margin-top:15px;"><a href="http://www.polymer-project.org/tools/sandbox/">polymer-project.org/tools/sandbox/</a></h3></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground segue platform"   >
+  
+    <aside class="gdbar"><img src="images/logos/chrome_logo.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Polymer <label class="platform">platform <i class="icon-cogs platform"></i></label></h2>
+      <h3></h3>
+    </hgroup>
+    
+    <article ><div class="overlay top"></div>
+
+<div class="overlay bottom"></div></article>
+    
+  
+
+  <footer><i class="icon-cogs platform"></i></footer>
+
+
+
+</slide>
+
+<slide  class="platform nobackdrop nobackground"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter quote"><blockquote>Utilize the <b>modern</b> web platform.</blockquote></article>
+ 
+
+  <footer><i class="icon-cogs platform"></i></footer>
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Lifecycle callbacks - Custom Elements</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>First-class support for the <a href="http://www.polymer-project.org/polymer.html#lifecyclemethods">lifecycle methods</a>, but shorter names!</p>
+<pre class="prettyprint" data-lang="HTML">
+&lt;polymer-element name="my-input">
+  &lt;template>...&lt;/template>
+  &lt;script>
+    <b>Polymer('my-input', {
+      ready: function() { ... },
+      enteredView: function() { ... },
+      leftView: function() { ... },
+      attributeChanged: function(attrName, oldVal, newVal) { ... }
+    });</b>
+  &lt;/script>
+&lt;/polymer-element>
+</pre>
+
+<p>Use cases:</p>
+<ul>
+<li>perform setup/teardown work</li>
+<li>notification when element is inserted/removed from page</li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+<slide id="insertion-point-api"   data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Insertion points - Shadow DOM</h2>
+      <h3>define an internal structure</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="my-tabs.html">
+&lt;polymer-element name="my-tabs" noscript>
+  &lt;template>
+    &lt;style>...&lt;/style>
+    &lt;header>
+      <b>&lt;content select="h2">&lt;/content></b>
+    &lt;/header>
+    <b>&lt;content select="section">&lt;/content></b>
+  &lt;/template>
+&lt;/polymer-element>
+</pre>
+
+<pre class="prettyprint" data-lang="html" data-run-demo="http://ebidel.github.io/polymer-experiments/polymer-and-angular/together/">
+&lt;link rel="import" href="my-tabs.html">
+<b>&lt;my-tabs></b>
+  &lt;h2>Title&lt;/h2>
+  &lt;section>content&lt;/section>
+  &lt;h2>Title 2&lt;/h2>
+  ...
+<b>&lt;/my-tabs></b>
+</pre>
+
+<div class="build" style="position: absolute;bottom:20px;right:160px;">
+<img src="images/screenshots/tabs.png" style="height: 300px;
+width: auto;
+box-shadow: 0 0 5px #999;">
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Scoped styling - Shadow DOM</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>First-class support for styling features (scoped styles, <code>applyAuthorStyles</code>, etc.)</p>
+<pre class="prettyprint" data-lang="HTML">
+&lt;polymer-element name="my-element">
+  &lt;template>
+    &lt;style>...&lt;/style> <!-- Styles are scoped to the element -->
+  &lt;/template>
+  &lt;script>
+    Polymer('my-element', {
+      <b>applyAuthorStyles: true,</b>
+      <b>resetStyleInheritance: false</b>
+    });
+  &lt;/script>
+&lt;/polymer-element>
+</pre>
+
+<ul>
+<li>Polymer attempts to polyfill most SD styling features</li>
+</ul>
+<p><span class="source">Article: <a href="http://www.polymer-project.org/articles/styling-elements.html">www.polymer-project.org/articles/styling-elements.html</a></span></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground yum"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein">Custom Elements</h2></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/custom/index.html" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+          <a href="http://www.html5rocks.com/en/tutorials/webcomponents/customelements/" target="_blank" class="h5r" title="HTML5Rocks article"></a>
+        
+      </span>
+      <h2>Register new elements in HTML</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><aside class="note">
+  <section>
+    <ul>
+      <li>By default, custom elements inherit from <code>HTMLElement</code></li>
+    </ul>
+  </section>
+</aside>
+
+<pre class="prettyprint centered" data-lang="JS" style="font-size:28px;">
+document.register('x-foo');
+</pre>
+
+<ul>
+<li>1st arg: tag name must contain a "="</li>
+<li>2nd arg: <em>optional</em> object containing a <code>prototype</code></li>
+</ul>
+<pre class="prettyprint" data-lang="JS">
+// Equivalent to document.register('x-foo').
+var XFoo = document.register('x-foo', {
+  prototype: Object.create(HTMLElement.prototype)
+});
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Instantiate a custom element</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Once registered, use it like any standard DOM element:</p>
+<div class="build">
+<div>
+  <p><b>Declare</b> it</p>
+<pre class="prettyprint" data-lang="HTML">
+&lt;x-foo>&lt;/x-foo>
+</pre>
+</div>
+<div>
+  <p><b>Create DOM</b> in JS</p>
+<pre class="prettyprint" data-lang="JS">
+var xFoo = document.createElement('x-foo');
+xFoo.addEventListener('click', function(e) {
+  alert('Thanks!');
+});
+</pre>
+</div>
+<div>
+<p><b>Use <code>new</code></b></p>
+<pre class="prettyprint" data-lang="JS">
+var xFoo = <b>new XFoo()</b>;
+document.body.appendChild(xFoo);
+</pre>
+</div>
+
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Define an API</h2>
+      <h3>add properties and methods</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="JS">
+var proto = Object.create(HTMLElement.prototype);
+
+<b>Object.defineProperty(proto, 'name', {value: 'Eric'});</b>
+
+<b>proto.hello = function() {
+  alert('Hiiiiii ' + this.name);
+};</b>
+
+var XFoo = document.register('x-foo', {prototype: proto});
+</pre>
+
+<pre class="prettyprint" data-lang="JS">
+var el = document.createElement('x-foo');
+// el.name == 'Eric'
+// el.hello();
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Lifecycle callbacks</h2>
+      <h3>hook into an element's voyage</h3>
+    </hgroup>
+    <article ><p>Four special methods (optional):</p>
+<pre class="prettyprint" data-lang="JS">
+var proto = Object.create(HTMLElement.prototype);
+
+<b>proto.createdCallback = function() {
+  this.textContent = "I'm an x-foo!";
+};</b>
+proto.enteredViewCallback = function() { ... };
+proto.leftViewCallback = function() { ... };
+proto.attributeChangedCallback = function(attrName, oldVal, newVal) { ... };
+</pre>
+
+<p>Use cases:</p>
+<ul class="build">
+<li>perform setup/teardown work</li>
+<li>notified when element is inserted/removed from document</li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Demo</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><!-- <pre data-url="demos/components/x-foo.html" class="prettyprint" data-lang="JS">
+</pre> -->
+
+<pre class="prettyprint" data-lang="HTML">
+&lt;x-foo>&lt;/x-foo>
+
+&lt;script>
+var proto = Object.create(HTMLElement.prototype);
+<b>proto.hello = function() {
+  alert('Hiiii ' + this.name);
+};</b>
+...
+document.register('x-foo', {prototype: proto});
+
+document.querySelector('x-foo').addEventListener('click', function(e) {
+  <b>e.target.hello();</b>
+});
+&lt;/script>
+</pre>
+
+<p><link rel="import" href="demos/components/x-foo.html">
+<div class="component-demo">
+  <x-foo></x-foo>
+</div></p></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Extending native HTML elements</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Inherit from the <code>prototype</code> of the element:</p>
+<pre class="prettyprint" data-lang="JS">
+var MegaButtonProto = Object.create(<b>HTMLButtonElement.prototype</b>);
+...
+var MegaButton = document.<a data-tooltip-property="register" data-tooltip-support='["webkit"]' data-tooltip-js>register</a>('mega-button', {prototype: MegaButtonProto});
+</pre>
+
+<div class="build">
+<div>
+<p>An instance is called a <span class="blue">type extension custom element</span></p>
+<pre class="prettyprint" data-lang="JS">
+// &lt;button is="mega-button">
+var megaButton = <b>document.createElement('button', 'mega-button')</b>;
+
+// megaButton instanceof MegaButton === true
+</pre>
+</div>
+
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="checkbox"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Building blocks of Web Components</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><span class="auto-fadein"><i class="icon icon-check-sign good"></i></span> Custom Elements</p>
+<p><span class="spacer">HTML Templates</span></p>
+<p><span class="spacer">Shadow DOM</span></p>
+<p><span class="spacer">HTML Imports</span></p></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/templates/index.html" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+      </span>
+      <h2>HTML templates</h2>
+      <h3>DOM-based templating</h3>
+    </hgroup>
+    <article ><p>Chunks of inert markup for later use:</p>
+<pre class="prettyprint" data-lang="html">
+<b>&lt;template id="mytemplate"></b>
+  &lt;img src=""> &lt;!-- can be dynamically populate at runtime -->
+  &lt;div class="comment">&lt;/div>
+<b>&lt;/template></b>
+</pre>
+
+<ol class="build">
+<li><i class="icon icon-thumbs-up good"></i> Working directly w/ DOM</li>
+<li><i class="icon icon-thumbs-up good"></i> Parsed; not rendered<ul class="build">
+<li><code>&lt;script&gt;</code> not run, stylesheets/images not loaded, media not played</li>
+</ul>
+</li>
+<li><i class="icon icon-thumbs-up good"></i> Hidden from document. Cannot traverse into its DOM<ul class="build">
+<li>e.g. <code>document.querySelector('#mytemplate .comment') == null</code></li>
+</ul>
+</li>
+</ol></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Using template content</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Two ways to access the guts:</p>
+<ol>
+<li><code>template.content</code> (a document fragment)</li>
+<li><code>template.innerHTML</code></li>
+</ol>
+<p class="centered">Clone <code>.content</code> &rarr; stamp it out &rarr; goes "live"</p>
+
+<!-- <pre class="prettyprint" data-lang="html">
+&lt;template id="mytemplate">
+  &lt;img src="">
+  &lt;div class="comment">&lt;/div>
+&lt;/template>
+&lt;script>
+  var t = document.querySelector('#mytemplate');
+  <b>t.content.querySelector('img').src = 'logo.png';</b> // Populate the src at runtime.
+  document.body.appendChild(<b>t.content.cloneNode(true)</b>);
+&lt;/script>
+</pre> --></article>
+ 
+
+
+
+</slide>
+
+<slide id="template-demo"    hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Example</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="code-example html"><pre class="prettyprint" data-lang="html" data-run-demo>
+<b>&lt;template></b>
+  &lt;span>Instance: &lt;b>0&lt;/b>&lt;/span>
+  &lt;script>alert('kthxbai!')&lt;/script>
+<b>&lt;/template></b>
+&lt;button onlclick="useIt()">Stamp&lt;/button>
+&lt;script>
+  function useIt() {
+    <b>var content = document.querySelector('template').content;</b> // 1. Get guts.
+
+    var b = <b>content.querySelector('b')</b>;
+    b.textContent = parseInt(b.textContent) + 1; // 2. Modify template's DOM at runtime.
+
+    document.body.appendChild(<b>content.cloneNode(true)</b>); // 3. Clone to stamp it out.
+  }
+&lt;/script>
+</pre>
+
+<p><template>
+  <div>Instance: <b>0</b></div>
+  <script>
+  // Don't want browsers that don't support template to run this.
+  // Also, FF seems to run <script> even though it's supposed to be inert until use.
+  if ('HTMLTemplateElement' in window) {
+    if (!navigator.userAgent.match('Firefox')) {
+      alert('kthxbai!');
+    }
+  }
+  </script>
+</template>
+<output></output></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground yum"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><p><img src="images/gifs/sprinklecheese.gif" class="rounded reflect">
+<h2 class="auto-fadein" style="font-size:50px">Sprinkle in some <code>&lt;template&gt;</code></h2></p></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Using <code>&lt;template></code> in an element</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Wrapping markup in <code>&lt;template&gt;</code> &rarr; makes inert until instance is created:</p>
+<pre class="prettyprint" data-lang="html">
+&lt;element name="x-foo">
+  <b>&lt;template></b>
+    &lt;link rel="stylesheet" href="element.css">
+    &lt;style scoped>
+      div { color: red; }
+    &lt;/style>
+    &lt;img src="profile.png">
+    &lt;div class="comment">&lt;/div>
+  <b>&lt;/template></b>
+  &lt;script>...&lt;/script>
+&lt;/element>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground browser-support"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>HTML Templates</h2>
+      <h3>browser support</h3>
+    </hgroup>
+    <article class="flexbox vcenter"><div class="browser-support-row">
+  <div><img src="images/logos/browsers/safari_logo.png"></div>
+  <div class="mobile supported"><img src="images/logos/browsers/ff_nightly.png"></div>
+  <div class="mobile supported"><img src="images/logos/chrome_logo.png"></div>
+  <div class="mobile"><img src="images/logos/browsers/opera_logo.png"></div>
+  <div><img src="images/logos/browsers/ie10_logo.png"></div>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="checkbox"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Building blocks of Web Components</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><i class="icon icon-check-sign good"></i> Custom Elements</p>
+<p><span class="auto-fadein"><i class="icon icon-check-sign good"></i></span> HTML Templates</p>
+<p><span class="spacer">Shadow DOM</span></p>
+<p><span class="spacer">HTML Imports</span></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground yum shadow"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein"><img src="images/logos/incognito.jpg" height="90" width="90" class="rounded" alt="Shadow DOM Dude" title="Shadow DOM Dude"> DOM</h2></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Hide the implementation details</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p class="build centered" style="zoom:2">
+<input type="date" /> <input type="time">
+</p>
+
+<p class="build centered" style="font-size:35px;margin-top:-20px">
+  <code>&lt;input type="date"&gt;</code> <code>&lt;input type="time"&gt;</code>
+</p>
+
+<ul class="build">
+<li>Other examples: <code>&lt;video&gt;</code> <code>&lt;textarea&gt;</code> <code>&lt;details&gt;</code></li>
+</ul>
+<p class="topmargin centered build red" style="font-size:35px;font-style:italic;"><b>Browser vendors have been holding out on us!</b></p></article>
+ 
+
+
+
+</slide>
+
+<slide id="shadow-dom-creating"    hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#extensions-to-element" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+          <a href="http://www.html5rocks.com/tutorials/webcomponents/shadowdom/" target="_blank" class="h5r" title="HTML5Rocks article"></a>
+        
+      </span>
+      <h2>Using Shadow DOM</h2>
+      <h3>encapsulate the guts of an element</h3>
+    </hgroup>
+    <article ><aside class="note">
+  <section>
+    <img src="images/shadow/shadow-rendering.svg" style="width: 100%;">
+  </section>
+</aside>
+
+<div class="cols">
+<pre class="prettyprint">
+&lt;my-element>&lt;/my-element>
+</pre>
+
+<pre class="prettyprint" data-lang="Composed tree">
+&lt;my-element>
+  <span style="opacity:0.5">#document-fragment</span>
+    &lt;h2>Shadow DOMing!&lt;/h2>
+    &lt;div>awesome content&lt;/div>
+&lt;/my-element>
+</pre>
+</div>
+
+<pre class="prettyprint" data-lang="js" style="clear:both">
+var host = document.querySelector('my-element');
+<b>var shadow = host.<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();</b>
+<b>shadow.innerHTML = '&lt;h2>Shadow DOMing!&lt;/h2>' +
+                   '&lt;div>awesome content&lt;/div>';</b>
+</pre>
+
+<div class="host"></div>
+
+<script>
+(function() {
+var shadow = document.querySelector('#shadow-dom-creating .host').createShadowRoot();
+shadow.innerHTML = '<h2>Shadow DOMing!</h2>' +
+                   '<div>awesome content</div>';
+})();
+</script></article>
+ 
+
+
+
+</slide>
+
+<slide id="shadow-style-control"    hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+          <a href="http://www.html5rocks.com/tutorials/webcomponents/shadowdom-201/#toc-style-scoped" target="_blank" class="h5r" title="HTML5Rocks article"></a>
+        
+      </span>
+      <h2>Style encapsulation for free</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><aside class="note">
+  <section>
+    <img src="images/shadow/shadow-rendering.svg" style="width: 100%;">
+  </section>
+</aside>
+
+<ul>
+<li>Styles defined in Shadow DOM are scoped by default</li>
+<li>Page styles don't bleed across the shadow boundary (unless we let them)</li>
+</ul>
+<pre class="prettyprint" data-lang="js">
+var shadow = document.querySelector('my-element').<a data-tooltip-property="createShadowRoot" data-tooltip-support='["webkit"]' data-tooltip-js>createShadowRoot</a>();
+shadow.innerHTML = '<b>&lt;style>h2 { color: red; }&lt;/style></b>' + 
+                   '&lt;h2>Shadow DOMing!&lt;/h2>' + 
+                   '&lt;div>awesome content&lt;/div>';
+<b data-action-resetstyleinheritance title="click me">// shadow.resetStyleInheritance = true;</b> // click me
+<b data-action-applyauthorstyles title="click me">// shadow.applyAuthorStyles = true;</b> // click me
+</pre>
+
+<div class="host" style="margin-bottom:1em;">
+  <h1>My Title</h1>
+  <h2>My Subtitle</h2>
+  <div>...other content...</div>
+</div>
+
+<p><span class="source">Article on styling: <a href="http://www.polymer-project.org/articles/styling-elements.html">www.polymer-project.org/articles/styling-elements.html</a></span></p>
+<script>
+(function() {
+var shadow = document.querySelector('#shadow-style-control .host').createShadowRoot();
+// See crbug.com/162517 - !important needed for some reason.
+shadow.innerHTML = '<style>h2 { color: red; }</style>' + 
+                   '<h2>Shadow DOMing!</h2>' + 
+                   '<div>awesome content</div>';
+
+var resetStyles = document.querySelector('#shadow-style-control [data-action-resetstyleinheritance]');
+resetStyles.addEventListener('click', function(e) {
+  shadow.resetStyleInheritance = !shadow.resetStyleInheritance;
+  this.textContent = 'shadow.resetStyleInheritance = ' + shadow.resetStyleInheritance.toString() + ';';
+});
+var applyAuthorStyles = document.querySelector('#shadow-style-control [data-action-applyauthorstyles]');
+applyAuthorStyles.addEventListener('click', function(e) {
+  shadow.applyAuthorStyles = !shadow.applyAuthorStyles;
+  this.textContent = 'shadow.applyAuthorStyles = ' + shadow.applyAuthorStyles.toString() + ';';
+});
+
+})();
+</script></article>
+ 
+
+
+
+</slide>
+
+<slide id="shadow-host-at"    hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="http://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/shadow/index.html#host-at-rule" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+          <a href="http://www.html5rocks.com/tutorials/webcomponents/shadowdom-201/#toc-style-host" target="_blank" class="h5r" title="HTML5Rocks article"></a>
+        
+      </span>
+      <h2>Styling the element</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Rules in an <code>@host</code> block target your element.</li>
+<li>Allows reacting to different states:</li>
+</ul>
+<pre class="prettyprint" data-lang="Shadow DOM CSS">
+&lt;style>
+<b>@host</b> {
+  :scope { opacity: 0.2; <a data-tooltip-property="transition" data-tooltip-support='["webkit", "moz", "ms", "o", "unprefixed"]'>transition</a>: opacity 400ms ease-in-out; }
+  :scope:hover { opacity: 1; }
+}
+&lt;/style>
+</pre>
+
+<div class="host">
+  <h1>My Title</h1>
+  <h2>My Subtitle</h2>
+  <div>...other content...</div>
+</div>
+
+<script>
+(function() {
+var shadow = document.querySelector('#shadow-host-at .host').createShadowRoot();
+shadow.innerHTML = '<style>h2 { color: red;}' +
+'@host {\
+  :scope {\
+    opacity: 0.2;\
+    -webkit-transition: opacity 400ms ease-in-out;\
+  }\
+  *:hover {\
+    opacity: 1;\
+  }\
+}</style>' + 
+'<h2>Yo, you got replaced!</h2>' + 
+'<div>by my awesome content</div>';
+
+})();
+</script></article>
+ 
+
+
+
+</slide>
+
+<slide id="shadow-dom-visualizer"    hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Tool: Shadow DOM Visualizer</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><iframe data-src="http://html5-demos.appspot.com/static/shadowdom-visualizer/index.html#body" style="border:none;height:460px;background: rgba(0, 0, 0, 0);"></iframe>
+
+<p class="centered">
+<a href="http://html5-demos.appspot.com/shadowdom-visualizer">html5-demos.com/shadowdom-visualizer</a>
+</p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="checkbox"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Building blocks of Web Components</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><span><i class="icon icon-check-sign good"></i></span> Custom Elements</p>
+<p><span><i class="icon icon-check-sign good"></i></span> HTML Templates</p>
+<p><span class="auto-fadein"><i class="icon icon-check-sign good"></i></span> Shadow DOM</p>
+<p><span class="spacer">HTML Imports</span></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground browser-support"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Shadow DOM</h2>
+      <h3>browser support</h3>
+    </hgroup>
+    <article class="flexbox vcenter"><div class="browser-support-row">
+  <div><img src="images/logos/browsers/safari_logo.png"></div>
+  <div><img src="images/logos/browsers/ff_logo.png"></div>
+  <div class="mobile supported"><img src="images/logos/chrome_logo.png"></div>
+  <div class="mobile"><img src="images/logos/browsers/opera_logo.png"></div>
+  <div><img src="images/logos/browsers/ie10_logo.png"></div>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground browser-support"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Custom Elements</h2>
+      <h3>browser support</h3>
+    </hgroup>
+    <article class="flexbox vcenter"><aside class="note">
+  <section>
+    <p>Support:</p>
+    <p>Chrome 27 contains <code>document.register()</code> - <b>Enable Experimental WebKit features</b> in <code>about:flags</code>.</p>
+  </section>
+</aside>
+
+<div class="browser-support-row">
+  <div><img src="images/logos/browsers/safari_logo.png"></div>
+  <div class="supported partial"><img src="images/logos/browsers/ff_nightly.png"></div>
+  <div class="supported partial"><img src="images/logos/chrome_logo.png"></div>
+  <div><img src="images/logos/browsers/opera_logo.png"></div>
+  <div><img src="images/logos/browsers/ie10_logo.png"></div>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered animatedfull"><p><img src="images/gifs/slowmowaterballoon.gif" class="rounded reflect"></p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground yum"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered"><h2 class="auto-fadein">HTML Imports</h2></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+          <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html" target="_blank" class="spec" title="Spec link"></a>
+        
+        
+      </span>
+      <h2>HTML Imports</h2>
+      <h3>Package. Distribute. Share. Reuse.</h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="HTML">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    <b>&lt;link rel=&quot;import&quot; href=&quot;x-foo.html&quot;&gt;</b>
+  &lt;/head&gt;
+  &lt;body&gt;
+    <b>&lt;x-foo&gt;&lt;/x-foo&gt;</b> &lt;!-- Element definition is in x-foo.html --&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Deliver bundle of CSS/HTML/JS - HTML Imports</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Reuse others' components:</p>
+<pre class="prettyprint" data-lang="awesome-menu.html">
+<b>&lt;link rel="import" href="x-toolbar.html">
+&lt;link rel="import" href="menu-item.html"></b>
+
+&lt;polymer-element name="awesome-menu">
+  &lt;template>
+    <b>&lt;x-toolbar responsive>
+      &lt;menu-item src="images/do.png" selected>Do&lt;/menu-item>
+      &lt;menu-item src="images/re.png">Re&lt;/menu-item>
+      &lt;menu-item src="images/mi.png">Mi&lt;/menu-item>
+    &lt;x-toolbar></b>
+  &lt;/template>
+  ...
+&lt;/polymer-element>
+</pre>
+
+<pre class="prettyprint" data-lang="app.html">
+&lt;link rel="import" href="awesome-menu.html">
+&lt;awesome-menu>&lt;/awesome-menu>
+</pre></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground browser-support"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>HTML Imports</h2>
+      <h3>browser support</h3>
+    </hgroup>
+    <article class="flexbox vcenter"><div class="browser-support-row">
+  <div><img src="images/logos/browsers/safari_logo.png"></div>
+  <div><img src="images/logos/browsers/ff_logo.png"></div>
+  <div><img src="images/logos/chrome_logo.png"></div>
+  <div><img src="images/logos/browsers/opera_logo.png"></div>
+  <div><img src="images/logos/browsers/ie10_logo.png"></div>
+</div></article>
+ 
+
+
+
+</slide>
+
+<slide  class="checkbox"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Building blocks of Web Components</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><i class="icon icon-check-sign good"></i> Custom Elements</p>
+<p><i class="icon icon-check-sign good"></i> HTML Templates</p>
+<p><i class="icon icon-check-sign good"></i> Shadow DOM</p>
+<p><span class="auto-fadein"><i class="icon icon-check-sign good"></i></span> HTML Imports</p></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Architecture stack</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered animatedfull"><p><img src="images/polymer/architecture-diagram.png" style="height:600px"></p></article>
+ 
+
+
+
+</slide>
+
+<slide id="polymer-site" class="nobackdrop nobackground fill highlight"  data-body-class="site" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>polymer-project.org</h2>
+      <h3></h3>
+    </hgroup>
+    <article ></article>
+ 
+
+
+
+</slide>
+
+<slide    data-body-class="platform-bg" >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Learn more about the primitives</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vleft"><h3 style="margin-top:-100px;"><a href="http://ebidel.github.io/webcomponents/">ebidel.github.io/webcomponents/</a></h3>
+
+<h3 style="margin-top:2em;"><a href="http://webcomponentsshift.com">webcomponentsshift.com</a></h3>
+
+<h3 style="margin-top:2em;"><a href="http://www.html5rocks.com/en/search?q=web+components">html5rocks.com/en/search?q=web+components</a></h3></article>
+ 
+
+
+
+</slide>
+
+<slide     >
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Why you should be excited</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>Developer <span class="red"><b>productivity</b></span><ul class="build">
+<li>It's <b>DOM</b>. It's <b>JS</b>. It's <b>CSS</b> &rarr; no new APIs to learn!</li>
+<li>say what you mean &rarr; readability</li>
+</ul>
+</li>
+<li><b><span class="green">Re-usability</span></b> at last<ul class="build">
+<li>don't reinvent the wheel</li>
+<li>easy interop with other frameworks</li>
+</ul>
+</li>
+<li>Foster good software engineering <span class="blue"><b>paradigms</b></span> on web (OOP)</li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+<slide  class="nobackdrop nobackground"   hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2></h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter centered animatedfull"><p><img src="images/gifs/awwwyeah.gif" class="rounded reflect"></p></article>
+ 
+
+
+
+</slide>
+
+<slide     hidden>
+  
+    <hgroup>
+      <span>
+        
+        
+        
+      </span>
+      <h2>Try it today!</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Use Chrome Canary, turn on:</li>
+<li><strong>Enable Experimental Web Platform features</strong> in <code>about:flags</code></li>
+<li><strong>Enable experimental JavaScript</strong> in <code>about:flags</code></li>
+<li>Enable <strong>Show Shadow DOM</strong> in DevTools</li>
+</ul>
+<hr />
+<ul>
+<li>Watch <a href="https://code.google.com/p/chromium/issues/list?q=label:Cr-Blink-WebComponents">Cr-Blink-WebComponents</a> bug hotlist</li>
+<li>Blink's implementation of the specs: <a href="http://www.chromium.org/blink/web-components">chromium.org/blink/web-components</a></li>
+</ul></article>
+ 
+
+
+
+</slide>
+
+
+<slide class="thank-you-slide segue nobackground">
+  <aside class="gdbar right"><img src="images/logos/chrome_logo.png"></aside>
+  <article class="flexbox vleft auto-fadein">
+    <h2>Thank You!</h2>
+  </article>
+  <p class="auto-fadein" data-config-contact></p>
+</slide>
+
+
+<!-- <slide id="finito" class="segue nobackground">
+  <article class="flexbox vcenter auto-fadein">
+    <h2>Finito.</h2>
+  </article>
+</slide> -->
+
+<!-- <slide class="logoslide dark nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo_white.png"></span>
+  </article>
+</slide> -->
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+</main>
+
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
