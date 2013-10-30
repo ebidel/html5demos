@@ -152,7 +152,7 @@ content_class: flexbox vcenter centered
 class: large
 content_class: flexbox vcenter centered
 
-<h2 class="auto-fadein">Need better building blocks...</h2>
+<h2 class="auto-fadein">Need better tools...</h2>
 
 ---
 
