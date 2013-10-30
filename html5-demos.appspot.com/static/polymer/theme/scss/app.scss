@@ -281,7 +281,7 @@ slides > slide {
       height: 35px;
     }
 
-    .spec, .bug, .radar, .h5r {
+    .spec, .bug, .radar, .h5r, .polymer_link {
       width: 30px;
       height: 30px;
       opacity: 0.2;
@@ -309,7 +309,12 @@ slides > slide {
       display: inline-block;
       opacity: 0.6;
     }
-    .radar, .bug:hover, .spec:hover, .h5r:hover {
+    .polymer_link {
+      display: inline-block;
+      background-image: url('../../images/polymer/polymer-p.png');
+      opacity: 0.6;
+    }
+    .radar, .bug:hover, .spec:hover, .h5r:hover, .polymer_link:hover {
       opacity: 1;
     }
   }

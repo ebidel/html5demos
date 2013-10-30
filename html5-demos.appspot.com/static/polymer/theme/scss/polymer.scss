@@ -128,9 +128,42 @@ body {
   }
 }
 
+slide.current {
+  pre[data-code-cycle]::before {
+    opacity: 1;
+  }
+}
+
 pre {
   &[data-code-cycle] {
     cursor: pointer;
+
+    // &:hover {
+    //   &::before {
+    //     opacity: 1;
+    //   }
+    // }
+
+    &::before {
+      content: 'click to cycle';
+      color: $gray-3;
+      background: url(../../images/icons/arrow_curve_blue.svg) no-repeat 50% 50%;
+      position: absolute;
+      right: 75px;
+      bottom: -20px;
+      background-size: contain;
+      height: 50px;
+      width: 50px;
+      font-size: 20px;
+      padding-left: 60px;
+      font-family: 'Open Sans', Arial, sans-serif;
+      letter-spacing: initial;
+      letter-spacing: -moz-initial;
+      @include transition(opacity 300ms ease-in 500ms);
+      opacity: 0;
+      @include user-select(none);
+    }
+
   }
 
   &.corner {
@@ -157,6 +190,23 @@ pre {
       opacity: 0.5;
     }
   }
+}
+
+label.spec {
+  background-image: none !important;
+  font-size: 60%;
+  display: initial !important;
+  vertical-align: top;
+  margin-left: 25px;
+  opacity: 1 !important;
+  @include transition(none !important);
+  // background: $polymer-platform-color;
+  // padding: 3px 10px;
+  // border-radius: 5px;
+  // color: white;
+  color: $gray-2;
+  letter-spacing: initial;
+  // font-weight: initial;
 }
 
 .architecture-diagram {
@@ -348,6 +398,26 @@ slides > slide {
 }
 
 // Sample slides
+
+#thumbsup {
+  h2 {
+    font-size: 400px;
+    @include filter(drop-shadow(5px 5px 5px $gray-2));
+    @include transform(rotateX(0));
+    -webkit-transform-origin: 50% 50%;
+    -moz-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    @include transition(all 600ms cubic-bezier(.17,.67,0,1.35));
+    color: $brand-green;
+    opacity: 1.0 !important;
+
+    &.to-build {
+      @include transform(rotateX(180deg));
+      color: $brand-red;
+    }
+  }
+  
+}
 
 .component-demo {
   overflow: auto;

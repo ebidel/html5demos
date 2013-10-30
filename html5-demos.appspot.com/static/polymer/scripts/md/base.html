@@ -89,6 +89,9 @@ https://code.google.com/p/io-2012-slides
         {% if slide.h5r_link %}
           <a href="{{- slide.h5r_link -}}" target="_blank" class="h5r" title="HTML5Rocks article"></a>
         {% endif %}
+        {% if slide.polymer_link %}
+          <a href="{{- slide.polymer_link -}}" target="_blank" class="polymer_link" title="Polymer docs link"></a>
+        {% endif %}
       </span>
       <h2>{{- slide.title -}}</h2>
       <h3>{{- slide.subtitle -}}</h3>
@@ -97,15 +100,6 @@ https://code.google.com/p/io-2012-slides
     {{- slide.content -}}
     </article>
  {% endif %}
-{% if 'platform' in slide.class %}
-  <footer><i class="icon-cogs platform"></i></footer>
-{% endif %}
-{% if 'elements' in slide.class %}
-  <footer><i class="icon-puzzle-piece elements"></i></footer>
-{% endif %}
-{% if 'core' in slide.class %}
-  <footer><i class="icon-beaker core"></i></footer>
-{% endif %}
 </slide>
 {% endfor %}
 
