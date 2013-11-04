@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-Copyright 2012 Eric Bidelman
+Copyright 2013 Eric Bidelman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -53,6 +53,10 @@ body {
   -o-align-items: center;
   -o-justify-content: center;
   -o-flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 details {
   position: absolute;
@@ -89,6 +93,7 @@ code {
 }
 section {
   display: -webkit-flex;
+  display: flex;
 }
 </style>
 </head>
@@ -115,17 +120,15 @@ section {
 </section>
 
 <pre><code>
-window.MediaSource = window.MediaSource || window.WebKitMediaSource;
-
 var ms = new MediaSource();
 
 var video = document.querySelector('video');
 video.src = window.URL.createObjectURL(ms);
 
-ms.addEventListener('webkitsourceopen', function(e) {
+ms.addEventListener('sourceopen', function(e) {
   ...
   var sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
-  sourceBuffer.append(oneVideoWebMChunk);
+  sourceBuffer.appendBuffer(oneVideoWebMChunk);
   ....
 }, false);
 </code></pre>
@@ -146,7 +149,7 @@ document.querySelector('[data-num-chunks]').textContent = NUM_CHUNKS;
 
 video.src = window.URL.createObjectURL(mediaSource);
 
-mediaSource.addEventListener('webkitsourceopen', function(e) {
+function callback(e) {
   var sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
 
   logger.log('mediaSource readyState: ' + this.readyState);
@@ -168,7 +171,7 @@ mediaSource.addEventListener('webkitsourceopen', function(e) {
       // so we need to read + append the next chunk after the previous reader
       // is done (onload is fired).
       reader.onload = function(e) {
-        sourceBuffer.append(new Uint8Array(e.target.result));
+        sourceBuffer.appendBuffer(new Uint8Array(e.target.result));
         logger.log('appending chunk:' + i);
         if (i == NUM_CHUNKS - 1) {
           mediaSource.endOfStream();
@@ -186,8 +189,10 @@ mediaSource.addEventListener('webkitsourceopen', function(e) {
       reader.readAsArrayBuffer(chunk);
     })(i);  // Start the recursive call by self calling.
   });
+}
 
-}, false);
+mediaSource.addEventListener('sourceopen', callback, false);
+mediaSource.addEventListener('webkitsourceopen', callback, false);
 
 mediaSource.addEventListener('webkitsourceended', function(e) {
   logger.log('mediaSource readyState: ' + this.readyState);
