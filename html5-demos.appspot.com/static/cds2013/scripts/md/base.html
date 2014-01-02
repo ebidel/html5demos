@@ -1,0 +1,157 @@
+<!--
+Copyright Eric Bidelman <ebidel@gmail.com> 2013
+
+Adapted from Google IO 2012 HTML5 Slide Template
+https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Polymer!</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/app.css">
+  <link rel="stylesheet" media="all" href="theme/css/polymer.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+
+  <script src="js/bower_components/polymer/polymer.min.js"></script>
+  <script async>Polymer.veiledElements = [];</script>
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body>
+
+<div class="sidebar left core core-bg"></div>
+<div class="sidebar right core core-bg"></div>
+
+<div class="sidebar right elements elements-bg"></div>
+<div class="sidebar left elements elements-bg"></div>
+
+<div class="sidebar left platform platform-bg"></div>
+<div class="sidebar right platform platform-bg"></div>
+
+
+<main role="main"> 
+
+<slides class="layout-widescreen">
+
+<!-- <slide class="logoslide nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo.png"></span>
+  </article>
+</slide> -->
+
+<!-- <slide id="first-slide" class="nobackground"></slide>
+ -->
+
+<slide id="title-slide" class="nobackdrop nobackground do-transition">
+  <!-- <aside class="gdbar"><img src="images/logos/webcomponents.png"></aside> -->
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <article class="auto-fadein flexbox vcenter">
+    <hgroup>
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    </hgroup>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </article>
+  <video data-src="videos/universe.webm" class="fullviewport"></video>
+  <audio data-src="audio/Stellardrone-Introspace.mp3" loop></audio>
+</slide>
+
+
+{% for slide in slides %}
+<slide {% if slide.id %}id="{{- slide.id -}}"{% endif %} {% if slide.class %}class="{{- slide.class -}}"{% endif %} {% if slide.image %}style="background-image: url({{- slide.image -}})"{% endif %} {% if slide.body_class %}data-body-class="{{- slide.body_class -}}"{% endif %} {% if slide.hidden == 'true' %}hidden{% endif %}>
+  {% if 'segue' in slide.class %}
+    <aside class="gdbar"><img src="images/logos/chrome_logo.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>{{- slide.title -}}</h2>
+      <h3>{{- slide.subtitle -}}</h3>
+    </hgroup>
+    {% if slide.keep_content %}
+    <article {% if slide.content_class %}class="{{- slide.content_class -}}"{% endif %}>
+      {{- slide.content -}}
+    </article>
+    {% endif %}
+  {% else %}
+    <hgroup>
+      <span>
+        {% if slide.bug_link %}
+          <a href="{{- slide.bug_link -}}" target="_blank" class="bug" title="Bug link"></a>
+        {% endif %}
+        {% if slide.spec_link %}
+          <a href="{{- slide.spec_link -}}" target="_blank" class="spec" title="Spec link"></a>
+        {% endif %}
+        {% if slide.h5r_link %}
+          <a href="{{- slide.h5r_link -}}" target="_blank" class="h5r" title="HTML5Rocks article"></a>
+        {% endif %}
+        {% if slide.polymer_link %}
+          <a href="{{- slide.polymer_link -}}" target="_blank" class="polymer_link" title="Polymer docs link"></a>
+        {% endif %}
+      </span>
+      <h2>{{- slide.title -}}</h2>
+      <h3>{{- slide.subtitle -}}</h3>
+    </hgroup>
+    <article {% if slide.content_class %}class="{{- slide.content_class -}}"{% endif %}>
+    {{- slide.content -}}
+    </article>
+ {% endif %}
+</slide>
+{% endfor %}
+
+<slide class="thank-you-slide segue nobackground large">
+  <aside class="gdbar right"><img src="images/logos/chrome_logo.png"></aside>
+  <article class="flexbox vleft auto-fadein">
+    <h2>Thank You!</h2>
+    <div style="margin-bottom:5em;"><a href="http://html5-demos.appspot.com/static/cds2013/index.html">html5-demos.com/static/cds2013/index.html</a></div>
+  </article>
+  <p class="auto-fadein" data-config-contact></p>
+</slide>
+
+
+<!-- <slide id="finito" class="segue nobackground">
+  <article class="flexbox vcenter auto-fadein">
+    <h2>Finito.</h2>
+  </article>
+</slide> -->
+
+<!-- <slide class="logoslide dark nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo_white.png"></span>
+  </article>
+</slide> -->
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+</main>
+
+<!-- <video src="videos/universe.webm" class="fullviewport" style="width:auto !important;"></video>
+<audio src="audio/Stellardrone-Introspace.mp3" loop></audio>
+ -->
+ 
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22014378-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>

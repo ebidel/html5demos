@@ -1,0 +1,383 @@
+<!--
+Copyright 2013 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Eric Bidelman (@ebidel)
+-->
+
+<script src="moment.min.js"></script>
+
+<polymer-element name="hangout-header" attributes="from" on-click="{{minimizeMe}}">
+<template>
+  <style polymer-scope="global">
+    @import url(http://weloveiconfonts.com/api/?family=typicons);
+    @-webkit-keyframes pulse {
+      from { opacity: 0; }
+      to { opacity: 0.25; }
+    }
+  </style>
+  <style>
+    :host {
+      display: -webkit-flex;
+      display: flex;
+      background: #404040;
+      color: white;
+      padding: 0.6rem 0.6rem 0.3rem 0.6rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-align-items: flex-start;
+      align-items: flex-start;
+    }
+    :host::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: 0;
+      right: 0;
+      bottom: -100%;
+      opacity: 0.25;
+      background: -webkit-radial-gradient(white, black);
+      background: radial-gradient(white, black);
+      -webkit-animation: pulse 1s ease alternate infinite;
+      animation: pulse 1s ease alternate infinite;
+    }
+
+    /* @polyfill * */
+    ::content > * {
+      font-size: 1.2rem;
+      font-weight: 300;
+      margin: 0;
+    }
+    [class*="typicons-"]::before {
+      font-family: 'Typicons', sans-serif;
+    }
+    .typicons-message {
+      margin-right: 5px;
+    }
+    #close {
+      z-index: 1;
+      position: relative;
+    }
+    .right {
+      -webkit-flex: 1;
+      flex: 1;
+      text-align: right;
+    }
+  </style>
+  <span class="icon typicons-message"></span>
+  <content>Hangouts</content>
+  <div class="right">
+    <span class="icon typicons-minus"></span>
+    <span id="close" class="icon typicons-times" on-click="{{closeMe}}"></span>
+  </div>
+</template>
+<script>
+Polymer('hangout-header', {
+  // ready: function() {
+  //    this.cancelUnbindAll();
+  //  },
+  applyAuthorStyles: true,
+  minimizeMe: function(e, details, sender) {
+    this.fire('minimize');
+  },
+  closeMe: function(e, details, sender) {
+    // TODO: close button target isn't fired first. Event delegation on header element is instead.
+    if (sender == this.$.close) {
+      this.fire('close-chat');
+      //e.stopPropagation();
+    }
+  }
+});
+</script>
+</polymer-element>
+
+<polymer-element name="hangout-message" attributes="from isother profile datetime now">
+<template>
+  <style>
+    :host {
+      display: -webkit-flex;
+      display: flex;
+      border-radius: 2px;
+      margin-bottom: 10px;
+    }
+    :host(.self:host) {
+      -webkit-justify-content: flex-end;
+      justify-content: flex-end;
+      -webkit-align-items: flex-end;
+      align-items: flex-end;
+    }
+    .avatar {
+      position: relative; /* for triangle */
+      height: 40px;
+    }
+    .avatar img {
+      width: auto;
+      height: 100%;
+    }
+    .avatar.isother img {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+    .avatar.self img {
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+    }
+    .avatar.isother::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -1px;
+      width: 0;
+      height: 0;
+      border: 5px solid white;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+    }
+    .avatar.self {
+      -webkit-order: 2;
+      order: 2;
+    }
+    .avatar.self::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -1px;
+      width: 0;
+      height: 0;
+      border: 5px solid white;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }    
+    .messages {
+      padding: 0.5rem;
+      background: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      border-radius: 2px;
+      max-width: 180px;
+    }
+    time {
+      font-size: 0.7rem;
+      color: #ccc;
+    }
+    /* @polyfill p */
+    ::content p {
+      font-size: 0.8rem;
+      margin: 0 0 0.2rem 0;
+    }
+    .nickname::after {
+      content: '•';
+      margin: 0 3px;
+    }
+  </style>
+  <div class="avatar {{isother ? 'isother' : 'self'}}"><img src="https://www.google.com/s2/photos/profile/{{profile}}?sz=40"></div>
+  <div class="messages">
+    <content></content>
+    <time datetime="{{datetime}}" hidden?="{{!datetime}}">
+      <span hidden?="{{!from || !isother}}" class="nickname">{{nickname}}</span>{{prettyDateTime}}
+    </time>
+  </div>
+</template>
+<script>
+var STAY_NOW_FOR_ = 20 * 1000 // ms
+
+function prettyPrintDate_() {
+  if (moment(this.datetime).diff(this.now) >= -STAY_NOW_FOR_) {
+    this.prettyDateTime = 'Now';
+  } else {
+    this.prettyDateTime = moment(this.datetime).from(this.now); //.calendar()
+  }
+}
+
+Polymer('hangout-message', {
+  // ready: function() {
+  //     this.cancelUnbindAll();
+  //   },
+  isother: false,
+  profile: null,
+  prettyDateTime: 'Now',
+  datetimeChanged: function() {
+    prettyPrintDate_.bind(this)();
+  },
+  nowChanged: function() {
+    prettyPrintDate_.bind(this)();
+  },
+  fromChanged: function() {
+    if (!this.isother) {
+      this.classList.add('self');
+      this.classList.remove('isother');
+    } else {
+      this.classList.add('isother');
+      this.classList.remove('self');
+    }
+  },
+  get nickname() {
+    return this.from ? this.from.split(' ')[0] : '';
+  }
+});
+</script>
+</polymer-element>
+
+<polymer-element name="hangout-discussion" noscript>
+<template>
+  <style>
+    :host {
+      display: block;
+      padding: 0.5rem;
+      border: 0 solid #ccc;
+      border-width: 0 1px 0 1px;
+    }
+  }
+  </style>
+  <content></content>
+</template>
+</polymer-element>
+
+<polymer-element name="hangout-module" attributes="from messages profile" on-close-chat="{{closeChat}}" on-minimize="{{minimize}}">
+<template>
+  <style>
+    :host {
+      display: -webkit-flex;
+      display: flex;
+      width: 260px;
+      font-family: arial,sans-serif;
+
+      background: #e5e5e5;
+      -webkit-flex-direction: column;
+      flex-direction: column;
+    }
+    hangout-discussion {
+      overflow: auto;
+      height: 290px;
+    }
+    [minimized] {
+      height: 0;
+      padding: 0 !important;
+    }
+    #msg {
+      padding: 0.6rem;
+      margin: 0;
+      border: 1px solid #ccc;
+    }
+    #msg:focus {
+      outline: none;
+      border-color: lightblue;
+    }
+  }
+  </style>
+
+  <hangout-header>
+    <h1>{{from}}</h1>
+  </hangout-header>
+
+  <hangout-discussion id="discussion" minimized?="{{minimized}}">
+    <template repeat="{{message in messages}}">
+      <hangout-message isother="{{message.isother}}" from="{{from}}" profile="{{message.profile}}" datetime="{{message.datetime}}" now="{{now}}">
+        <template repeat="{{msg in message.msg}}">
+          <p>{{msg}}</p>
+        </template>
+      </hangout-message>
+    </template>
+  </hangout-discussion>
+
+  <input type="text" id="msg" placeholder="Send a message..." on-keyup="{{keyUp}}" minimized?="{{minimized}}">
+
+  <!--
+  <hangout-discussion>
+    <hangout-message from="{{from}}" profile="//twitter.com/api/users/profile_image/paul_irish" datetime="2013-06-24T12:02">
+      <p>Feelin' this Web Components thing.</p>
+      <p>Heard anything about it?</p>
+    </hangout-message>
+    <hangout-message profile="//twitter.com/api/users/profile_image/ebidel" datetime="2013-06-24T12:03">
+      <p>Totes amazing</p>
+    </hangout-message>
+    <hangout-message profile="//twitter.com/api/users/profile_image/ebidel" datetime="2013-06-24T12:05">
+      <p>Have you tried Polymer yet?</p>
+    </hangout-message>
+    <hangout-message from="{{from}}" profile="//twitter.com/api/users/profile_image/paul_irish">
+      <p>Naw bro.</p>
+      <p>I'll give it a spin.</p>
+    </hangout-message>
+  </hangout-discussion>
+  -->
+
+</template>
+<script>
+var timerId_ = null;
+
+function lastMesageWasFromMe_() {
+  if (!this.messages.length) {
+    return false;
+  }
+  return !this.messages[this.messages.length - 1].isother;
+}
+
+Polymer('hangout-module', {
+  now: new Date().toISOString(),
+  minimized: false,
+  ready: function() {
+    //this.cancelUnbindAll();
+
+    this.messages = [];
+
+    // TODO: Setup timer in parent element that manages updates.
+    timerId_ = window.setInterval(function() {
+      this.now = new Date().toISOString();
+    }.bind(this), 1000);
+
+    this.async(function() {
+      this.$.msg.focus();
+    });
+  },
+  removed: function() {
+    window.clearInterval(timerId_);
+
+    console.log('Close hangout with ' + this.from + '.')
+  },
+  keyUp: function(e, details, sender) {
+    if (e.keyCode == 13 && sender.value) { // Enter
+
+      // If we were last sender, append to existing message.
+      // Otherwise, create a new message bubble.
+      if (lastMesageWasFromMe_.bind(this)()) {
+        var message = this.messages[this.messages.length - 1];
+        message.msg.push(sender.value);
+        message.datetime = new Date().toISOString();
+      } else {
+        this.messages.push({
+          profile: this.profile,
+          datetime: new Date().toISOString(), //toLocaleTimeString()
+          msg: [sender.value]
+        });
+      }
+
+      sender.value = '';
+
+      this.async(function() {
+        this.$.discussion.scrollTop = this.$.discussion.scrollHeight;
+      });
+    }
+  },
+  minimize: function(e, details, sender) {
+    //e.stopPropagation();
+    this.minimized = !this.minimized;
+  },
+  closeChat: function(e, details, sender) {
+    //e.stopPropagation();
+    this.remove();
+  }
+});
+</script>
+</polymer-element>

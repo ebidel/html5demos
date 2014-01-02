@@ -1,0 +1,128 @@
+@import "compass/css3/box-sizing";
+@import "compass/css3/transition";
+
+@import "variables";
+
+/*******************************************************************************
+ * BROWSER SUPPORT STYLES
+ ******************************************************************************/
+.browser-support-row {
+  width: 100%;
+  @include box-sizing(border-box);
+
+  @include mask(url(../../images/circle2.svg) no-repeat 51% -3700px);
+  @include mask-size(452%);
+  // Flat
+  // -webkit-mask-image: url(http://www.htmlfivewow.com/demos/audio-visualizer/circle.svg);
+  // -webkit-mask-position: 50% -3800px;
+  // -webkit-mask-size: 460%;
+  // @include box-shadow(0px 15px 0px 8px white inset,
+  //                       0px -3px 15px $gray-2 inset);
+
+  height: 125px;
+  overflow: hidden;
+
+  padding: 0 30px 0 40px;
+
+  &:hover {
+    > div.mobile:before {
+      @include transition(top 600ms cubic-bezier(.17,.67,0,1.2));
+      top: -214px;
+    }
+  }
+
+  &.polyfill-status {
+    > div {
+      img {
+        opacity: 1 !important;
+        @include filter(grayscale(0));
+      }
+    }
+  }
+
+  > div {
+    display: inline;
+    position: relative;
+
+    &.supported {
+      &.partial img {
+        opacity: 0.5;
+      }
+      img {
+        opacity: 1;
+        @include filter(grayscale(0));
+        z-index: 2;
+        // position: relative;
+        // -webkit-mask-image: -webkit-linear-gradient(bottom,
+        //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1) 50%);
+        // -moz-mask-image: -moz-linear-gradient(bottom,
+        //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1) 65%);
+        // -ms-mask-image: -ms-linear-gradient(bottom,
+        //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1) 65%);
+        // -o-mask-image: -o-linear-gradient(bottom,
+        //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1) 65%);
+      }
+    }
+
+    &.mobile:before {
+      opacity: 0.5;
+      content: '';
+      background: url('../../images/icons/mobile.svg') no-repeat;
+      background-size: contain;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      top: 0;
+      left: 26px;
+    }
+
+    &:nth-of-type(1) {
+      img {
+        height: 245px;
+      }
+    }
+
+    &:nth-of-type(3) {
+      &:before {
+        left: 37px;
+      }
+      img {
+        height: 235px;
+      }
+    }
+
+    &:nth-of-type(4) {
+      &:before {
+        left: 35px;
+      }
+    }
+
+    &:nth-of-type(5) {
+      &:before {
+        left: 46px;
+      }
+      img {
+        height: 255px; 
+      }
+    }
+
+    img {
+      height: 225px;
+      opacity: 0.25;
+      margin-right: -70px;
+      vertical-align: bottom;
+      @include filter(grayscale(1));
+      @include transition(all 600ms ease-in-out);
+      z-index: 1;
+      position: relative;
+      // -webkit-mask-image: -webkit-linear-gradient(bottom,
+      //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1));
+      // -moz-mask-image: -moz-linear-gradient(bottom,
+      //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1));
+      // -ms-mask-image: -ms-linear-gradient(bottom,
+      //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1));
+      // -o-mask-image: -o-linear-gradient(bottom,
+      //     rgba(255,255,255,0), rgba(255,255,255,0) 45%, rgba(255,255,255,1));
+    }
+  }
+}
