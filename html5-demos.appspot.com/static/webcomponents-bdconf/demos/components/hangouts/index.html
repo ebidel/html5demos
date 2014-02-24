@@ -1,5 +1,5 @@
 <!--
-Copyright 2013 Google Inc.
+Copyright 2014 - Eric Bidelman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ Author: Eric Bidelman (@ebidel)
 <head>
 <meta charset="utf-8"/>
 <title>Hangouts on Polymer</title>
-<script src="/static/webcomponents-bdconf/js/polymer-all/polymer.min.js"></script>
+<script src="/static/webcomponents-bdconf/demos/components/bower_components/platform/platform.js"></script>
 <link rel="import" href="/static/webcomponents-bdconf/demos/components/hangouts/elements/hangouts.html">
 <style>
 * {
@@ -99,7 +99,7 @@ document.querySelector('button').addEventListener('click', function(e) {
   document.querySelector('#hangouts').appendChild(hangout);
 });
 
-document.addEventListener('WebComponentsReady', function(e) {
+document.addEventListener('polymer-ready', function(e) {
   var hangout = document.createElement('hangout-module');
   hangout.from = 'Paul Irish';
   hangout.profile = '118075919496626375791';
