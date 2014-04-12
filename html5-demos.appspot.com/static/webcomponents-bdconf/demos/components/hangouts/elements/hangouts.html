@@ -1,3 +1,4 @@
+
 <!--
 Copyright 2014 Google Inc.
 
@@ -17,11 +18,13 @@ Author: Eric Bidelman (@ebidel)
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+
 <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=typicons">
 <script src="moment.min.js"></script>
 
 <polymer-element name="hangout-header" attributes="from" on-click="{{minimizeMe}}">
 <template>
+  <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=typicons">
   <style>
     @-webkit-keyframes pulse {
       from { opacity: 0; }
@@ -60,6 +63,7 @@ Author: Eric Bidelman (@ebidel)
       font-size: 0.8rem;
       font-weight: 300;
       margin: 0;
+      font-size: 20px !important;
     }
     [class*="typicons-"]::before {
       font-family: 'Typicons', sans-serif;
@@ -177,11 +181,12 @@ Polymer('hangout-header', {
       margin: 0 0 0.2rem 0;
     }
     .nickname::after {
-      content: '•';
+      content: 'â€¢';
       margin: 0 3px;
     }
   </style>
-  <div class="avatar {{isother ? 'isother' : 'self'}}"><img src="https://www.google.com/s2/photos/profile/{{profile}}?sz=40"></div>
+  <div class="avatar {{isother ? 'isother' : 'self'}}"><!-- <img src="https://www.google.com/s2/photos/profile/{{profile}}?sz=40"> -->
+  <img src="{{profile}}"></div>
   <div class="messages">
     <content></content>
     <time datetime="{{datetime}}" hidden?="{{!datetime}}">

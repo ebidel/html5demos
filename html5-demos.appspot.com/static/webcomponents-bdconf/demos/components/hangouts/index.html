@@ -87,13 +87,13 @@ button {
 document.querySelector('button').addEventListener('click', function(e) {
   var hangout = document.createElement('hangout-module');
   hangout.from = 'Larry Page';
-  hangout.profile = '118075919496626375791';
+  hangout.profile = 'http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAOqk/IVG-V3nJ8jM/photo.jpg?sz=40';
 
   hangout.messages = [{
-    profile: '106189723444098348646',
+    profile: 'http://lh3.googleusercontent.com/-Y86IN-vEObo/AAAAAAAAAAI/AAAAAAACk4w/yvxY4GMx_8k/photo.jpg?sz=40',
     datetime: new Date().toISOString(),
     isother: true,
-    msg: ['Hola']
+    msg: ['Hola', 'Web components are amazing!']
   }];
 
   document.querySelector('#hangouts').appendChild(hangout);
@@ -102,32 +102,35 @@ document.querySelector('button').addEventListener('click', function(e) {
 document.addEventListener('polymer-ready', function(e) {
   var hangout = document.createElement('hangout-module');
   hangout.from = 'Paul Irish';
-  hangout.profile = '118075919496626375791';
+  hangout.profile = 'http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAOqk/IVG-V3nJ8jM/photo.jpg?sz=40';
 
   // var input = document.querySelector('input');
   // input.addEventListener('keyup', function(e) {
   //   hangout.from = e.target.value;
   // });
 
+  hangout.profile = 'http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAOqk/IVG-V3nJ8jM/photo.jpg?sz=40';
+
   hangout.messages = [{
-    profile: '113127438179392830442',
-    datetime: '2013-06-24T12:02',
+    profile: 'http://lh3.googleusercontent.com/-7jdZCLeEaho/AAAAAAAAAAI/AAAAAAAAZIw/GMkOu6gF6SA/photo.jpg?sz=40',
+    datetime: '2014-03-12T10:02',
     isother: true,
-    msg: ["Feelin' this Web Components thing.", 'Heard anything about it?']
+    msg: ["Feelin' this Web Components thing.", "Heard anything about it?"]
   }, {
-    profile: '118075919496626375791',
-    datetime: '2013-06-24T12:03',
+    profile: 'http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAOqk/IVG-V3nJ8jM/photo.jpg?sz=40',
+    datetime: '2013-06-24T10:03',
     msg: ['Totes amazing']
   }, {
-    profile: '118075919496626375791',
-    datetime: '2013-06-24T12:05',
+    profile: 'http://lh5.googleusercontent.com/-kgFnix5akCc/AAAAAAAAAAI/AAAAAAAAOqk/IVG-V3nJ8jM/photo.jpg?sz=40',
+    datetime: '2014-03-12T10:05',
     msg: ['Have you tried Polymer yet?']
   }, {
-    profile: '113127438179392830442',
-    datetime: '2013-06-24T12:06',
+    profile: 'http://lh3.googleusercontent.com/-7jdZCLeEaho/AAAAAAAAAAI/AAAAAAAAZIw/GMkOu6gF6SA/photo.jpg?sz=40',
+    datetime: '2014-03-12T10:06',
     isother: true,
     msg: ['Naw Bro', "I'll give it a spin"]
   }];
+  
 
   document.querySelector('#hangouts').appendChild(hangout);
 });
