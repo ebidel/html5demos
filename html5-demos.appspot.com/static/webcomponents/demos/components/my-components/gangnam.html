@@ -19,7 +19,7 @@ Author: Eric Bidelman (ebidel@)
 <html>
 <head>
 <title>Gangnam style on Web Components</title>
-<script src="/static/webcomponents/demos/components/my-components/polymer.min.js"></script>
+<script src="/static/webcomponents/demos/components/bower_components/platform/platform.js"></script>
 <link rel="import" href="/static/webcomponents/demos/components/my-components/x-gangnam-style.html">
 <style>
 #main {
@@ -43,7 +43,7 @@ Author: Eric Bidelman (ebidel@)
 
 <script>
 (function () {
-  document.addEventListener('WebComponentsReady', function(e) {
+  document.addEventListener('polymer-ready', function(e) {
     console.log(e);
   });
   

@@ -1,0 +1,19 @@
+{
+  "name": "shadowdom-visualizer",
+  "version": "0.0.0",
+  "homepage": "http://html5-demos.appspot.com/shadowdom-visualizer",
+  "authors": [
+    "Eric Bidelman <ebidel@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ShadowDOM": "Polymer/ShadowDOM#~0.2.2"
+  }
+}
