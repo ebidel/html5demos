@@ -183,7 +183,7 @@ function start(e) {
     container.appendChild(video);
   }, function(e) {
     if (e.code == e.PERMISSION_DENIED) {
-      showErrorMsg('PERMISSION_DENIED. Are you no SSL?');
+      showErrorMsg('PERMISSION_DENIED. Are you no SSL? Have you enabled the --enable-usermedia-screen-capture flag?');
     }
   });
 }
