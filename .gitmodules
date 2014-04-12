@@ -4,10 +4,6 @@
 [submodule "html5-demos.appspot.com/static/filesystem/idb.filesystem.js"]
 	path = html5-demos.appspot.com/static/filesystem/idb.filesystem.js
 	url = git@github.com:ebidel/idb.filesystem.js.git
-[submodule "html5-demos.appspot.com/static/shadowdom-visualizer/ShadowDOM"]
-	path = html5-demos.appspot.com/static/shadowdom-visualizer/ShadowDOM
-	url = git://github.com/toolkitchen/ShadowDOM.git
-	url = git://github.com/toolkitchen/toolkit.git
 [submodule "html5-demos.appspot.com/static/libs/polymer"]
 	path = html5-demos.appspot.com/static/libs/polymer
 	url = git://github.com/Polymer/polymer.git
