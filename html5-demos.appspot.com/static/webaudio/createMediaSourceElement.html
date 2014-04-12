@@ -258,14 +258,14 @@ audio.addEventListener('timeupdate', function(e) {
 document.querySelector('#myaudio').appendChild(audio);
 
 // Check for non Web Audio API browsers.
-if (!window.webkitAudioContext) {
+if (!window.AudioContext) {
   alert("Web Audio isn't available in your browser. But...you can still play the HTML5 audio :)");
   document.querySelector('#myaudio').classList.toggle('show');
   document.querySelector('aside').style.marginTop = '7em';
   return;
 }
 
-var context = new webkitAudioContext();
+var context = new AudioContext();
 var analyser = context.createAnalyser();
 
 function rafCallback(time) {
