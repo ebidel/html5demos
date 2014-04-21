@@ -25,15 +25,14 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <link href="../../common.css" rel="stylesheet" type="text/css">
 <style>
 article {
-  display: -webkit-flex;
-  -webkit-flex-direction: column;
-  -webkit-align-items: center;
+  display: flex;
 }
 article > section {
   margin: 1em 0;
 }
 .cols {
   -webkit-columns: 3;
+  columns: 3;
   width: 80%;
 }
 .cols > span {
@@ -115,9 +114,6 @@ article > section > div {
 }
 .drop-shadow {
   padding: 1em 1em 0.8em 1em;
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
-  -ms-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
-  -o-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset, 0 5px 10px #ccc;
 }
 @media screen and (max-width: 1000px) {
@@ -148,6 +144,7 @@ article > section > div {
   }
   .cols {
     -webkit-columns: 2;
+    columns: 2;
     width: auto;
   }
   .cols > span {
@@ -214,16 +211,16 @@ article > section > div {
     <output>-webkit-filter: none;</output>
   </section>
   <section class="cols">
-    <span><span>blur</span><input type="range" onchange="set('blur', this.value + 'px');" value="0" step="1" min="0" max="10"></span>
-    <span><span>grayscale</span><input type="range" onchange="set('grayscale', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
-    <span><span>drop-shadow</span><input type="range" onchange="set('drop-shadow', this.value + 'px ' + this.value + 'px 20px black');" value="0" step="1" min="0" max="100"></span>
-    <span><span>sepia</span><input type="range" onchange="set('sepia', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
-    <span><span>brightness</span><input type="range" onchange="set('brightness', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
-    <span><span>contrast</span><input type="range" onchange="set('contrast', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
-    <span><span>hue-rotate</span><input type="range" onchange="set('hue-rotate', this.value + 'deg');" value="0" step="30" min="0" max="360"></span>
-    <span><span>invert</span><input type="range" onchange="set('invert', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
-    <span><span>saturate</span><input type="range" onchange="set('saturate', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
-    <span><span>opacity</span><input type="range" onchange="set('opacity', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>blur</span><input type="range" oninput="set('blur', this.value + 'px');" value="0" step="1" min="0" max="10"></span>
+    <span><span>grayscale</span><input type="range" oninput="set('grayscale', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>drop-shadow</span><input type="range" oninput="set('drop-shadow', this.value + 'px ' + this.value + 'px 20px black');" value="0" step="1" min="0" max="100"></span>
+    <span><span>sepia</span><input type="range" oninput="set('sepia', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>brightness</span><input type="range" oninput="set('brightness', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>contrast</span><input type="range" oninput="set('contrast', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>hue-rotate</span><input type="range" oninput="set('hue-rotate', this.value + 'deg');" value="0" step="30" min="0" max="360"></span>
+    <span><span>invert</span><input type="range" oninput="set('invert', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
+    <span><span>saturate</span><input type="range" oninput="set('saturate', this.valueAsNumber);" value="0" step="0.1" min="0" max="10"></span>
+    <span><span>opacity</span><input type="range" oninput="set('opacity', this.valueAsNumber);" value="0" step="0.1" min="0" max="1"></span>
     <span><button onclick="reset()" style="margin-top:10px;">reset</button></span>
   </section>
   <section>
