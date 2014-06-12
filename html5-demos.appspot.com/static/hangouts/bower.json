@@ -1,0 +1,19 @@
+{
+  "name": "gmail-hangouts-webcomponent",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ebidel/html5demos",
+  "authors": [
+    "Eric Bidelman <ebidel@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.3.2"
+  }
+}
