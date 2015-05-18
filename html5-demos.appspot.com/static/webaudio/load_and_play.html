@@ -99,10 +99,10 @@ button:not(:disabled):active {
   <button onclick="playSound()" disabled>Start</button>
   <button onclick="stopSound()" disabled>Stop</button>
 <script>
-if (!window.webkitAudioContext) {
+if (!window.AudioContext) {
   alert('The Web Audio API is not supported in your browser!');
 }
-var context = new window.webkitAudioContext();
+var context = new window.AudioContext();
 var source = null;
 var audioBuffer = null;
  

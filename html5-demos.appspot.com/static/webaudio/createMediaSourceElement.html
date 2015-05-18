@@ -244,7 +244,7 @@ const CANVAS_HEIGHT = canvas.height;
 const CANVAS_WIDTH = canvas.width;
 
 window.audio = new Audio();
-audio.src = 'http://www.html5rocks.com/en/tutorials/audio/quick/test.ogg';
+audio.src = 'test.ogg';
 audio.controls = true;
 //audio.autoplay = true;
 audio.loop = true;
@@ -269,7 +269,7 @@ var context = new AudioContext();
 var analyser = context.createAnalyser();
 
 function rafCallback(time) {
-  window.webkitRequestAnimationFrame(rafCallback, canvas);
+  window.requestAnimationFrame(rafCallback, canvas);
 
   var freqByteData = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteFrequencyData(freqByteData); //analyser.getByteTimeDomainData(freqByteData);
