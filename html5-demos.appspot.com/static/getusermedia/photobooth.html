@@ -20,7 +20,7 @@ Author: Eric Bidelman (ericbidelman@chromium.org)
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
-<link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
 <link href="../common.css" rel="stylesheet" type="text/css">
 <title>Photobooth</title>
 <style>
@@ -154,6 +154,12 @@ h1 {
 </article>
 <canvas id="photo" style="display:none"></canvas>
 <script>
+     
+
+if (location.protocol != 'https:'){
+  location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+     
 navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
 window.URL = window.URL || window.webkitURL;
 
@@ -227,9 +233,12 @@ function capture() {
     intervalId = null;
     return;
   }
+     
+  document.getElementById("monitor").height = video.videoHeight;
+  document.getElementById("monitor").width = video.videoWidth;
 
   intervalId = setInterval(function() {
-    ctx.drawImage(video, 0, 0);
+    ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
     var img = document.createElement('img');
     img.src = canvas.toDataURL('image/webp');
 
