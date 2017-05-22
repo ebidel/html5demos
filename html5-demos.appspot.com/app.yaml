@@ -1,6 +1,7 @@
 application: html5-demos-hrd
-version: 1
-runtime: python
+version: 2017-02-27
+runtime: python27
+threadsafe: true
 api_version: 1
 
 #default_expiration: "30d"
@@ -59,11 +60,12 @@ handlers:
   static_files: static/index.html
   upload: /static/index.html
 
-- url: /admin.*
-  script: $PYTHON_LIB/apphosting/ext/admin/__init__.py
+- url: /admin/gae/.*
+  script: google.appengine.ext.admin.application
+  login: admin
 
-- url: /.*
-  script: main.py
+# - url: /.*
+  # script: main.app
 
 #skip_files:
 #- ^(.*/)?
