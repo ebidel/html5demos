@@ -164,7 +164,7 @@ function callback(e) {
     // Slice the video into NUM_CHUNKS and append each to the media element.
     var i = 0;
 
-    (function readChunk_(i) {
+    var readChunk = (function (i) {
       var reader = new FileReader();
 
       // Reads aren't guaranteed to finish in the same order they're started in,
@@ -173,21 +173,26 @@ function callback(e) {
       reader.onload = function(e) {
         sourceBuffer.appendBuffer(new Uint8Array(e.target.result));
         logger.log('appending chunk:' + i);
-        if (i == NUM_CHUNKS - 1) {
-          mediaSource.endOfStream();
-        } else {
-          if (video.paused) {
-            video.play(); // Start playing after 1st chunk is appended.
-          }
-          readChunk_(++i);
-        }
       };
 
       var startByte = chunkSize * i;
       var chunk = file.slice(startByte, startByte + chunkSize);
 
       reader.readAsArrayBuffer(chunk);
-    })(i);  // Start the recursive call by self calling.
+    });  // Start the recursive call by self calling.
+
+    sourceBuffer.addEventListener('updateend', function() {
+      if (i == NUM_CHUNKS - 1) {
+        mediaSource.endOfStream();
+      } else {
+        if (video.paused) {
+          video.play(); // Start playing after 1st chunk is appended.
+        }
+        readChunk(++i);
+      }
+    }, false);
+
+    readChunk(i);
   });
 }
 
