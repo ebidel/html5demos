@@ -108,7 +108,7 @@ var audioBuffer = null;
  
 function stopSound() {
   if (source) {
-    source.noteOff(0);
+    source.stop(0);
   }
 }
 
@@ -117,7 +117,7 @@ function playSound() {
   source.buffer = audioBuffer;
   source.loop = false;
   source.connect(context.destination);
-  source.noteOn(0);    
+  source.start(0);    
 }
 
 function initSound(arrayBuffer) {
