@@ -156,8 +156,8 @@ h1 {
 <script>
      
 
-if (location.protocol != 'https:'){
-  location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+if (location.protocol !== 'https:'){
+  location.protocol = 'https:';
 }
      
 navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
@@ -233,9 +233,10 @@ function capture() {
     intervalId = null;
     return;
   }
-     
-  document.getElementById("monitor").height = video.videoHeight;
-  document.getElementById("monitor").width = video.videoWidth;
+  
+  const monitor = document.getElementById('monitor');
+  monitor.height = video.videoHeight;
+  monitor.width = video.videoWidth;
 
   intervalId = setInterval(function() {
     ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
